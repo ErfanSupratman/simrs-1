@@ -1,0 +1,9 @@
+/* CSS Style and Override for IGD Page */
+
+/*----------------------------------------------------------------------------*/
+/* Collapsible Section
+/*----------------------------------------------------------------------------*/
+.tambah-action:hover{
+	cursor: pointer;
+	cursor: hand;
+}

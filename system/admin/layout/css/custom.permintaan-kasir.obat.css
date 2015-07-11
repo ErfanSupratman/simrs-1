@@ -1,0 +1,135 @@
+/* CSS Style and Override for Permintaan & Kasir Obat Page */
+
+ul.page-sidebar-menu{
+	z-index: 99;
+}
+/*----------------------------------------------------------------------------*/
+/* Left Column
+/*----------------------------------------------------------------------------*/
+
+/* Search Input */
+.search-medic .form-body
+{
+	padding: 0 !important;
+}
+
+/* Overlay */
+.wrap-table
+{
+	position: relative;
+}
+
+#cover-search
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 10000;
+	opacity: 0.5;
+}
+#cover-search div
+{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -15px 0 0 -15px;
+	font-size: 32px;
+	color: gray;
+}
+#cover-search i
+{
+	font-size: 30px;
+	z-index: 9999;
+	opacity: 1;
+}
+
+/* List Medicine */
+.table.list-medic
+{
+	margin: 0;
+}
+
+.list-medic tbody{
+	max-height: 550px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.list-medic tbody, .list-medic tbody tr, .list-medic tbody td{
+	display: inline-block;
+	width: 100%;
+}
+.list-medic tbody td h3
+{
+	margin: 5px 0;
+}
+.list-medic tbody td .actions{
+	float: right;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Right Column
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* Form Tipe Resep
+/*----------------------------------------------------------------------------*/
+.wrapper-informasi-resep > .portlet
+{
+	margin: 0;
+}
+.wrapper-informasi-resep
+{
+	margin-bottom: 25px;
+}
+/*----------------------------------------------------------------------------*/
+/* Invoice Bill Table
+/*----------------------------------------------------------------------------*/
+.pembelian-form h3
+{
+	margin: 0 0 10px 0;
+}
+#invoiceBill tbody td
+{
+	vertical-align: middle;
+}
+/*tbody KASIR */
+#invoiceBill tbody.kasir td:nth-child(2)
+{
+	width: 150px;
+}
+#invoiceBill tbody.kasir td:nth-child(3),#invoiceBill tbody td:nth-child(6)
+{
+	width: 195px;
+}
+#invoiceBill tbody.kasir td:nth-child(6), #invoiceBill tbody td:nth-child(7)
+{
+	width: 200px !important;
+}
+
+/*tbody Bukan Kasir */
+.pembelian-form tbody td:nth-child(1), .pembelian-form thead th:nth-child(1)
+{
+	width: 150px;
+}
+.pembelian-form tbody td:nth-child(2), .pembelian-form thead th:nth-child(2)
+{
+	width: 350px;
+}
+.pembelian-form tbody td:nth-child(3), .pembelian-form thead th:nth-child(3)
+{
+	width: 100px;
+}
+#invoiceBill tbody.else td:nth-child(2)
+{
+	width: 300px;
+}
+#invoiceBill tbody.else td:nth-child(6)
+{
+	width: 150px;
+}

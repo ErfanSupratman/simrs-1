@@ -1,0 +1,41 @@
+/* CSS Style and Override for Kamar Operasi Page */
+
+/*----------------------------------------------------------------------------*/
+/* Left Column
+/*----------------------------------------------------------------------------*/
+/* Overlay */
+#cariKamarOperasi
+{
+	position: relative;
+}
+
+#cover-search
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 10000;
+	opacity: 0.5;
+	z-index: 9;
+}
+#cover-search div
+{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -15px 0 0 -15px;
+	font-size: 32px;
+	color: gray;
+}
+#cover-search i
+{
+	font-size: 30px;
+	z-index: 9999;
+	opacity: 1;
+}

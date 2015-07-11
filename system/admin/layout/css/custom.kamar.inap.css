@@ -1,0 +1,170 @@
+/* CSS Style and Override for Kamar Inap Page */
+
+/*----------------------------------------------------------------------------*/
+/* Left Column
+/*----------------------------------------------------------------------------*/
+/* Overlay */
+#cariKamarOperasi
+{
+	position: relative;
+}
+
+#cover-search
+{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #fff;
+	z-index: 10000;
+	opacity: 0.5;
+	z-index: 9;
+}
+#cover-search div
+{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -15px 0 0 -15px;
+	font-size: 32px;
+	color: gray;
+}
+#cover-search i
+{
+	font-size: 30px;
+	z-index: 9999;
+	opacity: 1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Content Result
+/*----------------------------------------------------------------------------*/
+.get-list-kamar
+{
+	padding-bottom: 100px;
+}
+.search-result-content
+{
+	margin-top: 45px;
+	background: #fff;
+}
+.search-result-content ul {
+    list-style: none;
+    display: block;
+    padding: 0;
+}
+.search-result-content ul li {
+    display: inline-block;
+    margin: 0 0 24px;
+    list-style: none;
+    width: 25%;
+    padding: 0 15px;
+    float: left;
+    z-index: 999;
+}
+.search-result-content ul li:hover
+{
+	cursor: pointer;
+	cursor: hand;
+}
+.search-result-content .row
+{
+	margin-left: auto;
+	margin-right: auto;
+	clear: both;
+	position: relative;
+	z-index: 999;
+}
+.search-result-content ul
+{
+	background: #fff;
+}
+.search-result-content ul li .box {
+	display: table;
+	width: 100%;
+	height: 200px;
+	background-color: #fbca6a;
+	position: relative;
+}
+
+.search-result-content ul li .box .room-info
+{
+ 	display: table-cell;
+ 	text-align: center;
+ 	vertical-align: middle;
+ 	line-height: 1.5em;
+	text-transform: uppercase;
+}
+
+.room-info .availability
+{
+	padding: 0 18px;
+}
+.room-info p
+{
+	text-align: left;
+	margin: 8px 0;
+}
+.room-info .available
+{
+	float: left;
+}
+.room-info .full
+{
+	float: right;
+}
+.search-result-content .container-child {
+    display: block;
+}
+
+.search-result-content li.active .box:before {
+	visibility: visible;
+}
+
+.search-result-content .box:before {
+	position: absolute;
+	content: '';
+	visibility: hidden;
+	bottom: 0;
+	left: 44%;
+	display: inline-block;
+	border-bottom-color: #939393;
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 8px solid #FBF2E2;
+}
+.search-result-content .container-child .bed {
+    position: absolute;
+    width: 97.9%;
+    left: 15px;
+    display:block;
+    margin: 0 auto;
+    z-index: 9;
+}
+.search-result-content .bed .content {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 5px 10px;
+	background-color: #FBF2E2;
+}
+.search-result-content .bed .row
+{
+	margin: 0 0 5px;
+}
+.search-result-content .bed .content h3
+{
+	margin-bottom: 0;
+}
+
+.search-result-content .bed hr
+{
+	margin: 10px 0 20px 0;
+	border-color: #bbbaba;
+}
