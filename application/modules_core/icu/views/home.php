@@ -25,14 +25,16 @@
 
 	<div id="my-tab-content" class="tab-content">
 	    <div class="tab-pane active" id="list">
-	       	<div class="search">
-				<label class="control-label col-md-3">Nama Pasien / Rekam Medik <span class="required" style="color : red">* </span>
-				</label>
-				<div class="col-md-4">		
-					<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
-		        </div>
-		        <button type="submit" class="btn btn-danger">Cari</button>
-			</div>	
+	    	<form method="POST" id="search_submit">
+		       	<div class="search">
+					<label class="control-label col-md-3">Nama Pasien / Rekam Medik <span class="required" style="color : red">* </span>
+					</label>
+					<div class="col-md-4">		
+						<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
+			        </div>
+			        <button type="submit" class="btn btn-danger">Cari</button>
+				</div>	
+			</form>
 			<br>
 			<hr class="garis"><br>
 			<label class=" col-md-1" style="margin-right:-60px; padding-top:7px;">Filter :</label>
@@ -59,28 +61,9 @@
 								<th> Periksa</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="t_body">
 							<tr>
-								<td>RM0111</td>
-								<td>Arya</td>
-								<td>Laki</td>
-								<td>30 Mei 1994</td>									
-								<td>Bali</td>
-								<td>KTP</td>
-								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>icu/icudetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
-								</td>										
-							</tr>
-							<tr>
-								<td>RM0111</td>
-								<td>jems</td>
-								<td>Laki</td>
-								<td>30 Mei 1994</td>										
-								<td>NTT</td>
-								<td>KTP</td>
-								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>icu/icudetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
-								</td>										
+								<td colspan="7"><center>cari data pasien</center></td>
 							</tr>
 						</tbody>
 					</table>
@@ -383,4 +366,276 @@
 	</div>   
 
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		var lastSearch = null;
+		if(lastSearch==null){
+			$("#tgl_start").attr('disabled', true);
+			$("#tgl_end").attr('disabled', true);
+		}
+
+		$("#search_submit").submit(function(event){
+			var search = $("input:first").val();
+			lastSearch = search;			
+			$("#tgl_start").attr('disabled', false);
+			$("#tgl_end").attr('disabled', false);	
+
+			if(search!=""){
+				$.ajax({
+					type:'POST',
+					url :'<?php echo base_url()?>icu/homeicu/search_pasien/'+search,
+					success:function(data){
+						// $("#t_body").html(hasil);
+
+						console.log(data);
+						
+						if(data.length>0){
+							$('#t_body').empty();
+							for(var i = 0; i<data.length;i++){
+								var rm_id = data[i]['rm_id'],
+									name = data[i]['nama'],									
+									jk = data[i]['jenis_kelamin'],
+									tgl_lahir = data[i]['tanggal_lahir'],
+									alamat = data[i]['alamat_skr'],
+									id = data[i]['jenis_id'],
+									visit_id = data[i]['visit_id'];;
+
+								var remove = tgl_lahir.split("-");
+								var bulan;
+								switch(remove[1]){
+									case "01": bulan="Januari";break;
+									case "02": bulan="Februari";break;
+									case "03": bulan="Maret";break;
+									case "04": bulan="April";break;
+									case "05": bulan="Mei";break;
+									case "06": bulan="Juni";break;
+									case "07": bulan="Juli";break;
+									case "08": bulan="Agustus";break;
+									case "09": bulan="September";break;
+									case "10": bulan="Oktober";break;
+									case "11": bulan="November";break;
+									case "12": bulan="Desember";break;
+								}
+								var tgl = remove[2]+" "+bulan+" "+remove[0];
+
+								$('#t_body').append(
+									'<tr>'+
+							 			'<td>'+rm_id+'</td>'+
+							 			'<td>'+name+'</td>'+
+							 			'<td>'+jk+'</td>'+
+							 			'<td>'+tgl+'</td>'+
+							 			'<td>'+alamat+'</td>'+
+							 			'<td>'+id+'</td>'+
+
+							 			'<td style="text-align:center">'+
+							 				'<a href="<?php echo base_url() ?>icu/icudetail/daftar/'+rm_id+'/'+visit_id+'" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+										'</td>'+
+							 		'</tr>'
+									);
+							}
+						}else{
+							$('#t_body').empty();
+
+							$('#t_body').append(
+									'<tr>'+
+							 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
+							 		'</tr>'
+								);
+						}
+
+					},
+					error:function (data){
+						$('#t_body').empty();
+
+						$('#t_body').append(
+							'<tr>'+
+					 			'<td colspan="7"><center>Error</center></td>'+
+					 		'</tr>'
+						);
+					}
+
+				});
+			}
+
+			event.preventDefault();
+		});	
+
+		var item_start = {};
+		$("#tgl_start").change(function(event){
+			item_start['search'] = lastSearch;
+			item_start['start'] = $('#tgl_start').val();
+			item_start['end'] = $('#tgl_end').val();
+
+			console.log(item_start);
+			$.ajax({
+				type:'POST',
+				data:item_start,
+				url :'<?php echo base_url()?>icu/homeicu/filter_pasien/',
+				success:function(data){
+					// $("#t_body").html(hasil);
+
+					console.log(data);
+					
+					if(data.length>0){
+						$('#t_body').empty();
+						for(var i = 0; i<data.length;i++){
+							var rm_id = data[i]['rm_id'],
+								name = data[i]['nama'],									
+								jk = data[i]['jenis_kelamin'],
+								tgl_lahir = data[i]['tanggal_lahir'],
+								alamat = data[i]['alamat_skr'],
+								id = data[i]['jenis_id'],
+								visit_id = data[i]['visit_id'];;
+
+							var remove = tgl_lahir.split("-");
+							var bulan;
+							switch(remove[1]){
+								case "01": bulan="Januari";break;
+								case "02": bulan="Februari";break;
+								case "03": bulan="Maret";break;
+								case "04": bulan="April";break;
+								case "05": bulan="Mei";break;
+								case "06": bulan="Juni";break;
+								case "07": bulan="Juli";break;
+								case "08": bulan="Agustus";break;
+								case "09": bulan="September";break;
+								case "10": bulan="Oktober";break;
+								case "11": bulan="November";break;
+								case "12": bulan="Desember";break;
+							}
+							var tgl = remove[2]+" "+bulan+" "+remove[0];
+
+							$('#t_body').append(
+								'<tr>'+
+						 			'<td>'+rm_id+'</td>'+
+						 			'<td>'+name+'</td>'+
+						 			'<td>'+jk+'</td>'+
+						 			'<td>'+tgl+'</td>'+
+						 			'<td>'+alamat+'</td>'+
+						 			'<td>'+id+'</td>'+
+
+						 			'<td style="text-align:center">'+
+						 				'<a href="<?php echo base_url() ?>icu/icudetail" onclick="visit(&quot;'+rm_id+'&quot;, &quot;'+visit_id+'&quot;)" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+									'</td>'+
+						 		'</tr>'
+								);
+						}
+					}else{
+						$('#t_body').empty();
+
+						$('#t_body').append(
+								'<tr>'+
+						 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
+						 		'</tr>'
+							);
+					}
+
+				},
+				error:function (data){
+					$('#t_body').empty();
+
+					$('#t_body').append(
+						'<tr>'+
+				 			'<td colspan="7"><center>Error</center></td>'+
+				 		'</tr>'
+					);
+				}
+
+			});
+
+			event.preventDefault();
+		});
+
+		$("#tgl_end").change(function(event){
+			item_start['search'] = lastSearch;
+			item_start['start'] = $('#tgl_start').val();
+			item_start['end'] = $('#tgl_end').val();
+
+			console.log(item_start);
+			$.ajax({
+				type:'POST',
+				data:item_start,
+				url :'<?php echo base_url()?>icu/homeicu/filter_pasien/',
+				success:function(data){
+					// $("#t_body").html(hasil);
+
+					console.log(data);
+					
+					if(data.length>0){
+						$('#t_body').empty();
+						for(var i = 0; i<data.length;i++){
+							var rm_id = data[i]['rm_id'],
+								name = data[i]['nama'],									
+								jk = data[i]['jenis_kelamin'],
+								tgl_lahir = data[i]['tanggal_lahir'],
+								alamat = data[i]['alamat_skr'],
+								id = data[i]['jenis_id'],
+								visit_id = data[i]['visit_id'];
+
+							var remove = tgl_lahir.split("-");
+							var bulan;
+							switch(remove[1]){
+								case "01": bulan="Januari";break;
+								case "02": bulan="Februari";break;
+								case "03": bulan="Maret";break;
+								case "04": bulan="April";break;
+								case "05": bulan="Mei";break;
+								case "06": bulan="Juni";break;
+								case "07": bulan="Juli";break;
+								case "08": bulan="Agustus";break;
+								case "09": bulan="September";break;
+								case "10": bulan="Oktober";break;
+								case "11": bulan="November";break;
+								case "12": bulan="Desember";break;
+							}
+							var tgl = remove[2]+" "+bulan+" "+remove[0];
+
+							$('#t_body').append(
+								'<tr>'+
+						 			'<td>'+visit_id	+'</td>'+
+						 			'<td>'+name+'</td>'+
+						 			'<td>'+jk+'</td>'+
+						 			'<td>'+tgl+'</td>'+
+						 			'<td>'+alamat+'</td>'+
+						 			'<td>'+id+'</td>'+
+
+						 			'<td style="text-align:center">'+
+						 				'<a href="<?php echo base_url() ?>icu/icudetail" onclick="visit(&quot;'+rm_id+'&quot; , &quot;'+visit_id+'&quot;)" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+									'</td>'+
+						 		'</tr>'
+								);
+						}
+					}else{
+						$('#t_body').empty();
+
+						$('#t_body').append(
+								'<tr>'+
+						 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
+						 		'</tr>'
+							);
+					}
+
+				},
+				error:function (data){
+					$('#t_body').empty();
+
+					$('#t_body').append(
+						'<tr>'+
+				 			'<td colspan="7"><center>Error</center></td>'+
+				 		'</tr>'
+					);
+				}
+
+			});
+
+			event.preventDefault();
+		});
+	});
+
+	function visit(rm_id, visit_id){
+		localStorage.setItem('rm_id', rm_id);
+		localStorage.setItem('visit_id', visit_id);
+	}
+</script>
 				

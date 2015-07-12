@@ -414,77 +414,84 @@
 				   			</div>
 							<div class="modal-body">
 								<div class="informasi">
-						   				<div class="form-group">
-											<label class="control-label col-md-4">Waktu Tindakan</label>
-											<div class="col-md-4">	
-												<div class="input-icon">
-													<i class="fa fa-calendar"></i>
-													<input type="text" style="cursor:pointer;" class="form-control isian calder" id="inputwaktutindakan" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" required>
-												</div>
-											</div>
-					        			</div>
-
-					        			<div class="form-group">
-											<label class="control-label col-md-4">Nama Tindakan</label>
-											<div class="col-md-6">
-												<select class="form-control select" name="namaTindakan" id="namaTindakan" >
-													<?php  
-														foreach ($tindakan as $key) {
-															echo "<option value=".$key['tindakan_id'].">".$key['nama_tindakan']."</option>";		
-														}
-													?>
-													
-												</select>												
+					   				<div class="form-group">
+										<label class="control-label col-md-4">Waktu Tindakan</label>
+										<div class="col-md-4">	
+											<div class="input-icon">
+												<i class="fa fa-calendar"></i>
+												<input type="text" style="cursor:pointer;" class="form-control isian calder" id="inputwaktutindakan" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" required>
 											</div>
 										</div>
+				        			</div>
 
-					        			<div class="form-group">
-											<label class="control-label col-md-4">JS</label>
-											<div class="col-md-5">	
-												<input type="text" class="form-control" id="js" name="js" placeholder="Jasa Saranan" >
-											</div>
-					        			</div>
-
-					        			<div class="form-group">
-											<label class="control-label col-md-4">JP</label>
-											<div class="col-md-5">	
-												<input type="text" class="form-control" id="jp" name="jp" placeholder="Jasa PElayanan" >
-											</div>
-					        			</div>
-
-					        			<div class="form-group">
-											<label class="control-label col-md-4">BAKHP</label>
-											<div class="col-md-5">	
-												<input type="text" class="form-control" id="bakhp" name="bakhp" placeholder="Bakhp" >
-											</div>
-					        			</div>
-
-					        			<div class="form-group">
-											<label class="control-label col-md-4">On Faktur</label>
-											<div class="col-md-5">	
-												<input type="text" class="form-control" id="onfaktur" name="onfaktur" placeholder="On Faktur" >
-											</div>
-					        			</div>
-
-										<div class="form-group">
-											<label class="control-label col-md-4">Paramedis</label>
-											<div class="col-md-5">	
-												<input type="text" class="form-control" id="paramedis" name="paramedis" placeholder="Paramedis" >
-											</div>
-					        			</div>
-
-					        			<div class="form-group">
-											<label class="control-label col-md-4">Kategori Tindakan</label>
-											<div class="col-md-6">
-												<select class="form-control select" name="kategori" id="kategori" >
-													<?php  
-														foreach ($kategori as $kat) {
-															echo '<option value="'.$kat["kat_id"].'">'.$kat["keterangan"].'</option>';		
-														}
-													?>
-												</select>												
-											</div>
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Nama Tindakan</label>
+										<div class="col-md-6">
+											<select class="form-control select" name="namaTindakan" id="namaTindakan" >
+												<?php  
+													foreach ($tindakan as $key) {
+														echo "<option value=".$key['tindakan_id'].">".$key['nama_tindakan']."</option>";		
+													}
+												?>
+												
+											</select>												
 										</div>
+									</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">JS</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="js" name="js" placeholder="Jasa Saranan" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">JP</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="jp" name="jp" placeholder="Jasa PElayanan" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">BAKHP</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="bakhp" name="bakhp" placeholder="Bakhp" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">On Faktur</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="onfaktur" name="onfaktur" placeholder="On Faktur" >
+										</div>
+				        			</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Paramedis</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="paramedis" name="paramedis" placeholder="Paramedis" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Kategori Tindakan</label>
+										<div class="col-md-6">
+											<select class="form-control select" name="kategori" id="kategori" >
+												<?php  
+													foreach ($kategori as $kat) {
+														echo '<option value="'.$kat["kat_id"].'">'.$kat["keterangan"].'</option>';		
+													}
+												?>
+											</select>												
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Uraian Tindakan</label>
+										<div class="col-md-7">
+											<textarea class="form-control" name="tindakan" id="uraiantindakan" placeholder="Uraian Tindakan"></textarea>
+										</div>
+									</div>
 			        			</div>
 			       			</div>
 			        		<br><br>

@@ -142,6 +142,7 @@
 			item[number]['on_faktur'] = $('#onfaktur').val();
 			item[number]['paramedis'] = $('#paramedis').val();
 			item[number]['kat_id'] = $('#kategori').find('option:selected').val();
+			item[number]['uraian'] = $('#uraiantindakan').val();
 			//waktu tindakan
 			var str = $('#inputwaktutindakan').val();
 			var res = str.split("/");
@@ -151,7 +152,7 @@
 
 		    var tanggal = thn + '-' + bln + '-' + tgl;
 		    item[number]['waktu_tindakan'] = tanggal;
-
+		    console.log(item);
 			/*console.log(visit_id);
 			return false;*/
 			$.ajax({
