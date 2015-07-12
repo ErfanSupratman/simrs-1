@@ -10,6 +10,19 @@
 			parent:: __construct();
 		}
 
+
+		public function get_search_pasien($query){
+			$sql = "SELECT * FROM pasien p, visit v, visit_ri vr, master_dept d 
+						WHERE p.rm_id = v.rm_id AND v.visit_id = vr.visit_id 
+						AND v.dept_id = d.dept_id AND v.dept_id = 19 
+						AND vr.waktu_keluar IS NULL 
+						AND p.nama LIKE '%$query%' 
+						OR p.rm_id LIKE '%$query%'"; //19 adalah dept_id bersalin
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
+		}
+
 		public function get_all_petugas()
 	    {
 	    	$sql = "SELECT petugas_id, nama_petugas from petugas";
@@ -179,9 +192,9 @@
 	    	}
 	    }
 
-	    public function get_last_visit_care()
+	    public function get_last_visit_care($visit_id)
 	    {
-	    	$sql = "SELECT max(care_id) as value from visit_care";
+	    	$sql = "SELECT max(care_id) as value from visit_care where  visit_id ='$visit_id'";
 	    	$query = $this->db->query($sql);
 	    	if ($query) {
 	    		return $query->row_array();
@@ -221,9 +234,9 @@
 			}
 	    }
 
-	    public function get_last_visit_resep()
+	    public function get_last_visit_resep($visit_id)
 	    {
-	    	$sql = "SELECT max(resep_id) as value from visit_resep";
+	    	$sql = "SELECT max(resep_id) as value from visit_resep where visit_id='$visit_id'";
 	    	$query = $this->db->query($sql);
 	    	if ($query) {
 	    		return $query->row_array();
@@ -268,9 +281,9 @@
 	    /*akhir resep*/
 
 	    /*untuk visit gizi di sini*/
-	    public function get_last_visit_gizi()
+	    public function get_last_visit_gizi($visit_id)
 	    {
-	    	$sql = "SELECT max(gizi_id) as value from visit_gizi";
+	    	$sql = "SELECT max(gizi_id) as value from visit_gizi where visit_id='$visit_id'";
 	    	$query = $this->db->query($sql);
 	    	if ($query) {
 	    		return $query->row_array();
@@ -333,9 +346,9 @@
 	    	
 	    }
 
-	    public function get_last_order_operasi()
+	    public function get_last_order_operasi($visit_id)
 	    {
-	    	$sql = "SELECT max(order_operasi_id) as value from order_operasi";
+	    	$sql = "SELECT max(order_operasi_id) as value from order_operasi where visit_id='$visit_id'";
 	    	$query = $this->db->query($sql);
 	    	if ($query) {
 	    		return $query->row_array();
@@ -348,7 +361,8 @@
 	    {
 	    	$sql = "SELECT *
 			FROM order_operasi o
-			inner JOIN petugas p ON o.pengirim = p.petugas_id AND o.order_operasi_id = ?";
+			inner JOIN petugas p ON o.pengirim = p.petugas_id inner join master_dept t on o.dept_tujuan = t.dept_id
+			AND o.order_operasi_id = ?";
 	    	$query = $this->db->query($sql, $order_id);
 	    	if ($query) {
 	    		return $query->row_array();
@@ -362,7 +376,7 @@
 	    	$sql = "SELECT * from order_operasi o, petugas b, master_dept t
 	    			where 
 	    			o.pengirim = b.petugas_id
-	    			AND o.dept_id = '18' AND t.dept_id = o.dept_tujuan AND
+	    			AND o.dept_id = '19' AND t.dept_id = o.dept_tujuan AND
 	    			o.visit_id = ?";
 	    	$query = $this->db->query($sql, $visit_id);
 	    	if ($query) {
@@ -395,87 +409,145 @@
 
 	    /*akhir order kamar operasi*/
 
-	    // ------------------------------- Daftar Permintaan Makan ---------------------------------//
-	    public function get_identitas_pasien($rm_id){
-		$sql = "SELECT * FROM pasien WHERE rm_id = $rm_id LIMIT 1";
-		$query = $this->db->query($sql);
 
-		$result = $query->result_array();
-		return $result;
-	}
-
-	public function get_ruang($visit_id){
-		$sql = "SELECT * FROM visit_inap_kamar vik, master_kamar mk, master_bed mb 
-					WHERE vik.kamar_id = mk.kamar_id 
-					AND vik.bed_id = mb.bed_id 
-					AND vik.visit_id = '$visit_id' LIMIT 1";
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		return $result;
-
-	}
-
-	public function get_paket_makan(){
-		$sql = "SELECT * FROM master_paket_makan";
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		return $result;
-	}
-
-	public function search_paket_makan($search){
-		$sql = "SELECT * FROM master_paket_makan WHERE nama_paket LIKE '%$search%'";
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		return $result;
-	}
-
-	public function add_permintaan_makan($input){
-		$insert = $this->db->insert('permintaan_makan',$input);
-		if ($insert) {
-			return true;
-		} else {
-			return false;
+	    /*permintaan makan*/
+	    public function get_ruang($visit_id){
+			$sql = "SELECT * FROM visit_inap_kamar vik, master_kamar mk, master_bed mb 
+						WHERE vik.kamar_id = mk.kamar_id 
+						AND vik.bed_id = mb.bed_id 
+						AND vik.visit_id = '$visit_id' LIMIT 1";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
 		}
-	}
 
-	public function get_permintaan_makan($id){
-		$sql = "SELECT * FROM permintaan_makan pm, master_paket_makan m WHERE pm.paket_id = m.paket_id AND  id = '$id'";
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		return $result;
-	}
+		public function get_paket_makan(){
+			$sql = "SELECT * FROM master_paket_makan";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
+		}
 
-	public function get_permintaan_awal($visit_id){
-		$sql = "SELECT * FROM permintaan_makan pm, master_paket_makan m WHERE pm.paket_id = m.paket_id AND  visit_id = '$visit_id'";
-		$query = $this->db->query($sql);
-		$result = $query->result_array();
-		return $result;
-	}
+		public function search_paket_makan($search){
+			$sql = "SELECT * FROM master_paket_makan WHERE nama_paket LIKE '%$search%'";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
+		}
 
-	public function create_permintaan_makan($visit_id){
-		$sql = "SELECT SUBSTR(id, 13, 4)'id' FROM permintaan_makan 
-        			WHERE SUBSTR(id, 3, 10) = '$visit_id' 
-        			ORDER BY id 
-        			DESC LIMIT 1";
-        $query = $this->db->query($sql);
+		public function add_permintaan_makan($input){
+			$insert = $this->db->insert('permintaan_makan',$input);
+			if ($insert) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 
-        if ($query->num_rows() > 0) {
-            $id = $query->row_array();
-            $id = intval($id['id']) + 1;
+		public function get_permintaan_makan($id){
+			$sql = "SELECT * FROM permintaan_makan pm, master_paket_makan m WHERE pm.paket_id = m.paket_id AND  pm.id = '$id'";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
+		}
 
-            if (strlen($id) == '1') {
-                $id = '000' . $id;
-            } elseif (strlen($id) == '2') {
-                $id = '00' . $id;
-            } elseif (strlen($id) == '3') {
-                $id = '0' . $id;
-            } else {
-                $id = $id;
-            }	
-            return "MA" . $visit_id . $id;
-        } else {
-            return "MA" . $visit_id .'0001';
-        }
-	}
+		public function get_permintaan_awal($visit_id){
+			$sql = "SELECT * FROM permintaan_makan pm, master_paket_makan m WHERE pm.paket_id = m.paket_id AND  visit_id = '$visit_id'";
+			$query = $this->db->query($sql);
+			$result = $query->result_array();
+			return $result;
+		}
+
+		public function create_permintaan_makan($visit_id){
+			$sql = "SELECT SUBSTR(id, 13, 4)'id' FROM permintaan_makan 
+	        			WHERE SUBSTR(id, 3, 10) = '$visit_id' 
+	        			ORDER BY SUBSTR(id, 13, 4) 
+	        			DESC LIMIT 1";
+	        $query = $this->db->query($sql);
+
+	        if ($query->num_rows() > 0) {
+	            $id = $query->row_array();
+	            $id = intval($id['id']) + 1;
+
+	            if (strlen($id) == '1') {
+	                $id = '000' . $id;
+	            } elseif (strlen($id) == '2') {
+	                $id = '00' . $id;
+	            } elseif (strlen($id) == '3') {
+	                $id = '0' . $id;
+	            } else {
+	                $id = $id;
+	            }	
+	            return "MA" . $visit_id . $id;
+	        } else {
+	            return "MA" . $visit_id .'0001';
+	        }
+		}
+
+		public function delete_permintaan_makan($value='')
+		{
+			$sql = "DELETE from permintaan_makan where id = '$value'";
+			$query = $this->db->query($sql);
+			if ($query) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+	    /*akhir permintaan makan*/
+
+	    /*visit kegiatan bersalin*/
+	    public function get_dept_rujukan()
+	    {
+	    	$sql = "SELECT * from master_dept m where m.dept_id != 19 and m.jenis like '%INAP%' or m.jenis like '%PENUNJANG%'";
+	    	$query = $this->db->query($sql);
+	    	if($query){
+	    		return $query->result_array();
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
+	    public function get_last_kegiatan_bersalin($datas)
+	    {
+	    	$sql = "SELECT MAX(SUBSTR(bersalin_id, 9, 4 ))'id' FROM visit_kegiatan_bersalin";
+	        $query = $this->db->query($sql);
+
+	        $y = SUBSTR($datas['waktu'], 2, 2);	
+	        $m = SUBSTR($datas['waktu'], 5, 2);
+	        $d = SUBSTR($datas['waktu'], 8, 2);
+	        if ($datas['dirujuk_ke'] == "-") {
+	            	$datas['dirujuk_ke'] = "19";
+	            }
+	        if ($query->num_rows() > 0) {
+	            $id = $query->row_array();
+	            $id = intval($id['id']) + 1;
+
+	            if (strlen($id) == '1') {
+	                $id = '000' . $id;
+	            } elseif (strlen($id) == '2') {
+	                $id = '00' . $id;
+	            } elseif (strlen($id) == '3') {
+	                $id = '0' . $id;
+	            } else {
+	                $id = $id;
+	            }
+	            return $datas['dirujuk_ke']. $y. $m. $d. $id;
+	        } else {
+	            return $datas['dirujuk_ke']. $y. $m. $d.'0001';
+	        }
+	    }
+	    public function insert_kegiatan_bersalin($value='')
+	    {
+	    	$result = $this->db->insert('visit_kegiatan_bersalin', $value);
+	    	if ($result) {
+	    		return true;
+	    	}else{
+	    		return false;
+	    	}
+	    }
+	    /*akhir visit kegiatan bersalin*/
+
 	}
 ?>

@@ -24,14 +24,16 @@
 	<div id="my-tab-content" class="tab-content">
 
 		<div class="tab-pane active" id="list">
-	       	<div class="search">
-				<label class="control-label col-md-3">Nama Pasien / Rekam Medis<span class="required" style="color : red">* </span>
-				</label>
-				<div class="col-md-4">		
-					<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
-		        </div>
-		        <button type="submit" class="btn btn-danger">Cari</button>
-			</div>	
+			<form method="post" id="search_bersalin">
+		       	<div class="search">
+					<label class="control-label col-md-3">Nama Pasien / Rekam Medis<span class="required" style="color : red">* </span>
+					</label>
+					<div class="col-md-4">		
+						<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
+			        </div>
+			        <button type="submit" class="btn btn-danger">Cari</button>
+				</div>
+			</form>
 			<br>
 			<hr class="garis"><br>
 			<label class=" col-md-1" style="margin-right:-60px; padding-top:7px;">Filter :</label>
@@ -58,29 +60,23 @@
 								<th> Periksa</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="t_body">
+							<?php  
+								if (!empty($allpasiens)) {
+								foreach ($allpasiens as $pasien) {
+							?>
 							<tr>
-								<td>RM0111</td>
-								<td>Arya</td>
-								<td>Laki</td>
-								<td>30 Mei 1994</td>									
-								<td>Bali</td>
-								<td>KTP</td>
+								<td><?php echo $pasien['rm_id']; ?></td>
+								<td><?php echo $pasien['nama']; ?></td>
+								<td><?php echo $pasien['jenis_kelamin']; ?></td>
+								<td><?php echo $pasien['tanggal_lahir']; ?></td>									
+								<td><?php echo $pasien['alamat_skr']; ?></td>
+								<td><?php echo $pasien['jenis_id']; ?></td>
 								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>bersalin/bersalindetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
+									<a href="<?php echo base_url() ?>bersalin/bersalindetail/daftar/<?php echo $pasien['rm_id']; ?>/<?php echo $pasien['visit_id']; ?>" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
 								</td>										
 							</tr>
-							<tr>
-								<td>RM0111</td>
-								<td>jems</td>
-								<td>Laki</td>
-								<td>30 Mei 1994</td>										
-								<td>NTT</td>
-								<td>KTP</td>
-								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>bersalin/bersalindetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
-								</td>										
-							</tr>
+							<?php }} ?>
 						</tbody>
 					</table>
 				</div>
