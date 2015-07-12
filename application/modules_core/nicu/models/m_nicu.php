@@ -2,7 +2,7 @@
 	/**
 	* created by jemsnaban 
 	*/
-	class m_bersalin extends CI_Model
+	class M_nicu extends CI_Model
 	{
 		
 		function __construct()
@@ -14,10 +14,10 @@
 		public function get_search_pasien($query){
 			$sql = "SELECT * FROM pasien p, visit v, visit_ri vr, master_dept d 
 						WHERE p.rm_id = v.rm_id AND v.visit_id = vr.visit_id 
-						AND v.dept_id = d.dept_id AND v.dept_id = 19 
+						AND v.dept_id = d.dept_id AND v.dept_id = 23 
 						AND vr.waktu_keluar IS NULL 
 						AND p.nama LIKE '%$query%' 
-						OR p.rm_id LIKE '%$query%'"; //19 adalah dept_id bersalin
+						OR p.rm_id LIKE '%$query%'"; //23 adalah dept_id bersalin
 			$query = $this->db->query($sql);
 			$result = $query->result_array();
 			return $result;
@@ -376,7 +376,7 @@
 	    	$sql = "SELECT * from order_operasi o, petugas b, master_dept t
 	    			where 
 	    			o.pengirim = b.petugas_id
-	    			AND o.dept_id = '19' AND t.dept_id = o.dept_tujuan AND
+	    			AND o.dept_id = '23' AND t.dept_id = o.dept_tujuan AND
 	    			o.visit_id = ?";
 	    	$query = $this->db->query($sql, $visit_id);
 	    	if ($query) {
@@ -500,7 +500,8 @@
 	    /*visit kegiatan bersalin*/
 	    public function get_dept_rujukan()
 	    {
-	    	$sql = "SELECT * from master_dept m where m.dept_id != 19 and m.jenis like '%INAP%' or m.jenis like '%PENUNJANG%'";
+	    	$sql = "SELECT * from master_dept m where m.dept_id != 23
+	    	 and m.jenis like '%INAP%' or m.jenis like '%PENUNJANG%'";
 	    	$query = $this->db->query($sql);
 	    	if($query){
 	    		return $query->result_array();
@@ -518,7 +519,7 @@
 	        $m = SUBSTR($datas['waktu'], 5, 2);
 	        $d = SUBSTR($datas['waktu'], 8, 2);
 	        if ($datas['dirujuk_ke'] == "-") {
-	            	$datas['dirujuk_ke'] = "19";
+	            	$datas['dirujuk_ke'] = "23";
 	            }
 	        if ($query->num_rows() > 0) {
 	            $id = $query->row_array();

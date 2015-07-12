@@ -2074,13 +2074,13 @@
         <div class="tab-pane" id="riwayat">
          	<div class="dropdown">
             	<div id="titleInformasi">Riwayat Pasien</div>
-            		<div id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+        		<div id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
         	</div>
         	<br>	
 
             <div class="tabelinformasi" id="infoRiwayat">
-			        <div class="portlet-body" style="margin: 0px 10px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive">
+		       	<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+					<table class="table table-striped table-bordered table-hover table-responsive" id="tabel_riwayat">
 						<thead>
 						<tr class="info">
 							<th> ID </th>
@@ -2092,17 +2092,25 @@
 						</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>1</td>										
-								<td>Kalvin</td>										
-								<td>Balidsdsafafsggasgasgasgdgaga</td>										
-								<td>Balidsdsafafsggasgasgasgdgaga</td>										
-								<td>Balidsdsafafsggasgasgasgdgaga</td>										
-								<td style="text-align:center">
-									<a href="#cekRiwayat" data-toggle="modal" data-placement="top" data-original-title="Detail RM">
-									<i class="glyphicon glyphicon-search"  data-toggle="tooltip" data-placement="top" title="Lihat Detail"></i></a>
-								</td>																		
-							</tr>
+							<?php  
+								if (isset($riwayat)) {
+									if (!empty($riwayat)) {
+										foreach($riwayat as $value){
+											echo '<tr>'.
+													'<td class="visit_riwayat">'.$value['visit_id'].'</td>'.										
+													'<td>'.$value['tanggal_visit'].'</td>'.										
+													'<td>'.$value['nama_dept'].'</td>'.
+													'<td>'.$value['petugas_registrasi'].'</td>'.
+													'<td></td>'.
+													'<td style="text-align:center">'.
+														'<a href="#cekRiwayat" class="rm_detail" data-toggle="modal" data-placement="top" data-original-title="Detail RM">'.
+														'<i class="glyphicon glyphicon-search"  data-toggle="tooltip" data-placement="top" title="Lihat Detail"></i></a>'.
+													'</td>'.																		
+												'</tr>';
+										}
+									}
+								}
+							?>
 						</tbody>
 					</table>
 				</div>
@@ -2113,36 +2121,63 @@
 	        		<div class="modal-content">
 	        			<div class="modal-header">
 	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-							<h4 class="modal-title">Catan Rekam Medis <b>Nama Pasien</b>
-								pada tanggal <b id="tanggal-visit-rm"> dateNow </b> </h4>
+							<h4 class="modal-title">Catan Rekam Medis <b><?php echo($pasien['nama']) ?></b></h4>
 						</div>
 						<div class="modal-body">
 						<!--BEGIN TABS-->
 							<div class="tabbable tabbable-custom tabbable-full-width">
 								<ul class="nav nav-tabs">
-									<li class="active">
-										<a href="#tab_overview" data-toggle="tab">Overview </a>
-									</li>
-									<li>
-										<a href="#tab_therapy" data-toggle="tab">Therapy </a>
-									</li>
-									<li>
-										<a href="#tab_resep" data-toggle="tab">Resep </a>
-									</li>
-									<li>
-										<a href="#tab_penunjang" data-toggle="tab">Pemeriksaan Penunjang </a>
-									</li>
+									<li class="active"><a href="#tab_overview" data-toggle="tab">Overview </a></li>
+									<li><a href="#tab_therapy" data-toggle="tab">Therapy </a></li>
+									<li><a href="#tab_resep" data-toggle="tab">Resep </a></li>
+									<li><a href="#tab_penunjang" data-toggle="tab">Pemeriksaan Penunjang </a></li>
 								</ul>
-
-
 								<div class="tab-content">
 									<!--BEGIN Overview-->
 									<div class="tab-pane active" id="tab_overview">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="col-md-12">
+													<h3>Infomasi Kunjungan</h3>
+												</div>
+												<div class="col-md-6">
+													<span>Tanggal Visit: &nbsp;</span><span class="riwayat-tanggal"></span> 
+												</div>
+												<div class="col-md-6">
+													<span>Departemen: &nbsp;</span><span class="riwayat-departemen"></span>
+												</div>
+												<div class="col-md-6">
+													<span>Dokter: &nbsp;</span><span class="riwayat-dokter"></span>
+												</div>
+												<div class="col-md-6"></div>
+												<div class="col-md-6">
+													<span>Anamnesa: &nbsp;</span><span class="riwayat-anamnesa"></span>
+												</div>
+												<div class="col-md-6">
+													<span>Diagnosa: &nbsp;</span><span class="riwayat-diagnosa"></span>
+												</div>
+											</div>
+										</div>
 									</div>
 									<!--END Overview-->
 										
 									<!--BEGIN Therapy-->
 									<div class="tab-pane" id="tab_therapy">
+										<div class="row">
+											<div class="col-md-12">
+												<table class="table table-striped table-bordered table-hover" id="rm-history-therapy">
+													<thead>
+														<tr>
+															<th>Tanggal</th>
+															<th>Dokter</th>
+															<th>Terapi</th>
+														</tr>
+													</thead>
+													<tbody id="t_body_history_therapy">
+													</tbody>
+												</table>										
+											</div>
+										</div>
 									</div>	
 									<!--END Therapy-->										
 
@@ -2158,7 +2193,8 @@
 															<th>Deskripsi Resep</th>
 														</tr>
 													</thead>
-													<tbody>
+													<tbody id="t_body_history_resep">
+
 													</tbody>
 												</table>										
 											</div>
@@ -2177,25 +2213,19 @@
 															<th>Tanggal</th>
 															<th>Departemen</th>
 															<th> Keterangan Order</th>
-															<th width="10%"></th>
 														</tr>
 													</thead>
-													<tbody>
+													<tbody id="t_body_history_penunjang">
 													</tbody>
 												</table>										
 											</div>
 										</div>
-									</div>	
-									<!--END Penunjang-->
-
+									</div>	<!--END Penunjang-->
 								</div>
-							</div>
-								<!-- 	end TABS	 -->
+							</div><!-- 	end TABS	 -->
 						</div>
-					</div>
-						<!-- /.modal-content -->
-				</div>
-					<!-- /.modal-dialog -->
+					</div><!-- /.modal-content -->
+				</div><!-- /.modal-dialog -->
 			</div>
         </div>
 

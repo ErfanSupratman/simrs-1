@@ -1,18 +1,15 @@
-<?php  
-	/*
-	* dafuq lah ini :-(
-	*/
-?>
-
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#search_bersalin").submit(function(event){
+	$(document).ready(function () {
+		var visit_id = $('#v_id').val();
+		localStorage.setItem("visit_id", visit_id);
+
+		$("#search_pasien").submit(function(event){
 			event.preventDefault();
 			var search = $("input:first").val();
 			if(search!=""){
 				$.ajax({
 					type:'POST',
-					url :'<?php echo base_url()?>bersalin/homebersalin/search_pasien/'+search,
+					url :'<?php echo base_url()?>nicu/homenicu/search_pasien/'+search,
 					success:function(data){
 						// $("#t_body").html(hasil);
 						console.log(data);
@@ -56,7 +53,7 @@
 							 			'<td>'+id+'</td>'+
 
 							 			'<td style="text-align:center">'+
-							 				'<a href="<?php echo base_url() ?>bersalin/bersalindetail/daftar/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+							 				'<a href="<?php echo base_url() ?>nicu/nicudetail/daftar/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
 										'</td>'+
 							 		'</tr>'
 									);
@@ -87,16 +84,13 @@
 
 			event.preventDefault();
 		});
-		
-		var visit_id = $('#v_id').val();
-		localStorage.setItem("visit_id", visit_id);
-		//var test = localStorage.getItem("visit_id");
+
 		var tindakan_id = $('#namaTindakan').find('option:selected').val();
 
 		$.ajax({
 			type: "POST",
 			data : tindakan_id,
-			url: "<?php echo base_url()?>bersalin/bersalindetail/get_tindakan/" + tindakan_id,
+			url: "<?php echo base_url()?>nicu/nicudetail/get_tindakan/" + tindakan_id,
 			success: function (data) {
 				$('#js').val(data['js']);
 				$('#jp').val(data['jp']);
@@ -113,7 +107,7 @@
 			$.ajax({
 				type: "POST",
 				data : tindakan_id,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_tindakan/" + tindakan_id,
+				url: "<?php echo base_url()?>nicu/nicudetail/get_tindakan/" + tindakan_id,
 				success: function (data) {
 					$('#js').val(data['js']);
 					$('#jp').val(data['jp']);
@@ -157,7 +151,7 @@
 			$.ajax({
 				type: "POST",
 				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_tindakan",
+				url: "<?php echo base_url()?>nicu/nicudetail/save_tindakan",
 				success: function (data) {
 					console.log(data);
 
@@ -190,223 +184,11 @@
 			$('#tambahTindakan').modal('hide');
 		});
 
-		/*resep bersalin mulai dari sini*/
-		$("#tabelDokterResep").on('click', 'tr td a.inputpetugasresep', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugasresep').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugasresep').text();
-			$("#namadokterresep").val(nama);
-			$('#iddokterresep').val(id);
-			$('#resepDokter').modal('hide');
-		})
-
-		$('#submitresepbersalin').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-			item[number]['dokter'] = $('#iddokterresep').val();
-			item[number]['visit_id'] = localStorage.getItem('visit_id');
-			item[number]['resep'] = $('#deskripsiResep').val();
-			var str = $('#tglResep').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-			item[number]['tanggal'] = tanggal;
-
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_visit_resep",
-				success: function (data) {
-					console.log(data);
-
-					$('#namadokterresep').val('');
-					$('#iddokterresep').val('');
-					$('#deskripsiResep').val('');
-						jQuery('#tabelresepbersalin tbody:first').append(
-							"<tr>"+
-							"<td>"+data['nama_petugas']+"</td>"+
-							"<td>"+data['tanggal']+"</td>"+
-							"<td>"+data['resep']+"</td>"+
-							"<td>status ambil</td>"+
-							"<td>status bayar</td>"+
-							'<td style="text-align:center"><a href="#" class="hapus-resep"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a></td>'+
-							'<td class="resep_id" style="display:none" >'+data['resep_id']+'</td>'+
-							"</tr>"
-						);
-
-				},
-				error: function (data) {
-					//alert('gagal');
-					
-				}
-			});
-		});
-
-		
-		jQuery("#tabelresepbersalin").on('click','tr td a.hapus-resep',function(e){
-			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.resep_id').text();
-			    //console.log(id);//return false;
-
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_resep/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});						
-
-		        jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });
-
-				if(document.getElementById('tabelresepbersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelresepbersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="7" style="text-align:center"><strong>Tidak ada resep yang diberikan</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }				
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-		
-		// ambil dari pop-up
-		$("#tabelKonsultan").on('click', 'tr td a.inputpetugas', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugas').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugas').text();
-			$("#konsultan").val(nama);
-			$('#id_petugas').val(id);
-			$('#searchKonsultan').modal('hide');
-		})
-
-		/*input konsultasi gizi*/
-		$('#konsultasigizi').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-		    item[number]['visit_id'] = localStorage.getItem("visit_id");
-		    item[number]['konsultan'] = $('#id_petugas').val();
-		    item[number]['kajian_gizi'] = $('#kajianGizi').val();
-		    item[number]['anamnesa_diet'] = $('#anamnesaDiet').val();
-		    item[number]['data_lab'] = $('#dataLabPasien').val();
-		    item[number]['kajian_diet'] = $('#kajianDiet').val();
-		    item[number]['detail_menu'] = $('#detailMenu').val();
-		    var str = $('#tanggalordergizi').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item[number]['tanggal'] = tanggal;
-
-		    $.ajax({
-		    	type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_gizi",
-				success: function (data) {
-					/*console.log(data);
-					alert('berhasil ditambahkan');*/
-					$('#konsultan').val('');
-					$('#kajianGizi').val('');
-					$('#anamnesaDiet').val('');
-					$('#dataLabPasien').val('');
-					$('#kajianDiet').val('');
-					$('#detailMenu').val('');
-
-					/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-					    jQuery('#tabelgizibersalin tbody:first').remove();
-		        	}	*/	
-					jQuery('#tabelgizibersalin tbody:first').append(
-						"<tr>"+
-						"<td>"+data['nama_petugas']+"</td>"+
-						"<td>"+data['tanggal']+"</td>"+
-						"<td>"+data['kajian_gizi']+"</td>"+
-						"<td>"+data['anamnesa_diet']+"</td>"+
-						"<td>"+data['data_lab']+"</td>"+
-						"<td>"+data['kajian_diet']+"</td>"+
-						"<td>"+data['detail_menu']+"</td>"+
-						"<td style='text-align:center'>"+
-						'<a href="#" class="hapus-gizi"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
-						'<a href="#" class="print-gizi"><i class="glyphicon glyphicon-print"  data-toggle="tooltip" data-placement="top" title="Print"></i></a>'+
-						"</td>"+
-						'<td class="gizi_id" style="display:none" >'+data['gizi_id']+'</td>'+
-						"</tr>"
-					);
-				},
-				error: function (data) {
-					alert(data);
-				}
-		    });
-		})
-
-		/*delete gizi*/
-		jQuery("#tabelgizibersalin").on('click','tr td a.hapus-gizi',function(e){
-			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.gizi_id').text();
-			    //console.log(id);//return false;
-
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_gizi/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});						
-
-		        jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });
-
-				/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelgizibersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="8" style="text-align:center"><strong>Tidak ada gizi yang diberikan</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }	*/			
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-		/*akhir konsultasi gizi*/
-
 		/*input overview*/
 		$('#dokter').click(function (e) {
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_all_petugas",
+				url: "<?php echo base_url()?>nicu/nicudetail/get_all_petugas",
 				success: function (data) {
 					console.log(data);
 					$('#tabelSearchDokterOverview tbody').empty();
@@ -470,7 +252,7 @@
 			$.ajax({
 				type: "POST",
 				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_overview",
+				url: "<?php echo base_url()?>nicu/nicudetail/save_overview",
 				success: function (data) {
 					$('#anamnesa').val('');
 					$('#temperatur').val('');
@@ -510,7 +292,207 @@
 		}
 		/*akhir simpan overview*/
 
-		/*order kamar operasi*/
+		/*resep mulai dari sini*/
+		$("#tabelDokterResep").on('click', 'tr td a.inputpetugasresep', function (e) {
+			e.preventDefault();
+			var nama = jQuery(this).closest('tr').find('td.namapetugasresep').text();
+			var id = jQuery(this).closest('tr').find('td.idpetugasresep').text();
+			$("#namadokterresep").val(nama);
+			$('#iddokterresep').val(id);
+			$('#resepDokter').modal('hide');
+		})
+
+		$('#submitresep').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+		    var number = 1;
+		    item[number] = {};
+
+			item[number]['dokter'] = $('#iddokterresep').val();
+			item[number]['visit_id'] = localStorage.getItem('visit_id');
+			item[number]['resep'] = $('#deskripsiResep').val();
+			var str = $('#tglResep').val();
+			var res = str.split("/");
+		    var bln = res[1];
+			var tgl = res[0];
+		    var thn = res[2];
+
+		    var tanggal = thn + '-' + bln + '-' + tgl;
+			item[number]['tanggal'] = tanggal;
+
+			$.ajax({
+				type: "POST",
+				data : item,
+				url: "<?php echo base_url()?>nicu/nicudetail/save_visit_resep",
+				success: function (data) {
+					console.log(data);
+
+					$('#namadokterresep').val('');
+					$('#iddokterresep').val('');
+					$('#deskripsiResep').val('');
+						jQuery('#tabelresep tbody:first').append(
+							"<tr>"+
+							"<td>"+data['nama_petugas']+"</td>"+
+							"<td>"+data['tanggal']+"</td>"+
+							"<td>"+data['resep']+"</td>"+
+							"<td>status ambil</td>"+
+							"<td>status bayar</td>"+
+							'<td style="text-align:center"><a href="#" class="hapus-resep"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a></td>'+
+							'<td class="resep_id" style="display:none" >'+data['resep_id']+'</td>'+
+							"</tr>"
+						);
+
+				},
+				error: function (data) {
+					//alert('gagal');
+					
+				}
+			});
+		});
+
+		
+		jQuery("#tabelresep").on('click','tr td a.hapus-resep',function(e){
+			e.preventDefault();
+	   		var d = confirm('apakah akan dihapus?');
+	   		if ( d == true ) {
+		 		var id = jQuery(this).closest('tr').find('td.resep_id').text();
+
+			    jQuery.ajax({
+					type: "POST",
+					url: "<?php echo base_url()?>nicu/nicudetail/delete_resep/"+id,
+					data: id,
+					success: function(data)
+					{  
+					  //berhasil kembalikan hasil 
+					  //alert("yeee");       
+					},
+					error: function (data)
+					{  
+					  //gagal
+					  console.log('pait');
+					}
+				});						
+
+		        jQuery(this).closest('tr').fadeOut(function(){
+			        jQuery(this).remove();		  	          
+		        });
+
+				if(document.getElementById('tabelresep').getElementsByTagName("tr").length == 2) {
+				    jQuery('#tabelresep tbody:first').append(
+							'<tr>'+
+								'<td colspan="7" style="text-align:center"><strong>Tidak ada resep yang diberikan</strong></td>'+
+							'</tr>'
+				    );	        	
+		        }				
+		        return false;   		
+		    }
+	   		return false;
+	   	});
+		/*akhir resep di sini*/
+
+
+		/*konsultasi gizi mulai*/
+		$("#tabelKonsultan").on('click', 'tr td a.inputpetugas', function (e) {
+			e.preventDefault();
+			var nama = jQuery(this).closest('tr').find('td.namapetugas').text();
+			var id = jQuery(this).closest('tr').find('td.idpetugas').text();
+			$("#konsultan").val(nama);
+			$('#id_petugas').val(id);
+			$('#searchKonsultan').modal('hide');
+		})
+
+		$('#konsultasigizi').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+		    var number = 1;
+		    item[number] = {};
+
+		    item[number]['visit_id'] = localStorage.getItem("visit_id");
+		    item[number]['konsultan'] = $('#id_petugas').val();
+		    item[number]['kajian_gizi'] = $('#kajianGizi').val();
+		    item[number]['anamnesa_diet'] = $('#anamnesaDiet').val();
+		    item[number]['data_lab'] = $('#dataLabPasien').val();
+		    item[number]['kajian_diet'] = $('#kajianDiet').val();
+		    item[number]['detail_menu'] = $('#detailMenu').val();
+		    var str = $('#tanggalordergizi').val();
+			var res = str.split("/");
+		    var bln = res[1];
+			var tgl = res[0];
+		    var thn = res[2];
+
+		    var tanggal = thn + '-' + bln + '-' + tgl;
+		    item[number]['tanggal'] = tanggal;
+
+		    $.ajax({
+		    	type: "POST",
+				data : item,
+				url: "<?php echo base_url()?>nicu/nicudetail/save_gizi",
+				success: function (data) {
+					$('#konsultan').val('');
+					$('#kajianGizi').val('');
+					$('#anamnesaDiet').val('');
+					$('#dataLabPasien').val('');
+					$('#kajianDiet').val('');
+					$('#detailMenu').val('');
+
+					jQuery('#tabelgizi tbody:first').append(
+						"<tr>"+
+						"<td>"+data['nama_petugas']+"</td>"+
+						"<td>"+data['tanggal']+"</td>"+
+						"<td>"+data['kajian_gizi']+"</td>"+
+						"<td>"+data['anamnesa_diet']+"</td>"+
+						"<td>"+data['data_lab']+"</td>"+
+						"<td>"+data['kajian_diet']+"</td>"+
+						"<td>"+data['detail_menu']+"</td>"+
+						"<td style='text-align:center'>"+
+						'<a href="#" class="hapus-gizi"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
+						'<a href="#" class="print-gizi"><i class="glyphicon glyphicon-print"  data-toggle="tooltip" data-placement="top" title="Print"></i></a>'+
+						"</td>"+
+						'<td class="gizi_id" style="display:none" >'+data['gizi_id']+'</td>'+
+						"</tr>"
+					);
+				},
+				error: function (data) {
+					alert(data);
+				}
+		    });
+		})
+
+		//dele gizi
+		jQuery("#tabelgizi").on('click','tr td a.hapus-gizi',function(e){
+			e.preventDefault();
+	   		var d = confirm('apakah akan dihapus?');
+	   		if ( d == true ) {
+		 		var id = jQuery(this).closest('tr').find('td.gizi_id').text();
+			    //console.log(id);//return false;
+
+			    jQuery.ajax({
+					type: "POST",
+					url: "<?php echo base_url()?>nicu/nicudetail/delete_gizi/"+id,
+					data: id,
+					success: function(data)
+					{  
+					  //berhasil kembalikan hasil 
+					  //alert("yeee");       
+					},
+					error: function (data)
+					{  
+					  //gagal
+					  console.log('pait');
+					}
+				});						
+
+		        jQuery(this).closest('tr').fadeOut(function(){
+			        jQuery(this).remove();		  	          
+		        });		
+		        return false;   		
+		    }
+	   		return false;
+	   	});
+
+		/*akhir konsultasi gizi*/
+
+		/*order operasi*/
 		$("#tabelDokterOperasi").on('click', 'tr td a.inputpetugasoperasi', function (e) {
 			e.preventDefault();
 			var nama = jQuery(this).closest('tr').find('td.namapetugasoperasi').text();
@@ -527,7 +509,7 @@
 		    item[number] = {};
 
 			item[number]['pengirim'] = $('#id_dokteroperasi').val();
-			item[number]['dept_id'] = '19'; //departemen id bersalin = 19
+			item[number]['dept_id'] = '23'; //departemen id nicu = 19
 			item[number]['dept_tujuan'] = '20'; //departemen id kamar operasi = 20
 			item[number]['visit_id'] = localStorage.getItem('visit_id');
 			item[number]['alasan'] = $('#alasanoperasi').val();
@@ -546,7 +528,7 @@
 			$.ajax({
 				type: "POST",
 				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/order_kamar_operasi",
+				url: "<?php echo base_url()?>nicu/nicudetail/order_kamar_operasi",
 				success: function (data) {					
 					console.log(data);
 					$('#id_dokteroperasi').val('');
@@ -589,7 +571,7 @@
 
 			    jQuery.ajax({
 					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_order/"+id,
+					url: "<?php echo base_url()?>nicu/nicudetail/delete_order/"+id,
 					data: id,
 					success: function(data)
 					{  
@@ -618,29 +600,7 @@
 		    }
 	   		return false;
 	   	});
-
-		/*akhir order kamar operasi*/
-
-		/*pemeriksaan penunjang di sini*/
-		$("#tabelSearchPengirim").on('click', 'tr td a.inputpetugaspenunjang', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugaspenunjang').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugaspenunjang').text();
-			$("#pengirim").val(nama);
-			$('#id_pengirim').val(id);
-			$('#searchPengirim').modal('hide');
-		})
-
-		$('#submitpenunjang').submit(function(e){
-			e.preventDefault();
-			//alert('aku mah apa atuh?');
-			
-			//belum selesai boss
-			$('#tambahPeri').modal('hide');
-		});
-
-
-		/*akhir pemeriksaan penunjang*/
+		/*akhir order operasi*/
 
 		/*permintaan makan*/
 		var isTableNull;
@@ -649,13 +609,13 @@
 		var visit_id = localStorage.getItem('visit_id');
 		$.ajax({
 			type:'POST',
-			url :'<?php echo base_url()?>bersalin/bersalindetail/get_ruang/'+visit_id,
+			url :'<?php echo base_url()?>nicu/nicudetail/get_ruang/'+visit_id,
 			success:function(data){
 				console.log(data);
 				var nama_ruang = data[0]['nama_kamar'],
 					no_bed = data[0]['nama_bed'];
-				$('#namaruangbersalin').val(nama_ruang);
-				$('#nomorbedbersalin').val(no_bed);
+				$('#namaruang').val(nama_ruang);
+				$('#nomorbed').val(no_bed);
 			},
 			error:function(data){
 
@@ -665,7 +625,7 @@
 		$('#permintaanmakan').click(function(){
 			$.ajax({
 				type:'POST',
-				url :'<?php echo base_url()?>bersalin/bersalindetail/get_permintaan_awal/'+visit_id,
+				url :'<?php echo base_url()?>nicu/nicudetail/get_permintaan_awal/'+visit_id,
 				success:function(data){
 					console.log(data);
 					$('#tbody_tbl_permintaan').empty();
@@ -674,8 +634,8 @@
 							$('#tbody_tbl_permintaan').append(
 								'<tr>'+
 									'<td>'+data[i]['waktu_permintaan']+'</td>'+
-									'<td>'+$('#namaruangbersalin').val()+'</td>'+
-									'<td>'+$('#nomorbedbersalin').val()+'</td>'+
+									'<td>'+$('#namaruang').val()+'</td>'+
+									'<td>'+$('#nomorbed').val()+'</td>'+
 									'<td>'+data[i]['nama_paket']+'</td>'+
 									'<td>'+data[i]['menu_paket']+'</td>'+
 									'<td>'+data[i]['keterangan']+'</td>'+
@@ -699,13 +659,13 @@
 			});
 		});
 
-		$('#searchmakanbersalin').click(function(){
+		$('#searchmakan').click(function(){
 
 			$('#t_body_paket').empty();
 
 			$.ajax({
 				type:'POST',
-				url :'<?php echo base_url()?>bersalin/bersalindetail/get_paket_makan',
+				url :'<?php echo base_url()?>nicu/nicudetail/get_paket_makan',
 				success:function(data){
 					console.log(data);
 					
@@ -751,7 +711,7 @@
 			if(p_item!=""){
 				$.ajax({
 					type:"POST",
-					url:"<?php echo base_url()?>bersalin/bersalindetail/search_paket_makan/"+p_item,
+					url:"<?php echo base_url()?>nicu/nicudetail/search_paket_makan/"+p_item,
 					success:function(data){
 						console.log(data);
 						$('#t_body_paket').empty();
@@ -821,7 +781,7 @@
 			}
 
 		});
-		
+
 		//submit_permintaanmakan
 		var item_makan = {};
 		$("#submit_permintaanmakan").submit(function(e){
@@ -846,22 +806,22 @@
 			$.ajax({
 				type:"POST",
 				data:item_makan,
-				url:'<?php echo base_url()?>bersalin/bersalindetail/add_permintaan_makan',
+				url:'<?php echo base_url()?>nicu/nicudetail/add_permintaan_makan',
 				success:function(data){
 					if(isTableNull == 0){
 						$('#tbody_tbl_permintaan').empty();
 					}
 
 					$('#keteranganmakan').val('');
-					$('#searchmakanbersalin').val('');
+					$('#searchmakan').val('');
 					$('#id_paket').val('');
 
 					console.log(data);
 					$('#tbody_tbl_permintaan').append(
 						'<tr>'+
 							'<td>'+data[0]['waktu_permintaan']+'</td>'+
-							'<td>'+$('#namaruangbersalin').val()+'</td>'+
-							'<td>'+$('#nomorbedbersalin').val()+'</td>'+
+							'<td>'+$('#namaruang').val()+'</td>'+
+							'<td>'+$('#nomorbed').val()+'</td>'+
 							'<td>'+data[0]['nama_paket']+'</td>'+
 							'<td>'+data[0]['menu_paket']+'</td>'+
 							'<td>'+data[0]['keterangan']+'</td>'+
@@ -886,12 +846,9 @@
 	   		var d = confirm('apakah akan dihapus?');
 	   		if ( d == true ) {
 		 		var id = jQuery(this).closest('tr').find('td.makan_id').text();
-			    //console.log(id);//return false;
-
-			    //alert('bisa');return false;
 			    jQuery.ajax({
 					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_permintaan_makan/"+id,
+					url: "<?php echo base_url()?>nicu/nicudetail/delete_permintaan_makan/"+id,
 					data: id,
 					success: function(data)
 					{  
@@ -908,140 +865,21 @@
 		        jQuery(this).closest('tr').fadeOut(function(){
 			        jQuery(this).remove();		  	          
 		        });
-
-				/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelgizibersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="8" style="text-align:center"><strong>Tidak ada gizi yang diberikan</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }	*/			
+		
 		        return false;   		
 		    }
 	   		return false;
 	   	});
 		/*akhir permintaan makan*/
 
-
-		/*visit kegiatan bersalin*/
-		$('#catatan').click(function (e) {
-			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_all_petugas",
-				success: function (data) {
-					//console.log(data);
-					$('#t_body_dokterbersalin').empty();
-					for (var i = 0; i < data.length ; i++) {
-						$('#t_body_dokterbersalin').append(
-							'<tr>'+
-								'<td class="namapetugasbersalin">'+data[i]['nama_petugas']+'</td>'+
-								'<td style="text-align:center"><a href="" class="inputdokterbersalin"><i class="glyphicon glyphicon-check"></i></a></td>'+
-								'<td style="display:none;" class="idpetugasbersalin">'+data[i]['petugas_id']+'</td>'+
-							'</tr>'
-						)
-					};
-				}
-			})
-		})
-
-		$('#t_body_dokterbersalin').on('click','tr td a.inputdokterbersalin', function (e) {
-			e.preventDefault();
-			var id = jQuery(this).closest('tr').find('td.idpetugasbersalin').text();
-			var nama = jQuery(this).closest('tr').find('td.namapetugasbersalin').text();
-			$('#namadokterbersalin').val(nama);
-			$('#iddokterbersalin').val(id);
-			$('#searchDokterpeminta').modal('hide');
-		})
-
-		$('#submitVisitBersalin').submit(function (e) {
-			e.preventDefault();
-			
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-		    item[number]['visit_id'] = localStorage.getItem('visit_id');
-			item[number]['jenis_kegiatan'] = $('#pilJnsKegiatan').find('option:selected').val();
-			item[number]['kegiatan'] = $('#pilKegiatan').find('option:selected').val();
-			if ($('#statusRujukan').find('option:selected').val() == "Ya") {
-				item[number]['dirujuk_ke'] = $('#tujuanRujukan').find('option:selected').val();
-				item[number]['rujukan_dari'] = $('#rujukan').find('option:selected').val();
-			}else{
-				item[number]['dirujuk_ke'] = "-";
-				item[number]['rujukan_dari'] = "-";
-			}
-			item[number]['dokter'] = $('#iddokterbersalin').val();
-			item[number]['keterangan'] = $('#ketKegiatan').val();
-			var str = $('#tanggalpelaksanaanbersalin').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-			item[number]['waktu'] = tanggal;
-			
-			//console.log(item);return false;
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/submit_kegiatan_bersalin",
-				success: function (data) {					
-					//console.log(data);
-					$('#iddokterbersalin').val('');
-					$('#namadokterbersalin').val('');
-					$('#ketKegiatan').val('');
-					alert('data berhasil disimpan');
-				},
-				error: function (data) {
-					//console.log(data);
-				}
-			})
-
-		})
-		/*akhir visit kegiatan bersalin*/
-
-		/*daftar kelahiran baru*/
-		$('#submitKelahiran').submit(function (e) {
-			e.preventDefault();
-			
-			var str = $('#tglKelahiran').val();
-			
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-		    item[number]['waktu_kelahiran'] = tanggal;
-		    var status = '1';
-		    if ($('#statusLahir').find('option:selected').val() == 'Tidak') {status = '0'};
-
-		    item[number]['nama_bayi'] = $('#namabayi').val();
-		    item[number]['berat'] = $('#beratBadan').val();
-		    item[number]['panjang'] = $('#pjgBadan').val();
-		    item[number]['jenis_kelamin'] = $("input[name='jk']:checked").val();
-		    item[number]['is_hidup'] = status;
-
-		    alert(item[number]['jenis_kelamin']);
-		})
-
-		/*akhir daftar kelahiran baru*/
-
-
-		/*riwayat penyakit*/
+				/*riwayat penyakit*/
 		$('#tabel_riwayat').on('click', 'tr td a.rm_detail', function (e) {
 			var v_id = $(this).closest('tr').find('td.visit_riwayat').text();
 
 			//overview
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_overview_riwayat/"+v_id,
+				url: "<?php echo base_url()?>nicu/nicudetail/get_overview_riwayat/"+v_id,
 				success: function (result) {
 					//console.log(result)
 					var data = result[0];
@@ -1078,7 +916,7 @@
 			//therapy
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_therapy_riwayat/"+v_id,
+				url: "<?php echo base_url()?>nicu/nicudetail/get_therapy_riwayat/"+v_id,
 				success: function (data) {
 					
 				},
@@ -1089,7 +927,7 @@
 			//resep
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_resep_riwayat/"+v_id,
+				url: "<?php echo base_url()?>nicu/nicudetail/get_resep_riwayat/"+v_id,
 				success: function (data) {
 					if (data.length > 0) {
 						$('#t_body_history_resep').empty();
@@ -1121,7 +959,7 @@
 			//penunjang
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_penunjang_riwayat/"+v_id,
+				url: "<?php echo base_url()?>nicu/nicudetail/get_penunjang_riwayat/"+v_id,
 				success: function (data) {
 					// body...
 				},
@@ -1133,13 +971,13 @@
 		
 		/*akhir riwayat*/
 		
-	});
+		
+	})
 
 	function getPaket(id, nama){
 		$("#searchPaketMakanan").modal('hide');
 		$("#id_paket").val(id);
-		$("#searchmakanbersalin").val(nama);
+		$("#searchmakan").val(nama);
 		$("#katakuncipaket").val("");
 	}
-
 </script>

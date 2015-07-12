@@ -44,6 +44,7 @@ class Bersalindetail extends Application_Base {
 		$data['departmentoperasi'] =  $this->m_bersalin->get_department_operasi();
 		$data['order_operasi'] = $this->m_bersalin->get_order_operasi($visit_id);
 		$data['dept_rujukan'] = $this->m_bersalin->get_dept_rujukan();
+		$data['riwayat'] = $this->m_bersalin->get_all_medical_record($rm_id);
 		
 		$this->load->view('base/operator/template', $data);
 	}
@@ -346,5 +347,41 @@ class Bersalindetail extends Application_Base {
 		echo(json_encode($result));
 	}
 	/*akhir visit kegiatan bersalin*/
+
+	/*riwayat penyakit*/
+	public function get_overview_riwayat($visit_id='')
+	{
+		$result = $this->m_bersalin->get_riwayat($visit_id);
+
+		header('Content-Type:application/json');
+		echo(json_encode($result));
+	}
+
+	public function get_therapy_riwayat($visit_id)
+	{
+		$result = $this->m_bersalin->get_therapy_riwayat($visit_id);
+
+		header('Content-Type:application/json');
+		echo(json_encode($result));
+	}
+
+	public function get_resep_riwayat($visit_id)
+	{
+		$result = $this->m_bersalin->get_resep_riwayat($visit_id);
+
+		header('Content-Type:application/json');
+		echo(json_encode($result));
+	}
+
+	public function get_penunjang_riwayat($visit_id)
+	{
+		$result = $this->m_bersalin->get_penunjang_riwayat($visit_id);
+
+		header('Content-Type:application/json');
+		echo(json_encode($result));
+	}
+
+
+	/*akhir riwayat penyakit*/
 	
 }

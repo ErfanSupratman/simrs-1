@@ -415,12 +415,10 @@
 			})	
 		})
 
-		//kurang edit obat
-
-
-
 		//edit obat
+		$('#btnSimpanEdit').hide();
 		$("#tabelobat").on('click', 'tr td a.edObat', function (e) {
+			e.preventDefault();
 			$('#nmObat').focus();
 			var hidden_id = $(this).closest('tr').find('td.hidden_id').attr('data-edit');
 			var nama_obat = $(this).closest('tr').find('td.nama_obat').attr('data-edit');
@@ -456,6 +454,11 @@
 			$('#id_penyedia').val(penyedia_id);
 			$('#pedObatDet').val(penyedia);
 
+			//sembunyikan
+			$("#btnBatalObat").show();
+			$('#btnSimpanEdit').show();
+			$('#smpanObat').hide();
+
 		})
 		//edit obat
 
@@ -479,7 +482,12 @@
 			item['merk'] = $('#selected_nama_merk').val();
 			item['merk_id'] = $('#selected_merk_id').val();
 			item['penyedia_id'] = $('#id_penyedia').val();
-			// console.log(item);return false;
+			
+			//sembunyikan
+			$("#btnBatalObat").hide();
+			$('#btnSimpanEdit').hide();
+			$('#smpanObat').show();
+
 
 			$.ajax({
 				type: "POST",
@@ -730,51 +738,36 @@
 		/*akhir inventori*/
 
 
-		/*pindaahan dari javascript di base/operator/javascript.php*/
-					$('#btnSimpanEdit').hide();
-					$(".edObat").click(function(e){
-						e.preventDefault();
-						$("#btnBatalObat").show();
-						$('#btnSimpanEdit').show();
-						$('#smpanObat').hide();
-					});
+		/*pindaahan dari javascript di base/operator/javascript.php*/		
 
-					$('#btnBatalObat').click(function (e) {
-						e.preventDefault();
-						$("#btnBatalObat").hide();
-						$('#btnSimpanEdit').hide();
-						$('#smpanObat').show();
+		$('#btnBatalObat').click(function (e) {
+			e.preventDefault();
+			$("#btnBatalObat").hide();
+			$('#btnSimpanEdit').hide();
+			$('#smpanObat').show();
 
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");						  						  
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
+			$(':input','#forminputobat')
+			  .not(':button, :submit, :reset, :hidden')
+			  .val('');
+			$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
+			$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");						  						  
+			$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
+		})
 
-					$('#resetObat').click(function (e) {
-						e.preventDefault();
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
+		$('#resetObat').click(function (e) {
+			e.preventDefault();
+			$(':input','#forminputobat')
+			  .not(':button, :submit, :reset, :hidden')
+			  .val('');
+			$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
+			$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");
+			$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
+		})
 
-					$('#resetObat').click(function (e) {
-						e.preventDefault();
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
-
-					$('#editDetObat').hide();
+		$('#editDetObat').hide();
 		/**/
+
+		
 
 	});
 
