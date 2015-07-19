@@ -20,7 +20,7 @@ class Operator_base extends CI_Controller {
 		$this->replace_character();
 	}
 
-	public function menu_vertical() {
+	public function menu() {
 		// id portal
 		$this->portal_id = $this->config->item('portal_operator');
 		// page active
@@ -31,83 +31,44 @@ class Operator_base extends CI_Controller {
 		//echo $parent_active;die;
 		// load menu
 		$data['parent_menu'] = $this->m_base->get_parent_menu(array($this->portal_id, $this->user['role_id']));
-		//echo '<pre>'; print_r($data['parent_menu']) ; die;
 
-		$tot = count($data['parent_menu']);
-		$i = 1;
-		$html = "";
+		$html = '<div id="navigation" style="text-align:center"><ul id="nav">';
 		foreach ($data['parent_menu'] as $value_parent) {
 			if ($value_parent['read'] == 'true') {
-				//jika bisa read maka tampilkan
-				if ($data['child_menu'] = $this->m_base->get_child_menu(array($value_parent['menu_id'], $this->user['role_id']))) {
-					// echo "punya anak";
-                	if ($i == 1) {
-						if ($parent_active == $value_parent['menu_slug']) {
-							$html .= "<li class='start active open'>";
-						}
-						else
-						{
-							$html .= "<li class='start'>";
-						}
-                	} elseif ($i == $tot) {
-						if ($parent_active == $value_parent['menu_slug']) {
-							$html .= "<li class='last active open'>";
-						}
-						else
-						{
-							$html .= "<li class='last'>";
-						}
-                	} else {
-						if ($parent_active == $value_parent['menu_slug']) {
-							$html .= "<li class='active open'>";
-						}
-						else
-						{
-							$html .= "<li>";
-						}
-                	}
-
-					$html .= "<a href='javascript:;'><i class='fa fa-".$value_parent['menu_icon']."'></i><span class='title'> ".$value_parent['menu_name']."</span>";
+				if ($data['child_menu'] = $this->m_base->get_child_menu_(array($value_parent['menu_id'], $this->user['role_id']))) {
+					//jika punya anak
+					if ($parent_active == $value_parent['menu_slug']) {
+						$html .= "<li class='head-nav active'>";
+					}
+					else
+					{
+						$html .= "<li>";
+					}
+					$html .= "<a data-toggle='dropdown' href='javascript:;''>".$value_parent['menu_name'];
 					if ($parent_active == $value_parent['menu_slug']) 
 					{ 
 						$html .="<span class='selected'></span>";						
-	                    $html .="<span class='arrow open'></span></a>";
-					} else {
-	                    $html .="<span class='arrow '></span></a>";
+						$html .="</a>";
+					} else {					
+						$html .="</a>";
 					}
-					$html .= "<ul class='sub-menu'>";
+
+					$html .= "<ul style='width: auto'>";
 					foreach ($data['child_menu'] as $value_child) {
 						if ($value_child['read'] == 'true') {
 							if ($child_active == $value_child['menu_slug']) {
-								$html .= "<li class='active'>";
+								$html .= "<li class='active' style='width: auto'>";
 							}
 							else {
-								$html .= "<li>";								
+								$html .= "<li style='width: auto'>";								
 							}
-							$html .= " <a href='" . base_url() . $value_child['menu_url'] . "'> <i class='fa fa-" . $value_child['menu_icon'] . "'></i> " . $value_child['menu_name'] . "</a></li>";
+							$html .= " <a href='" . base_url() . $value_child['menu_url'] . "'>" . $value_child['menu_name'] . "</a></li>";
 						}
 					}					
-					$html .= "</ul></li>";					
+
+					$html .= "</ul>";			
 				}
 				else {
-					// echo "tidak punya anak"
-                	if ($i == 1) {
-						if ($parent_active == $value_parent['menu_slug']) {
-							$html .= "<li class='start active'>";
-						}
-						else
-						{
-							$html .= "<li class='start'>";
-						}
-                	} elseif ($i == $tot) {
-						if ($parent_active == $value_parent['menu_slug']) {
-							$html .= "<li class='last active'>";
-						}
-						else
-						{
-							$html .= "<li class='last'>";
-						}
-                	} else {
 						if ($parent_active == $value_parent['menu_slug']) {
 							$html .= "<li class='active'>";
 						}
@@ -115,154 +76,12 @@ class Operator_base extends CI_Controller {
 						{
 							$html .= "<li>";
 						}
-                	}
-
-					$html .= "<a href='" . base_url() . $value_parent['menu_url'] . "'> <i class='fa fa-" . $value_parent['menu_icon'] . "'></i> <span>" . $value_parent['menu_name'] . "</span></a></li>";			
-
-
+						$html .= "<a href='" . base_url() . $value_parent['menu_url'] . "'> <span>" . $value_parent['menu_name'] . "</span><span class='selected'></span></a></li>";
 				}
-			}
-			else {
-			}
-			$i = $i + 1;
-		}
-		return $html;
-	}
 
-	// public function menu() {
-
-	// 	// id portal
-	// 	$this->portal_id = $this->config->item('portal_operator');
-	// 	// page active
-	// 	$active = $this->session->userdata('page_title');
-	// 	//echo $active;die;
-	// 	$parent_active = $this->session->userdata('parent_active');
-	// 	$child_active = $this->session->userdata('child_active');
-	// 	//echo $parent_active;die;
-	// 	// load menu
-	// 	$data['parent_menu'] = $this->m_base->get_parent_menu(array($this->portal_id, $this->user['role_id']));
-	// 	//echo '<pre>'; print_r($data['parent_menu']) ; die;
-
-	// 	$html = "<div class='hor-menu hidden-sm hidden-xs'><ul class='nav navbar-nav'>";
-	// 	foreach ($data['parent_menu'] as $value_parent) {
-	// 		if ($value_parent['read'] == 'true') {
-	// 			if ($data['child_menu'] = $this->m_base->get_child_menu(array($value_parent['menu_id'], $this->user['role_id']))) {
-	// 				//jika punya anak
-	// 				if ($parent_active == $value_parent['menu_slug']) {
-	// 					$html .= "<li class='classic-menu-dropdown active'>";
-	// 				}
-	// 				else
-	// 				{
-	// 					$html .= "<li class='classic-menu-dropdown'>";
-	// 				}
-	// 				$html .= "<a data-toggle='dropdown' href='javascript:;''><i class='fa fa-".$value_parent['menu_icon']."'></i>&nbsp;".$value_parent['menu_name'];
-	// 				if ($parent_active == $value_parent['menu_slug']) 
-	// 				{ 
-	// 					$html .="<span class='selected'></span><i class='fa fa-angle-down'></i>";						
-	// 					$html .="</a>";
-	// 				} else {
-	// 					$html .="<i class='fa fa-angle-down'></i>";						
-	// 					$html .="</a>";
-	// 				}
-
-	// 				$html .= "<ul class='dropdown-menu pull-left'>";
-	// 				foreach ($data['child_menu'] as $value_child) {
-	// 					if ($value_child['read'] == 'true') {
-	// 						if ($child_active == $value_child['menu_slug']) {
-	// 							$html .= "<li class='active'>";
-	// 						}
-	// 						else {
-	// 							$html .= "<li>";								
-	// 						}
-	// 						$html .= " <a href='" . base_url() . $value_child['menu_url'] . "'> <i class='fa fa-" . $value_child['menu_icon'] . "'></i> " . $value_child['menu_name'] . "</a></li>";
-	// 					}
-	// 				}					
-
-	// 				$html .= "</ul>";			
-	// 			}
-	// 			else {
-	// 					if ($parent_active == $value_parent['menu_slug']) {
-	// 						$html .= "<li class='classic-menu-dropdown active'>";
-	// 					}
-	// 					else
-	// 					{
-	// 						$html .= "<li class='classic-menu-dropdown'>";
-	// 					}
-	// 					$html .= "<a href='" . base_url() . $value_parent['menu_url'] . "'> <i class='fa fa-" . $value_parent['menu_icon'] . "'></i>&nbsp; <span>" . $value_parent['menu_name'] . "</span><span class='selected'></span></a></li>";
-	// 			}
-
-	// 		}
-	// 	}
-	// 	$html .= "</ul></div>";
-	// 	// echo "<code>"; echo $html; die;
-	// 	return $html;
-
-
-	}
-
-	public function menu2() {
-		// id portal
-		$this->portal_id = $this->config->item('portal_operator');
-		// page active
-		$active = $this->session->userdata('page_title');
-		//echo $active;die;
-		$parent_active = $this->session->userdata('parent_active');
-		$child_active = $this->session->userdata('child_active');
-		//echo $parent_active;die;
-		// load menu
-		$data['parent_menu'] = $this->m_base->get_parent_menu(array($this->portal_id, $this->user['role_id']));
-		//echo '<pre>'; print_r($data['parent_menu']) ; die;
-
-		$html = "<ul id='leftsidePanel' class='nav nav-pills nav-stacked nav-bracket'>";
-		foreach ($data['parent_menu'] as $value_parent) {
-
-			if ($value_parent['read'] == 'true') {
-				//jika bisa read maka tampilkan
-				if ($data['child_menu'] = $this->m_base->get_child_menu(array($value_parent['menu_id'], $this->user['role_id']))) {
-					// echo "punya anak";
-					$html .= "<li class='nav-parent";
-					//echo $parent_active; echo $value_parent['menu_slug'];die;
-					if ($parent_active == $value_parent['menu_slug']) {
-						$html .= " nav-active active";
-					}
-					$html .= "'> <a href='#'> <i class='fa fa-".$value_parent['menu_icon']."'></i> <span>".$value_parent['menu_name']."</span></a>";
-					$html .= "<ul class='children'";
-					foreach ($data['child_menu'] as $value_child) {
-						if ($child_active == $value_child['menu_slug']) {
-							$html .=  "style='display: block;'";
-						}						
-					}					 
-					$html .= ">";
-					foreach ($data['child_menu'] as $value_child) {
-						if ($value_child['read'] == 'true') {
-							if ($child_active == $value_child['menu_slug']) {
-								$html .= "<li class='active'>";
-							}
-							else {
-								$html .= "<li>";								
-							}
-							$html .= " <a href='" . base_url() . $value_child['menu_url'] . "'> <i class='fa fa-" . $value_child['menu_icon'] . "'></i>" . $value_child['menu_name'] . "</a></li>";
-						}
-					}					
-					$html .= "</ul></li>";				
-
-				}
-				else {
-					// echo "tidak punya anak"
-					if ($parent_active == $value_parent['menu_slug']) {
-						$html .= "<li class='active'>";
-					}
-					else
-					{
-						$html .= "<li>";						
-					}
-					$html .= "<a href='" . base_url() . $value_parent['menu_url'] . "'> <i class='fa fa-" . $value_parent['menu_icon'] . "'></i> <span>" . $value_parent['menu_name'] . "</span></a></li>";			
-				}
-			}
-			else {
 			}
 		}
-		$html .= "</ul>"; 
+		$html .= "</ul></div>";
 		return $html;
 	}
 

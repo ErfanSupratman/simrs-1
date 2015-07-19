@@ -60,7 +60,9 @@
 						</tr>
 					</thead>
 					<tbody id="t_body">
-
+						<tr>
+							<td colspan="7"><center>Cari Data Pasien Poli NICU</center></td>						
+						</tr>
 					</tbody>
 				</table>
 			</div>

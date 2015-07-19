@@ -61,22 +61,9 @@
 							</tr>
 						</thead>
 						<tbody id="t_body">
-							<?php  
-								if (!empty($allpasiens)) {
-								foreach ($allpasiens as $pasien) {
-							?>
 							<tr>
-								<td><?php echo $pasien['rm_id']; ?></td>
-								<td><?php echo $pasien['nama']; ?></td>
-								<td><?php echo $pasien['jenis_kelamin']; ?></td>
-								<td><?php echo $pasien['tanggal_lahir']; ?></td>									
-								<td><?php echo $pasien['alamat_skr']; ?></td>
-								<td><?php echo $pasien['jenis_id']; ?></td>
-								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>bersalin/bersalindetail/daftar/<?php echo $pasien['rm_id']; ?>/<?php echo $pasien['visit_id']; ?>" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
-								</td>										
+								<td colspan="7"><center>Cari Data Pasien Poli Bersalin</center></td>						
 							</tr>
-							<?php }} ?>
 						</tbody>
 					</table>
 				</div>

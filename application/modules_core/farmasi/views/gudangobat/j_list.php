@@ -113,21 +113,16 @@
 			item['penyedia_id'] = $('#id_penyedia').val();
 			item['penyedia'] = $('#pedObatDet').val();
 
+			//console.log(item); return false;
 			$.ajax({
 				type: "POST",
 				data: item,
 				url: "<?php echo base_url()?>farmasi/homegudangobat/add_obat",
 				success: function (data) {
 					alert(data['message']);
-					$('#nmObat').val('');
-					$('#hgDasarObat').val('');
-					$('#selected_merk_id').val('');
-					$('#selected_nama_merk').val('');
-					$('#hps').val('');
-					$('#marginobat').val('');
-					$('#hargaJual').val('');
-					$('#stokMin').val('');
-					$('#pedObatDet').val('');
+					if (data['error'] == 'n') {
+						reset_obat();
+					} 
 					$('#nmObat').focus();
 				},
 				error: function (data) {
@@ -135,6 +130,18 @@
 				}
 			})
 		})
+
+		function reset_obat () {
+			$('#nmObat').val('');
+			$('#hgDasarObat').val('');
+			$('#selected_merk_id').val('');
+			$('#selected_nama_merk').val('');
+			$('#hps').val('');
+			$('#marginobat').val('');
+			$('#hargaJual').val('');
+			$('#stokMin').val('');
+			$('#pedObatDet').val('');
+		}
 
 		/*akhir master obat*/
 
@@ -269,7 +276,11 @@
 							)
 						};
 					}else{
-
+						$('#t_body_detail_obat').append(
+							'<tr>'+
+								'<td style="text-align:center" colspan="7">Belum ada detail</td>'+
+							'<tr>'
+						)
 					}
 				},
 				error: function (data) {
@@ -319,61 +330,31 @@
 			$("#btnBatalDetObat").hide();
 			$('#editDetObat').hide();
 			$('#simpanDetObat').show();
-			$("#noBatchDetObat").prop('disabled', false);
-			$("#jmlDetObat").prop('disabled', false);
-			$("#pedObatDet").prop('disabled', false);
-			$("#selectSumDanaObat").prop('disabled', false);
-			$(':input','#formdetailobat')
-			  .not(':button, :submit, :reset, :hidden')
-			  .val('');
-				var year  = '<?php echo date('Y') ?>';
-				$("#selectSumDanaObat option[value='Mandiri']").attr("selected", "selected");
-				$("#selectTahObat option[value='"+year+"']").attr("selected", "selected");						  						  			
+			reset_detail();					  						  			
 		})
+
 		$('#resetDetObat').click(function (e) {
 			e.preventDefault();
+			$("#btnBatalDetObat").hide();
+			$('#editDetObat').hide();
+			$('#simpanDetObat').show();
+			reset_detail();					
+		})
+
+		function reset_detail () {
 			$("#noBatchDetObat").prop('disabled', false);
 			$("#jmlDetObat").prop('disabled', false);
 			$("#pedObatDet").prop('disabled', false);
 			$("#selectSumDanaObat").prop('disabled', false);
-			$(':input','#formdetailobat')
-			  .not(':button, :submit, :reset, :hidden')
-			  .val('');
-				var year  = '<?php echo date('Y') ?>';
-				$("#selectSumDanaObat option[value='Mandiri']").attr("selected", "selected");
-				$("#selectTahObat option[value='"+year+"']").attr("selected", "selected");						  						  
-						
-		})
 
-		$('#editDetObat').click(function (e) {
-			e.preventDefault();
-			var item = {};
-			item['nama'] = $('#nmDetObat').val();
-			item['obat_id'] = $('#selected_obat_id').val();
-			item['tahun_pengadaan'] = $('#selectTahObat').find('option:selected').val();
-			item['obat_detail_id']  = $('#selected_obat_detail_id').val();
-			var tgl = $('#tglKadaluarsaDet').val();
-			var res = tgl.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
+			$('#noBatchDetObat').val('');			
+			$('#jmlDetObat').val('');
+			$('#tglKadaluarsaDet').val('<?php echo date("d/m/Y") ?>');
 
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item['tgl_kadaluarsa'] = tanggal;
-
-			$.ajax({
-				type: "POST",
-				data: item,
-				url: "<?php echo base_url()?>farmasi/homegudangobat/edit_detail_obat",
-				success: function (data) {
-					alert('data berhasil diubah');
-					console.log(data);
-				},
-				error:  function (data) {
-					alert('paitttt, gagal');
-				}
-			})
-		})
+			var year  = '<?php echo date('Y') ?>';
+			$("#selectSumDanaObat option[value='Mandiri']").attr("selected", "selected");
+			$("#selectTahObat option[value='"+year+"']").attr("selected", "selected");
+		}
 
 		//detail obat
 		$('#simpanDetObat').click(function (e) {
@@ -404,15 +385,54 @@
 				url: "<?php echo base_url()?>farmasi/homegudangobat/add_detail_obat",
 				success: function (data) {
 					console.log(data);
-					alert('data berhasil disimpan');
-					$('#noBatchDetObat').val('');
-					$('#id_penyedia').val('');
-					$('#jmlDetObat').val('');
+					alert(data['message']);
+					if (data['error'] === 'n') { //kalau error 'y' inputan tidak direset
+						$('#noBatchDetObat').val('');
+						$('#id_penyedia').val('');
+						$('#jmlDetObat').val('');
+					} 
+					$('#tglKadaluarsaDet').focus();
 				},
 				error:function (data) {
 					alert(data['message']);
 				}
 			})	
+		})
+
+		//edit detail obat
+		$('#editDetObat').click(function (e) {
+			e.preventDefault();
+			var item = {};
+			item['nama'] = $('#nmDetObat').val();
+			item['obat_id'] = $('#selected_obat_id').val();
+			item['tahun_pengadaan'] = $('#selectTahObat').find('option:selected').val();
+			item['obat_detail_id']  = $('#selected_obat_detail_id').val();
+			var tgl = $('#tglKadaluarsaDet').val();
+			var res = tgl.split("/");
+		    var bln = res[1];
+			var tgl = res[0];
+		    var thn = res[2];
+
+		    var tanggal = thn + '-' + bln + '-' + tgl;
+		    item['tgl_kadaluarsa'] = tanggal;
+
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/edit_detail_obat",
+				success: function (data) {
+					alert(data['message']);
+					if (data['error'] === 'n') {
+						reset_detail();
+						$("#btnBatalDetObat").hide();
+						$('#editDetObat').hide();
+						$('#simpanDetObat').show();
+					} 
+				},
+				error:  function (data) {
+					alert('paitttt, gagal');
+				}
+			})
 		})
 
 		//edit obat
@@ -482,12 +502,6 @@
 			item['merk'] = $('#selected_nama_merk').val();
 			item['merk_id'] = $('#selected_merk_id').val();
 			item['penyedia_id'] = $('#id_penyedia').val();
-			
-			//sembunyikan
-			$("#btnBatalObat").hide();
-			$('#btnSimpanEdit').hide();
-			$('#smpanObat').show();
-
 
 			$.ajax({
 				type: "POST",
@@ -496,6 +510,14 @@
 				success: function (data) {
 					alert(data['message']);
 					$('#nmObat').focus();
+					if (data['error'] == 'n') {
+						reset_obat();
+
+						//sembunyikan
+						$("#btnBatalObat").hide();
+						$('#btnSimpanEdit').hide();
+						$('#smpanObat').show();
+					} 
 				},
 				error: function (data) {
 					console.log(data);
@@ -604,7 +626,7 @@
 									+'class="new_jlh" data-edit="'+data[i]['jlh']+'">'+data[i]['jlh']+'</td>'+									
 									'<td class="new_satuan" data-edit="'+data[i]['satuan']+'">'+data[i]['satuan']+'</td>'+								
 									'<td><a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="#" class="edObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a></td>'+
+									'<a href="#" class="edObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak Kartu Stok"></i></a></td>'+
 									'<td style="display:none" class="new_merk_id" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+
 									'<td style="display:none" class="new_jenis_id" data-edit="'+data[i]['jenis_obat_id']+'">'+data[i]['jenis_obat_id']+'</td>'+
 									'<td style="display:none" class="new_satuan_id" data-edit="'+data[i]['satuan_id']+'">'+data[i]['satuan_id']+'</td>'+	
@@ -677,27 +699,39 @@
 
 			$('#inout_obat_dept_id').val(obat_dept_id);
 			$('#sisaInOut').val(jlh);
+
+			$('#jmlInOut').on('change', function (e) {
+				e.preventDefault();
+
+				var is_in = $('#io').find('option:selected').val();
+				var jmlInOut = $('#jmlInOut').val();
+				var sisa = jlh;//$('#sisaInOut').val();
+				var hasil ="";
+				if (is_in == 'IN') {
+					hasil = Number(jmlInOut) + Number(sisa);
+				}else{			
+					hasil = Number(sisa) - Number(jmlInOut);
+				}
+
+				if (jmlInOut == '') {
+					hasil = Number(sisa);
+				}
+				$('#sisaInOut').val(hasil);			
+			})
+
+			$('#io').on('change', function () {
+				var jumlah = Number($('#jmlInOut').val());
+				var sisa = Number(jlh);//Number($('#sisaInOut').val());
+
+				var isout = $('#io').find('option:selected').val();
+				if (isout === 'IN') {
+					$('#sisaInOut').val(jumlah + sisa);
+				} else{
+					$('#sisaInOut').val(sisa - jumlah);
+				};
+			})
 		})
-
-		$('#jmlInOut').on('change', function (e) {
-			e.preventDefault();
-
-
-			var is_in = $('#io').find('option:selected').val();
-			var jmlInOut = $('#jmlInOut').val();
-			var sisa = $('#sisaInOut').val();
-			var hasil ="";
-			if (is_in == 'IN') {
-				hasil = Number(jmlInOut) + Number(sisa);
-			}else{			
-				hasil = Number(sisa) - Number(jmlInOut);
-			}
-
-			if (jmlInOut == '') {
-				hasil = Number(sisa);
-			}
-			$('#sisaInOut').val(hasil);			
-		})		
+				
 
 		$('#form_in_out').submit(function (e) {
 			e.preventDefault();
@@ -720,19 +754,28 @@
 		    item['tanggal'] = tanggal;
 		    item['keterangan'] = $('#keteranganIO').text();
 
-		    $.ajax({
-		    	type: "POST",
-		    	data: item,
-		    	url: "<?php echo base_url()?>farmasi/homegudangobat/input_in_out",
-		    	success: function (data) {
-		    		alert('data berhasil disimpan');
-		    	},
-		    	error: function (data) {
-		    		alert('gagal');
-		    	}
-		    })
-
-			$('#inout').modal('hide');
+		    if (item['jumlah'] != "") {
+			    $.ajax({
+			    	type: "POST",
+			    	data: item,
+			    	url: "<?php echo base_url()?>farmasi/homegudangobat/input_in_out",
+			    	success: function (data) {
+			    		if (data == "true") {
+			    			alert('data berhasil disimpan');
+			    			$('#inout').modal('hide');	
+			    		} else{
+			    			alert('gagal, terdapat kesalahan');
+			    		};
+			    		
+			    	},
+			    	error: function (data) {
+			    		alert('gagal');
+			    	}
+			    })
+			} else{
+				alert('isi data dengan benar');
+				$('#jmlInOut').focus();
+			};			
 		})
 
 		/*akhir inventori*/
@@ -756,6 +799,10 @@
 
 		$('#resetObat').click(function (e) {
 			e.preventDefault();
+			$("#btnBatalObat").hide();
+			$('#btnSimpanEdit').hide();
+			$('#smpanObat').show();
+
 			$(':input','#forminputobat')
 			  .not(':button, :submit, :reset, :hidden')
 			  .val('');
@@ -767,9 +814,596 @@
 		$('#editDetObat').hide();
 		/**/
 
+
+		/*opname*/
+		$("a.editInvenBut").hide();
+		$('.editInven').click(function (e) {
+			e.preventDefault();
+		})
+
+		$("#tblInven1").on('click','tr td a.edIven',function(e){
+			e.preventDefault();
+			var inven = $(this).closest('td').prevAll('td:has(a.editInven)').children('td a.editInven');
+			inven.addClass("editableform editable-click");
+			inven.editable();
+			inven.css("color","blue");
+			inven.css("cursor","pointer");
+			$(this).closest('tr').find('td a.edIven').hide();
+			$(this).closest('tr').find('td a.editInvenBut').show();
+			//document.getElementById("status").innerHTML = "Batal";
+
+		});
+						
+		$("#tblInven1").on('click','tr td a.editInvenBut', function(e){
+			e.preventDefault();
+			$(".editInven").removeClass("editableform editable-click");
+			$(".editInven").removeClass("editable");
+			$(".editInven").css("color","black");
+			$(".editInven").css("cursor","default");
+			$(this).closest('tr').find('td a.edIven').show();
+			$(this).closest('tr').find('td a.editInvenBut').hide();
+			//document.getElementById("status").innerHTML = "Edit";
+
+			var stok = $(this).closest('tr').find('td a.editInven').text();
+			var d = confirm('proses disimpan ?');
+			if (d == true) {
+				var item = {};
+				var str = $('#tanggalacuan').val();
+				var res = str.split("/");
+			    var bln = res[1];
+				var tgl = res[0];
+			    var thn = res[2];
+
+			    var tanggal = thn + '-' + bln + '-' + tgl;
+				item['tanggal_acuan'] = tanggal;
+				item['stok'] = stok;
+				item['obat_dept_id'] = $(this).closest('tr').find('td.obat_dept_id').text();
+				item['obat_opname_id'] = $(this).closest('tr').find('td.obat_opname_id').text();
+				item['harga_jual'] = $(this).closest('tr').find('td.h_jual').text();
+
+				$.ajax({
+					type: "POST",
+					data: item,
+					url: "<?php echo base_url()?>farmasi/homegudangobat/opname_process",
+					success: function (data) {
+						console.log(data);
+						alert(data['message']);
+					}
+				})
+			} else{
+				alert('data tidak berubah')
+			};
+		});
+
+		/*akhir opname*/
+
+		/* penerimaan obat mulai di sini*/
+		$('#katakuncipetugaspenerimaan').keyup(function(event){
+			var p_item = $('#katakuncipetugaspenerimaan').val();
+			
+			event.preventDefault();
+
+			if(p_item!=""){
+				$.ajax({
+					type:"POST",
+					url:"<?php echo base_url()?>farmasi/homegudangobat/get_petugas/"+p_item,
+					success:function(data){
+						$('#tbody_petugaspenerimaan').empty();
+
+	 					if(data.length>0){
+							for(var i = 0; i<data.length; i++){
+								var nama = data[i]['nama_petugas'],
+									id = data[i]['petugas_id'];
+
+								$("#tbody_petugaspenerimaan").append(
+									'<tr>'+
+										'<td>'+nama+'</td>'+
+										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPetugasPenerimaan(&quot;'+id+'&quot; , &quot;'+nama+'&quot;)"></i></td>'+
+									'</tr>'
+								);
+							}
+						}else{
+							$('#tbody_petugaspenerimaan').empty();
+							$('#tbody_petugaspenerimaan').append(
+								'<tr>'+
+						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
+						 		'</tr>'
+							);
+						}
+					},
+					error:function(data){
+
+					}
+				});
+			}else{
+				$('#tbody_petugaspenerimaan').empty();
+				$('#tbody_petugaspenerimaan').append(
+					'<tr>'+
+			 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
+			 		'</tr>'
+				);
+			}
+		});
+
+		$('#penyediapenerimaan').keyup(function(event){
+			var p_item = $('#penyediapenerimaan').val();
+			
+			event.preventDefault();
+
+			if(p_item!=""){
+				$.ajax({
+					type:"POST",
+					url:"<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/"+p_item,
+					success:function(data){
+						$('#tbody_petugaspenerimaan').empty();
+
+	 					if(data.length>0){
+							for(var i = 0; i<data.length; i++){
+								var nama = data[i]['nama_penyedia'],
+									id = data[i]['penyedia_id'];
+
+								$("#tbody_penyediapenerimaan").append(
+									'<tr>'+
+										'<td>'+nama+'</td>'+
+										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPenyediaPenerimaan(&quot;'+id+'&quot; , &quot;'+nama+'&quot;)"></i></td>'+
+									'</tr>'
+								);
+							}
+						}else{
+							$('#tbody_penyediapenerimaan').empty();
+							$('#tbody_penyediapenerimaan').append(
+								'<tr>'+
+						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
+						 		'</tr>'
+							);
+						}
+					},
+					error:function(data){
+
+					}
+				});
+			}else{
+				$('#tbody_penyediapenerimaan').empty();
+				$('#tbody_penyediapenerimaan').append(
+					'<tr>'+
+			 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
+			 		'</tr>'
+				);
+			}
+		});
+
+		$('#katakuncipenerimaan').keyup(function(event){
+			var p_item = $('#katakuncipenerimaan').val();
+			
+			event.preventDefault();
+
+			if(p_item!=""){
+				$.ajax({
+					type:"POST",
+					url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat/"+p_item,
+					success:function(data){
+						//console.log(data);
+						$('#t_body_obatpenerimaan').empty();
+
+	 					if(data.length>0){
+							for(var i = 0; i<data.length; i++){
+								var nama = data[i]['nama'],
+									obat_id = data[i]['obat_id']
+									harga_dasar = data[i]['harga_dasar']
+									satuan = data[i]['satuan'];
+
+								$("#t_body_obatpenerimaan").append(
+									'<tr>'+
+										'<td style="display:none;">'+obat_id+'</td>'+
+										'<td style="display:none;">'+harga_dasar+'</td>'+
+										'<td style="display:none;">'+satuan+'</td>'+
+										'<td>'+nama+'</td>'+
+										'<td style="text-align:center"><a href="#" class="addNewObatTerima"><i class="glyphicon glyphicon-check" style="cursor:pointer;"></i></a></td>'+
+									'</tr>'
+								);
+							}
+						}else{
+							$('#t_body_obatpenerimaan').empty();
+							$('#t_body_obatpenerimaan').append(
+								'<tr>'+
+						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
+						 		'</tr>'
+							);
+						}
+					},
+					error:function(data){
+
+					}
+				});
+			}else{
+				$('#t_body_obatpenerimaan').empty();
+				$('#t_body_obatpenerimaan').append(
+					'<tr>'+
+			 			'<td colspan="2"><center>Cari Data Obat</center></td>'+
+			 		'</tr>'
+				);
+			}
+		});
+
+		var addDivTerima = $('#t_body_inputterima');
 		
+		$('#t_body_obatpenerimaan').on('click','tr td a.addNewObatTerima', function(e) {
+			//hitung harga dlu
+			e.preventDefault();
+
+			var cols = [];
+	        $(this).closest('tr').find('td').each(function (colIndex, c) {
+	            cols.push(c.textContent);
+	        });
+
+			var obat_id = cols[0];
+			var harga_dasar = cols[1];
+			var satuan = cols[2];
+			var nama_obat = cols[3];
+
+			var newtabel = '<tr><td>'+nama_obat+'</td>'+
+							'<td>'+satuan+'</td>'+
+							'<td class="editasu"><a href="#" class="adaanQtyTer editableform editable-click editbatch" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
+							'<td><a href="#" class="adaanQtyTer editableform editable-click edittglkadaluarsa" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
+							'<td><a href="#" class="adaanQtyTer editableform editable-click editjumlah" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
+							'<td><a href="#" class="adaanQtyTer editableform editable-click editdiskon" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td>'+
+							'<td>'+harga_dasar+'</td>'+
+							'<td>'+harga_dasar+' &nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td>'+
+							'<td style="display:none">'+obat_id+'</td></tr>'
+
+			$(newtabel).appendTo(addDivTerima);
+			$(".adaanQtyTer").editable(); 
+			var data = hitung_penerimaan();
+			var jumlah = 0;
+			for (var i = data.length - 1; i >= 0; i--) {
+				jumlah += Number(data[i][7]);
+			};
+
+			var jenispotongan = $('#selectpotongan').find('option:selected').val();
+			var potongan =  Number($('#potongan').val());
+			var ppn =  Number($('#ppn').val());
+			var grandtotal = 0;
+			if (jenispotongan === 'persen') {
+				grandtotal = (jumlah - ((jumlah * (potongan / 100)) +(jumlah * (ppn / 100))))
+			} else{
+				grandtotal = (jumlah - potongan - ppn)
+			};
+
+			$('#grandtotal').text(grandtotal);
+			$('#subtotalterima').text(jumlah);
+
+			$('#t_body_inputterima').on('click','tr td .editasu', function(e){
+				alert('fak elny');
+			})
+			return false;
+		});	
+		
+		//kalo hapus row
+		$('#t_body_inputterima').on('click', 'tr td a.removeRow', function (e) {
+			e.preventDefault();
+			$(this).closest('tr').remove();
+
+			var data = hitung_penerimaan();
+			var jumlah = 0;
+			for (var i = data.length - 1; i >= 0; i--) {
+				jumlah += Number(data[i][7]);
+			};
+
+			var jenispotongan = $('#selectpotongan').find('option:selected').val();
+			var potongan =  Number($('#potongan').val());
+			var ppn =  Number($('#ppn').val());
+			var grandtotal = 0;
+			if (jenispotongan === 'persen') {
+				grandtotal = (jumlah - ((jumlah * (potongan / 100)) +(jumlah * (ppn / 100))))
+			} else{
+				grandtotal = (jumlah - potongan - ppn)
+			};
+
+			$('#grandtotal').text(grandtotal);
+			$('#subtotalterima').text(jumlah);
+		})
+
+		//hitung grand total
+		$('#selectpotongan').on('change', function (e) {
+			e.preventDefault();
+			hitung_grandtotal();			
+		})
+
+		$('#potongan').on('change', function (e) {
+			e.preventDefault();
+			hitung_grandtotal();			
+		})
+
+		$('#ppn').on('change', function (e) {
+			e.preventDefault();
+			hitung_grandtotal();			
+		})
+		
+		$('#formpenerimaanobat').submit(function (e) {
+			e.preventDefault();
+
+			var item = {};
+			item['nomor_penerimaan'] = $('#nmrTerima').val();
+			item['penyedia_id'] = $('#id_penyediaObatTerima').val();
+			item['sumber_dana'] = $('#sumdanapenerimaan').val();
+			item['petugas_input'] = $('#id_petugasInputTerima').val();
+			item['keterangan'] = $('#ketObatTerima').val();
+
+
+			var str = $('#tglTerimaObat').val();
+			var res = str.split("/");
+		    var bln = res[1];
+			var tgl = res[0];
+		    var thn = res[2];
+
+		    var tanggal = thn + '-' + bln + '-' + tgl;
+			item['tanggal'] = tanggal;
+
+			//loop dari tabel
+			var data = hitung_penerimaan();
+
+			var send = {};
+		    for (var i = data.length - 1; i >= 0; i--) {
+		    	var myData = {};
+		    	myData['obat_id'] = data[i][8];
+		    	myData['no_batch'] = data[i][2];
+		    	myData['tgl_kadaluarsa'] = tanggal; //ubah lagi ntar
+		    	myData['jumlah'] = data[i][4];
+		    	myData['diskon'] = data[i][5];
+		    	myData['harga_beli'] = data[i][6];
+		    	myData['total'] = data[i][7];
+
+		    	send[i] = myData;
+		    };
+
+		    item['data'] = send;
+		    item['jenispotongan'] = $('#selectpotongan').find('option:selected').val();
+			item['potongan'] =  Number($('#potongan').val());
+			item['ppn'] =  Number($('#ppn').val());
+			item['grandtotal'] = $('#grandtotal').val();
+			item['subtotal'] = $('#subtotalterima').val();
+
+		    $.ajax({
+		    	type: 'POST',
+		    	data: item,
+		    	url: "<?php echo base_url()?>farmasi/homegudangobat/add_penerimaan",
+		    	success: function (data) {
+		    		//console.log(data['message']); return false;
+		    		alert(data['message']);
+		    		if (data['error'] === 'n') {
+		    			reset_penerimaan();
+		    		} 
+		    	},
+		    	error: function (data) {
+		    		
+		    	}
+		    })
+
+
+		})
+
+		$('#resetpenerimaan').click(function (e) {
+			e.preventDefault();
+			reset_penerimaan();
+		})
+		/*akhir penerimaan obat*/
+
+		/*permintaan obat*/
+		$('#t_body_permintaan').on('click','tr td a.lihatdetailminta', function (e) {
+			e.preventDefault();
+	        var id = $(this).closest('tr').find('td .idpermintaanobat').val();
+	        
+	        $.ajax({
+	        	type: "POST",
+	        	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_persetujuan/"+ id,
+	        	success: function (data) {
+	        		//console.log(data);
+	        		$('#t_body_detail_permintaan').empty();
+	        		if (data.length > 0) {
+	        			$('#obat_permintaan_id_confirm').val(id);
+	        			for (var i = data.length - 1; i >= 0; i--) {
+	        				$('#t_body_detail_permintaan').append(
+	        					'<tr>'+
+									'<td>'+data[i]['nama']+'</td>'+
+									'<td style="text-align:left">'+data[i]['satuan']+'</td>'+
+									'<td style="text-align:left">'+data[i]['nama_merk']+'</td>'+
+									'<td style="text-align:right">-</td>'+
+									'<td style="text-align:right">'+data[i]['total']+'</td>'+
+									'<td style="text-align:right">'+data[i]['jumlah_request']+'</td>'+
+									'<td style="text-align:right"><a href="#" class="editableform editable-click app" data-type="text" data-pk="1" data-original-title="Jumlah Diapprove" id="app">0</a></td>'+
+									'<td style="text-align:right">'+data[i]['harga_jual']+'</td>'+
+									'<td style="display:none">'+data[i]['obat_detail_id']+'</td>'+
+								'</tr>'
+	        				)
+	        			};
+	        			//dieditable lagi -_-
+	        			$(".app").editable();
+	        		} else{
+	        			$('#t_body_detail_permintaan').append(
+	    					'<tr><td style="text-align:center" colspan="8">Tidak ada detail</td></tr>'
+	    				)	
+	        		};
+	        	},
+	        	error: function (data) {
+	        		alert('error');
+	        	}
+	        })
+		})
+
+		$('#batalterima').click(function (e) {
+			e.preventDefault();
+			$('#t_body_detail_permintaan .app').text('0');
+		})
+
+		$('#formdetailpermintaan').submit(function (e) {
+			//e.preventDefault();
+			var a = confirm('data akan diproses?');
+			if (a == true) {
+				var obat_permintaan_id = $('#obat_permintaan_id_confirm').val();
+				var data = [];
+			    $('#t_body_detail_permintaan').find('tr').each(function (rowIndex, r) {
+			        var cols = [];
+			        $(this).find('td').each(function (colIndex, c) {
+			            cols.push(c.textContent);
+			        });
+			        data.push(cols);
+			    });
+
+			    var item = {}
+			    item['permintaan_id'] = $('#obat_permintaan_id_confirm').val();
+			    item['approve'] = data;
+
+			    $.ajax({
+			    	type: "POST",
+			    	data: item,
+			    	url: "<?php echo base_url()?>farmasi/homegudangobat/submit_persetujuan_permintaan",
+			    	success:  function (data) {
+			    		alert('sukses');
+			    		console.log(data);
+			    	},
+			    	error: function (data) {
+
+			    	}
+			    })
+			}
+			$('#cek').modal('hide');
+		})
+
+		$('#t_body_riwayatpermintaan').on('click','tr td a.detailriwayatpermintaan', function (e) {
+			e.preventDefault();
+	        var id = $(this).closest('tr').find('td .idriwayatpermintaan').val();
+	        var cols = [];
+	        $(this).closest('tr').find('td').each(function (colIndex, c) {
+	            cols.push(c.textContent);
+	        });
+
+	        var str = cols[1];
+			var res = str.split("-");
+		    var bln = res[1];
+			var tgl = res[2];
+		    var thn = res[0];
+		    var wkt = tgl.split(" ");
+
+		    var tanggal = wkt[0] + '-' + bln + '-' + thn + " " +wkt[1];
+		    $('#waktupersetujuan').text(tanggal);
+		    $('#departemenpersetujuan').text(cols[2]);
+		    $('#petugasresponpersetujuan').text(cols[3]);
+		    $('#keteranganriwayatpersetujuan').text(cols[4]);
+
+	        $.ajax({
+	        	type: "POST",
+	        	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_persetujuan/"+ id,
+	        	success: function (data) {
+	        		//console.log(data);
+	        		$('#t_body_detailriwayatpermintaan').empty();
+	        		if (data.length > 0) {
+	        			//$('#obat_permintaan_id_confirm').val(id);
+	        			for (var i = data.length - 1; i >= 0; i--) {
+	        				$('#t_body_detailriwayatpermintaan').append(
+	        					'<tr>'+
+									'<td>'+data[i]['nama']+'</td>'+
+									'<td style="text-align:left">'+data[i]['satuan']+'</td>'+
+									'<td style="text-align:left">'+data[i]['nama_merk']+'</td>'+
+									'<td style="text-align:right">-</td>'+
+									'<td style="text-align:right">'+data[i]['total']+'</td>'+
+									'<td style="text-align:right">'+data[i]['jumlah_request']+'</td>'+
+									'<td style="text-align:right">'+data[i]['jumlah_approved']+'</td>'+
+									'<td style="text-align:right">'+data[i]['harga_jual']+'</td>'+
+									'<td style="display:none">'+data[i]['obat_detail_id']+'</td>'+
+								'</tr>'
+	        				)
+	        			};
+	        		} else{
+	        			$('#t_body_detailriwayatpermintaan').append(
+	    					'<tr><td style="text-align:center" colspan="8">Tidak ada detail</td></tr>'
+	    				)	
+	        		};
+	        	},
+	        	error: function (data) {
+	        		alert('error');
+	        	}
+	        })
+		})
+
+
+		/*akhir permintaan obat*/
+
+		/*retur obat*/
+		
+		
+		/**/
 
 	});
+
+	function hitung_grandtotal () {
+		var data = hitung_penerimaan();
+		var jumlah = 0;
+		for (var i = data.length - 1; i >= 0; i--) {
+			jumlah += Number(data[i][7]);
+		};
+
+		var jenispotongan = $('#selectpotongan').find('option:selected').val();
+		var potongan =  Number($('#potongan').val());
+		var ppn =  Number($('#ppn').val());
+		var grandtotal = 0;
+		if (jenispotongan === 'persen') {
+			grandtotal = (jumlah - ((jumlah * (potongan / 100)) +(jumlah * (ppn / 100))))
+		} else{
+			grandtotal = (jumlah - potongan - ppn)
+		};
+
+		$('#grandtotal').text(grandtotal);
+	}
+
+	function hitung_penerimaan () {
+		var data = [];
+	    $('#t_body_inputterima').find('tr').each(function (rowIndex, r) {
+	        var cols = [];
+	        $(this).find('td').each(function (colIndex, c) {
+	            cols.push(c.textContent);
+	        });
+	        data.push(cols);
+	    });
+	    return data;
+	}
+
+	function getPenyediaPenerimaan(id, nama){
+		$("#searchpenyediapenerimaan").modal('hide');
+		$("#id_penyediaObatTerima").val(id);
+		$("#penyediaObatTerima").val(nama);
+		$("#penyediapenerimaan").val("");
+		$('#tbody_penyediapenerimaan').empty();
+		$('#tbody_penyediapenerimaan').append(
+			'<tr>'+
+	 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
+	 		'</tr>'
+		);
+	}
+
+	function getPetugasPenerimaan(id, nama){
+		$("#ptgaspenerimaan").modal('hide');
+		$("#id_petugasInputTerima").val(id);
+		$("#ptgasInputObat").val(nama);
+		$("#katakuncipetugaspenerimaan").val("");
+		$('#tbody_petugaspenerimaan').empty();
+		$('#tbody_petugaspenerimaan').append(
+			'<tr>'+
+	 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
+	 		'</tr>'
+		);
+	}
+
+	function reset_penerimaan () {
+		$('#t_body_inputterima').empty();
+		$(':input','#formpenerimaanobat')
+		  .not(':button, :submit, :reset, :hidden')
+		  .val('');
+		$('#tglTerimaObat').val('<?php echo date("d/m/Y") ?>');
+		$("#sumdanapenerimaan option[value='Mandiri']").attr("selected", "selected");
+		$("#selectpotongan option[value='persen']").attr("selected", "selected");
+		$('#grandtotal').text('0');
+		$('#subtotalterima').text('0');
+	}
 
 	function get_items () {
 		var item = {};
@@ -790,7 +1424,7 @@
 			data: filter,
 			url: "<?php echo base_url()?>farmasi/homegudangobat/filter_obat_inventori",
 			success: function (data) {
-				//console.log(data);
+				console.log(data);
 				$('#t_body_inventory').empty();
 					if (data.length > 0) {
 						for (var i = data.length - 1; i >= 0; i--) {
@@ -809,7 +1443,7 @@
 									'<td class="tahun_pengadaan_inventori" data-edit="'+data[i]['tahun_pengadaan']+'">'+data[i]['tahun_pengadaan']+'</td>'+								
 									'<td class="tgl_kadaluarsa_inventori" data-edit="'+data[i]['tgl_kadaluarsa']+'">'+data[i]['tgl_kadaluarsa']+'</td>'+
 									'<td><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="#" class="printobat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a></td>'+
+									'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></td>'+
 									'<td style="display:none" class="merk_id_inventori" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+
 									'<td style="display:none" class="jenis_id_inventori" data-edit="'+data[i]['jenis_obat_id']+'">'+data[i]['jenis_obat_id']+'</td>'+
 									'<td style="display:none" class="satuan_id_inventori" data-edit="'+data[i]['satuan_id']+'">'+data[i]['satuan_id']+'</td>'+	

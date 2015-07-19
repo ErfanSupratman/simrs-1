@@ -1,12 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
+require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
-class Nicudetail extends Application_base {
+class Nicudetail extends Operator_base {
 	protected $ses;
 	function __construct() {
 		parent:: __construct();
 
 		$this->load->model('m_nicu');
+		$data['page_title'] = "NICU Detail";
+		$this->session->set_userdata($data);
 	}
 
 	public function index($page = 0)
@@ -16,10 +18,11 @@ class Nicudetail extends Application_base {
 
 	public function daftar($rm_id = '', $visit_id='')
 	{
-		$data['content'] = 'nicudetail/list';
-		$data['menu'] = $this->menu();
+		$this->check_auth('R');
 		$data['menu_view'] = $this->menu();
-		//$data['user'] = $this->user;
+		$data['user'] = $this->user;
+
+		$data['content'] = 'nicudetail/list';
 		$data['javascript'] = "nicudetail/j_list";	
 		$this->load->model('m_nicu');
 		//load semua data pasien dengan no rm tertentu

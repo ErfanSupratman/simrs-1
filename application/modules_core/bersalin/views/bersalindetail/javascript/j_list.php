@@ -1132,6 +1132,74 @@
 		})
 		
 		/*akhir riwayat*/
+
+		/*pindah kamar*/
+
+
+		/*akhir pindah kamar*/
+
+		/*resume pulang*/
+		$('#formresume').submit(function (e) {
+			e.preventDefault();
+
+			var item={};
+			item[1]={};
+
+			var alasan = $('#alasanKeluarPasien').find('option:selected').val();
+			item[1]['detail_alasan_pulang'] = "";
+			switch(alasan){
+				case "Pasien Dipulangkan": item[1]['detail_alasan_pulang'] = $('#alasanPulang').val();break;
+				case "Pasien Dipindahkan": item[1]['detail_alasan_pulang'] = $('#alasanPindah').val();break;
+				case "Rujuk Rumah Sakit Lain": item[1]['detail_alasan_pulang'] = "Dirujuk Ke RS "+$('#isianRSRujuk').val();break;
+				case "Atas Permintaan Sendiri": item[1]['detail_alasan_pulang'] = $('#alasanPulang').val();break;
+				case "Pasien Meninggal": {
+						item[1]['detail_alasan_pulang'] = $('#detPasDie').find('option:selected').val();
+						var str = $('#waktumeninggal').val();
+						var res = str.split("/");
+					    var bln = res[1];
+						var tgl = res[0];
+					    var thn = res[2];
+
+					    var tanggal = thn + '-' + bln + '-' + tgl;
+					    item[1]['waktu_kematian'] = tanggal;
+					    item[1]['keterangan_kematian'] = $('#ketMati').val();
+						break;
+					}	
+			}
+			item[1]['alasan_keluar'] = alasan;
+			var str = $('#tglKeluarRS').val();
+			var res = str.split("/");
+		    var bln = res[1];
+			var tgl = res[0];
+		    var thn = res[2];
+
+		    var tanggal = thn + '-' + bln + '-' + tgl;
+		    item[1]['waktu_keluar'] = tanggal;
+		    item[1]['visit_id'] = $('#v_id').val();
+		    item[1]['waktumasuk'] = $('#tglMasukRS').val();
+
+			item[1]['biaya_per_hari'] = $('#biaya_per_hari').val();
+			item[1]['old_kamar_id'] = $('#old_kamar_id').val();
+			item[1]['old_bed_id'] = $('#old_bed_id').val();		    
+			item[1]['inap_id'] = $('#inap_id').val();
+			//console.log(item);return false;
+
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>bersalin/bersalindetail/checkout_process",
+				success: function (data) {
+					console.log(data);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+
+		})
+		/*akhir resume pulang*/
+
+
 		
 	});
 

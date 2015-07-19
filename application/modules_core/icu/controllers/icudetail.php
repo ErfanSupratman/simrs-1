@@ -1,24 +1,33 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
+// require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
+require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
-class Icudetail extends Application_base {
+class Icudetail extends Operator_base {
 	function __construct(){
 
 		parent:: __construct();
 		$this->load->model("m_icudetail");
+		$data['page_title'] = "ICU Detail";
+		$this->session->set_userdata($data);
 	}
 
 	public function index($page = 0)
 	{
+		/*$this->check_auth('R');
+		$data['menu_view'] = $this->menu();
+		$data['user'] = $this->user;
 		// load template
 		$data['content'] = 'icudetail/list';
-		// $data['javascript'] = 'master/diagnosis/javascript/j_list';
-		$data['menu_view'] = $this->menu();
-		$this->load->view('base/operator/template', $data);
+	
+		$this->load->view('base/operator/template', $data);*/
 	}
 
 	public function daftar($rm_id='', $visit_id='')
 	{
+		$this->check_auth('R');
+		$data['menu_view'] = $this->menu();
+		$data['user'] = $this->user;
+		
 		$data['content'] = 'icudetail/list';
 		$data['javascript'] = 'icu/icudetail/javascript/j_list';
 		$data['menu_view'] = $this->menu();

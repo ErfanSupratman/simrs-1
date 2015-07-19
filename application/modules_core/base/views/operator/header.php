@@ -51,7 +51,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <link href="<?php echo base_url();?>metronic/assets/css/datepicker.css" rel="stylesheet">
     <link href="<?php echo base_url();?>metronic/assets/css/qunit.css">
-
+    <!-- <link href="<?php echo base_url();?>metronic/assets/global/plugins/datatablesnew/media/css/jquery.dataTables.css"> -->
+    <link href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css" rel="stylesheet">
     <script src="<?php echo base_url();?>metronic/assets/js/jquery-2.1.3.js"></script>
     <script src="<?php echo base_url();?>metronic/assets/js/chart-master/Chart.js"></script>
 
@@ -84,9 +85,9 @@ License: You must have a valid license purchased only from themeforest(the above
             <div class="top-menu">
             <!--disini buat naruh menu -->
                 <ul class="nav pull-right top-menu">
-                    <li><div class="name"> Admin </a>
+                    <li><div class="name"> <?php echo $user['user_name']; ?> </a>
                     </li>
-                    <li><a class="logout" href="<?php echo base_url();?>">Logout</a></li>
+                    <li><a class="logout" href="<?php echo base_url();?>login/operator/logout">Logout</a></li>
                 </ul>
             </div>
         </header>
@@ -98,7 +99,8 @@ License: You must have a valid license purchased only from themeforest(the above
 
 <div class="men-separator"></div>
 
-<div id="navigation">
+    <?php echo $menu_view ?>
+<!-- <div id="navigation">
     <ul id="nav">
         <li class="head-nav"><a href="#">Master Data</a>
             <ul>
@@ -206,7 +208,7 @@ License: You must have a valid license purchased only from themeforest(the above
         </li>
     </ul>
 </div>
-
+ -->
 
 <div class="clearfix">
 </div>

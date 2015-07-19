@@ -56,8 +56,6 @@ IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bo
 <script src="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-editable/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>metronic/assets/global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>metronic/assets/global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
 
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -107,20 +105,57 @@ jQuery(document).ready(function() {
 <script>	
 
 				$(document).ready( function(){
+
+
+					 var x = getAllElementsWithAttribute('data-provide');
+					setElements(x);
+
+					// ini untuk tab riwayat pasien poli
+					$("#tblrwp1").hide();
+					$("#rwp1").click(function(){
+						$("#tblrwp1").slideToggle();
+					});
+
+					$("#tblrwp2").hide();
+					$("#rwp2").click(function(){
+						$("#tblrwp2").slideToggle();
+					});
+
+					$("#tblrwp3").hide();
+					$("#rwp3").click(function(){
+						$("#tblrwp3").slideToggle();
+					});
+
 					$("#retur").editable();
 					$(".app").editable();
+					$(".appBar").editable();
+					$(".tmbhnBy").editable();
+					$("#ubahObat").hide();
+					$("#ubahDetObat").hide();
 					
-					$("#infoDetObat1").hide();
-					$("#infoMasObat").hide();
-
 					$(".informasi").show();
-					$("#asuransi").hide();
-					$("#noAsuransi").hide();
+
+					$("#tabelcare").hide();
+					$("#tabelhis").hide();
+					$("#infoAdaan").hide();
+					$("#infoRiwaAda").hide();
+					$("#infoTerimaObat").hide();
+					$("#infoRiwTerimaObat").hide();
+					$("#infoMintaObat").hide();
+					$("#infoRiwMintaObat").hide();
+										
+					$("#infoRetDepartemen").hide();
+					$("#infoRiwRetDepartemen").hide();
+					$("#infoRetDistributor").hide();
+					$("#infoRiwRetDistributor").hide();
+					$("#infoMasObat").hide();
+					$("#infoDetObat1").hide();
 					$("#btnBatalObat").hide();
 					$("#btnBatalDetObat").hide();
+					$("#btnBatalObatBrg").hide();
 					
-					$("#kontrak").hide();
-					$("#kelas").hide();
+					$("#btnBatalDetBarang").hide();
+					
 					$("#penunjangLab").hide();
 					$("#asalRujukan").hide();
 					$("#tujuanRujuk").hide();
@@ -133,22 +168,22 @@ jQuery(document).ready(function() {
 							      $(this).animate({ backgroundColor: "#50BFF9", color : "white" }, 500);
 					 }); 
 
-					$("#tambahOver").on('mouseover', function() {
-				      //jQuery UI doesn't support the hotpink keyword 
-				      $(this).animate({ color : "black" }, 500)
-							  }).on('mouseleave', function() {
-							      $(this).stop(true, true);
-							      $(this).animate({ color : "white" }, 500);
-					 }); 
+					// $("#tambahOver").on('mouseover', function() {
+				 //      //jQuery UI doesn't support the hotpink keyword 
+				 //      $(this).animate({ color : "black" }, 500)
+					// 		  }).on('mouseleave', function() {
+					// 		      $(this).stop(true, true);
+					// 		      $(this).animate({ color : "white" }, 500);
+					//  }); 
 
 
-					$("#tambahOver1").on('mouseover', function() {
-				      //jQuery UI doesn't support the hotpink keyword 
-				      $(this).animate({ color : "black" }, 500)
-							  }).on('mouseleave', function() {
-							      $(this).stop(true, true);
-							      $(this).animate({ color : "white" }, 500);
-					 }); 
+					// $("#tambahOver1").on('mouseover', function() {
+				 //      //jQuery UI doesn't support the hotpink keyword 
+				 //      $(this).animate({ color : "black" }, 500)
+					// 		  }).on('mouseleave', function() {
+					// 		      $(this).stop(true, true);
+					// 		      $(this).animate({ color : "white" }, 500);
+					//  }); 
 
 					$("#tambahOver2").on('mouseover', function() {
 				      //jQuery UI doesn't support the hotpink keyword 
@@ -190,159 +225,122 @@ jQuery(document).ready(function() {
 						$(this).addClass("active");					
 					});
 
+					//btn
+
+					$("button[class=cekSubmit]").click(function(){
+						alert('Sudah berhasil tersubmit');				
+					});
+
 					$("#edMasObat").click(function(e){
+						e.preventDefault();
+						$("#nmObat").focus();
 						$("#btnBatalObat").show();
+						$("#smpanObat").hide();
+						$("#ubahObat").show();					
+					});
+					$("#edMasBarang").click(function(e){
+						e.preventDefault();
+						$("#btnBatalObatBrg").show();
+											
+					});
+					$("#edDetLogBarang").click(function(e){
+						e.preventDefault();
+						$("#btnBatalDetBarang").show();
+						$("#pedBarangDet").prop('disabled', true);
 											
 					});
 
-					/*
-					$('#btnSimpanEdit').hide();
-					$(".edObat").click(function(e){
-						e.preventDefault();
-						$("#btnBatalObat").show();
-						$('#btnSimpanEdit').show();
-						$('#smpanObat').hide();
-					});
-
-					$('#btnBatalObat').click(function (e) {
+					$("#ubahObat").click(function(e){
 						e.preventDefault();
 						$("#btnBatalObat").hide();
-						$('#btnSimpanEdit').hide();
-						$('#smpanObat').show();
-
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");						  						  
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
-
-					$('#resetObat').click(function (e) {
-						e.preventDefault();
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
-
-					$('#resetObat').click(function (e) {
-						e.preventDefault();
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						$("#selectSatObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectJnsObat option[value='"+1+"']").attr("selected", "selected");
-						$("#selectGenerik option[value='"+1+"']").attr("selected", "selected");
-					})
-
-					$('#editDetObat').hide();
-					
-					//ini diatur di j_list farmasi
-					
-					$(".edObatDetail").click(function(e){
-						e.preventDefault();
-						$("#btnBatalDetObat").show();
-						$('#editDetObat').show();
-						$('#simpanDetObat').hide();
-					});
-
-					$('#btnBatalDetObat').click(function (e) {
-						e.preventDefault();
-						$("#btnBatalDetObat").hide();
-						$('#editDetObat').hide();
-						$('#simpanDetObat').show();
-
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						var year  = '<?php echo date('Y') ?>';
-						$("#selectSumDanaObat option[value='Mandiri']").attr("selected", "selected");
-						$("#selectTahObat option[value='"+year+"']").attr("selected", "selected");						  						  
-						
-					})
-					$('#resetDetObat').click(function (e) {
-						$(':input','#forminputobat')
-						  .not(':button, :submit, :reset, :hidden')
-						  .val('');
-						var year  = '<?php echo date('Y') ?>';
-						$("#selectSumDanaObat option[value='Mandiri']").attr("selected", "selected");
-						$("#selectTahObat option[value='"+year+"']").attr("selected", "selected");						  						  
-						
-					})
-					*/
-
-					$("#btnBatalObat").click(function(e){
+						$("#smpanObat").show();
 						$("#btnBatalObat").hide();
-											
+						$("#ubahObat").hide();
+																	
 					});
 
-					$("#smpanObat").click(function(e){
-						e.preventDefault();
-						$("#btnBatalObat").hide();											
-					});
-
-					$("#simpanDetObat").click(function(e){
+					$("#ubahDetObat").click(function(e){
 						e.preventDefault();
 
 						$("#noBatchDetObat").prop('disabled', false);
+
 						$("#jmlDetObat").prop('disabled', false);
+
 						$("#pedObatDet").prop('disabled', false);
+
 						$("#selectSumDanaObat").prop('disabled', false);
+						
 						$("#btnBatalDetObat").hide();
+
+						$("#ubahDetObat").hide();
+
+						$("#smpanDetObat").show();
 											
 					});
+					$("#smpanObatBrg").click(function(e){
+						e.preventDefault();
+						$("#btnBatalObatBrg").hide();
+											
+					});
+					$("#smpanDetBarang").click(function(e){
+						e.preventDefault();
 
-					$(".peedObatDetail").click(function(e){
+						$("#pedBarangDet").prop('disabled', false);
+					
+						
+						$("#btnBatalDetBarang").hide();					
+					});
+
+					$("#edDetObat").click(function(e){
 						e.preventDefault();
 						$("#noBatchDetObat").prop('disabled', true);
+
 						$("#jmlDetObat").prop('disabled', true);
+
 						$("#pedObatDet").prop('disabled', true);
+
 						$("#selectSumDanaObat").prop('disabled', true);
 						
-						//$("#btnBatalDetObat").show();
+						$("#btnBatalDetObat").show();
+
+						$("#exdate").focus();
 											
+						$("#ubahDetObat").show();
+
+						$("#smpanDetObat").hide();
 					});
 					$("#editInvenBut").hide();
 						
-					// $(".edIven").click(function(e){
-					// 	e.preventDefault();
-					// 	$(".editInven").addClass("editableform editable-click");
-					// 	$(".editInven").editable();
-					// 	$(".editInven").css("color","blue");
-					// 	$(".editInven").css("cursor","pointer");
-					// 	$("#editInvenBut").show();
-					// 	document.getElementById("status").innerHTML = "Batal";
-											
-					// });
 
-					$("#editInvenBut").click(function(e){
+					//logistik
+					$("#editInvenButBar").hide();
+						
+
+					$("#editInvenButBar").click(function(e){
 						e.preventDefault();
-						$(".editInven").removeClass("editableform editable-click");
-						$(".editInven").removeClass("editable");
-						$(".editInven").css("color","black");
-						$(".editInven").css("cursor","default");
-						$("#editInvenBut").hide();
+						$(".editInvenBar").removeClass("editableform editable-click");
+						$(".editInvenBar").removeClass("editable");
+						$(".editInvenBar").css("color","black");
+						$(".editInvenBar").css("cursor","default");
+						$("#editInvenButBar").hide();
 						document.getElementById("status").innerHTML = "Edit";
 											
 					});
 
-					$("#tblInven1").on('click','tr td a.edIven',function(e){
+
+					
+					$("#tblInven2").on('click','tr td a.edIvenBar',function(e){
 						e.preventDefault();
-						 var inven = $(this).closest('td').prevAll('td:has(a.editInven)')
-                     .children('td a.editInven');
+						 var inven = $(this).closest('td').prevAll('td:has(a.editInvenBar)')
+                     .children('td a.editInvenBar');
 						inven.addClass("editableform editable-click");
 						inven.editable();
 						inven.css("color","blue");
 						inven.css("cursor","pointer");
 						document.getElementById("status").innerHTML = "Batal";
-						$("#editInvenBut").show();
+						$("#editInvenButBar").show();
 	
 					});
-
-
 
 					$("#adaanTambah").click(function(event){
 						event.preventDefault();
@@ -648,34 +646,95 @@ jQuery(document).ready(function() {
 
 						}
 					});
+
+
+					$("#asuransi").hide();
+					$("#kontrak").hide();
+					$("#kelas").hide();
+					$("#noasuransi").hide();
 					$("#carabayar").change(function(){
 						if (document.getElementById('carabayar').value=="BPJS") {
 							$("#asuransi").hide();
 							$("#kontrak").hide();
 							$("#kelas").show();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 						}
 						else if (document.getElementById('carabayar').value=="Asuransi") {
 							$("#kontrak").hide();
 							$("#kelas").hide();
 							$("#asuransi").show();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 						}
 						else if (document.getElementById('carabayar').value=="Kontrak") {
 							$("#asuransi").hide();
 							$("#kelas").hide();
 							$("#kontrak").show();
-							$("#noAsuransi").hide();
+							$("#noasuransi").show();
+						}
+						else if (document.getElementById('carabayar').value=="Jamkesmas") {
+							$("#asuransi").hide();
+							$("#kelas").hide();
+							$("#kontrak").hide();
+							$("#noasuransi").show();
+						}
+						else if (document.getElementById('carabayar').value=="Gratis") {
+							$("#asuransi").hide();
+							$("#kelas").hide();
+							$("#kontrak").hide();
+							$("#noasuransi").show();
 						}
 						else{
-
-							$("#noAsuransi").hide();
+							$("#noasuransi").hide();	
 							$("#asuransi").hide();
 							$("#kontrak").hide();
 							$("#kelas").hide();
 
 						}
 					});
+
+					$("#asuransiruj").hide();
+					$("#kontrakruj").hide();
+					$("#kelasruj").hide();
+					$("#noasuransiruj").hide();
+					$("#carabayarruj").change(function(){
+						if (document.getElementById('carabayarruj').value=="BPJS") {
+							$("#asuransiruj").hide();
+							$("#kontrakruj").hide();
+							$("#kelasruj").show();
+							$("#noasuransiruj").show();
+						}
+						else if (document.getElementById('carabayarruj').value=="Asuransi") {
+							$("#kontrakruj").hide();
+							$("#kelasruj").hide();
+							$("#asuransiruj").show();
+							$("#noasuransiruj").show();
+						}
+						else if (document.getElementById('carabayarruj').value=="Kontrak") {
+							$("#asuransiruj").hide();
+							$("#kelasruj").hide();
+							$("#kontrakruj").show();
+							$("#noasuransiruj").show();
+						}
+						else if (document.getElementById('carabayarruj').value=="Jamkesmas") {
+							$("#asuransiruj").hide();
+							$("#kelasruj").hide();
+							$("#kontrakruj").hide();
+							$("#noasuransiruj").show();
+						}
+						else if (document.getElementById('carabayarruj').value=="Gratis") {
+							$("#asuransiruj").hide();
+							$("#kelasruj").hide();
+							$("#kontrakruj").hide();
+							$("#noasuransiruj").show();
+						}
+						else{
+							$("#noasuransiruj").hide();	
+							$("#asuransiruj").hide();
+							$("#kontrakruj").hide();
+							$("#kelasruj").hide();
+						}
+					});
+
 					$(".go-top").hide();
 					var offset = 0;
 				    var duration = 300;
@@ -695,6 +754,56 @@ jQuery(document).ready(function() {
 					$("#btnBawah").click(function(){
 						$("#info1").slideToggle();
 					});
+					
+
+
+					$("#btnBawahTabelRiwayat").click(function(){
+						$("#tblRiwayat").slideToggle();
+					});
+
+					$("#btnBawahRiwRetDepartemen").click(function(){
+						$("#infoRiwRetDepartemen").slideToggle();
+					});
+
+					$("#btnBawahRiwRetDistributor").click(function(){
+						$("#infoRiwRetDistributor").slideToggle();
+					});
+
+					$("#btnBawahMintaBarang").click(function(){
+						$("#infoMintaBarang").slideToggle();
+					});
+					$("#btnBawahStokOpnameBarang").click(function(){
+						$("#infoStokOpnameBarang").slideToggle();
+					});
+					$("#btnBawahAdaanGudang").click(function(){
+						$("#infoAdaanGudang").slideToggle();
+					});
+					$("#btnBawahTerimaBarang").click(function(){
+						$("#infoTerimaBarang").slideToggle();
+					});
+					$("#btnBawahRiwTerimaBarang").click(function(){
+						$("#infoRiwTerimaBarang").slideToggle();
+					});
+					$("#btnBawahRiwaAdaGudang").click(function(){
+						$("#infoRiwaAdaGudang").slideToggle();
+					});
+					
+					$("#btnBawahDataPasienObat").click(function(){
+						$("#infoDataPasienObat").slideToggle();
+					});
+					$("#btnBawahDetBarang1").click(function(){
+						$("#infoDetBarang1").slideToggle();
+					});
+					$("#btnBawahInventoriGudangBarang").click(function(){
+						$("#infoInventoriGudangBarang").slideToggle();
+					});
+					$("#btnBawahMasBarang").click(function(){
+						$("#infoMasBarang").slideToggle();
+					});
+
+					$("#btnBawahDataKaryawan").click(function(){
+						$("#infoDataKaryawan").slideToggle();
+					});
 
 					$("#btnBawahInventoriGudang").click(function(){
 						$("#infoInventoriGudang").slideToggle();
@@ -712,6 +821,9 @@ jQuery(document).ready(function() {
 					});
 					$("#btnBawahMintaObat").click(function(){
 						$("#infoMintaObat").slideToggle();
+					});
+					$("#btnBawahRiwMintaObat").click(function(){
+						$("#infoRiwMintaObat").slideToggle();
 					});
 					$("#btnBawahRetDistributor").click(function(){
 						$("#infoRetDistributor").slideToggle();
@@ -808,6 +920,10 @@ jQuery(document).ready(function() {
 						$("#tabelcare").slideToggle();
 					});
 
+					$("#btnBawahHis").click(function(){
+						$("#tabelhis").slideToggle();
+					});
+
 					$("#btnBawahhasil").click(function(){
 						$("#infohasillab").slideToggle();
 					});
@@ -865,28 +981,42 @@ jQuery(document).ready(function() {
 						if(document.getElementById('filter').value=="Dokter"){
 							$("#textFilter").attr('placeholder',"Nama Dokter");
 						}
-						else if(document.getElementById('filter').value=="Poliklinik"){
-							$("#textFilter").attr('placeholder',"Poli Tujuan");
+						else if(document.getElementById('filter').value=="Cara Pembayaran"){
+							$("#textFilter").attr('placeholder',"Cara Bayar");
 						}
-						else if(document.getElementById('filter').value=="Unit"){
-							$("#textFilter").attr('placeholder',"Unit/Departement");
+						else if(document.getElementById('filter').value=="Pasien Baru"){
+							$("#textFilter").attr('placeholder',"Pasien Baru");
 						}
-						
+						else {
+							$("#textFilter").attr('placeholder',"Pasien Lama");
+						}
 					});
 
-					$( ".glyphicon-chevron-up" ).click(function() {  
-					    if (  $( this ).css( "transform" ) == 'none' ){
-					        $(this).css("transform","rotate(180deg)");
-					    } else {
-					        $(this).css("transform","" );
-					    }
+					$("#filterInv").change(function(){
+						if(document.getElementById('filterInv').value=="Nama Obat"){
+							$("#filterby").attr('placeholder',"Nama Obat");
+						}
+						else if(document.getElementById('filterInv').value=="Jenis Obat"){
+							$("#filterby").attr('placeholder',"Jenis Obat");
+						}
+						else if(document.getElementById('filterInv').value=="Merek"){
+							$("#filterby").attr('placeholder',"Merek");
+						}
+						else if(document.getElementById('filterInv').value=="Sumber Dana"){
+							$("#filterby").attr('placeholder',"Sumber Dana");
+						}
+						else {
+							$("#filterby").attr('placeholder',"Penyedia");
+						}
 					});
 
-					$( ".glyphicon-chevron-down" ).click(function() {  
-					    if (  $( this ).css( "transform" ) == 'none' ){
-					        $(this).css("transform","rotate(180deg)");
+
+
+					$( ".dropdown" ).click(function() {  
+					    if (  $( ".glyphicon-chevron-up" ).css( "transform" ) == 'none' ){
+					        $(".glyphicon-chevron-up").css("transform","rotate(180deg)");
 					    } else {
-					        $(this).css("transform","" );
+					        $(".glyphicon-chevron-up").css("transform","" );
 					    }
 					});
 
@@ -895,13 +1025,22 @@ jQuery(document).ready(function() {
 					});
 					
 					
-					$("#simpanOver").hide();					
+					// $("#simpanOver").hide();	
+					// $("#bcancel").hide();				
 
-					$("#tambahOver").click(function(){
-						$(".isian").attr("disabled", false);
-						$(".calder").attr("readonly", true);
-						$("#simpanOver").show();
-					});
+					// $("#tambahOver").click(function(){
+					// 	$(".isian").attr("disabled", false);
+					// 	$(".calder").attr("readonly", true);
+					// 	$("#simpanOver").show();
+					// 	$("#bcancel").show();
+					// });
+
+					// $("#bcancel").click(function(){
+					// 	$(".isian").attr("disabled", true);
+					// 	$(".calder").attr("readonly", false);
+					// 	$("#simpanOver").hide();
+					// 	$("#bcancel").hide();
+					// });
 
 					$("#simpanbtn").hide();
 					$("#batalbtn").hide();
@@ -934,14 +1073,38 @@ jQuery(document).ready(function() {
 						$("#batalbtn").hide();
 					});
 					
-					var addDiv = $('#addinput');
-					var i = $('#addinput').size();
+					var addDivA = $('#addInputKom');
+					var i1 = $('#addInputKom').size();
 					
-					$('.addNew').on('click', function() {
+					$('.addNewKomposisi').on('click', function() {
 						
-					$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="adaanQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru&nbsp;|&nbsp;<a href="#" class="removeRow">Remove</a></td></tr>').appendTo(addDiv);
-					i++;
-					$(".adaanQty").editable(); 
+					$('<tr><td>A</td><td>10</td></tr>').appendTo(addDivA);
+					i1++;
+					return false;
+					
+					});
+
+					var addDivRac = $('#addTabObat');
+					var i2 = $('#addTabObat').size();
+					
+					$('#tmbhObatRacikan').on('click', function() {
+						
+					$('<tr><td>Obat Racik 1</td><td style="text-align:center">A,B,C</td><td style="text-align:center">20</td><td style="text-align:center">KG</td><td style="text-align:center">10000</td><td style="text-align:center">3000</td><td style="text-align:center">12</td><td style="text-align:center"><a href="#" class="editableform editable-click tmbhnBy" data-type="text" data-pk="1" data-original-title="Jumlah Tambahan" id="byTambah">0</a></td><td style="text-align:center">30000</td></tr>').appendTo(addDivRac);
+					i2++;
+					$(".tmbhnBy").editable(); 
+					
+					return false;
+					
+					});
+
+					var addDivNonRac = $('#addTabObat');
+					var i3 = $('#addTabObat').size();
+					
+					$('#tmbhObatNonRacikan').on('click', function() {
+						
+					$('<tr><td>Obat Racik 1</td><td style="text-align:center">A,B,C</td><td style="text-align:center">20</td><td style="text-align:center">KG</td><td style="text-align:center">10000</td><td style="text-align:center">3000</td><td style="text-align:center">12</td><td style="text-align:center"><a href="#" class="editableform editable-click tmbhnBy" data-type="text" data-pk="1" data-original-title="Jumlah Tambahan" id="byTambah">0</a></td><td style="text-align:center">30000</td></tr>').appendTo(addDivNonRac);
+					i2++;
+					$(".tmbhnBy").editable(); 
 					
 					return false;
 					
@@ -952,9 +1115,38 @@ jQuery(document).ready(function() {
 					
 					$('.addNewTerima').on('click', function() {
 						
-					$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td>Baru</td><td>Baru&nbsp;|&nbsp;<a href="#" class="removeRow">Remove</a></td></tr>').appendTo(addDivTerima);
+						$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td><a href="#" class="adaanQtyTer editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td>Baru</td><td>1000 &nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDivTerima);
+						i++;
+						$(".adaanQtyTer").editable(); 
+						
+						return false;
+					
+					});
+
+
+
+					var addDiv = $('#addinput');
+					var i = $('#addinput').size();
+					
+					$('.addNew').on('click', function() {
+						
+
+					$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="adaanQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru|&nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDiv);
 					i++;
-					$(".adaanQtyTer").editable(); 
+					$(".adaanQty").editable(); 
+					
+					return false;
+					
+					});
+
+					var addDivBar = $('#addinputAdaBarang');
+					var b = $('#addinputAdaBarang').size();
+					
+					$('.addNewAdaBarang').on('click', function() {
+						
+					$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="adaanQtyBar editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyBarid'+i+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru|&nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDivBar);
+					i++;
+					$(".adaanQtyBar").editable(); 
 					
 					return false;
 					
@@ -965,54 +1157,145 @@ jQuery(document).ready(function() {
 					
 					$('.addNew1').on('click', function() {
 						
-						$('<tr><td>Baru</td><td><a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+z+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru</td></tr>').appendTo(addDiv1);
-						z++;
-						$(".returQty").editable(); 
-						
-						return false;
+					$('<tr><td>Baru</td><td><a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+z+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru|&nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDiv1);
+					z++;
+					$(".returQty").editable(); 
+					
+					return false;
 					
 					});					
+					//REVISI 17 JULI TAMBAHKAN DARI SINI KEBAWAH
+					
+					//Apotik
+					var addDivApo = $('#addinputMintaApoUm');
+					var apoUm = $('#addinputMintaApoUm').size();
+					
+					//data-kosong apo umum
+					var addDivKos = $('.addKosong');
+					var countKos = $(".addKosong tr").length;
+					if (countKos==0) {
+					$('<tr><td colspan="7" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>').appendTo(addDivKos);						
+					};
+
+					//data-kosong apo retur
+					var addDivApo1 = $('.returObat');
+					var countApo1 = $(".returObat tr").length;
+					if (countApo1==0) {
+					$('<tr><td colspan="7" style="text-align:center" class="dataKosong1">DATA KOSONG</td></tr>').appendTo(addDivApo1);						
+					};								
+					
+					$('.addNewApoUm').on('click', function() {
+					var count1 = $(".apo tr").length;
+					if (count1==1) {
+					$('.dataKosong').closest('tr').remove();
+					};				
+					$('<tr><td>1</td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru</td><td><a href="#" class="returApoUm editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+apoUm+'">1</a></td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDivApo);
+					z++;
+					$(".returApoUm").editable(); 
+					
+					return false;
+					
+					});
+
+
+					var addDivApoRet = $('#addinputRetApoUm');
+					var apoUmRet = $('#addinputRetApoUm').size();
+					
+					$('.addNewRetApoUm').on('click', function() {
+					var count2 = $(".returObat tr").length;
+					if (count2==1) {
+					$('.dataKosong1').closest('tr').remove();
+					};				
+					$('<tr><td>1</td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru</td><td><a href="#" class="returRetApoUm editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+apoUmRet+'">1</a></td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDivApoRet);
+					z++;
+					$(".returRetApoUm").editable(); 
+					
+					return false;
+					
+					});
+
+					//logistim retur
+
+					var addDivBarRet = $('#addinputReturDisBar');
+					var barID = $('#addinputReturDisBar').size();
+					
+					$('.addNewBar').on('click', function() {
+						
+					$('<tr><td>Baru</td><td>Baru</td><td><a href="#" class="returBarQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+barID+'">1</a></td><td>Baru</td><td>Baru</td><td>auwp</td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDivBarRet);
+					barID++;
+					$(".returBarQty").editable(); 
+					
+					return false;
+					
+					});
+
 					//for scrolling fixed
 					$(window).scroll(function(){
 					    $("#rowfix").css("top",Math.max(125,230-$(this).scrollTop()));
 					});
-
-					
+				
 					$(".round-button-tes").click(function(e){
 						e.preventDefault();
-						$(".round-button-tes").removeClass("round-button-active");
+						$('.round-button-active').removeClass("round-button-active");
 						$(this).addClass("round-button-active");
-											
 					});
+
+					$('#tabApo').on('click', 'a[class="removeRow"]', function(e) {
+						e.preventDefault();
+						$(this).closest('tr').remove();
+						var count = $(".apo tr").length;
+						var addDivTab = $('.apo');
+						if (count==0) {
+						$('<tr><td colspan="7" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>').appendTo(addDivTab);						
+						};
+					});
+
+					$('#tabRetur').on('click', 'a[class="removeRow"]', function(e) {
+						e.preventDefault();
+						$(this).closest('tr').remove();
+						var count3 = $(".returObat tr").length;
+						var addDivTabRet = $('.returObat');
+						if (count3==0) {
+						$('<tr><td colspan="7" style="text-align:center" class="dataKosong1">DATA KOSONG</td></tr>').appendTo(addDivTabRet);						
+						};
+					});
+
+					//general table
 					
 					$('table').on('click', 'a[class="removeRow"]', function(e) {
 						e.preventDefault();
-						$(this).closest('tr').remove()
+						$(this).closest('tr').remove();
 					});
-					
-	});
-</script>
-<script src="<?php echo base_url();?>metronic/assets/js/main.js"></script>
 
+	});
+
+</script>
 
 <script type="text/javascript">
-	$(document).ready(function (e) {
-		$(".numberrequired").keydown(function (e) {
-		    // Allow: backspace, delete, tab, escape, enter and .
-		    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
-		        // Allow: Ctrl+A
-		        (e.keyCode == 65 && e.ctrlKey === true) || 
-		        // Allow: home, end, left, right
-		        (e.keyCode >= 35 && e.keyCode <= 39)) {
-		        // let it happen, don't do anything
-		        return;
-		    }
-		    // Ensure that it is a number and stop the keypress
-		    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-		        e.preventDefault();
-		    }
-		});
-	})
+	function getAllElementsWithAttribute(attribute)
+					{
+					  var matchingElements = [];
+					  var allElements = document.getElementsByTagName('*');
+					  for (var i = 0, n = allElements.length; i < n; i++)
+					  {
+					    if (allElements[i].getAttribute(attribute) !== null)
+					    {
+					      // Element exists with attribute. Add to array.
+					      matchingElements.push(allElements[i]);
+					    }
+					  }
+					  return matchingElements;
+					}
+
+					function setElements(vektor){
+						for (var i = 0, n = vektor.length; i < n; i++)
+					  	{
+							vektor[i].setAttribute('data-date-autoclose','true');
+						}
+					}
 </script>
+
+
+<script src="<?php echo base_url();?>metronic/assets/js/main.js"></script>
 
 <!-- END JAVASCRIPTS -->

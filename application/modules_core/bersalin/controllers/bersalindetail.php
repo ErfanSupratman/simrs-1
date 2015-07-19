@@ -1,7 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
+// require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
+require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
-class Bersalindetail extends Application_Base {
+class Bersalindetail extends Operator_base {
 	protected $ses;
 	function __construct() {
 		parent:: __construct();
@@ -17,12 +18,15 @@ class Bersalindetail extends Application_Base {
 
 	public function daftar($rm_id = '', $visit_id='')
 	{
-		$data['content'] = 'bersalindetail/list';
-		$data['menu'] = $this->menu();
+		$this->check_auth('R');
 		$data['menu_view'] = $this->menu();
-		//$data['user'] = $this->user;
+		$data['user'] = $this->user;
+
+		$data['content'] = 'bersalindetail/list';
+
 		$data['javascript'] = "bersalindetail/javascript/j_list";	
 		$this->load->model('m_bersalin');
+
 		//load semua data pasien dengan no rm tertentu
 		$pasien = $this->m_bersalin->get_pasien($rm_id);
 		$params = $this->get_alamat_pasien($pasien);
@@ -45,6 +49,9 @@ class Bersalindetail extends Application_Base {
 		$data['order_operasi'] = $this->m_bersalin->get_order_operasi($visit_id);
 		$data['dept_rujukan'] = $this->m_bersalin->get_dept_rujukan();
 		$data['riwayat'] = $this->m_bersalin->get_all_medical_record($rm_id);
+		$data['alldepartment'] = $this->m_bersalin->get_all_department_ri();
+		$data['visit_ri_info'] = $this->m_bersalin->visit_ri_info($visit_id);
+		$data['pasien_on_bed'] = $this->m_bersalin->get_pasien_on_bed($visit_id);
 		
 		$this->load->view('base/operator/template', $data);
 	}
@@ -89,8 +96,7 @@ class Bersalindetail extends Application_Base {
 		}
 
 		$insert['tanggal'] = date('Y-m-d H:i:s');
-		//kurang overview_id
-		//$insert['overview_id'] = '100';
+
 		$hasil = $this->m_bersalin->insert_overview($insert);
 
 		header('Content-Type:application/json');
@@ -380,8 +386,54 @@ class Bersalindetail extends Application_Base {
 		header('Content-Type:application/json');
 		echo(json_encode($result));
 	}
-
-
 	/*akhir riwayat penyakit*/
 	
+	/*checkout*/
+	public function checkout_process()
+	{
+		foreach ($_POST as $value) 
+		{
+			$insert = $value;
+		}
+
+		$params = array(
+			'waktu_keluar' => $insert['waktu_keluar'], 
+			'alasan_keluar' => $insert['alasan_keluar'],
+			'detail_alasan_pulang' => $insert['detail_alasan_pulang'],
+			'waktu_kematian' => "",
+			'keterangan_kematian' => "" 
+			);
+		if($insert['alasan_keluar'] == "Pasien Meninggal"){
+			$params['waktu_kematian'] = $insert['waktu_kematian'];
+			$params['keterangan_kematian'] = $insert['keterangan_kematian'];
+		}
+
+		$upd['waktu_keluar'] = $insert['waktu_keluar'];
+
+		$visit_id = $insert['visit_id'];
+		$bed_id = $insert['old_bed_id'];
+		$inap_id = $insert['inap_id'];
+
+
+		if ($update = $this->m_bersalin->update_rawat_info($params, $visit_id)) {
+			//update mana nih buat bayar?
+			//pindah pasien ke tempat lain juga perlu 
+
+			if ($update = $this->m_bersalin->update_visit_kamar($upd, $inap_id)) {
+				$array = array('is_dipakai' => '0');
+				if ($update = $this->m_bersalin->update_kamar_info($array, $bed_id)) {
+					
+				}
+			}
+		}
+
+		header('Content-Type:application/json');
+		echo(json_encode($update));
+	}
+	/**/
+
+	/*pindah pasien*/
+
+	/*akhir pindah pasien*/
+
 }

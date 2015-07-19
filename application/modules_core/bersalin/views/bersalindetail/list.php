@@ -2406,7 +2406,7 @@
             </div>
             <br>
             <div class="informasi" id="infoPindah">
-            	<form class="form-horizontal" role="form">
+            	<form class="form-horizontal" role="form" id="formpindahkamar">
 	            	<div class="form-group">
 						<label class="control-label col-md-3">Tanggal Pindah Kamar</label>
 						<div class="col-md-2" >
@@ -2422,9 +2422,15 @@
 						</label>
 						<div class="col-md-2">			
 							<select class="form-control select" name="pilUnit" id="pilUnit">
-								<option value="Unit A" selected>Unit A</option>
-								<option value="Unit B">Unit B</option>
-								<option value="Unit C">Unit C</option>
+								<?php  
+									if (isset($alldepartment)) {
+										if (!empty($alldepartment)) {
+											foreach ($alldepartment as $value) {
+												echo '<option value="'.$value['dept_id'].'">'.$value['nama_dept'].'</option>';
+											}
+										}
+									}
+								?>
 							</select>
 						</div>							
 					</div>
@@ -3051,13 +3057,26 @@
             </div>
 
             <div class="informasi" id="infoResumePulang">
-            	<form class="form-horizontal" role="form">
+            	<form class="form-horizontal" role="form" id="formresume">
+            		<input type="hidden" id="inap_id" value="<?php echo $pasien_on_bed['inap_id']?>" data-required="1" class="form-control"/>
+					<input type="hidden" id="biaya_per_hari" value="<?php echo $pasien_on_bed['tarif_kamar']?>" data-required="1" class="form-control"/>
+					<input type="hidden" id="old_kamar_id" value="<?php echo $pasien_on_bed['kamar_id']?>" data-required="1" class="form-control"/>
+					<input type="hidden" id="old_bed_id" value="<?php echo $pasien_on_bed['bed_id']?>" data-required="1" class="form-control"/>
+            		<div class="form-group">
+						<label class="control-label col-md-3">Tanggal Masuk RS</label>
+						<div class="col-md-2" >
+							<div class="input-icon">
+								<i class="fa fa-calendar"></i>
+								<input type="text" id="tglMasukRS" class="form-control isian calder" disabled data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo $visit_ri_info['waktu_masuk'];?>">
+							</div>
+						</div>
+					</div>
             		<div class="form-group">
 						<label class="control-label col-md-3">Tanggal Keluar RS</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tglKeluarRS" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" id="tglKeluarRS" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
 					</div>	
@@ -3097,7 +3116,7 @@
 						<label class="control-label col-md-3" >Isian Rumah Sakit Rujukan
 						</label>
 						<div class="col-md-4">			
-						<input type="text" class="form-control" name="isianRSRujuk" placeholder="Rumah Sakit Rujukan">
+						<input type="text" class="form-control" id="isianRSRujuk" name="isianRSRujuk" placeholder="Rumah Sakit Rujukan">
 					 	</div>
 					</div>				
 
@@ -3154,7 +3173,7 @@
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="waktumeninggal" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy HH:ii" data-provide="datepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								<input type="text" style="cursor:pointer;" id="waktumeninggal" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy HH:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
 							</div>
 						</div>
 					</div>
@@ -3188,9 +3207,9 @@
 						<div class="col-md-6">
 							<a href="#simpanResume"><button type="submit" class="btn btn-success">Simpan </button></a>		
 							&nbsp;&nbsp;
-					 		<a href="#resetResume"><button type="submit" class="btn btn-warning">Reset </button></a>		
+					 		<a href="#resetResume"><button type="button" class="btn btn-warning">Reset </button></a>		
 							&nbsp;&nbsp;
-							<a href="#cancelResume"><button type="submit" class="btn btn-danger">Cancel </button></a>		
+							<a href="#cancelResume"><button type="button" class="btn btn-danger">Cancel </button></a>		
 					 	</div>								
 					</div>
 				</form>	

@@ -1,37 +1,34 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
-class Operator extends CI_Controller {
-	// public function __construct() {
-	// 	// call the controller construct
-	// 	parent::__construct();
-	// 	// load model
-	// 	$this->load->model('m_dashboard');
-	// 	// page title
-	// 	$this->page_title();
+class Operator extends Operator_base {
+	public function __construct() {
+		// call the controller construct
+		parent::__construct();
 
-	// 	// active page
-	// 	$active['parent_active'] = "home";
-	// 	$active['child_active'] = "home";
-	// 	$this->session->set_userdata($active);	
+		// page title
+		$this->page_title();
 
-	// }
+		// active page
+		$active['parent_active'] = "home";
+		$active['child_active'] = "home";
+		$this->session->set_userdata($active);	
+	}
 
 	public function index()
 	{
-		// // menu
-		// $data['menu'] = $this->menu();
-		// // $data['menu2'] = $this->menu_horizontal();
-		// // user detail
-		// $data['user'] = $this->user;
-
-		// // load template
-		 $data['content'] = 'operator/dashboard';
+		//echo ($this->uri->segment(1) . '/' . $this->uri->segment(2));die();
+		$this->check_auth('R');
+		$data['menu_view'] = $this->menu();
+		$data['user'] = $this->user;
+		
+		$data['content'] = 'operator/dashboard';
 		$this->load->view('base/operator/template', $data);
 	}
 
 	// // page title
-	// public function page_title() {
-	// 	$data['page_title'] = 'Dashboard';
-	// 	$this->session->set_userdata($data);
-	// }
+	public function page_title() {
+		$data['page_title'] = 'Dashboard';
+		$this->session->set_userdata($data);
+	}
 }

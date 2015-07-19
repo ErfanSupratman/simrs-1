@@ -17,10 +17,17 @@
 						AND v.dept_id = d.dept_id AND v.dept_id = 19 
 						AND vr.waktu_keluar IS NULL 
 						AND p.nama LIKE '%$query%' 
-						OR p.rm_id LIKE '%$query%'"; //19 adalah dept_id bersalin
+						OR p.rm_id LIKE '$query'"; //19 adalah dept_id bersalin
 			$query = $this->db->query($sql);
 			$result = $query->result_array();
 			return $result;
+
+			/*select * from 
+			(select * from visit v where tipe_kunjungan = 'RAWAT INAP' and visit_id = '1505240002') v 
+			left join visit_ri vr on v.visit_id = vr.visit_id left 
+			join visit_inap_kamar vk on vk.visit_id = vr.visit_id 
+			left join master_kamar mk on mk.kamar_id = vk.kamar_id 
+			left join master_bed mb on mb.bed_id = vk.bed_id*/
 		}
 
 		public function get_all_petugas()
@@ -33,12 +40,48 @@
 	    	}
 	    }
 
+	    public function get_all_department_ri()
+	    {
+	    	$sql = "SELECT * from master_dept where jenis LIKE 'RAWAT INAP' AND dept_id != '19'";
+	    	if ($query = $this->db->query($sql)) {
+	    		return $query->result_array();
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
+	    public function visit_ri_info($visit_id)
+	    {
+	    	$sql = "SELECT * from visit_ri where visit_id = '$visit_id'";
+	    	if ($query = $this->db->query($sql)) {
+	    		return $query->row_array();
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
+	    public function get_pasien_on_bed($visit_id)
+	    {
+	    	$sql = "SELECT * from visit_inap_kamar vk 
+	    		left join master_kamar mk on vk.kamar_id = mk.kamar_id 
+	    		left join master_bed mb on vk.bed_id = mb.bed_id 
+	    		where vk.visit_id = '$visit_id' ";
+    		if ($query = $this->db->query($sql)) {
+	    		return $query->row_array();
+	    	}else{
+	    		return false;
+	    	}
+	    }
+
 	    /*pasien mulai dari sini*/
 		public function get_pasien_by_dept($dept_id='')
 		{
 			$sql = "SELECT * 
-                  FROM pasien p, visit v, master_dept d
-                  WHERE p.rm_id = v.rm_id AND v.dept_id = d.dept_id AND d.dept_id = ?";
+                  FROM pasien p, visit v, master_dept d, visit_ri vr
+                  WHERE p.rm_id = v.rm_id AND v.dept_id = d.dept_id 
+                  AND v.visit_id = vr.visit_id  
+                  AND vr.waktu_keluar IS NULL 
+                  AND d.dept_id = ?";
         	$query = $this->db->query($sql, $dept_id);
 	        if ($query) {
 	            return $query->result_array();
@@ -605,6 +648,48 @@
 		}
 
 		/*akhir riwayat penyakit*/
+
+		/*checkout*/
+		public function update_rawat_info($params, $visit_id)
+		{
+			$this->db->where('visit_id', $visit_id);
+			$update = $this->db->update('visit_ri',$params);
+			if ($update) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public function update_visit_kamar($params, $inap_id)
+		{
+			$this->db->where('inap_id', $inap_id);
+			$update = $this->db->update('visit_inap_kamar',$params);
+			if ($update) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		public function update_kamar_info($params, $bed_id)
+		{
+			$this->db->where('bed_id', $bed_id);
+			$update = $this->db->update('master_bed',$params);
+			if ($update) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		//kurang pemberian biaya dan checkout ke department lain di rumah sakit
+
+		/*checkout akhir*/
+
+		/**/
+
+		/**/
 
 	}
 ?>
