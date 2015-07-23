@@ -118,11 +118,11 @@
 						<div class="col-md-2">
 						</div>
 						<label class="control-label col-md-2" >Margin </label>
-						<div class="col-md-1">
-							<input type="text" class="form-control numberrequired" id="marginobat" name="marginobat" placeholder="margin" required/>
-						</div>
-						<div class="col-md-1">
-							<span style="font-size:13pt; margin-left:-20px;">%</span>
+						<div class="col-md-2">
+							<div class="input-group" style="float:left;">
+								<input type="text" class="form-control numberrequired" maxlength="3" id="marginobat" name="marginobat" placeholder="margin" required/>
+								<span class="input-group-addon" id="basic-addon1">%</span>
+							</div>
 						</div>
 					</div>
 
@@ -200,6 +200,7 @@
 						</div>
 						<div class="col-md-2" style="margin-left:-15px">
 							<select class="form-control select" name="selectSatObatBwh" id="selectSatObatBwh" style="width:100px">
+									<option value="">Pilih Satuan</option>';
 									<?php if (!empty($satuan_obat)) {
 			         					foreach ($satuan_obat as $value) {
 			         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
@@ -209,7 +210,8 @@
 						</div>
 						<div class="col-md-2" style="margin-left:-100px">
 							<select class="form-control select" name="selectGenObatBwh" id="selectGenObatBwh">
-								<option value="1" selected>Generik</option>
+								<option value="" selected>Pilih</option>
+								<option value="1">Generik</option>
 								<option value="0">Non Generik</option>
 							</select>
 						</div>
@@ -224,9 +226,10 @@
 
 					<div class="portlet box red" style="margin-left:-50px; margin-right:20px; margin-bottom:40px;">
 						<div class="portlet-title">
-							<label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label>
+							<!-- <label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label> -->
 						</div>
-						<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+						<br>
+						<div class="portlet-body" style="margin: 30px 10px 0px 10px">
 							<table class="table table-striped table-bordered table-hover table-responsive" id="tabelobat">
 								<thead>
 									<tr class="info" >
@@ -451,7 +454,7 @@
 
 					<div class="portlet box red" style="margin-left:-50px; margin-right:20px; margin-bottom:40px;">
 						<div class="portlet-title">
-							<label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label>
+							<!-- <label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label> -->
 						</div>
 						<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 						
@@ -510,6 +513,7 @@
 						
 							<div class="col-md-1">
 								<select class="form-control select" name="filterSat" id="filterSat" style="margin-left:-15px;width:120px">
+										<option value="" selected="selected">Pilih</option>;
 										<?php if (!empty($satuan_obat)) {
 				         					foreach ($satuan_obat as $value) {
 				         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
@@ -519,7 +523,8 @@
 							</div>
 							<div class="col-md-1" >
 								<select class="form-control select" name="filterGen" id="filterGen" style="margin-left:13px; width:150px">
-										<option value="1" selected>Generik</option>
+										<option value="" selected="selected">Pilih</option>;
+										<option value="1">Generik</option>
 										<option value="0">Non Generik</option>					
 								</select>
 							</div>
@@ -544,9 +549,9 @@
 
 				<div class="portlet box red" style="margin-left:-40px; margin-right:20px; margin-bottom:40px;">
 					<div class="portlet-title">
-						<label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label>
+						<!-- <label class="control-label col-md-3" style="font-size: 16pt">Daftar Obat</label> -->
 					</div>
-					<div class="portlet-body" style="margin: 0px 10px 0px -10px">
+					<div class="portlet-body" style="margin: 20px 10px 0px -10px">
 						
 						<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
 							<thead>
@@ -712,13 +717,12 @@
 
 						<div class="form-group">
 
-							<label class="control-label col-md-2">Petugas Input 
-							</label>
+							<!-- <label class="control-label col-md-2">Petugas Input </label>
 							<div class="col-md-3">
 								<input type="hidden" id="pidAdaan">
 								<input type="text" class="form-control" id="petugasAdaan" name="ptgasInput" placeholder="Petugas"  data-toggle="modal" data-target="#ptgas"/>
 		            		</div>
-		            		<div class="col-md-1"></div>
+		            		<div class="col-md-1"></div> -->
 							<label class="control-label col-md-2" >Keterangan 
 							</label>
 							<div class="col-md-3" >
@@ -744,7 +748,7 @@
 										<th  style="text-align:left"> Satuan </th>
 										<th  style="text-align:left"> HPS </th>
 										<th  style="text-align:left"> Total </th>
-										
+										<th  style="text-align:left"> Action </th>
 									</tr>
 								</thead>
 								<tbody  id="tbody_addpengadaan">
@@ -798,6 +802,7 @@
 						<table class="table table-striped table-bordered table-hover table-responsive">
 							<thead>
 								<tr class="info" >
+									<th  style="text-align:left" width="5%"> Nomor </th>
 									<th  style="text-align:left" width="15%"> Nomor Pengadaan </th>
 									<th  style="text-align:left"> Tanggal Pengadaan </th>
 									<th  style="text-align:left"> Petugas Input </th>
@@ -810,10 +815,12 @@
 							<tbody id="tbody_riwayat">
 								<?php
 								if (!empty($riwayat_pengadaan)) {
+									$i = 1;
 									foreach ($riwayat_pengadaan as $value) {
 										$tgl = strtotime($value['tanggal']);
 										$date = date('d F Y', $tgl); 
 										echo '<tr>'.
+											'<td>'.($i++).'</td>'.
 											'<td class="nomor_pengadaan">'.$value['no_pengadaan'].'</td>'.
 											'<td>'.$date.'</td>'.
 											'<td>'.$value['nama_petugas'].'</td>'.
@@ -931,16 +938,18 @@
 							</div>		
 							<div style="margin-left:20px; margin-right:20px;"><hr></div>
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
+								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;font-size: 98.5%;">
 									<thead>
 										<tr class="warning">
 											<td>Nama Obat</td>
+											<td>Merk Obat</td>
+											<td>Satuan Obat</td>
 											<td width="10%">Pilih</td>
 										</tr>
 									</thead>
 									<tbody id="tbody_pengadaan">
 										<tr>
-											<td colspan="2"><center>Cari Data Obat</center></td>
+											<td colspan="4"><center>Cari Data Obat</center></td>
 										</tr>
 									</tbody>
 								</table>												
@@ -1142,7 +1151,7 @@
 						<div class="form-group">			
 		            		<label class="control-label col-md-2">Nomor Penerimaan </label>
 							<div class="col-md-3">
-								<input type="text" class="form-control numberrequired" id="nmrTerima" name="nmrTerima" placeholder="Nomor Penerimaan"/>
+								<input type="text" class="form-control" id="nmrTerima" name="nmrTerima" placeholder="Nomor Penerimaan"/>
 							</div>
 							<div class="col-md-1"></div>
 							<label class="control-label col-md-2">Sumber Dana </label>
@@ -1161,7 +1170,7 @@
 								<div class="col-md-3">
 								<div class="input-icon">
 									<i class="fa fa-calendar"></i>
-									<input type="text" readonly="" style="cursor:pointer" class="form-control" data-provide="datepicker" id="tglTerimaObat" name="tglTerimaObat" value="<?php echo date('d/m/Y'); ?>">
+									<input type="text" style="cursor:pointer;" id="tglTerimaObat" name="tglTerimaObat" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
 								</div>
 							</div>
 							<div class="col-md-1"></div>
@@ -1173,11 +1182,12 @@
 						</div>
 
 						<div class="form-group">			
-		            		<label class="control-label col-md-2" >Petugas Input 
-							</label>
+		            		<label class="control-label col-md-2" >Tanggal Faktur </label>
 							<div class="col-md-3">
-								<input type="text" class="form-control" id="ptgasInputObat" name="ptgasInputObat" placeholder="Petugas"  data-toggle="modal" data-target="#ptgaspenerimaan"/>
-								<input type="hidden" id="id_petugasInputTerima">
+								<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" id="tglFakturObat" name="tglFakturObat" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
+								</div>
 							</div>
 							<div class="col-md-1"></div>
 							<label class="control-label col-md-2" >Keterangan 
@@ -1206,7 +1216,7 @@
 										<th style="text-align:left"> Diskon</th>
 										<th  style="text-align:left"> Harga </th>
 										<th  style="text-align:left"> Total </th>
-										
+										<th  style="text-align:left"> Action </th>
 									</tr>
 								</thead>
 								<tbody id="t_body_inputterima">
@@ -1225,11 +1235,14 @@
 							</div>
 
 							<div class="form-group">
-								<div class="col-md-2 pull-right" style="width:100px;margin-left:-20px;">
-									<input type="text" class="form-control numberrequired" id="ppn" name="ppn" placeholder="0"/>
+								<div class="col-md-3 pull-right" style="width:120px;margin-left:-20px;">
+									<div class="input-group" style="float:left;">	
+										<input type="text" class="form-control numberrequired" maxlength="3" id="ppn" name="ppn" placeholder="0"/>
+										<span class="input-group-addon" id="basic-addon1">%</span>
+									</div>
 								</div>
-								<div class="col-md-1 pull-right" style="width:10px;margin-left:-23px;font-size:20pt;margin-right:5px;">/ &nbsp;</div>
-								<div class="col-md-2 pull-right" style="width:140px;">
+								<div class="col-md-1 pull-right" style="width:10px;margin-left:-23px;font-size:20pt;margin-right:10px;">/ &nbsp;</div>
+								<div class="col-md-1 pull-right" style="width:120px;">
 									<input type="text" class="form-control numberrequired" id="potongan" name="potongan" placeholder="0"/>
 								</div>
 								<div class="col-md-2 pull-right" style="width:100px; margin-right:-20px;">
@@ -1257,8 +1270,7 @@
 							<div class="form-group">
 								<div class="pull-right" style="margin-bottom:10px;margin-right:18px;">
 									<button type="button" class="btn btn-warning" id="resetpenerimaan">Reset</button>
-									<button class="btn btn-success">Cetak</button>
-									<button type="submit" class="btn btn-success">Simpan</button>
+									<button type="submit" class="btn btn-success">Cetak</button>
 								</div>
 							</div>
 						</div>
@@ -1298,7 +1310,7 @@
 
 					<hr class="garis" style="margin-left:10px;">
 
-					<div class="pull-right" style="margin-right:40px;">
+					<!-- <div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
 							<li class="disabled"><a href="#"><i class="fa fa-angle-left" style="height:5px;"></i></a></li>
 							<li class="paginate-button active"><a href="#">1</a></li>
@@ -1308,11 +1320,11 @@
 							<li class="paginate-button"><a href="#">5</a></li>
 							<li><a href="#"><i class="fa fa-angle-right" style="height:5px;"></i></a></li>
 						</ul>
-					</div>
+					</div> -->
 					<br>
 
 					<div class="portlet-body" style="margin: 20px 10px 0px 15px">
-							<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
+							<table class="table table-striped table-bordered table-hover table-responsive" id="tblriwayatterima">
 								<thead>
 									<tr class="info" >
 										<th style="text-align:center; width:30px;">No.</th>
@@ -1330,14 +1342,15 @@
 									<?php  
 										if (isset($riwayat_penerimaan)) {
 											if (!empty($riwayat_penerimaan)) {
-												$i=0;
+												$i=1;
 												foreach ($riwayat_penerimaan as $value) {
+													$dateTime = DateTime::createFromFormat('Y-m-d',$value['tgl_kadaluarsa']);
 													echo '<tr>'.
-														'<td>'.($i+1).'</td>'.
+														'<td>'.($i++).'</td>'.
 														'<td>'.$value['nama'].'</td>'.
 														'<td>'.$value['satuan'].'</td>'.
 														'<td>'.$value['no_batch'].'</td>'.
-														'<td>'.$value['tgl_kadaluarsa'].'</td>'.
+														'<td>'.$dateTime->format('d F Y').'</td>'.
 														'<td>'.$value['jumlah'].'</td>'.
 														'<td>'.$value['diskon'].'</td>'.
 														'<td>'.$value['harga_beli'].'</td>'.
@@ -1368,7 +1381,7 @@
 	        			<div class="form-group">
 							<div class="form-group">	
 								<div class="col-md-3" style="margin-left:35px;">
-									<input type="text" class="form-control" name="katakuncipenerimaan" id="katakuncipenerimaan" placeholder="Nama petugas"/>
+									<input type="text" class="form-control" name="katakuncipenerimaan" id="katakuncipenerimaan" placeholder="Nama Obat"/>
 								</div>
 								<div class="col-md-2">
 									<button type="button" class="btn btn-info">Cari</button>
@@ -1381,12 +1394,14 @@
 									<thead>
 										<tr class="warning">
 											<td>Nama Obat</td>
+											<td>Harga dasar</td>
+											<td>Satuan</td>
 											<td width="10%">Pilih</td>
 										</tr>
 									</thead>
 									<tbody id="t_body_obatpenerimaan">
 										<tr>
-											<td style="text-align:center" colspan="2">cari data obat</td>
+											<td style="text-align:center" colspan="4">cari data obat</td>
 										</tr>
 									</tbody>
 								</table>												
@@ -1446,6 +1461,7 @@
 													'<td>'.$value['keterangan_request'].'</td>'.
 													'<td style="text-align:center">
 														<input type="hidden" class="idpermintaanobat" value="'.$value['obat_permintaan_id'].'">
+														<input type="hidden" class="iddeptpermintaanobat" value="'.$value['dept_id'].'">
 														<a href="#" class="lihatdetailminta" data-toggle="modal" data-target="#cek">
 															<i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Cek"></i>
 														</a>
@@ -1475,9 +1491,9 @@
 													<thead>
 														<tr class="warning">
 															<th>Nama Obat</th>
-															<th >Satuan</th>
+															<th>Satuan</th>
 															<th>Merek</th>
-															<th>Stok Unit</th>
+															<th>Tanggal Kadaluarsa</th>
 															<th>Stok Gudang</th>
 															<th>Diminta</th>
 															<th>Diberikan</th>
@@ -1495,7 +1511,6 @@
 															<td style="text-align:right"><a href="#" class="editableform editable-click app" data-type="text" data-pk="1" data-original-title="Jumlah Diapprove" id="app">0</a></td>
 															<td style="text-align:right">30000</td>
 														</tr>
-														
 													</tbody>
 												</table>												
 											</div>
@@ -1504,6 +1519,7 @@
 				        			<div class="modal-footer">
 				 			       		<button type="button" class="btn btn-warning" data-dismiss="modal" id="batalterima">Batal</button>
 				 			       		<input type="hidden" id="obat_permintaan_id_confirm">
+				 			       		<input type="hidden" id="deptobat_permintaan_id_confirm">
 				 			       		<button type="submit" class="btn btn-success">Simpan</button>
 							      	</div>
 								</div>
@@ -1579,9 +1595,10 @@
 												if (!empty($riwayat_persetujuan)) {
 													$i=0;
 													foreach ($riwayat_persetujuan as $value) {
+														$tgl = DateTime::createFromFormat('Y-m-d H:i:s',$value['tanggal_request']);
 														echo '<tr>'.
 															'<td style="text-align:center">'.($i+1).'</td>'.
-															'<td>'.$value['tanggal_request'].'</td>'.
+															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
 															'<td>'.$value['nama_dept'].'</td>'.
 															'<td>'.$value['nama_petugas'].'</td>'.
 															'<td>'.$value['keterangan_request'].'</td>'.
@@ -1685,7 +1702,7 @@
 	            <div id="btnBawahRetDepartemen" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
             </div>
             <div class="tabelinformasi" id="infoRetDepartemen">
-            	<div class="pull-right" style="margin-right:40px;">
+            	<!-- <div class="pull-right" style="margin-right:40px;">
 					<ul class="pagination">
 						<li class="disabled"><a href="#"><i class="fa fa-angle-left" style="height:5px;"></i></a></li>
 						<li class="paginate-button active"><a href="#">1</a></li>
@@ -1695,11 +1712,11 @@
 						<li class="paginate-button"><a href="#">5</a></li>
 						<li><a href="#"><i class="fa fa-angle-right" style="height:5px;"></i></a></li>
 					</ul>
-				</div>
+				</div> -->
 				<br>
 				<div class="portlet box red">
 					<div class="portlet-body" style="margin: 25px 10px 0px 10px">
-						<table class="table table-striped table-bordered table-hover table-responsive">
+						<table class="table table-striped table-bordered table-hover table-responsive" id="tabelreturdepartemen">
 							<thead>
 								<tr class="info" >
 									<th style="width:30px"> No.</th>
@@ -1708,65 +1725,78 @@
 									<th  style="text-align:left"> Petugas Input </th>
 									<th  style="text-align:left"> Keterangan </th>
 									<th  style="text-align:left;width:30px;"> Action </th>
-									
 								</tr>
 							</thead>
-							<tbody>
-								<tr>	
-									<td>1</td>
-									<td>S012234</td>
-									<td>Shabu-Shabu</td>
-									<td>Bersalin</td>
-									<td>Arya</td>
-									<td style="text-align:center">
-										<a href="#tambahApp" data-toggle="modal" data-target="#returObatDis"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Cek">
-										</i></a>	
-									</td>						
-								</tr>
+							<tbody id="tbody_obat_dept">
+								<?php  
+									if (isset($returdept)) {
+										if (!empty($returdept)) {
+											$i=0;
+											foreach ($returdept as $value) {
+												echo '<tr>'.
+													'<td>'.($i+1).'</td>'.
+													'<td>'.$value['waktu'].'</td>'.
+													'<td>'.$value['nama_dept'].'</td>'.
+													'<td>'.$value['nama_petugas'].'</td>'.
+													'<td>'.$value['keterangan'].'</td>'.
+													'<td style="text-align:center">'.
+														'<input type="hidden" class="idreturdept" value="'.$value['retur_dept_id'].'">'.
+														'<input type="hidden" class="iddeptreturobat" value="'.$value['dept_id'].'">'.
+														'<a href="#tambahApp" class="cekdetailreturdept" data-toggle="modal" data-target="#returObatDis"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Cek">'.
+														'</i></a>'.	
+													'</td>'.						
+												'</tr>';
+											}
+										}
+									}
+								?>	
 							</tbody>
 						</table>
 					</div>
 					<div class="modal fade" id="returObatDis" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:100%">
-								<div class="modal-dialog">
-									<div class="modal-content" style="width:120%">
-										<div class="modal-header">
-					        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-					        				<h3 class="modal-title" id="myModalLabel">SHABU-SHABU</h3>
-					        			</div>
-					        			<div class="modal-body">
-						        			<div class="form-group">
-												<div style="margin-left:20px; margin-right:20px;"><hr></div>
-												<div class="portlet-body" style="margin: 0px 50px 0px 0px">
-													<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:100%;">
-														<thead>
-															<tr class="warning">
-																<td width="20%">Nama Obat</td>
-																<td width="10%">Merek</td>
-																<td width="10%">Tgl Kadaluarsa</td>
-																<td width="10%">Quantity</td>
-																<td width="10%">Satuan</td>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td >Obat</td>
-																<td >Yamaha</td>
-																<td >10 Jan</td>
-																<td >30</td>
-																<td >Kilogram</td>
-															</tr>
-															
-														</tbody>
-													</table>												
-												</div>
+						<form class="form-horizontal" role="form" method="post" id="formterimaretur">
+							<div class="modal-dialog">
+								<div class="modal-content" style="width:120%">
+									<div class="modal-header">
+				        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				        				<h3 class="modal-title" id="myModalLabel">Retur Obat dari Departemen <span id="detnamadept"></span></h3>
+				        			</div>
+				        			<div class="modal-body">
+					        			<div class="form-group">
+											<div style="margin-left:20px; margin-right:20px;"><hr></div>
+											<div class="portlet-body" style="margin: 0px 50px 0px 0px">
+												<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelaryacopasckckck" style="width:100%;">
+													<thead>
+														<tr class="warning">
+															<td width="20%">Nama Obat</td>
+															<td width="10%">Merek</td>
+															<td width="10%">Tgl Kadaluarsa</td>
+															<td width="10%">Quantity</td>
+															<td width="10%">Satuan</td>
+														</tr>
+													</thead>
+													<tbody id="tbody_detailreturdept">
+														<tr>
+															<td >Obat</td>
+															<td >Yamaha</td>
+															<td >10 Jan</td>
+															<td >30</td>
+															<td >Kilogram</td>
+														</tr>
+													</tbody>
+												</table>												
 											</div>
-					        			</div>
-					        			<div class="modal-footer">
-					 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Tunda</button>
-					 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Terima</button>
-								      	</div>
-									</div>
+										</div>
+				        			</div>
+				        			<div class="modal-footer">
+				 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Tunda</button>
+				 			       		<input type="hidden" id="id_returdepartemen">
+				 			       		<input type="hidden" id="id_departementasalretur">
+				 			       		<button type="submit" class="btn btn-success">Terima</button>
+							      	</div>
 								</div>
+							</div>
+						</form>
 					</div>
 				</div>
             </div>
@@ -1779,7 +1809,6 @@
             <br>
             <div id="infoRiwRetDepartemen">
 	            <form class="form-horizontal" role="form">
-
 		        	<div class="form-group informasi">
 						<label class="control-label col-md-2" style="margin-left:70px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter By : 
 						</label>
@@ -1800,7 +1829,7 @@
 					</div>
 
 					<hr class="garis" style="margin-left:15x;">
-					
+					<!-- 
 					<div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
 							<li class="disabled"><a href="#"><i class="fa fa-angle-left" style="height:5px;"></i></a></li>
@@ -1811,7 +1840,7 @@
 							<li class="paginate-button"><a href="#">5</a></li>
 							<li><a href="#"><i class="fa fa-angle-right" style="height:5px;"></i></a></li>
 						</ul>
-					</div>
+					</div> -->
 					<br>
 
 					<div class="portlet box red">
@@ -1819,7 +1848,7 @@
 						<div class="tabelinformasi">
 		            		<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							
-								<table class="table table-striped table-bordered table-hover table-responsive">
+								<table class="table table-striped table-bordered table-hover table-responsive" id="tabelriwayatreturdept">
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center;width:20px;">No.</th>
@@ -1830,18 +1859,29 @@
 											<th  style="text-align:center;width:100px;"> Action </th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>S012234</td>
-											<td>Shabu-Shabu</td>
-											<td>Bersalin</td>
-											<td>Arya</td>
-											<td style="text-align:center">
-												<a href="#" class="deltl" id="deltl"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>
-												<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a>
-											</td>							
-										</tr>
+									<tbody id="t_body_riwayatreturdept">
+										<?php  
+											if (isset($riwayat_retur)) {
+												if (!empty($riwayat_retur)) {
+													$i=0;
+													foreach ($riwayat_retur as $value) {
+														$tgl = DateTime::createFromFormat('Y-m-d H:i:s',$value['tanggal_confirm']);
+														echo '<tr>'.
+															'<td style="text-align:center">'.($i+1).'</td>'.
+															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
+															'<td>'.$value['nama_dept'].'</td>'.
+															'<td>'.$value['nama_petugas'].'</td>'.
+															'<td>'.$value['keterangan'].'</td>'.
+															'<td style="text-align:center">
+																<input type="hidden" class="idriwayatreturdept" value="'.$value['retur_dept_id'].'">
+																<a href="#" class="detailriwayatdept" data-toggle="modal" data-target="#riwretdept"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>
+																<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a>
+															</td>'.								
+														'</tr>';
+													}
+												}
+											}
+										?>
 									</tbody>
 								</table>
 							</div>
@@ -1850,20 +1890,83 @@
 	            </form>
 	            <br>
             </div>
+            <div class="modal fade" id="riwretdept" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-200px">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width:800px">
+						<div class="modal-header">
+		    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Retur dari Departemen </h3>
+		    			</div>
+		    			<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Waktu :</label>
+										<div class="col-md-6">
+											<span id="wakturiwayatreturdept"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-4 goright">Departemen:</label>
+										<div class="col-md-5"><span id="deptriwayatreturdept"></span></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">							
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Petugas Input:</label>
+										<div class="col-md-5"><span id="petugasriwayatreturdept"></span></div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-4 goright">Keterangan:</label>
+										<div class="col-md-5"><span id="ketriwayatreturdept"></span></div>
+									</div>
+								</div>
+							</div>
+							<hr/>
+							<table class="table table-striped table-bordered table-hover" id="tabelHasilPenunjang">
+								<thead>
+									<tr class="info">
+										<th style="width:20px;">No.</th>
+										<th>Nama Obat</th>
+										<th>Tanggal Kadaluarsa</th>
+										<th>Quantity</th>
+										<th>Satuan</th>
+									</tr>
+								</thead>
+								<tbody id="t_body_detailriwayatreturdept">
+									<tr>
+										<td style="text-align:center" colspan="5">Tidak ada detail</td>
+									</tr>		
+								</tbody>
+							</table>
+						</div>
+		    			<div class="modal-footer">
+					       	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
 
 			<div class="dropdown" id="btnBawahRetDistributor" style="margin-left:10px;width:98.5%">
 	            <div id="titleInformasi">Retur Ke Distributor</div>
 	            <div id="btnBawahRetDistributor" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
             </div> 
             <div class="informasi" id="infoRetDistributor">
-            	<form class="form-horizontal" role="form">
+            	<form class="form-horizontal" role="form" method="post" id="formsubmitreturdistributor">
 					<div class="form-group">	
 						<label class="control-label col-md-2">Tanggal Retur 
 						</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" data-date-autoclose="true" class="form-control calder" disabled="" data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
 	            		<div class="col-md-2"></div>
@@ -1879,33 +1982,23 @@
 						<label class="control-label col-md-2">Penyedia 
 						</label>
 						<div class="col-md-3">
-							<input type="text" class="form-control" name="penyediaRetDis" placeholder="Penyedia">
+							<input type="text" style="cursor:pointer" class="form-control" id="penyediaRetDis" name="penyediaRetDis" data-toggle="modal" data-target="#penyediareturdistributor" placeholder="Penyedia" readonly="">
+							<input type="hidden" class="id_penyediaRetDis">
 						</div>	
 	            		<div class="col-md-1"></div>
-	            		<label class="control-label col-md-2">Petugas Input 
-						</label>
-						<div class="col-md-3">
-							<input type="text" style="cursor:pointer;" class="form-control" id="ptgasInput" name="ptgasInput" placeholder="Petugas"  data-toggle="modal" data-target="#ptgasretur"/>
+	            		<label class="control-label col-md-2" >Keterangan </label>
+						<div class="col-md-3" style="float:left" >
+							<textarea class="form-control" id="ketReturDis" name="ketReturDis"></textarea>
 						</div>
 						
 					</div>
-						
-					<div class="form-group">	
-						<label class="control-label col-md-2" >Keterangan 
-						</label>
-						<div class="col-md-3" style="float:left" >
-							<textarea class="form-control" id="ketReturDis" name="ketReturDis"></textarea>
-						</div>	
-					</div>
-
 					<hr class="garis" style="margin-left:-60px">
 					<br>
 
-					<a href="#modalRetDis" data-toggle="modal"><i class="fa fa-plus" style="margin-left : -10px">&nbsp;Tambah Obat</i></a>
+					<a href="#modalRetDis" id="adddetailreturdist" data-toggle="modal"><i class="fa fa-plus" style="margin-left : -10px">&nbsp;Tambah Obat</i></a>
 					<div class="clearfix"></div>
 						
 					<div class="portlet-body" style="margin: 10px 14px 30px -50px">
-						
 						<table class="table table-striped table-bordered table-hover table-responsive" id="tblReturDis">
 							<thead>
 								<tr class="info" >
@@ -1915,92 +2008,117 @@
 									<th  style="text-align:left"> Merek </th>
 									<th  style="text-align:left"> Stok Sisa </th>
 									<th  style="text-align:left"> Tgl Kadaluarsa </th>
-									
+									<th  style="text-align:center"> Action </th>
 								</tr>
 							</thead>
-							<tbody  id="addinputReturDis">
-									<tr>
-										<!-- <td>Shabu-Shabu</td>
-										<td>UKDW</td>
-										<td>1</td>
-										<td>Shabu-Shabu</td>
-										<td>UKDW</td>
-										<td>1</td> -->												
-									</tr>
+							<tbody  id="tbodyinputreturdistributor">
 							</tbody>
 						</table>
 						
 						<div class="form-group" style="margin-top:30px;">
 							<div class="col-md-2 pull-right"> 				 
-								<button class="btn btn-danger" type="submit">BATAL</button>
+								<button class="btn btn-warning" type="button" id="batalreturdis">RESET</button>
 								<button class="btn btn-success" type="submit">SIMPAN</button>
 							</div>
 						</div>
 					</div>
-					
-					<div class="modal fade" id="modalRetDis" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			        				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
-			        			</div>
-			        			<div class="modal-body">
-
-				        			<div class="form-group">
-										<div class="form-group">	
-											<div class="col-md-3" style="margin-left:35px;">
-												<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama petugas"/>
-											</div>
-											<div class="col-md-2">
-												<button type="button" class="btn btn-info">Cari</button>
-											</div>
-											<br><br>	
-										</div>		
-										<div style="margin-left:20px; margin-right:20px;"><hr></div>
-										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
-												<thead>
-													<tr class="warning">
-														<td>Nama Obat</td>
-														<td>Satuan</td>
-														<td>Merek</td>
-														<td>Tgl Kadaluarsa</td>
-														<td width="10%">Pilih</td>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>Paramex</td>
-														<td>Paramex</td>
-														<td>Paramex</td>
-														<td>Paramex</td>
-														<td style="text-align:center"><a href="#" class ="addNew1"><i class="glyphicon glyphicon-check"></i></a></td>
-													</tr>
-													<tr>
-														<td>Panadol</td>
-														<td>Paramex</td>
-														<td>Paramex</td>
-														<td>Paramex</td>
-														<td style="text-align:center"><a href="#" class ="addNew1"><i class="glyphicon glyphicon-check"></i></a></td>
-													</tr>
-
-												</tbody>
-											</table>												
-										</div>
-									</div>
-			        			</div>
-			        			<div class="modal-footer">
-			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-						      	</div>
-							</div>
-						</div>
-					</div>
-
 				</form>
             </div>
             <br>
+			<div class="modal fade" id="modalRetDis" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+	        			</div>
+	        			<div class="modal-body">
 
+		        			<div class="form-group">
+		        				<form class="form-horizontal" role="form" method="post" id="searchobatreturdistributor">
+									<div class="form-group">	
+										<div class="col-md-3" style="margin-left:35px;">
+											<input type="text" class="form-control" name="katakunci" id="katakunciobatreturdistributor" placeholder="Nama Obat"/>
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-info">Cari</button>
+										</div>
+										<br><br>	
+									</div>
+								</form>
+								<div style="margin-left:20px; margin-right:20px;"><hr></div>
+								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%; font-size: 98%;">
+										<thead>
+											<tr class="warning">
+												<td>Nama Obat</td>
+												<td>Satuan</td>
+												<td>Merk</td>
+												<td>total</td>
+												<td>Tgl Kadaluarsa</td>
+												<td width="10%">Pilih</td>
+											</tr>
+										</thead>
+										<tbody id="t_body_addreturdistributor">
+											<tr>
+												<td style="text-align:center" colspan="6">Cari data obat</td>
+											</tr>
+										</tbody>
+									</table>												
+								</div>
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="penyediareturdistributor" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Penyedia</h3>
+	        			</div>
+	        			<div class="modal-body">
+
+		        			<div class="form-group">
+		        				<form class="form-horizontal" role="form" method="post" id="searchpenyediareturdist">
+									<div class="form-group">	
+										<div class="col-md-4" style="margin-left:35px;">
+											<input type="text" class="form-control" name="katakunci" id="katakuncipenyediaretdis" placeholder="Nama penyedia"/>
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-info">Cari</button>
+										</div>
+										<br><br>	
+									</div>	
+								</form>
+								<div style="margin-left:20px; margin-right:20px;"><hr></div>
+								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%; font-size:98%;">
+										<thead>
+											<tr class="info">
+												<td>Nama Penyedia</td>
+												<td width="10%">Pilih</td>
+											</tr>
+										</thead>
+										<tbody id="t_body_penyediareturdist">
+											<tr>
+												<td style="text-align:center" colspan="2">Cari data Penyedia</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
             <div class="dropdown" id="btnBawahRiwRetDistributor" style="margin-left:10px;width:98.5%">
 	            <div id="titleInformasi">Riwayat Retur Ke Distributor</div>
 	            <div id="btnBawahRiwRetDistributor" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
@@ -2008,7 +2126,6 @@
             <br>
             <div id="infoRiwRetDistributor">
 	            <form class="form-horizontal" role="form">
-
 		        	<div class="form-group informasi">
 						<label class="control-label col-md-2" style="margin-left:70px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter By : 
 						</label>
@@ -2030,7 +2147,7 @@
 
 					<hr class="garis" style="margin-left:15x;">
 					
-					<div class="pull-right" style="margin-right:40px;">
+					<!-- <div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
 							<li class="disabled"><a href="#"><i class="fa fa-angle-left" style="height:5px;"></i></a></li>
 							<li class="paginate-button active"><a href="#">1</a></li>
@@ -2040,7 +2157,7 @@
 							<li class="paginate-button"><a href="#">5</a></li>
 							<li><a href="#"><i class="fa fa-angle-right" style="height:5px;"></i></a></li>
 						</ul>
-					</div>
+					</div> -->
 					<br>
 
 					<div class="portlet box red">
@@ -2052,29 +2169,40 @@
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center; width:20px;">No. </th>
+											<th  style="text-align:left"> No. Retur </th>
 											<th  style="text-align:left"> Nama Obat </th>
-											<th  style="text-align:left"> Quantity </th>
-											<th  style="text-align:left"> Satuan </th>
-											<th  style="text-align:left"> Merek </th>
-											<th  style="text-align:left"> Stok Sisa </th>
-											<th  style="text-align:left"> Tanggal Kadaluarsa </th>
+											<th  style="text-align:left"> Distributor </th>
+											<th  style="text-align:left"> Petugas Input </th>
+											<th  style="text-align:left"> Waktu Retur </th>
+											<th  style="text-align:left"> Keterangan </th>
 											<th  style="text-align:center; width:100px;"> Action </th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>1.</td>
-											<td>Bebas</td>
-											<td>Terserah</td>
-											<td>Terserah</td>
-											<td>Terserah</td>
-											<td>Terserah</td>
-											<td>Terserah</td>
-											<td style="text-align:center">
-												<a href="#" class="deltl" id="deltl"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>
-												<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a>
-											</td>							
-										</tr>
+									<tbody id="tbodyriwayatreturdistributor">
+										<?php  
+											if (isset($riwayat_returdistributor)) {
+												if (!empty($riwayat_returdistributor)) {
+													$i=1;
+													foreach ($riwayat_returdistributor as $value) {
+														$tgl = DateTime::createFromFormat('Y-m-d H:i:s',$value['waktu']);
+														echo '<tr>'.
+															'<td style="text-align:center">'.($i++).'</td>'.
+															'<td>'.$value['no_retur'].'</td>'.
+															'<td>'.$value['nama'].'</td>'.
+															'<td>'.$value['nama_penyedia'].'</td>'.
+															'<td>'.$value['nama_petugas'].'</td>'.
+															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
+															'<td>'.$value['keterangan'].'</td>'.
+															'<td style="text-align:center">
+																<input type="hidden" class="idriwayatreturdist" value="'.$value['retur_distributor_id'].'">
+																<a href="#" class="detailriwayatdist" data-toggle="modal" data-target="#riwretdist"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>
+																<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a>
+															</td>'.								
+														'</tr>';
+													}
+												}
+											}
+										?>
 									</tbody>
 								</table>
 							</div>
@@ -2083,6 +2211,80 @@
 	            </form>
 	            <br>
             </div>
+            <div class="modal fade" id="riwretdist" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-200px">
+				<div class="modal-dialog">
+					<div class="modal-content" style="width:800px">
+						<div class="modal-header">
+		    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Retur dari Distributor </h3>
+		    			</div>
+		    			<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Tanggal Retur :</label>
+										<div class="col-md-5">
+											<span id="tanggalreturdistributor"></span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-6 goright">Distributor :</label>
+										<div class="col-md-5"><span id="penyediariwayatreturdist"></span></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">							
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Nomor Retur :</label>
+										<div class="col-md-5"><span id="nomorreturdistributor"></span></div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Petugas Input :</label>
+										<div class="col-md-6"><span id="petugasinputreturdistributor"></span></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">							
+								<div class="col-md-6">
+									<div class="form-group">
+										<label class="control-label1 col-md-5 goright">Keterangan :</label>
+										<div class="col-md-5"><span id="ketreturdistributor"></span></div>
+									</div>
+								</div>
+							</div>
+							<hr/>
+							<table class="table table-striped table-bordered table-hover" id="tabelHasilPenunjang">
+								<thead>
+									<tr class="info" >
+										<th  style="text-align:center"> No.</th>
+										<th  style="text-align:center"> Nama Obat </th>
+										<th  style="text-align:center"> Quantity </th>
+										<th  style="text-align:center"> Satuan </th>
+										<th  style="text-align:center"> Merek </th>
+										<th  style="text-align:center"> Stok Sisa </th>
+										<th  style="text-align:center"> Tgl Kadaluarsa </th>
+									</tr>
+								</thead>
+								<tbody id="tbodydetailreturdistributor">
+									<tr>
+										<td style="text-align:center" colspan="7">Tidak ada data</td>
+									</tr>	
+								</tbody>
+							</table>
+						</div>
+		    			<div class="modal-footer">
+					       	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
             <br>
         </div>
 		
@@ -2104,10 +2306,10 @@
 		            				</div>
 		            			</div>
 		            			<?php for ($i='B'; $i < 'Z' ; $i++) { 
-										echo '<div class="round-button round-margin portfolio-item">';
-				            				echo '<div class="round-button-tes round-button-circle" onClick="getObatAlphabet(&quot;'.$i.'&quot;)" style="cursor:pointer"><a class="round-button" >'.$i.'</a>';
-				            				echo '</div>';
-				            			echo '</div>';
+									echo '<div class="round-button round-margin portfolio-item">';
+			            				echo '<div class="round-button-tes round-button-circle" onClick="getObatAlphabet(&quot;'.$i.'&quot;)" style="cursor:pointer"><a class="round-button" >'.$i.'</a>';
+			            				echo '</div>';
+			            			echo '</div>';
 								}?>						            		
 		            		</div>
 	            		</div>
@@ -2136,7 +2338,7 @@
 
 					<div class="portlet box red" >
 						<div class="portlet-title">
-							<label class="control-label col-md-3" style="font-size: 16pt; margin-left:-50px;">Daftar Obat</label>
+							<!-- <label class="control-label col-md-3" style="font-size: 16pt; margin-left:-50px;">Daftar Obat</label> -->
 						</div>
 						<div class="portlet-body" style="margin: 0px -10px 0px -60px">
 							
@@ -2211,17 +2413,11 @@
             </div>
 		</div>
 
-		<div class="tab-pane" id="laporan">   
-			<div class="dropdown" id="bblo" style="margin-left:10px;width:98.5%">
-	            <div id="titleInformasi">Laporan Obat</div>
-	            <div id="bblo" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>  
-        	
+		<div class="tab-pane" id="laporan">    
             <div class="informasi" id="ibblo">
-	        	<form class="form-horizontal" role="form">
-            	
-	        		<div class="form-group">
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Obat</div>
+	        	<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_obat">
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
 						<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
 						</label>
 						<div class="col-md-2" style="width:200px">
@@ -2253,7 +2449,7 @@
 						<div class="col-md-2" style="margin-left:-15px; width:200px;">
 							<input type="text" class="form-control" id="filterby" name="valfilter" placeholder="Value"/>
 						</div>
-					</div>		
+						</div>		
 
 					<div class="form-group">
 						<div class="form-inline">
@@ -2271,219 +2467,250 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-md-2 pull-right" style="margin-right:265px;">
-							<button class="btn btn-info ">PRINT LAPORAN</button> 
+						<div class="col-md-3 pull-right" >
+							<button class="btn btn-info" type="submit" style="margin-left:10px">SIMPAN KE EXCEL (.xls)</button> 
 						</div>
 					</div>
 				</form>
 			</div>
 
-        	<div class="dropdown" id="bblok" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Obat Kadaluarsa</div>
-	            <div id="bblok" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
-
             <div class="informasi" id="ibblok">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
+            	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Obat Kadaluarsa</div>
+	        	<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_kadaluarsa">
+	        		<div class="form-group" style="margin-top:20px;">
 						<div class="form-inline">
 							<div class="radio-list">
 								<div class="col-md-3" style="margin-left:120px;"> 
-									<input type="radio"  name="hd" value="expired" checked /><div style="float:right;margin-top:6px;margin-right:200px">Expired</div> 
+									<input type="radio"  name="hd" value="0" checked /><div style="float:right;margin-top:6px;margin-right:200px">Expired</div> 
 								</div>
 								<div class="col-md-4" style="width:200px; margin-left:-150px ;">	         		
-									<input type="radio"  name="hd"  value="expired 3 bulan"/><div style="float:right;margin-top:6px;margin-right:20px">Expired 3 Bulan</div>
+									<input type="radio"  name="hd"  value="3"/><div style="float:right;margin-top:6px;margin-right:20px">Expired 3 Bulan</div>
 								</div>	
 								<div class="col-md-4" style="width:200px; margin-left:-10px ;">	         		
-									<input type="radio"  name="hd"  value="expired 6 bulan"/><div style="float:right;margin-top:6px;margin-right:20px">Expired 6 Bulan</div>
+									<input type="radio"  name="hd"  value="6"/><div style="float:right;margin-top:6px;margin-right:20px">Expired 6 Bulan</div>
 								</div>	
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-md-2 pull-right" style="margin-right:275px;">
-								<button class="btn btn-info ">PRINT LAPORAN</button> 
+							<div class="col-md-3 pull-right" >
+								<button class="btn btn-info" type="submit">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
 					</div>
-					
 	        	</form>
 	        </div>
-
-            <div class="dropdown" id="bblsw" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Stok Warning</div>
-	            <div id="bblsw" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
-
-            <div class="informasi" id="ibblsw">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
-						<div class="col-md-2" style="margin-left:110px;">
-							<button class="btn btn-info ">PRINT LAPORAN</button> 
-						</div>
-					</div>
-	        	</form>
-	        </div>
-
-            <div class="dropdown" id="bblosot" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Obat Stok Obat Terakhir</div>
-	            <div id="bblosot" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
-
-            <div class="informasi" id="ibblosot">
-	        	<form class="form-horizontal" role="form">
-	        		<form class="form-horizontal" role="form">
-	        		<div class="form-group">
-						<div class="col-md-2" style="margin-left:110px;">
-							<button class="btn btn-info ">PRINT LAPORAN</button> 
-						</div>
-					</div>
-	        	</form>
-	        	</form>
-	        </div>
-
-            <div class="dropdown" id="bblrpp" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Riwayat Persetujuan Permintaan</div>
-	            <div id="bblrpp" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
 
             <div class="informasi" id="ibblrpp">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
-		        		<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Riwayat Persetujuan Permintaan</div>
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_permintaan">
+	        		<?php echo '<script>'.validation_errors().'</script>'; ?>
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+						<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
 						</label>
 		        		<div class="col-md-3" style="margin-left:-20px;">
-							<select class="form-control select" name="filterInv" id="filterInv">
+							<select class="form-control select" name="filterlaporandeptpermintaan">
 								<option value="" selected>Semua Departemen</option>
-								<option value="">Departemen kandungan</option>
-								<option value="">Departemen mata</option>
-								<option value="">Departemen anak</option>					
+								<?php  
+									foreach ($all_dept as $value) {
+										echo '<option value="'.$value['dept_id'].'">'.$value['nama_dept'].'</option>';
+									}
+								?>					
 							</select>	
 						</div>
 
 						<div class="col-md-3">
 							<div class="input-daterange input-group" id="datepicker">
-							    <input type="text" style="cursor:pointer;" class="form-control" name="start" data-date-autoclose="true"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
 							    <span class="input-group-addon">to</span>
-							    <input type="text" style="cursor:pointer;" class="form-control" name="end" data-date-autoclose="true" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-md-2 pull-right" style="margin-right:265px;">
-								<button class="btn btn-info ">PRINT LAPORAN</button> 
+							<div class="col-md-3 pull-right" >
+								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
 					</div>
 	        	</form>
 	        </div>
-
-            <div class="dropdown" id="bblrrdp" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Riwayat Retur Departement</div>
-	            <div id="bblrrdp" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
 
             <div class="informasi" id="bblrrdp">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
-		        		<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Riwayat Retur Departemen</div>
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_returdept">
+	        		
+
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+						<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
 						</label>
 		        		<div class="col-md-3" style="margin-left:-20px;">
-							<select class="form-control select" name="filterInv" id="filterInv">
+							<select class="form-control select" name="filterInv">
 								<option value="" selected>Semua Departemen</option>
-								<option value="">Departemen kandungan</option>
-								<option value="">Departemen mata</option>
-								<option value="">Departemen anak</option>					
+								<?php  
+									foreach ($all_dept as $value) {
+										echo '<option value="'.$value['dept_id'].'">'.$value['nama_dept'].'</option>';
+									}
+								?>					
 							</select>	
 						</div>
 
 						<div class="col-md-3">
 							<div class="input-daterange input-group" id="datepicker">
-							    <input type="text" style="cursor:pointer;" class="form-control" name="start" data-date-autoclose="true"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
 							    <span class="input-group-addon">to</span>
-							    <input type="text" style="cursor:pointer;" class="form-control" name="end" data-date-autoclose="true" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-md-2 pull-right" style="margin-right:265px;">
-								<button class="btn btn-info ">PRINT LAPORAN</button> 
+							<div class="col-md-3 pull-right" >
+								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
 					</div>
 	        	</form>
 	        </div>
-        	
-        	<div class="dropdown" id="bblrrds" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Riwayat Retur Distributor</div>
-	            <div id="bblrrds" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
 
             <div class="informasi" id="iblrrds">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Riwayat Retur Distributor</div>
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_returdist">
+	        		
 
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+				
 	        			<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
 						</label>
 
 						<div class="input-group" style="width: 300px; float:left;">	
-						  	<input type="text" class="form-control" placeholder="Semua Distrobutor">
+						  	<input type="text" class="form-control" name="namadistributorlaporan" id="namadistributorlaporan" placeholder="Semua Distrobutor" data-toggle="modal" data-target="#distributorlaporan" readonly="" style="cursor: pointer">
+						  	<input type="hidden" name="iddistributorlaporan" class="iddistributorlaporan" value="-1">
 							<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search" style="margin-right: 5px"></i></span>
 						</div>
 
 	        			<div class="col-md-3" style="float:left;">
 							<div class="input-daterange input-group" id="datepicker">
-							    <input type="text" style="cursor:pointer;" class="form-control" name="start" data-date-autoclose="true" data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
 							    <span class="input-group-addon">to</span>
-							    <input type="text" style="cursor:pointer;" class="form-control" name="end" data-date-autoclose="true" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-md-2 pull-right" style="margin-right:265px;">
-								<button class="btn btn-info ">PRINT LAPORAN</button> 
+							<div class="col-md-3 pull-right" >
+								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
 					</div>
 	        	</form>
 	        </div>
-
-            <div class="dropdown" id="bblrso" style="margin-left:10px;width:98.5%; margin-top:40px;">
-	            <div id="titleInformasi">Laporan Riwayat Stok Opname</div>
-	            <div id="bblrso" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
+	        	<div class="modal fade" id="distributorlaporan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		        				<h3 class="modal-title" id="myModalLabel">Pilih Distributor</h3>
+		        			</div>
+		        			<div class="modal-body">
+			        			<div class="form-group">
+			        				<form method="post" class="form-horizontal" role='form' id="caridistributorlaporanobat" style="padding: 0px 10x;">
+										<div class="form-group" >
+											<div class="col-md-5">
+												<input type="text" class="form-control" name="katakunci" id="katakuncidistlaporan" placeholder="Nama distributor"/>
+											</div>
+											<div class="col-md-2">
+												<button type="submit" class="btn btn-info">Cari</button>
+											</div>
+											<br><br>	
+										</div>
+									</form>		
+									<div style="margin-left:10px; margin-right:10px;"><hr></div>
+									<div class="portlet-body" style="padding: 0px 10px;">
+										<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="margin: 0px;" width="90%">
+											<thead>
+												<tr class="info">
+													<th>Nama Distributor</th>
+													<th width="10%">Pilih</th>
+												</tr>
+											</thead>
+											<tbody id="tbodypenyediareturlaporan">
+												<?php  
+													echo '<tr>'.
+											 			'<td class="namapenyediareturlaporan">Semua Distributor</td>'.
+											 			'<td class="idpenyediareturlaporan" style="display:none">-1</td>'.
+											 			'<td style="text-align:center"><a href="" class="inputpenyediareturlaporan"><i class="glyphicon glyphicon-check" style="cursor:pointer;"></i></a></td>'.
+											 		'</tr>';
+												?>
+											</tbody>
+										</table>												
+									</div>
+								</div>
+		        			</div>
+		        			<div class="modal-footer">
+		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+					      	</div>
+						</div>
+					</div>
+				</div>
 
             <div class="informasi" id="ibblrso">
-	        	<form class="form-horizontal" role="form">
-	        		<div class="form-group">
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Riwayat Stok Opname</div>
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homegudangobat/print_laporan_stokopname">
+	        		
 
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+				
 	        			<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
 						</label>
 	        			<div class="col-md-3">
 							<div class="input-daterange input-group" id="datepicker">
-							    <input type="text" style="cursor:pointer;" class="form-control" name="start" data-date-autoclose="true"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
 							    <span class="input-group-addon">to</span>
-							    <input type="text" style="cursor:pointer;" class="form-control" name="end" data-date-autoclose="true" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
+							    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
 							</div>
 						</div>
 
 						<div class="form-group">
-							<div class="col-md-2 pull-right" style="margin-right:265px;">
-								<button class="btn btn-info ">PRINT LAPORAN</button> 
+							<div class="col-md-3 pull-right">
+								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
 					</div>
 	        	</form>
 	        </div>
-        </div>
 
+	                <div class="informasi" id="ibblsw">
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Stok Warning</div>
+	        	<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form">
+	        		
+
+	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+						<div class="form-group">
+							
+							<div class="col-md-3" style="margin-left:110px;">
+								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
+							</div>
+						</div>
+					</div>
+	        	</form>
+	        </div>
+
+     
+            <div class="informasi" id="ibblosot">
+	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Stok Obat Terakhir</div>
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form">
+		        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
+							<div class="form-group">
+								<div class="col-md-3" style="margin-left:110px;">
+									<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
+								</div>
+							</div>
+						</div>
+	        		</form>
+	        	
+	        </div>
+	        <br>
+        </div>
 	
 	</div>
 
@@ -2507,12 +2734,17 @@
 	 					if(data.length>0){
 							for(var i = 0; i<data.length; i++){
 								var nama = data[i]['nama'],
-									obat_id = data[i]['obat_id'];
+									obat_id = data[i]['obat_id']
+									merk = data[i]['nama_merk']
+									satuan = data[i]['satuan'];
 
 								$("#tbody_pengadaan").append(
 									'<tr>'+
+										'<td style="display:none">'+obat_id+'</td>'+
 										'<td>'+nama+'</td>'+
-										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getObat(&quot;'+obat_id+'&quot; , &quot;'+nama+'&quot;)"></i></td>'+
+										'<td>'+merk+'</td>'+
+										'<td>'+satuan+'</td>'+
+										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getObat(&quot;'+obat_id+'&quot;,&quot;'+nama+'&quot;)"></i></td>'+
 									'</tr>'
 								);
 							}
@@ -2520,7 +2752,7 @@
 							$('#tbody_pengadaan').empty();
 							$('#tbody_pengadaan').append(
 								'<tr>'+
-						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
+						 			'<td colspan="4"><center>Data Paket Tidak Ditemukan</center></td>'+
 						 		'</tr>'
 							);
 						}
@@ -2533,7 +2765,7 @@
 				$('#tbody_pengadaan').empty();
 				$('#tbody_pengadaan').append(
 					'<tr>'+
-			 			'<td colspan="2"><center>Cari Data Obat</center></td>'+
+			 			'<td colspan="4"><center>Cari Data Obat</center></td>'+
 			 		'</tr>'
 				);
 			}
@@ -2593,7 +2825,7 @@
 
 			item_pengadaan['no_pengadaan'] = $('#nmrAdaan').val();
 			item_pengadaan['tanggal'] = $('#tglAdaan').val();
-			item_pengadaan['petugas_input'] = $('#pidAdaan').val();
+			//item_pengadaan['petugas_input'] = $('#pidAdaan').val();
 			item_pengadaan['keterangan'] = $('#ketAdaan').val();
 
 			//loop dari tabel
@@ -2609,11 +2841,11 @@
 		    var item = {};
 		    for (var i = data.length - 1; i >= 0; i--) {
 		    	var myData = {};
-		    	myData['obat_id'] = data[i][6];
-		    	myData['penyedia_id'] = data[i][7];
+		    	myData['obat_id'] = data[i][7];
+		    	myData['penyedia_id'] = data[i][8];
 		    	myData['jumlah'] = data[i][2];
 		    	myData['hps'] = data[i][4];
-		    	myData['total'] = data[i][5];
+		    	myData['total'] = (Number(data[i][2]) * Number(data[i][4]));
 
 		    	item[i] = myData;
 		    };
@@ -2640,20 +2872,23 @@
 						return false;
 					} 
 
-					//console.log(data['data']);
 					$('#tbody_riwayat').append(
 						'<tr>'+
 							'<td>'+data['hasil']['no_pengadaan']+'</td>'+
-							'<td>'+datadata['hasil']['tanggal']+'</td>'+
-							'<td>'+datadata['hasil']['nama_petugas']+'</td>'+
-							'<td>'+datadata['hasil']['keterangan']+'</td>'+
-							'<td>'+datadata['hasil']['status']+'</td>'+
-							'<td style="display:none;">'+datadata['hasil']['pengadaan_id']+'</td>'+
+							'<td>'+data['hasil']['tanggal']+'</td>'+
+							'<td>'+datad['hasil']['nama_petugas']+'</td>'+
+							'<td>'+data['hasil']['keterangan']+'</td>'+
+							'<td>'+data['hasil']['status']+'</td>'+
+							'<td style="display:none;">'+data['hasil']['pengadaan_id']+'</td>'+
 							'<td style="text-align:center;"><a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'+
 							'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a></td>'+
 						'</tr>'
 					);
-				},error:function(){
+					$('#tbody_addpengadaan').empty();
+					$('#nmrAdaan').val('');
+					$('#ketAdaan').val('');
+				},error:function(data){
+					console.log(data);
 					alert('no');
 				}
 			});
@@ -2666,17 +2901,17 @@
 	        $(this).closest('tr').find('td').each(function (colIndex, c) {
 	            cols.push(c.textContent);
 	        });
-	        var pengadaan_id = cols[5];
+	        var pengadaan_id = cols[6];
 
 			$.ajax({
 				type: "POST",
 				url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_rencana/" + pengadaan_id,
 				success: function (data) {
-					$('#nomor_obat_rencana').text(cols[0]);
-					$('#tanggal_rencana').text(cols[1]);
-					$('#petugas_rencana').text(cols[2]);
-					$('#keterangan_rencana').text(cols[3]);
-					$('#status_rencana').text(cols[4]);
+					$('#nomor_obat_rencana').text(cols[1]);
+					$('#tanggal_rencana').text(cols[2]);
+					$('#petugas_rencana').text(cols[3]);
+					$('#keterangan_rencana').text(cols[4]);
+					$('#status_rencana').text(cols[5]);
 
 					$('#tbody_detailpengadaan').empty();
 					if (data.length > 0) {
@@ -2823,27 +3058,40 @@
 	}
 
 	function getObat(id, nama){
+		//<a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a>
 		$.ajax({
 			type:"POST",
 			url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat_detail_pengadaan/"+id,
 			success:function(data){
 				$('#katakuncipengadaan').val('');
-				$('#tbody_pengadaan').empty();
 				$('#katakuncipengadaan').focus();
 				$('#tbody_addpengadaan').append(
 					'<tr>'+
 						'<td>'+data[0]['nama']+'</td>'+
 						'<td>'+data[0]['nama_penyedia']+'</td>'+
-						'<td></td>'+
+						'<td class="qty"><span class="aek">1</span></td>'+
 						'<td>'+data[0]['satuan']+'</td>'+
 						'<td>'+data[0]['hps']+'</td>'+
-						'<td>1</td>'+
+						'<td class="hps">'+data[0]['hps']+'</td>'+
+						'<td style="text-align:center;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
 						'<td style="display:none;">'+data[0]['obat_id']+'</td>'+
 						'<td style="display:none;">'+data[0]['penyedia_id']+'</td>'+
 					'</tr>'
 				);
+				$(".returQty").editable();
 			}
 		});
+
+		/*$('#tbody_addpengadaan').on('click', 'tr td .aek', function (e) {
+			$(this).replaceWith('<span>lalala</span>');
+			$(this).closest('tr').find('td .hps').html('adfjalf');
+		})*/
+
+		/*$('#tbody_addpengadaan').on('focus', 'tr td .aek', function (e) {
+			e.preventDefault();
+			$(this).attr('contenteditable', 'true');
+			return false;
+		})*/
 	}
 
 	function getPetugas(id, nama){

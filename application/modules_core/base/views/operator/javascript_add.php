@@ -19,6 +19,9 @@
 		});
 
 		$('#tabelpermintaangudang').DataTable();
+		$('#tblriwayatterima').DataTable();
+		$('#tabelreturdepartemen').DataTable();
+		$('#tabelriwayatreturdept').DataTable();
 	})
 </script>
 

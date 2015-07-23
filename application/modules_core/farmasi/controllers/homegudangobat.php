@@ -34,6 +34,10 @@ class Homegudangobat extends Operator_base {
 		$data['riwayat_penerimaan'] = $this->m_obat->get_riwayat_penerimaan($dept_id);
 		$data['persetujuan'] = $this->m_obat->get_persetujuan();
 		$data['riwayat_persetujuan'] = $this->m_obat->get_riwayat_permintaan();
+		$data['returdept'] = $this->m_obat->get_returdepartment();
+		$data['riwayat_retur'] = $this->m_obat->get_riwayat_returdepartemen();
+		$data['riwayat_returdistributor'] = $this->m_obat->get_riwayat_returdistributor();
+		$data['all_dept'] = $this->m_obat->get_all_dept();
 		$this->load->view('base/operator/template', $data);
 	}
 
@@ -202,7 +206,8 @@ class Homegudangobat extends Operator_base {
 	/*detail obat*/
 	public function search_obat($search)
 	{
-		$result = $this->m_obat->search_obat($search);
+		//$result = $this->m_obat->search_obat($search);
+		$result = $this->m_obat->get_obat_all($search);		
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result);
@@ -222,7 +227,7 @@ class Homegudangobat extends Operator_base {
 		$this->form_validation->set_rules('tgl_kadaluarsa', 'Tanggal Kadaluarsa', 'required|trim|xss_clean|is_unique[obat_detail.tgl_kadaluarsa]');
 		$this->form_validation->set_rules('tahun_pengadaan', 'Tahun Pengadaan', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('total_stok', 'Jumlah Stok', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('no_batch', 'Nomor Batch', 'required|trim|xss_clean|is_unique[obat_detail.no_batch]');
+		$this->form_validation->set_rules('no_batch', 'Nomor Batch', 'required|trim|xss_clean');
 
 
 		$this->form_validation->set_message('is_unique', 'Obat sudah ada, cek tanggal kadaluarsa atau no batch');
@@ -502,7 +507,7 @@ class Homegudangobat extends Operator_base {
 	public function add_pengadaan(){
 		$this->form_validation->set_rules('no_pengadaan', 'Nomor Pengadaan', 'required|trim|xss_clean|is_unique[obat_rencana_pengadaan.no_pengadaan]');
 		$this->form_validation->set_rules('tanggal', 'Tanggal Pengadaan', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('petugas_input', 'Petugas', 'required|trim|xss_clean');
+		//$this->form_validation->set_rules('petugas_input', 'Petugas', 'required|trim|xss_clean');
 
 		$this->form_validation->set_message('required', 'isi semua data dengan benar');
 		$this->form_validation->set_message('is_unique', 'Nomor Sudah Ada');
@@ -510,7 +515,7 @@ class Homegudangobat extends Operator_base {
 		if ($this->form_validation->run() == TRUE) {
 			$insert['no_pengadaan'] = $_POST['no_pengadaan'];
 			$insert['tanggal'] = $this->date_db($_POST['tanggal']);
-			$insert['petugas_input'] = $_POST['petugas_input'];
+			$insert['petugas_input'] = $this->session->userdata('session_operator')['petugas_id'];
 			$insert['keterangan'] = $_POST['keterangan'];
 			$insert['status'] = "Menunggu";
 
@@ -524,7 +529,7 @@ class Homegudangobat extends Operator_base {
 
 			$tgl = $_POST['tanggal'];
 			$insert['tanggal'] = $this->date_table($tgl);
-			$petugas = $this->m_obat->get_nama_petugas($hasil);
+			$petugas = $this->m_obat->get_nama_petugas($insert['petugas_input']);
 			$insert['nama_petugas'] = $petugas['nama_petugas'];
 			$insert['pengadaan_id'] = $hasil;
 
@@ -587,7 +592,7 @@ class Homegudangobat extends Operator_base {
 	{
 		$this->form_validation->set_rules('nomor_penerimaan', 'Nomor Penerimaan', 'required|trim|xss_clean|is_unique[obat_penerimaan.nomor_penerimaan]');
 		$this->form_validation->set_rules('penyedia_id', 'Tanggal Pengadaan', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('petugas_input', 'Petugas', 'required|trim|xss_clean');
+		//$this->form_validation->set_rules('petugas_input', 'Petugas', 'required|trim|xss_clean');
 
 		$this->form_validation->set_message('required', 'isi semua data dengan benar');
 		$this->form_validation->set_message('is_unique', 'nomor penerimaan sudah ada');
@@ -595,7 +600,7 @@ class Homegudangobat extends Operator_base {
 		if ($this->form_validation->run() == TRUE) {
 			$insert['nomor_penerimaan'] = $_POST['nomor_penerimaan'];
 			$insert['tanggal'] = $_POST['tanggal'];
-			$insert['petugas_input'] = $_POST['petugas_input'];
+			$insert['petugas_input'] = $this->session->userdata('session_operator')['petugas_id'];//$_POST['petugas_input'];
 			$insert['penyedia_id'] = $_POST['penyedia_id'];
 			$insert['sumber_dana'] = $_POST['sumber_dana'];
 			$insert['keterangan'] = $_POST['keterangan'];
@@ -604,6 +609,7 @@ class Homegudangobat extends Operator_base {
 			$insert['ppn'] = $_POST['ppn'];
 			$insert['grandtotal'] = $_POST['grandtotal'];
 			$insert['subtotal'] = $_POST['subtotal'];
+			$insert['tanggal_faktur'] = $_POST['tanggal_faktur'];
 
 			if($id = $this->m_obat->add_penerimaan($insert)){
 				$params = $_POST['data'];
@@ -614,7 +620,7 @@ class Homegudangobat extends Operator_base {
 					$res = $this->m_obat->add_detail_penerimaan($value);
 
 					//ambil obat dengan tanggal kedaluarsa sama, tambah history
-					$obat = $this->m_obat->get_obat_per_tgl_kadaluarsa($value['obat_id'], $value['tgl_kadaluarsa'], $value['no_batch']); //ini blm fix coeg
+					$obat = $this->m_obat->get_obat_per_tgl_kadaluarsa($value['obat_id'], $value['tgl_kadaluarsa']); //ini blm fix coeg
 					if ($obat) {
 						$last_stok = $this->m_obat->get_obat_deptstok_history($obat['obat_dept_id']);
 						$riwayat['obat_dept_id'] = $obat['obat_dept_id'];
@@ -688,22 +694,20 @@ class Homegudangobat extends Operator_base {
 			);
 		}
 
+		$this->print_penerimaan();
+
 		header('Content-Type: application/json');
 	 	echo json_encode($result);
+	}
 
+	public function print_penerimaan()
+	{
+		//print
 	}
 
 	/*akhir penerimaan*/
 
 	/*persetujuan permintaan*/
-/*	public function get_persetujuan()
-	{
-		$result = $this->m_obat->get_persetujuan();
-
-		header('Content-Type: application/json');
-		echo json_encode($result);
-	}
-*/
 	public function get_detail_persetujuan($obat_permintaan_id)
 	{
 		$result = $this->m_obat->get_detail_permintaan($obat_permintaan_id);
@@ -715,6 +719,7 @@ class Homegudangobat extends Operator_base {
 	public function submit_persetujuan_permintaan()
 	{
 		$permintaan_id = $_POST['permintaan_id'];
+		$dept_id = $_POST['dept_id'];
 		$persetujuan = $_POST['approve'];
 		$insert['petugas_respond'] = $this->session->userdata('session_operator')['petugas_id'];
 		$insert['tanggal_respond'] = date('Y-m-d');
@@ -724,16 +729,65 @@ class Homegudangobat extends Operator_base {
 		$update = $this->m_obat->update_persetujuan_permintaan($permintaan_id, $insert);
 		if ($update) {
 			foreach ($persetujuan as $value) {
-				//6 sama 8
+				//6 (jumlah) sama 8 (obat detail), 9(tgl_kadaluarsa)
 				$update =  $this->m_obat->update_detail_persetujuan($permintaan_id, $value['8'], $value['6']);
 
-				//update stok obat (belum)
-				
+				//update stok obat, kurangi stok (belum)
+				$cek = $this->m_obat->get_last_stok_by_tgl($value[9], $dept_id);
+				if($cek){//klo ada obat, tambah 
+					$params = array(
+						'obat_dept_id' => $cek['obat_dept_id'],
+						'tanggal' => date('Y-m-d H:i:s'),
+						'masuk' => $value[6],
+						'total_stok' => ($value[6] + $cek['total_stok']),
+						'keterangan' => 'PERMINTAAN KE GUDANG'
+					);
+					//tambah detail baru, update stok
+					$update = $this->m_obat->update_stok_returdepartemen($params);
+				}else{//insert data baru sebagai obat detail di gudang
+					$ins = array(
+						'obat_detail_id' => $value['8'],
+						'dept_id' => $dept_id
+						);
+					$obat_dept_id = $this->m_obat->insert_obat_dept($ins);
+
+					if ($obat_dept_id) {
+						//$insert['total_stok'] = $_POST['total_stok'];
+						$ins2 = array(
+							'obat_dept_id' => $obat_dept_id,
+							'tanggal' => date('Y-m-d'),
+							'masuk' => $value['6'],
+							'total_stok' => $value['6'],
+							'keterangan' => 'PERMINTAAN KE GDG'
+							);
+						$obat_dept_stok = $this->m_obat->insert_dept_stok($ins2);
+
+						$result = array(
+							'message'		=> "data berhasil disimpan",
+							'error' => 'n'
+						);	
+					}else{
+						$result = array(
+							'message'		=> "gagal, terjadi kesalahan",
+							'error' => 'y'
+						);
+					}
+				}
+				//update stok di gudang
+				$ck = $this->m_obat->get_last_stok_by_tgl($value[9], '21');
+				$par = array(
+					'obat_dept_id' => $ck['obat_dept_id'],
+					'tanggal' => date('Y-m-d H:i:s'),
+					'keluar' => $value[6],
+					'total_stok' => ($ck['total_stok'] - $value[6]),
+					'keterangan' => 'PERMINTAAN DARI UNIT'
+				);
+				$up = $this->m_obat->update_stok_returdepartemen($par);
 			}
 		}
 
 		header('Content-Type: application/json');
-		echo json_encode($update);
+		echo json_encode($result);
 	}
 
 	public function get_detail_riwayat_persetujuan($obat_permintaan_id)
@@ -745,5 +799,276 @@ class Homegudangobat extends Operator_base {
 	}
 
 	/*akhir persetujuan permintaan*/
+
+	/*retur obat departement*/
+	public function get_detail_returdepartment($obat_retur_id)
+	{
+		$result = $this->m_obat->get_detail_returdepartment($obat_retur_id);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	public function confirmreturdept()
+	{
+		$returid = $_POST['obat_retur_id'];
+		$detail = $_POST['approve'];
+		$dept_id = $_POST['retur_dept_id'];
+
+		$insert['penerima_retur'] = $this->session->userdata('session_operator')['petugas_id'];
+		$insert['tanggal_confirm'] = date('Y-m-d H:i:s');
+		$insert['status'] = 'diterima';
+
+		$update = $this->m_obat->update_returdepartemen($returid, $insert);
+		if ($update) {
+			foreach ($detail as $value) {
+				//ubah stok (cols[5]) /obat_detail_id
+				$tgl_kadaluarsa =  $value[6];
+				$obat = $this->m_obat->get_last_stok_by_tgl($tgl_kadaluarsa, '21');
+				$params = array(
+					'obat_dept_id' => $obat['obat_dept_id'],
+					'tanggal' => date('Y-m-d H:i:s'),
+					'masuk' => $value[3],
+					'total_stok' => ($value[3] + $obat['total_stok']),
+					'keterangan' => 'RETUR DEPT'
+					);
+				//tambah detail baru, update stok
+				$update = $this->m_obat->update_stok_returdepartemen($params);
+				//update stok di departemen, kurangi
+				$det = $this->m_obat->get_last_stok_by_detail($value[5], $dept_id);
+				$upd = array(
+					'obat_dept_id' => $value[5],
+					'tanggal' => date('Y-m-d H:i:s'),
+					'keluar' => $value[3],
+					'total_stok' => ($det['total_stok'] - $value[3]),
+					'keterangan' => 'RETUR KE GDG'
+					);
+				$update = $this->m_obat->update_stok_returdepartemen($upd);
+			}			
+		}
+		header('Content-Type: application/json');
+		echo(json_encode($params));
+	}
+
+	public function get_detail_riwayat_returdepartemen($obat_retur_id)
+	{
+		$result = $this->m_obat->get_detail_returdepartment($obat_retur_id);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	/*akhir retur obat departement*/
+
+	/*retur ke distributor*/
+	public function get_obat_bypenyedia()
+	{
+		$katakunci = $_POST['katakunci'];
+		$penyedia_id = $_POST['penyedia_id'];
+		$result = $this->m_obat->get_obat_bypenyedia($katakunci, $penyedia_id);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	public function submitreturdistributor()
+	{
+		$this->form_validation->set_rules('no_retur', 'Nomor Retur', 'required|trim|xss_clean|is_unique[obat_retur_distributor.no_retur]');
+		$this->form_validation->set_rules('penyedia_id', 'Penyedia', 'required|trim|xss_clean');
+
+		$this->form_validation->set_message('required', 'isi semua data dengan benar');
+		$this->form_validation->set_message('is_unique', 'nomor retur sudah ada');
+
+		if ($this->form_validation->run() == TRUE) {
+			$insert['no_retur'] = $_POST['no_retur'];
+			$insert['penyedia_id'] = $_POST['penyedia_id'];
+			$insert['keterangan'] = $_POST['keterangan'];
+			$insert['waktu'] = date('Y-m-d H:i:s');
+			$insert['petugas_input'] = $this->session->userdata('session_operator')['petugas_id'];
+
+			$detail = $_POST['data'];
+			$retur = $this->m_obat->add_obat_retur_distributor($insert);
+			if ($retur) {
+				foreach ($detail as $value) {
+					$param['retur_distributor_id'] = $retur;
+					$param['obat_detail_id'] = $value[0];
+					$param['jumlah'] = $value[2];
+					$ins = $this->m_obat->insert_returdist_detail($param);
+					$det = $this->m_obat->get_last_stok_by_detail($value[0], '21');
+					$upd = array(
+						'obat_dept_id' => $value[0],
+						'tanggal' => date('Y-m-d H:i:s'),
+						'keluar' => $value[2],
+						'total_stok' => ($det['total_stok'] - $value[2]),
+						'keterangan' => 'RETUR DISTRIBUTOR'
+					);
+
+					$update = $this->m_obat->update_stok_returdepartemen($upd);
+				}
+				$result = array(
+				'message'		=> "Data berhasil dimasukkan",
+				'error' => 'n'
+			);
+			}
+		}else{
+			$result = array(
+				'message'		=> strip_tags(str_replace("\n ", "", validation_errors())),
+				'error' => 'y'
+			);
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	public function getdetailreturdistributor($retur_id)
+	{
+		$retur = $this->m_obat->getdetailreturdistributor($retur_id);
+
+		header('Content-Type: application/json');
+		echo json_encode($retur);
+	}
+	/*akhir retur ke distributor*/
+
+	/*print laporan*/
+	public function print_laporan_obat($value='')
+	{
+		# code...
+	}
+
+	public function print_laporan_kadaluarsa($value='')
+	{
+		$filter['now'] = date('Y-m-d');
+		$filter['end'] = $_POST['hd'];
+		$data['result'] = $this->m_obat->get_filter_tgl($filter);
+		$data['nama_dept'] = 'GUDANG OBAT';
+	
+		if($filter['end'] === '0')
+			$data['filter'] = 'sudah kadaluarsa';  
+		else $data['filter'] = "akan kadaluarsa dalam ". $filter['end'] . " bulan";
+		$this->load->view('farmasi/gudangobat/laporan/kadaluarsa',$data);
+	}
+
+	public function print_laporan_permintaan($value='')
+	{
+		$dept = $_POST['filterlaporandeptpermintaan'];
+		$awal = $_POST['start'];
+		$akhir = $_POST['end'];
+
+		$result = $this->m_obat->get_laporan_permintaan($dept, $awal, $akhir);
+
+		$data['awal'] = $awal;
+		$data['akhir'] = $akhir;
+		if($dept == ''){
+			$data['nama_dept'] = 'SEMUA_DEPTARTEMEN';
+		}else{
+			$dep = $this->m_obat->get_dept($dept);
+			$data['nama_dept'] = "DEPARTEMEN ".$dep['nama_dept'];
+		}
+		$data['hasil'] = $result;
+		$this->load->view('farmasi/gudangobat/laporan/permintaan',$data);
+
+	}
+
+	public function print_laporan_returdept($value='')
+	{
+		$dept = $_POST['filterInv'];
+		$awal = $_POST['start'];
+		$akhir = $_POST['end'];
+
+		$result = $this->m_obat->get_laporan_returdept($dept, $awal, $akhir);
+		$data['awal'] = $awal;
+		$data['akhir'] = $akhir;
+		if($dept == ''){
+			$data['nama_dept'] = 'SEMUA_DEPTARTEMEN';
+		}else{
+			$dep = $this->m_obat->get_dept($dept);
+			$data['nama_dept'] = "DEPARTEMEN ".$dep['nama_dept'];
+		}
+		$data['hasil'] = $result;
+		$this->load->view('farmasi/gudangobat/laporan/returdept',$data);
+	}
+
+	public function print_laporan_returdist($value='')
+	{
+		$dist = $_POST['iddistributorlaporan'];
+		$awal = $_POST['start'];
+		$akhir = $_POST['end'];
+
+		$result = $this->m_obat->get_laporan_returdist($dist, $awal, $akhir);
+		$data['awal'] = $awal;
+		$data['akhir'] = $akhir;
+		if($dist == '-1'){
+			$data['nama_dist'] = 'SEMUA_DISTRIBUTOR';
+		}else{
+			$d = $this->m_obat->get_penyedia_by_id($dist);
+			$data['nama_dist'] = "DISTRIBUTOR ".$d['nama_penyedia'];
+		}
+		$data['hasil'] = $result;
+		$this->load->view('farmasi/gudangobat/laporan/returdist',$data);
+	}
+
+	public function print_laporan_stokopname($value='')
+	{		
+		$awal = $_POST['start'];
+		$akhir = $_POST['end'];
+
+		$result = $this->m_obat->get_laporan_stokopname($awal, $akhir);
+		$data['awal'] = $awal;
+		$data['akhir'] = $akhir;
+		
+		$data['nama_dept'] = "GUDANG OBAT";
+		
+		$data['hasil'] = $result;
+		$this->load->view('farmasi/gudangobat/laporan/stokopname',$data);
+	}
+
+	public function print_laporan_stokwarning($value='')
+	{
+		# code...
+	}
+
+	public function print_laporan_stokterakhir($value='')
+	{
+		# code...
+	}
+	/*akhir print laporan*/
+
+	/*global*/
+	public function format_date($waktu)
+	{
+		$rr = explode("-", $waktu);
+		$tgl = $rr[0];
+		$thn = $rr[2];
+		$temp = $rr[1];
+		$bln = "";
+		switch($temp){
+			case 'Januari' : $bln = "01" ;break;
+			case 'Februari' : $bln = "02" ;break;
+			case 'Maret' : $bln = "03" ;break;
+			case 'April' : $bln = "04" ;break;
+			case 'Mei' : $bln = "05" ;break;
+			case 'Juni' : $bln = "06" ;break;
+			case 'Juli' : $bln = "07" ;break;
+			case 'Agustus' : $bln = "08" ;break;
+			case 'September' : $bln = "09" ;break;
+			case 'Oktober' : $bln = "10" ;break;
+			case 'November' : $bln = "11" ;break;
+			case 'Desember' : $bln = "12" ;break;
+		}
+
+		$wkt = implode("-", $thn,$bln,$tgl);
+		return $tgl;
+	}
+
+	public function print_kartustok($id)
+	{
+		$obat = $this->m_obat->get_kartustok($id, '21');
+		$data['obat'] = $obat;
+		$data['nama_dept'] = $obat[0]['nama_dept'];
+		$data['satuan'] = $obat[0]['satuan'];
+		$data['nama'] = $obat[0]['nama'];
+		$this->load->view('farmasi/gudangobat/laporan/kartustok',$data);
+	}
 
 }

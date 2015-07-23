@@ -1157,7 +1157,7 @@ jQuery(document).ready(function() {
 					
 					$('.addNew1').on('click', function() {
 						
-					$('<tr><td>Baru</td><td><a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+z+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru|&nbsp;<a href="#" class="removeRow" style="float:right;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDiv1);
+					$('<tr><td>Baru</td><td><a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="returQtyid'+z+'">1</a></td><td>Baru</td><td>Baru</td><td>Baru</td><td>Baru</td><td><a href="#" class="removeRow" style="text-align:center;"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(addDiv1);
 					z++;
 					$(".returQty").editable(); 
 					
