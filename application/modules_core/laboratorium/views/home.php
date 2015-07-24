@@ -1291,7 +1291,122 @@
         <div class="tab-pane" id="laporan">        
         </div>
         
-        <div class="tab-pane" id="master">        
+        <div class="tab-pane" id="master"> 
+        	<div class="dropdown" style="margin-left:10px;width:98.5%" id="btnBawahRiwTerimaObat">
+	            <div id="titleInformasi">Tambah Tarif Penunjang</div>
+	            <div id="btnBawahRiwTerimaObat" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+            <br>
+
+            <div class="informasi" id="infoRiwTerimaObat">
+
+	            <form class="form-horizontal" role="form">
+	            	<div class="form-group">
+	            		<label class="control-label col-md-3">Nama Tarif</label>
+	            		<div class="col-md-5">
+	            			<input type="text" class="form-control" id="namaTarifPjg" name="namaTarifPjg" placeholder="Nama Tarif">
+	            		</div>
+	            	</div>
+	            	<div class="form-group">
+	            		<label class="control-label col-md-3">Keterangan/Rujukan</label>
+	            		<div class="col-md-5">
+						 	<textarea class="form-control" id="ketTrfPjg" name="ketTrfPjg"></textarea>	
+		           		</div>
+	            	</div>
+
+	            	<div class="form-group">
+	            		<label class="control-label col-md-3">Kategori</label>
+	            		<div class="col-md-5">
+							<select class="form-control select" name="kategoriLab" id="kategoriLab">
+								<option selected>Pilih</option>
+								<option value="Hematologi">Hematologi</option>
+								<option value="Kimia Klinik">MKimia Klinik</option>
+								<option value="Urine">Urine</option>
+								<option value="Feses">Feses</option>					
+								<option value="Imuno-Serologi">Imuno-Serologi</option>					
+								<option value="Mikrobiologi">Mikrobiologi</option>
+								<option value="Lain-lain">Lain-lain</option>
+							</select>	
+						</div>
+	            	</div>
+	            	<div class="form-group">
+	            		<div class="portlet-body" style="margin: 0px 40px 0px 0px">
+						
+							<table class="table table-striped table-bordered table-hover table-responsive">
+								<thead>
+									<tr class="info" >
+										<th  style="text-align:center"> Jenis Tarif </th>
+										<th  style="text-align:center"> BAKHP </th>
+										<th  style="text-align:center"> JS </th>
+										<th  style="text-align:center"> JP </th>
+										<th  style="text-align:center"> Total </th>
+										<th  style="text-align:center"> Clear </th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Rawat Jalan</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabJalan" name="BAKHPPjgLabJalan" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabJalan" name="JSPjgLabJalan" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabJalan" name="JPPjgLabJalan" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabJalan" name="TotalPjgLabJalan" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+									<tr>
+										<td>Rawat IGD</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabIGD" name="BAKHPPjgLabIGD" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabIGD" name="JSPjgLabIGD" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabIGD" name="JPPjgLabIGD" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabIGD" name="TotalPjgLabIGD" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+									<tr>
+										<td>Rawat Inap Kelas VIP</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabVIP" name="BAKHPPjgLabVIP" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabVIP" name="JSPjgLabVIP" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabVIP" name="JPPjgLabVIP" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabVIP" name="TotalPjgLabVIP" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+									<tr>
+										<td>Rawat Inap Kelas I</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabKlsI" name="BAKHPPjgLabKlsI" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabKlsI" name="JSPjgLabKlsI" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabKlsI" name="JPPjgLabKlsI" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabKlsI" name="TotalPjgLabKlsI" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+									<tr>
+										<td>Rawat Inap Kelas II</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabKlsII" name="BAKHPPjgLabKlsII" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabKlsII" name="JSPjgLabKlsII" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabKlsII" name="JPPjgLabKlsII" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabKlsII" name="TotalPjgLabKlsII" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+									<tr>
+										<td>Rawat Inap Kelas III</td>
+										<td><input type="text" class="form-control" id="BAKHPPjgLabKlsIII" name="BAKHPPjgLabKlsIII" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JSPjgLabKlsIII" name="JSPjgLabKlsIII" placeholder="0"></td>
+										<td><input type="text" class="form-control" id="JPPjgLabKlsIII" name="JPPjgLabKlsIII" placeholder="0"></td>									
+										<td><input type="text" class="form-control" id="TotalPjgLabKlsIII" name="TotalPjgLabKlsIII" placeholder="0"></td>
+										<td><a href="#" class="clearRow"><i class="glyphicon glyphicon-remove"></i></a></td>						
+									</tr>
+								</tbody>
+							</table>
+						</div>
+	            	</div>
+	            	<div class="form-group">
+	            		<div class="pull-right" style="margin-right:40px;">
+	            			<button class="btn btn-success">Submit</button>
+	            			<button class="btn btn-danger">Cancel</button>
+	            		</div>
+	            	</div>
+
+
+	            </form>
+	        </div>
+	               
         </div>
     </div>
 

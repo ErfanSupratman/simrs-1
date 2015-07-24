@@ -1294,7 +1294,38 @@ jQuery(document).ready(function() {
 						}
 					}
 </script>
-
+<script type="text/javascript">
+	function tambahTabel(a, b){
+			var x = a;
+			$('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(x);
+			return false;
+	};
+	function tambahTabelKasir(a, b){
+			var x = a;
+			$('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(x);
+			return false;
+	};
+	function tambahTabelKasirBPJS(a, b){
+			var x = a;
+			$('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(x);
+			return false;
+	};
+	function tambahMenu(a, b){
+			var x = a;
+			$('<tr><td></td><td><input type="text" class="form-control" id="namaMenu" name="namaMenu"></td><td><input type="text" class="form-control" id="jnsMenu" name="jnsMenu"></td><td><input type="text" class="form-control" id="hrgMenu" name="hrgMenu"></td><td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(x);
+			return false;
+	};
+	function tambahTindakan(a, b, c, d){
+			var x = a;
+			var y = c;
+			var z = d;
+			$('<div class="form-group"><label class="control-label col-md-3"></label><div class="col-md-3"><input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" placeholder="Cari Tindakan"></div><div class="col-md-1" style="margin-left:-20px"><a href="#" class="removeBar"><i class="glyphicon glyphicon-remove"></i></a></div></div>').appendTo(x);
+			$('<div class="form-group"><label class="control-label col-md-3"></label><div class="col-md-3"><input type="text" class="form-control" id="tarifMediko" name="tarifMediko" placeholder="Tarif" readonly ></div><div class="col-md-1" style="margin-left:-20px"><a href="#" class="removeBar"><i class="glyphicon glyphicon-remove"></i></a></div></div>').appendTo(y);
+			$('<div class="form-group"><label class="control-label col-md-3"></label><div class="col-md-3"><input type="text" class="form-control" id="onfakturMediko" name="onfakturMediko" placeholder="On Faktur" ></div><div class="col-md-1" style="margin-left:-20px"><a href="#" class="removeBar"><i class="glyphicon glyphicon-remove"></i></a></div></div>').appendTo(z);
+			
+			return false;
+	};
+</script>
 
 <script src="<?php echo base_url();?>metronic/assets/js/main.js"></script>
 

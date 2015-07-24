@@ -74,141 +74,435 @@
         </div>
 
         <div class="tab-pane" id="farmasi">
-	       	<div class="dropdown">
-	       		<div id="titleInformasi">Inventori</div>
-	       		<div class="btnBawah" id="btnBawahInventori"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+        	<div class="dropdown" id="btnBawahInventori" >
+	            <div id="titleInformasi">Inventori</div>
+	            <div id="btnBawahInventori" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
             </div>
-          	<br>
-            <div class="tabelinformasi" id="infoInventori">
-				<div class="portlet-body" style="margin: 0px 50px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive">
-						<thead>
-							<tr class="info">
-								<th> ID Obat </th>
-								<th> Tanggal Kadaluarsa </th>
-								<th> No Batch </th>
-								<th> Stok </th>
-								<th> Stok Minimal </th>
-								<th> Harga Jual </th>
-								<th> Keterangan</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>S121334</td>
-								<td>24 April 2014</td>
-								<td>3</td>
-								<td>100</td>									
-								<td>120</td>
-								<td>14000</td>
-								<td style="text-align:center">200000</td>										
-							</tr>
-							<tr>
-								<td>S121334</td>
-								<td>24 April 2014</td>
-								<td>3</td>
-								<td>100</td>									
-								<td>120</td>
-								<td>14000</td>
-								<td style="text-align:center">200000</td>											
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<br>
-	        </div>
-			
-			<div class="dropdown">
-	        	<div id="titleInformasi">Permintaan Obat</div>
-	            <div class="btnBawah" id="btnBawahPermintaan"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-	        <br>
-	        <div class="informasi" id="infoPermintaan">
-				<form class="form-horizontal" role="form">
-	           		<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Request</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
-							</div>
+            <br>
+            <div id="infoInventori">
+				<form class="form-horizontal informasi" role="form">
+	            	<div class="form-group">
+		            	<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
+						</label>
+						<div class="col-md-2" style="width:200px">
+							<select class="form-control select" name="filterInv" id="filterInv">
+								<option value="Jenis Obat" selected>Jenis Obat</option>
+								<option value="Merek">Merek</option>
+								<option value="Nama Obat">Nama Obat</option>							
+							</select>	
+						</div>
+						<div class="col-md-2" style="margin-left:-15px; width:200px;" >
+							<input type="text" class="form-control" id="filterby" name="valfilter" placeholder="Value"/>
+						</div>
+
+						<div class="col-md-1" >
+							<button class="btn btn-danger">EXPIRED</button> 
+						</div>
+						<div class="col-md-1" >
+							<button class="btn btn-warning">EX 3 BULAN</button>
+						</div>
+						<div class="col-md-1" style="margin-left: 20px;">
+							<button class="btn btn-warning">EX 6 BULAN</button>
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Petugas</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="ptgas" name="ptgas" placeholder="Petugas"  data-toggle="modal" data-target="#petugas"/>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Keterangan Request</label>
-						<div class="col-md-4">
-						<textarea class="form-control" id="ketRequest" name="ketRequest" placeholder="Keterangan"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Respon</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Petugas Respond</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="ptgas" name="ptgasRespond" placeholder="Petugas Respond" data-toggle="modal" data-target="#petugas"/>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3" ></label>
-						<div class="col-md-7">			
-							<a href="#tambahPermintaan" style="color:white">
-							<button type="submit" class="btn btn-success">Tambah</button></a>		
-					 	</div>							
-					</div>				
 				</form>
-	        </div>
-	           	
-	        <!-- Retur Belum -->
-	        <div class="dropdown">
-	        	<div id="titleInformasi">Retur Obat</div>
-	        	<div class="btnBawah" id="btnBawahRetur"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-	        <br>
-	        <div class="tabelinformasi" id="infoRetur">
-	          	<div class="portlet-body" style="margin: 0px 50px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive">
-						<thead>
-							<tr class="info">
-								<th> ID Obat </th>
-								<th> Tanggal Kadaluarsa </th>
-								<th> No Batch </th>
-								<th> Stok Kadaluarsa</th>
-								<th> Stok Diretur </th>
-								<th> Stok Sisa </th>
-								<th> Harga Jual </th>
-								<th> Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>S121334</td>
-								<td>24 April 2014</td>
-								<td>3</td>
-								<td>100</td>									
-								<td><a href="#" class="editableform editable-click" data-type="text" data-pk="1" data-original-title="Jumlah Diretur" id="retur">1</a></td>									
-								<td>1</td>
-								<td>14000</td>
-								<td style="text-align:center"><button type="submit" class="btn btn-success">Retur</button></td>										
-							</tr>
-						</tbody>
-					</table>
+				<div class="form-group" >
+					<div class="portlet-body" style="margin: 50px 50px 0px 40px">
+						<table class="table table-striped table-bordered table-hover table-responsive">
+							<thead>
+								<tr class="info">
+									<th width="20">No.</th>
+									<th> Nama Obat </th>
+									<th> No Batch </th>
+									<th> Harga Jual </th>
+									<th> Merek </th>
+									<th> Stok</th>
+									<th> Satuan </th>
+									<th width="150"> Tanggal Kadaluarsa </th>
+									<th width="80"> Action </th>								
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>A</td>
+									<td>A</td>
+									<td>a</td>
+									<td>a</td>									
+									<td>A</td>
+									<td>A</td>
+									<td>A</td>
+									<td style="text-align:center"><a href="#inout" data-toggle="modal" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="IN-OUT"></i></a>
+											<a href="#edInvenBer" data-toggle="modal" class="edObat"><i class="glyphicon glyphicon-search" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>							
+										</td>										
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>A</td>
+									<td>A</td>
+									<td>a</td>
+									<td>a</td>									
+									<td>A</td>
+									<td>A</td>
+									<td>A</td>
+									<td style="text-align:center"><a href="#inout" data-toggle="modal" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="IN-OUT"></i></a>
+											<a href="#edInvenBer" data-toggle="modal" class="edObat"><i class="glyphicon glyphicon-search" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>							
+									</td>											
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<br>
+					<div class="pull-right" >
+						<button class="btn btn-info " style="margin-right:50px;">PRINT</button> 
+					</div>
 				</div>
-	        </div>    
-	        <br>   	
+				<br><br>
+	        </div>
+			<div class="modal fade" id="inout" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content" >
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">IN OUT</h3>
+	        			</div>
+	        			<div class="modal-body">
+	        			<form class="form-horizontal informasi" role="form">
+	
+		        			<div class="form-group">
+		        					<label class="control-label col-md-3" >Tanggal 
+									</label>
+									<div class="col-md-4" >
+						         		<div class="input-icon">
+											<i class="fa fa-calendar"></i>
+											<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+										</div>
+									</div>
+									
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" >In / Out 
+								</label>
+								<div class="col-md-4">
+					         		<select class="form-control select" name="iober" id="iober">
+										<option value="IN" selected>IN</option>
+										<option value="OUT">OUT</option>					
+									</select>
+								</div>	
+							</div>
+
+							<div class="form-group">
+		        					<label class="control-label col-md-3" >Jumlah 
+									</label>
+									<div class="col-md-4" >
+					         		<input type="text" class="form-control" name="jmlInOutBer" placeholder="Jumlah">
+									</div>
+									
+							</div>
+							<div class="form-group">
+		        					<label class="control-label col-md-3" >Sisa Stok 
+									</label>
+									<div class="col-md-4" >
+					         		<input type="text" class="form-control" name="sisaInOutBer" placeholder="Sisa Stok">
+									</div>
+									
+							</div>
+							<div class="form-group">
+		        					<label class="control-label col-md-3" >Keterangan 
+									</label>
+									<div class="col-md-6" >
+										<textarea class="form-control" placeholder="Keterangan"></textarea>
+									</div>
+		
+							</div>
+							</form>
+							
+	        			</div>
+	        			<div class="modal-footer">
+	        				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+	 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="edInvenBer" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content" >
+							<div class="modal-header">
+		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		        				<h3 class="modal-title" id="myModalLabel">Riwayat</h3>
+		        			</div>
+		        			<div class="modal-body">
+		        			<form class="form-horizontal" role="form">
+				            	<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
+									<thead>
+										<tr class="info" >
+											<th  style="text-align:left" width="10%"> Waktu </th>
+											<th  style="text-align:left"> IN / OUT </th>
+											<th  style="text-align:left"> Jumlah </th>
+											<th  style="text-align:left"> Stok Akhir </th>
+											<th  style="text-align:left"> Jenis </th>
+											<th  style="text-align:left">  Keterangan </th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+											
+									</tbody>
+								</table>
+
+			        			
+								</form>
+								
+		        			</div>
+		        			<div class="modal-footer">
+		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+					      	</div>
+						</div>
+					</div>
+			</div>
+
+			<div class="dropdown" id="btnBawahMintaObat">
+	            <div id="titleInformasi">Permintaan Farmasi</div>
+	            <div id="btnBawahMintaObat" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+            <div id="infoMintaObat">
+            	<form class="form-horizontal" role="form" method="post" id="permintaanfarmasibersalin">
+	            	<div class="informasi">
+	            		<br>
+	        			<div class="form-group">
+	        				<div class="col-md-2">
+	        					<label class="control-label">Nomor Permintaan</label>
+	        				</div>
+	        				<div class="col-md-3">
+	        					<input type="text" class="form-control" name="noPermFarmBers" id="noPermFarmBers" placeholder="Nomor Permintaan"/>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-2">
+	        					<label class="control-label">Tanggal Permintaan</label>
+	        				</div>
+	        				<div class="col-md-2">
+	        					<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" id="tglpermintaanfarmasi" class="form-control" data-date-format="dd/mm/yyyy H:i" data-provide="datetimepicker" value="<?php echo date("d/m/Y H:i");?>">
+								</div>
+							</div>
+	        			</div>
+	        			<div class="form-group">
+	        				<div class="col-md-2">
+	        					<label class="control-label">Keterangan</label>
+	        				</div>
+	        				<div class="col-md-3">	
+								<textarea class="form-control" id="ketObatFarBers" name="ketObatFarBers"></textarea>	
+							</div>
+	        			</div>
+	        		</div>
+					<a href="#modalMintaFarBers" data-toggle="modal"><i class="fa fa-plus" style="margin-left:40px;font-size:11pt;">&nbsp;Tambah Obat</i></a>
+					<div class="clearfix"></div>
+
+					<div class="portlet box red">
+						<div class="portlet-body" style="margin: 10px 40px 0px 40px">
+							<table class="table table-striped table-bordered table-hover table-responsive" id="tabApo">
+								<thead>
+									<tr class="info" >
+										<!-- <th width="20"> No. </th> -->
+										<th> Nama Obat </th>
+										<th> Satuan </th>
+										<th> Merek </th>
+										<th> Stok Unit </th>
+										<th> Jumlah Diminta </th>
+										<th width="80"> Action </th>			
+									</tr>
+								</thead>
+								<tbody  id="addinputMintaFar" class="addKosong">
+								</tbody>
+							</table>
+						</div>
+						<div class="form-group" style="margin-top:30px;">
+							<div class="col-md-2 pull-right"> 				 
+								<button class="btn btn-warning" type="button" id="batalpermintaanfarmasi">RESET</button>
+								<button class="btn btn-success" type="submit">SIMPAN</button>
+							</div>
+						</div>
+					</div>	
+				</form>
+			</div>	    
+			<br>
+			<div class="modal fade" id="modalMintaFarBers" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+	        			</div>
+	        			<div class="modal-body">
+
+		        			<div class="form-group">
+		        				<form method="post" class="form-horizontal" role="form" id="formobatfarmasibersalin">
+									<div class="form-group">	
+										<div class="col-md-5" style="margin-left:20px;">
+											<input type="text" class="form-control" name="katakunci" id="katakuncifarmasibersalin" placeholder="Nama Obat"/>
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-info">Cari</button>
+										</div>
+										<br><br>	
+									</div>		
+								</form>
+								<div style="margin-right:10px;margin-left:10px;"><hr></div>
+								<div class="portlet-body" style="margin: 0px 20px 0px 15px">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="font-size:99%">
+										<thead>
+											<tr class="info">
+												<th>Nama Obat</th>
+												<th>Satuan</th>
+												<th>Merek</th>
+												<th>Stok Gudang</th>
+												<th>Tgl Kadaluarsa</th>
+												<th width="10%">Pilih</th>
+											</tr>
+										</thead>
+										<tbody id="tbodyobatpermintaanfarmasi">
+											<tr>
+												<td colspan="6" style="text-align:center">Cari data Obat</td>
+											</tr>
+										</tbody>
+									</table>												
+								</div>
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
+	           	
+	       	<div class="dropdown" id="btnBawahRetDepartemen">
+	            <div id="titleInformasi">Retur Farmasi</div>
+	            <div id="btnBawahRetFarmasi" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+           	<div id="infoRetDepartemen">
+            	<form class="form-horizontal" role="form" method="post" id="formsubmitreturbersalin">
+            		<div class="informasi">
+            			<br>
+            			<div class="form-group">
+            				<div class="col-md-2">
+            					<label class="control-label">Nomor Retur</label>
+            				</div>
+            				<div class="col-md-3">
+            					<input type="text" class="form-control" name="noRetFarBers" id="noRetFarBers" placeholder="Nomor Retur"/>
+							</div>
+							<div class="col-md-1"></div>
+							<div class="col-md-2">
+            					<label class="control-label">Tanggal Retur</label>
+            				</div>
+            				<div class="col-md-2">
+            					<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" class="form-control" id="waktureturbersalin" data-date-format="dd/mm/yyyy H:i" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								</div>
+							</div>
+            			</div>
+            			<div class="form-group">
+							<div class="col-md-2">
+            					<label class="control-label">Keterangan</label>
+            				</div>
+            				<div class="col-md-3">
+								<textarea class="form-control" id="ketObatRetFarBers" name="ketObatRetFarBers"></textarea>	
+							</div>
+            			</div>
+            		</div>
+
+            		<a href="#modalRetFarBers" data-toggle="modal"><i class="fa fa-plus" style="margin-left : 40px;font-size:11pt;">&nbsp;Tambah Obat</i></a>
+					<div class="clearfix"></div>
+					
+					<div class="portlet box red">
+						<div class="portlet-body" style="margin: 10px 40px 0px 40px">
+						
+							<table class="table table-striped table-bordered table-hover table-responsive" id="tabRetur">
+								<thead>
+									<tr class="info" >
+										<th > Nama Obat </th>
+										<th > Tanggal Kadaluarsa</th>
+										<th > Satuan </th>
+										<th > Merek </th>
+										<th > Stok Unit </th>
+										<th > Jumlah Retur </th>
+										<th width="80"> Action </th>			
+									</tr>
+								</thead>
+								<tbody  id="addinputRetFar" class="addKosong">
+								</tbody>
+							</table>
+						</div>
+						<div class="form-group" style="margin-top:30px;">
+							<div class="col-md-2 pull-right"> 				 
+								<button class="btn btn-warning" type="button" id="batalreturfarmasi">RESET</button>
+								<button class="btn btn-success" type="submit">SIMPAN</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal fade" id="modalRetFarBers" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+	        			</div>
+	        			<div class="modal-body">
+		        			<div class="form-group">
+		        				<form method="post" role="form" class="form-horizontal" id="formsearchobatretur">
+									<div class="form-group">	
+										<div class="col-md-5" style="margin-left:20px;">
+											<input type="text" class="form-control" name="katakunci" id="katakuncireturbersalin" placeholder="Nama petugas"/>
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-info">Cari</button>
+										</div>
+										<br><br>	
+									</div>
+								</form>
+								<div style="margin-left:10px; margin-right:10px;"><hr></div>
+								<div class="portlet-body" style="margin: 0px 20px 0px 15px">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa">
+										<thead>
+											<tr class="info">
+												<td>Nama Obat</td>
+												<td>Satuan</td>
+												<td>Merek</td>
+												<td>Stok Unit</td>
+												<td>Tgl Kadaluarsa</td>
+												<td width="10%">Pilih</td>
+											</tr>
+										</thead>
+										<tbody id="tbodyreturbersalin">
+											<tr>
+												<td style="text-align:center" colspan="6">Cari data Obat</td>
+											</tr>
+										</tbody>
+									</table>												
+								</div>
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>	
+			<br>
 	    </div>
+
 
         <div class="tab-pane" id="logistik">
 	        <div class="dropdown">

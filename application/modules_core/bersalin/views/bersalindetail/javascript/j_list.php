@@ -278,9 +278,9 @@
 
 				if(document.getElementById('tabelresepbersalin').getElementsByTagName("tr").length == 2) {
 				    jQuery('#tabelresepbersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="7" style="text-align:center"><strong>Tidak ada resep yang diberikan</strong></td>'+
-							'</tr>'
+						'<tr>'+
+							'<td colspan="7" style="text-align:center"><strong>Tidak ada resep yang diberikan</strong></td>'+
+						'</tr>'
 				    );	        	
 		        }				
 		        return false;   		

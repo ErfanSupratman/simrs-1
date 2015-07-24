@@ -650,18 +650,14 @@
 						            	<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
 											<thead>
 												<tr class="info" >
-													<th  style="text-align:left" width="10%"> Waktu </th>
+													<th  style="text-align:left"> Waktu </th>
 													<th  style="text-align:left"> IN / OUT </th>
 													<th  style="text-align:left"> Jumlah </th>
 													<th  style="text-align:left"> Stok Akhir </th>
-													<th  style="text-align:left"> Jenis </th>
-													<th  style="text-align:left">  Keterangan </th>
 												</tr>
 											</thead>
-											<tbody>
+											<tbody id="tbodydetailobatinventori">
 												<tr>
-													<td></td>
-													<td></td>
 													<td></td>
 													<td></td>
 													<td></td>
@@ -760,7 +756,7 @@
 						<div class="form-group" style="margin-top:30px;">
 							<div class="col-md-10"></div>
 							<div class="col-md-2"> 				 
-								<button class="btn btn-danger" type="reset">RESET</button>
+								<button class="btn btn-danger" type="reset" id="resetaddpengadaan">RESET</button>
 								<button class="btn btn-success" type="submit">SIMPAN</button>
 							</div>
 						</div>
@@ -1105,7 +1101,7 @@
 	        			<div class="form-group">
 	        				<form method="post" id="formsearchpenyediapenerimaan" role="form">
 								<div class="form-group">	
-									<div class="col-md-6" style="margin-left:20px;">
+									<div class="col-md-6" >
 										<input type="text" class="form-control" name="katakuncipenyedia" id="penyediapenerimaan" placeholder="Nama Penyedia"/>
 									</div>
 									<div class="col-md-2">
@@ -1176,7 +1172,7 @@
 							<div class="col-md-1"></div>
 							<label class="control-label col-md-2">Penyedia </label>
 							<div class="col-md-3" style="float:left" >
-								<input type="text" class="form-control" id="penyediaObatTerima" name="penyediaObatTerima" placeholder="Penyedia" data-toggle="modal" data-target="#searchpenyediapenerimaan"/>
+								<input type="text" style="cursor:pointer;" class="form-control" id="penyediaObatTerima" name="penyediaObatTerima" placeholder="Penyedia" data-toggle="modal" data-target="#searchpenyediapenerimaan" readonly="" />
 								<input type="hidden" id="id_penyediaObatTerima">
 							</div>
 						</div>
@@ -1212,8 +1208,8 @@
 										<th  style="text-align:left"> Satuan </th>
 										<th  style="text-align:left"> Batch </th>
 										<th  style="text-align:left"> Tgl Kadaluarsa </th>
-										<th  style="text-align:left"> Quantity </th>
-										<th style="text-align:left"> Diskon</th>
+										<th  style="text-align:left width:100px;"> Quantity </th>
+										<th style="text-align:left; width:50px;"> Diskon</th>
 										<th  style="text-align:left"> Harga </th>
 										<th  style="text-align:left"> Total </th>
 										<th  style="text-align:left"> Action </th>
@@ -1374,13 +1370,13 @@
 				<div class="modal-content">
 					<div class="modal-header">
         				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+        				<h3 class="modal-title" id="myModalLabel">Pilih Obat   - <small><span class="modal-title" id="modalnamapenyedia"></span></small></h3>
         			</div>
         			<div class="modal-body">
 
 	        			<div class="form-group">
 							<div class="form-group">	
-								<div class="col-md-3" style="margin-left:35px;">
+								<div class="col-md-6">
 									<input type="text" class="form-control" name="katakuncipenerimaan" id="katakuncipenerimaan" placeholder="Nama Obat"/>
 								</div>
 								<div class="col-md-2">
@@ -2370,21 +2366,24 @@
 											}
 											$tgl = strtotime($value['tgl_opname']);
 											$date = date('d F Y', $tgl); 
+											$tgl2 = strtotime($value['tgl_kadaluarsa']);
+											$date2 = date('d F Y', $tgl2);
 											echo '<tr>'.
-												'<td style="display:none;" class="obat_dept_id">'.$value['obat_dept_id'].'</td>'.
+												'<td style="display:none;" class="obat_dept_id">'.$value['obat_process'].'</td>'.
 												'<td style="display:none;" class="obat_opname_id">'.$value['obat_opname_id'].'</td>'.
 												'<td>'.$date.'</td>'.
 												'<td>'.$value['nama'].'</td>'.
 												'<td>'.$value['nama_merk'].'</td>'.
-												'<td>'.$value['tgl_kadaluarsa'].'</td>'.
-												'<td>'.$value['total_stok'].'</td>'.
-												'<td><a href="#" data-type="text" data-pk="1" data-original-title="Edit" class="editInven" style="color:black;cursor:default;">'.$value['stok_fisik'].'</a></td>'.
+												'<td>'.$date2.'</td>'.
+												'<td class="stoksistemopname">'.$value['total_stok'].'</td>'.
+												'<td><span class="stokfisikopname">'.$value['stok_fisik'].'</span></td>'.
 												'<td class="h_jual">'.$value['harga_jual'].'</td>'.
-												'<td>'.$value['selisih'].'</td>'.
-												'<td>'.$value['harga'].'</td>'.
-												'<td>
-													<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;
-													<a href="#" class="editInvenBut">Simpan</a>
+												'<td>'.($value['stok_fisik'] - $value['total_stok']).'</td>'.
+												'<td>'.(($value['stok_fisik'] - $value['total_stok']) * $value['harga_jual']).'</td>'.
+												'<td style="text-align: center">
+													<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>
+													<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>
+													<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>
 												</td>'.
 											'</tr>';	
 												
@@ -2395,7 +2394,7 @@
 										</tr>';
 									}
 									?>
-										
+										<!-- <a href="#" data-type="text" data-pk="1" data-original-title="Edit" class="editInven" style="color:black;cursor:default;">'.$value['stok_fisik'].'</a> -->
 								</tbody>
 							</table>
 							<div class="pull-right">
@@ -2838,17 +2837,28 @@
 		        data.push(cols);
 		    });
 
+		    var d = [];
+		    $('#tbody_addpengadaan').find('tr').each(function (rowIndex, r) {
+		        var cols = [];
+		        $(this).find('td>input[type="text"]').each(function (colIndex, c) {
+		            cols.push(c.value);
+		        });
+		        d.push(cols);
+		    });
+
 		    var item = {};
 		    for (var i = data.length - 1; i >= 0; i--) {
 		    	var myData = {};
 		    	myData['obat_id'] = data[i][7];
 		    	myData['penyedia_id'] = data[i][8];
-		    	myData['jumlah'] = data[i][2];
+		    	myData['jumlah'] = d[i][0];
 		    	myData['hps'] = data[i][4];
-		    	myData['total'] = (Number(data[i][2]) * Number(data[i][4]));
+		    	myData['total'] = (Number(d[i][0]) * Number(data[i][4]));
 
 		    	item[i] = myData;
 		    };
+
+		    //console.log(item);return false;
 
 		    item_pengadaan['pengadaan'] = item;
 		    //console.log(item_pengadaan);
@@ -2940,11 +2950,19 @@
 				}
 			})
 		})
+
+		$('#resetaddpengadaan').on('click', function (e) {
+			e.preventDefault();
+			$('#tbody_addpengadaan').empty();
+			$('#nmrAdaan').val('');
+		})
 	
 	//End of perencanaan pengadaan
 
 	//Stock Opname Here
 	$(document).ready(function(){
+		$("a.editInvenBut").hide();
+		$('a.edIvenBatal').hide();
 
 		$('#submit_filter_opname').submit(function(event){
 			var item = $('#filterOpname').val();
@@ -2967,27 +2985,29 @@
 							}
 							var selisih = (data[i]['selisih'] == null ? "" : data[i]['selisih']);
 							var harga = (data[i]['harga'] == null ? "" : data[i]['harga']);
-							var date = '<?php echo date("d F Y", strtotime('+data[i]["tgl_opname"]+')) ?>';
 							$('#tbody_opname').append(
 							 '<tr>'+
 							 	'<td style="display:none;" class="obat_dept_id">'+data[i]['obat_dept_id']+'</td>'+
 								'<td style="display:none;" class="obat_opname_id">'+data[i]['obat_opname_id']+'</td>'+
-								'<td>'+data[i]['tgl_opname']+'</td>'+
+								'<td>'+format_date(data[i]["tgl_opname"])+'</td>'+
 								'<td>'+data[i]['nama']+'</td>'+
 								'<td>'+data[i]['nama_merk']+'</td>'+
-								'<td>'+data[i]['tgl_kadaluarsa']+'</td>'+
-								'<td>'+data[i]['total_stok']+'</td>'+
-								'<td><a href="#" data-type="text" data-pk="1" data-original-title="Edit" class="editInven" style="color:black;cursor:default;">'+data[i]['stok_fisik']+'</a></td>'+
+								'<td>'+format_date(data[i]["tgl_kadaluarsa"])+'</td>'+
+								'<td class="stoksistemopname">'+data[i]['total_stok']+'</td>'+
+								'<td><span class="stokfisikopname">'+data[i]['stok_fisik']+'</span></td>'+
 								'<td class="h_jual">'+data[i]['harga_jual']+'</td>'+
 								'<td>'+selisih+'</td>'+
 								'<td>'+harga+'</td>'+
-								'<td>'+
-									'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;'+
-									'<a href="#" class="editInvenBut" style="display:none">Simpan</a>'+
+								'<td style="text-align:center">'+
+									'<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+									'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
+									'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
 								'</td>'+
 							'</tr>'
 							);
 						}
+						$("a.editInvenBut").hide();
+						$('a.edIvenBatal').hide();
 					}else{
 						$('#tbody_opname').append(
 							'<tr>'+
@@ -3003,8 +3023,8 @@
 
 	//function stock opname
 	function getObatAlphabet(alpha){
-		// alert(alpha);
-		// return false;
+		
+
 		$.ajax({
 			type:"POST",
 			url:"<?php echo base_url()?>farmasi/homegudangobat/get_alpha_obat_opname/"+alpha,
@@ -3021,27 +3041,29 @@
 						}
 						var selisih = (data[i]['selisih'] == null ? "" : data[i]['selisih']);
 						var harga = (data[i]['harga'] == null ? "" : data[i]['harga']);
-						var date = '<?php echo date("d F Y", strtotime('+data[i]["tgl_opname"]+')) ?>';
 						$('#tbody_opname').append(
 						 '<tr>'+
 						 	'<td style="display:none;" class="obat_dept_id">'+data[i]['obat_dept_id']+'</td>'+
 							'<td style="display:none;" class="obat_opname_id">'+data[i]['obat_opname_id']+'</td>'+
-							'<td>'+data[i]['tgl_opname']+'</td>'+
+							'<td>'+format_date(data[i]["tgl_opname"])+'</td>'+
 							'<td>'+data[i]['nama']+'</td>'+
 							'<td>'+data[i]['nama_merk']+'</td>'+
-							'<td>'+data[i]['tgl_kadaluarsa']+'</td>'+
-							'<td>'+data[i]['total_stok']+'</td>'+
-							'<td><a href="#" data-type="text" data-pk="1" data-original-title="Edit" class="editInven" style="color:black;cursor:default;">'+data[i]['stok_fisik']+'</a></td>'+
+							'<td>'+format_date(data[i]["tgl_kadaluarsa"])+'</td>'+
+							'<td class="stoksistemopname">'+data[i]['total_stok']+'</td>'+
+							'<td><span class="stokfisikopname">'+data[i]['stok_fisik']+'</span></td>'+
 							'<td class="h_jual">'+data[i]['harga_jual']+'</td>'+
 							'<td>'+selisih+'</td>'+
 							'<td>'+harga+'</td>'+
-							'<td>'+
-								'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;'+
-								'<a href="#" class="editInvenBut" style="display:none">Simpan</a>'+
+							'<td style="text-align:center">'+
+								'<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+								'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
+								'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
 							'</td>'+
 						'</tr>'
 						);
 					}
+					$("a.editInvenBut").hide();
+					$('a.edIvenBatal').hide();
 				}else{
 					$('#tbody_opname').append(
 						'<tr>'+
@@ -3051,10 +3073,6 @@
 				}
 			}
 		});
-	}
-
-	function formatdate (waktu) {
-		//ubah tampilan doang
 	}
 
 	function getObat(id, nama){
@@ -3069,10 +3087,10 @@
 					'<tr>'+
 						'<td>'+data[0]['nama']+'</td>'+
 						'<td>'+data[0]['nama_penyedia']+'</td>'+
-						'<td class="qty"><span class="aek">1</span></td>'+
+						'<td><input type="text" class="qtypengadaan form-control numberrequired"></td>'+
 						'<td>'+data[0]['satuan']+'</td>'+
-						'<td>'+data[0]['hps']+'</td>'+
-						'<td class="hps">'+data[0]['hps']+'</td>'+
+						'<td class="hpspengadaan">'+data[0]['hps']+'</td>'+
+						'<td class="totalpengadaan">0</td>'+
 						'<td style="text-align:center;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
 						'<td style="display:none;">'+data[0]['obat_id']+'</td>'+
 						'<td style="display:none;">'+data[0]['penyedia_id']+'</td>'+
@@ -3082,9 +3100,21 @@
 			}
 		});
 
-		/*$('#tbody_addpengadaan').on('click', 'tr td .aek', function (e) {
-			$(this).replaceWith('<span>lalala</span>');
-			$(this).closest('tr').find('td .hps').html('adfjalf');
+		$('#tbody_addpengadaan').on('change', 'tr td .qtypengadaan', function (e) {
+			var val = $(this).val();
+			var a = $(this).closest('tr').find('td.hpspengadaan').text();
+			$(this).closest('tr').find('td.totalpengadaan').html((Number(val) * Number(a)));
+		})
+
+		/*$('#tbody_addpengadaan').on('keypress', 'tr td .qtypengadaan', function (e) {
+			var val = $(this).val();
+			if(e.keyCode == 13)
+				$(this).replaceWith('<span>'+val+'</span>');
+		})
+
+		$('#tbody_addpengadaan').on('focus', 'tr td .qtypengadaan', function (e) {
+			var val = $(this).val();
+			$(this).replaceWith('<span>'+val+'</span>');
 		})*/
 
 		/*$('#tbody_addpengadaan').on('focus', 'tr td .aek', function (e) {
@@ -3105,6 +3135,72 @@
 	 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
 	 		'</tr>'
 		);
+	}
+
+	function format_date (date) {
+		var sp = date.split('-');
+		var tgl = sp[2];
+		var thn = sp[0];
+		var temp = sp[1];
+		var bln = "";
+		switch(temp){
+			case '01' : bln = "Januari" ;break;
+			case '02' : bln = "Februari" ;break;
+			case '03' : bln = "Maret" ;break;
+			case '04' : bln = "April" ;break;
+			case '05' : bln = "Mei" ;break;
+			case '06' : bln = "Juni" ;break;
+			case '07' : bln = "Juli" ;break;
+			case '08' : bln = "Agustus" ;break;
+			case '09' : bln = "September" ;break;
+			case '10' : bln = "Oktober" ;break;
+			case '11' : bln = "November" ;break;
+			case '12' : bln = "Desember" ;break;
+		}
+
+		var waktu = "";
+		if(tgl.length > 2){
+			var a = tgl.split(' ');
+			waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
+		}else{
+			waktu = tgl + " " + bln + " "+ thn;
+		}
+		return waktu;
+	}
+
+	function format_date2 (date) {
+		var sp = date.split(' ');
+		var tgl = sp[0];
+		var thn = sp[2];
+		var temp = sp[1];
+		var bln = "";
+		switch(temp){
+			case 'Januari' : bln = "01" ;break;
+			case 'Februari' : bln = "02" ;break;
+			case 'Maret' : bln = "03" ;break;
+			case 'April' : bln = "04" ;break;
+			case 'Mei' : bln = "05" ;break;
+			case 'Juni' : bln = "06" ;break;
+			case 'Juli' : bln = "07" ;break;
+			case 'Agustus' : bln = "08" ;break;
+			case 'September' : bln = "09" ;break;
+			case 'Oktober' : bln = "10" ;break;
+			case 'November' : bln = "11" ;break;
+			case 'Desember' : bln = "12" ;break;
+		}
+
+		var waktu = tgl + "/" + bln + "/"+ thn;
+		return waktu;
+	}
+
+	function format_date3(date){
+		var res = date.split("/");
+	    var bln = res[1];
+		var tgl = res[0];
+	    var thn = res[2];
+
+	    var tanggal = thn + '-' + bln + '-' + tgl;
+	    return tanggal;
 	}
 </script>
 

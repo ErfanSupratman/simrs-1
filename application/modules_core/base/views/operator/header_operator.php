@@ -23,7 +23,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link href="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-slider/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-slider/css/full-slider.css" rel="stylesheet" type="text/css"/>
     

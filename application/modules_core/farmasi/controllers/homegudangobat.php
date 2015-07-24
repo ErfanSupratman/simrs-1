@@ -404,6 +404,14 @@ class Homegudangobat extends Operator_base {
 		header('Content-Type: application/json');
 	 	echo(json_encode($message));
 	}
+
+	public function get_detail_obat_bydeptid($obat_dept_id)
+	{
+		$result = $this->m_obat->get_detail_obat_bydeptid($obat_dept_id);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
 	/*akhir inventori*/
 
 
@@ -453,26 +461,29 @@ class Homegudangobat extends Operator_base {
 			//klo berhasil input, tambah history obat di obat_dept_stock
 
 			//ambil stok terakhir sebelum atau sama dengan tanggal acuan
-			$last_stok = $this->m_obat->get_last_stok($obat_dept_id, $tanggal);
+			
 			if ($result) {
 				if (intval($selisih) < 0) {
 					//update plus
 					$update = $this->m_obat->update_history_after_opname($obat_dept_id, $tanggal, abs($selisih), "IN");
 					//ambil stok terakhir setelah diupdate
-					$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id);
-					$total_stok = intval($obat_opname['total_stok']);
+					//$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id); //ambil stok
+					//$total_stok = intval($obat_opname['total_stok']);
 				}else{
 					//update minus
 					$update = $this->m_obat->update_history_after_opname($obat_dept_id, $tanggal, abs($selisih), "OUT");
 					//ambil stok terakhir setelah diupdate
-					$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id);
-					$total_stok = intval($obat_opname['total_stok']);
+					//$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id);
+					//$total_stok = intval($obat_opname['total_stok']);
 				}
 
+				$last_stok = $this->m_obat->get_last_stokopname($obat_dept_id);
+				//tambah history baru
+				$stok_baru = $last_stok['stok_fisik'];
 				$insert = array(
 					'obat_dept_id' => $obat_dept_id, 
 					'tanggal' => date('Y-m-d H:i:s'), //tanggal sekarang atau waktu realtime
-					'total_stok' => $total_stok,
+					'total_stok' => $stok_baru,
 					'keterangan' => 'OPNAME'
 					);
 
@@ -588,6 +599,15 @@ class Homegudangobat extends Operator_base {
 	/*akhir perencanaan pengadaan*/
 
 	/*penerimaan obat*/
+	public function get_obat_penyedia()
+	{
+		$katakunci = $_POST['katakunci'];
+		$penyedia_id = $_POST['penyedia_id'];
+		$result = $this->m_obat->get_obat_penyedia($katakunci, $penyedia_id);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
 	public function add_penerimaan()
 	{
 		$this->form_validation->set_rules('nomor_penerimaan', 'Nomor Penerimaan', 'required|trim|xss_clean|is_unique[obat_penerimaan.nomor_penerimaan]');
@@ -892,14 +912,14 @@ class Homegudangobat extends Operator_base {
 				foreach ($detail as $value) {
 					$param['retur_distributor_id'] = $retur;
 					$param['obat_detail_id'] = $value[0];
-					$param['jumlah'] = $value[2];
+					$param['jumlah'] = $value[8];
 					$ins = $this->m_obat->insert_returdist_detail($param);
 					$det = $this->m_obat->get_last_stok_by_detail($value[0], '21');
 					$upd = array(
 						'obat_dept_id' => $value[0],
 						'tanggal' => date('Y-m-d H:i:s'),
-						'keluar' => $value[2],
-						'total_stok' => ($det['total_stok'] - $value[2]),
+						'keluar' => $value[8],
+						'total_stok' => ($det['total_stok'] - $value[8]),
 						'keterangan' => 'RETUR DISTRIBUTOR'
 					);
 

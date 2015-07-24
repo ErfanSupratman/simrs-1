@@ -734,6 +734,36 @@
 				};
 			})
 		})
+
+		$("#tblInven").on('click', 'tr td a.printobat', function (e) {
+			var obat_dept_id = $(this).closest('tr').find('td.obat_dept_id_inventori').attr('data-edit');
+
+			 $.ajax({
+		    	type: "POST",
+		    	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_obat_bydeptid/" + obat_dept_id,
+		    	success: function (data) {
+		    		//console.log(data);
+		    		$('#tbodydetailobatinventori').empty();
+		    		for(var i = 0; i < data.length ; i++){
+		    			var a = "";
+		    			var jlh = "";
+		    			if(data[i]['masuk'] == 0) {a = "OUT"} else a = "IN";
+		    			if(data[i]['masuk'] == 0)  {jlh = data[i]['keluar']} else jlh = data[i]['masuk'];
+		    			$('#tbodydetailobatinventori').append(
+							'<tr>'+
+								'<td>'+format_date(data[i]['tanggal'])+'</td>'+
+								'<td>'+a+'</td>'+
+								'<td>'+jlh+'</td>'+
+								'<td>'+data[i]['total_stok']+'</td>'+
+							'</tr>'
+		    			)
+		    		}
+		    	},
+		    	error: function (data) {
+		    		alert('gagal');
+		    	}
+		    })
+		})
 				
 
 		$('#form_in_out').submit(function (e) {
@@ -781,6 +811,8 @@
 			};			
 		})
 
+
+
 		/*akhir inventori*/
 
 
@@ -820,34 +852,73 @@
 
 		/*opname*/
 		$("a.editInvenBut").hide();
+		$('a.edIvenBatal').hide();
 		$('.editInven').click(function (e) {
 			e.preventDefault();
 		})
-
+		var asli = '';
 		$("#tblInven1").on('click','tr td a.edIven',function(e){
 			e.preventDefault();
-			var inven = $(this).closest('td').prevAll('td:has(a.editInven)').children('td a.editInven');
+			/*var inven = $(this).closest('td').prevAll('td:has(a.editInven)').children('td a.editInven');
 			inven.addClass("editableform editable-click");
 			inven.editable();
 			inven.css("color","blue");
-			inven.css("cursor","pointer");
+			inven.css("cursor","pointer");*/
+			var a = $(this).closest('tr').find('td .stokfisikopname').text();
+			var b = $(this).closest('tr').find('td.stoksistemopname').text();
+			asli = a;			
+			$(this).closest('tr').find('td .stokfisikopname').replaceWith(
+					'<input type="text" style="width:80px;" class="form-control editstokfisikopname" value="'+a+'">'
+				);
+
 			$(this).closest('tr').find('td a.edIven').hide();
 			$(this).closest('tr').find('td a.editInvenBut').show();
-			//document.getElementById("status").innerHTML = "Batal";
+			$(this).closest('tr').find('td a.edIvenBatal').show();
 
+			$("#tblInven1").on('change','tr td .editstokfisikopname',function(e){
+				var ubah = $(this).val();
+				var harga = $(this).closest('tr').find('td').eq(8).text();
+				var selisih = Number(ubah) - Number(b);
+				$(this).closest('tr').find('td').eq(9).html(selisih);
+				$(this).closest('tr').find('td').eq(10).html(Number(harga) * selisih);
+			})
 		});
+
+		$("#tblInven1").on('click','tr td a.edIvenBatal', function(e){
+			e.preventDefault();
+			var b = $(this).closest('tr').find('td.stoksistemopname').text();
+			$(this).closest('tr').find('td.stoksistemopname').html(b);
+			$(this).closest('tr').find('td .editstokfisikopname').replaceWith(
+				'<span class="stokfisikopname">'+asli+'</span>'
+			);
+			var harga = $(this).closest('tr').find('td').eq(8).text();
+			var selisih = Number(asli) - Number(b);
+			$(this).closest('tr').find('td').eq(9).html(selisih);
+			$(this).closest('tr').find('td').eq(10).html(Number(harga) * selisih);
+			$(this).closest('tr').find('td a.edIven').show();		
+			$(this).closest('tr').find('td a.editInvenBut').hide();
+			$(this).closest('tr').find('td a.edIvenBatal').hide();
+		})
+
+		
 						
 		$("#tblInven1").on('click','tr td a.editInvenBut', function(e){
 			e.preventDefault();
-			$(".editInven").removeClass("editableform editable-click");
+			/*$(".editInven").removeClass("editableform editable-click");
 			$(".editInven").removeClass("editable");
 			$(".editInven").css("color","black");
-			$(".editInven").css("cursor","default");
+			$(".editInven").css("cursor","default");*/
+
+			var a = $(this).closest('tr').find('td .editstokfisikopname').val();
+			$(this).closest('tr').find('td .editstokfisikopname').replaceWith(
+					'<span class="stokfisikopname">'+a+'</span>'
+				);
 			$(this).closest('tr').find('td a.edIven').show();
 			$(this).closest('tr').find('td a.editInvenBut').hide();
+			$(this).closest('tr').find('td a.edIvenBatal').hide();
 			//document.getElementById("status").innerHTML = "Edit";
 
-			var stok = $(this).closest('tr').find('td a.editInven').text();
+			var stok = $(this).closest('tr').find('td .stokfisikopname').text();
 			var d = confirm('proses disimpan ?');
 			if (d == true) {
 				var item = {};
@@ -863,7 +934,7 @@
 				item['obat_dept_id'] = $(this).closest('tr').find('td.obat_dept_id').text();
 				item['obat_opname_id'] = $(this).closest('tr').find('td.obat_opname_id').text();
 				item['harga_jual'] = $(this).closest('tr').find('td.h_jual').text();
-
+				console.log(item);
 				$.ajax({
 					type: "POST",
 					data: item,
@@ -972,7 +1043,7 @@
 				$('#tbody_penyediapenerimaan').empty();
 				$('#tbody_penyediapenerimaan').append(
 					'<tr>'+
-			 			'<td colspan="2"><center>Cari Data Petugas</center></td>'+
+			 			'<td colspan="2"><center>Cari Data</center></td>'+
 			 		'</tr>'
 				);
 			}
@@ -998,7 +1069,7 @@
 				$.ajax({
 					type:"POST",
 					data: item,
-					url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat_bypenyedia",
+					url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat_penyedia",
 					success:function(data){
 						//console.log(data);
 						$('#t_body_obatpenerimaan').empty();
@@ -1061,48 +1132,41 @@
 
 			var newtabel = '<tr><td>'+nama_obat+'</td>'+
 							'<td>'+satuan+'</td>'+
-							'<td class="editasu"><a href="#" class="adaanQtyTer editableform editable-click editbatch" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
-							'<td><a href="#" class="adaanQtyTer editableform editable-click edittglkadaluarsa" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
-							'<td><a href="#" class="adaanQtyTer editableform editable-click editjumlah" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
-							'<td><a href="#" class="adaanQtyTer editableform editable-click editdiskon" data-type="text" data-pk="1" data-original-title="Edit Quantity" id="adaanQtyid'+i+'">0</a></td>'+
-							'<td class="hargadasar">'+harga_dasar+'</td>'+
-							'<td class="totalrow">'+harga_dasar+'</td>'+
+							'<td><input type="text" class="numberrequired form-control"></td>'+
+							'<td><input type="text" style="cursor:pointer;" class="form-control calder" data-provide="datepicker" data-date-format="dd/mm/yyyy" value="<?php echo date('d/m/Y'); ?>" required readonly=""></td>'+
+							'<td style="width:100px;"><input type="text" class="form-control numberrequired qtypenerimaaninput"></td>'+
+							'<td style="width:50px;"><input type="text" maxlength="3" class="numberrequired form-control diskpenerimaaninput"></td>'+
+							'<td class="hargadasarterima">'+harga_dasar+'</td>'+
+							'<td class="totalrowterima">0</td>'+
 							'<td style="text-align:center;width:5%;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
 							'<td style="display:none">'+obat_id+'</td></tr>'
 
 			$(newtabel).appendTo(addDivTerima);
 			$(".adaanQtyTer").editable(); 
 			var data = hitung_penerimaan();
-			var jumlah = 0;
-			for (var i = data.length - 1; i >= 0; i--) {
-				jumlah += Number(data[i][7]);
-			};
-
-			/*var before = '';
-			$('#t_body_inputterima').on('focus', 'tr td.hargadasar', function () {
-				before = $(this).text();				
-			}).on('blur paste','tr td.hargadasar', function() { 
-			  	if (before != $(this).html()) { $(this).trigger('change'); }
-			  	//alert('fa');
-			  	return false;
-			});*/
-
-			var jenispotongan = $('#selectpotongan').find('option:selected').val();
-			var potongan =  Number($('#potongan').val());
-			var ppn =  Number($('#ppn').val());
-			var grandtotal = 0;
-			if (jenispotongan === 'persen') {
-				grandtotal = (jumlah - ((jumlah * (potongan / 100))))
-			} else{
-				grandtotal = (jumlah - potongan)
-			};
-
-			grandtotal += (grandtotal * ppn / 100);
-
-			$('#grandtotal').text(grandtotal);
-			$('#subtotalterima').text(jumlah);
+			
 			return false;
 		});
+
+		$('#t_body_inputterima').on('change', 'tr td .qtypenerimaaninput', function (e) {
+			var a = $(this).closest('tr').find('td .diskpenerimaaninput').val();
+			var c = $(this).closest('tr').find('td.hargadasarterima').text();
+			var b = $(this).val();
+			var total = Number(c) * Number(b);
+			var hasilakhir =  total - (total * Number(a) / 100);
+			$(this).closest('tr').find('td.totalrowterima').html(hasilakhir);
+			var data = hitung_penerimaan();
+		})
+
+		$('#t_body_inputterima').on('change', 'tr td .diskpenerimaaninput', function (e) {
+			var a = $(this).closest('tr').find('td .qtypenerimaaninput').val();
+			var c = $(this).closest('tr').find('td.hargadasarterima').text();
+			var b = $(this).val();
+			var total = Number(c) * Number(a);
+			var hasilakhir =  total - (total * Number(b) / 100);
+			$(this).closest('tr').find('td.totalrowterima').html(hasilakhir);
+			var data = hitung_penerimaan();
+		})
 		
 		//kalo hapus row
 		$('#t_body_inputterima').on('click', 'tr td a.removeRow', function (e) {
@@ -1110,42 +1174,22 @@
 			$(this).closest('tr').remove();
 
 			var data = hitung_penerimaan();
-			var jumlah = 0;
-			for (var i = data.length - 1; i >= 0; i--) {
-				jumlah += Number(data[i][7]);
-			};
-			//alert(jumlah);return false;
-
-			var jenispotongan = $('#selectpotongan').find('option:selected').val();
-			var potongan =  Number($('#potongan').val());
-			var ppn =  Number($('#ppn').val());
-			var grandtotal = 0;
-			if (jenispotongan === 'persen') {
-				grandtotal = (jumlah - ((jumlah * (potongan / 100))))
-			} else{
-				grandtotal = (jumlah - potongan)
-			};
-
-			grandtotal += (grandtotal * ppn / 100);
-
-			$('#grandtotal').text(grandtotal);
-			$('#subtotalterima').text(jumlah);
 		})
 
 		//hitung grand total
 		$('#selectpotongan').on('change', function (e) {
 			e.preventDefault();
-			hitung_grandtotal();			
+			var data = hitung_penerimaan();			
 		})
 
 		$('#potongan').on('change', function (e) {
 			e.preventDefault();
-			hitung_grandtotal();			
+			var data = hitung_penerimaan();			
 		})
 
 		$('#ppn').on('change', function (e) {
 			e.preventDefault();
-			hitung_grandtotal();			
+			var data = hitung_penerimaan();			
 		})
 		
 		$('#formpenerimaanobat').submit(function (e) {
@@ -1164,14 +1208,15 @@
 			//loop dari tabel
 			var data = hitung_penerimaan();
 
+			//
 			var send = {};
 		    for (var i = data.length - 1; i >= 0; i--) {
 		    	var myData = {};
-		    	myData['obat_id'] = data[i][8];
-		    	myData['no_batch'] = data[i][2];
-		    	myData['tgl_kadaluarsa'] = item['tanggal']; //ubah lagi ntar
-		    	myData['jumlah'] = data[i][4];
-		    	myData['diskon'] = data[i][5];
+		    	myData['obat_id'] = data[i][9];
+		    	myData['no_batch'] = data[i][10];
+		    	myData['tgl_kadaluarsa'] = format_date3(data[i][11]); //ubah lagi ntar
+		    	myData['jumlah'] = data[i][12];
+		    	myData['diskon'] = data[i][13];
 		    	myData['harga_beli'] = data[i][6];
 		    	myData['total'] = data[i][7];
 
@@ -1182,9 +1227,11 @@
 		    item['jenispotongan'] = $('#selectpotongan').find('option:selected').val();
 			item['potongan'] =  Number($('#potongan').val());
 			item['ppn'] =  Number($('#ppn').val());
-			item['grandtotal'] = $('#grandtotal').val();
-			item['subtotal'] = $('#subtotalterima').val();
+			item['grandtotal'] = $('#grandtotal').text();
+			item['subtotal'] = $('#subtotalterima').text();
 
+			//console.log(item);return false;
+			
 		    $.ajax({
 		    	type: 'POST',
 		    	data: item,
@@ -1605,15 +1652,23 @@
 			var str = '<tr>'+
 							'<td style="display:none;">'+cols[0]+'</td>'+
 							'<td>'+cols[1]+'</td>'+
-							'<td><a href="#" class="returQty editableform editable-click" data-type="text" data-pk="1" data-original-title="Edit Quantity">1</a></td>'+
+							'<td><input type="text" class="form-control qtyreturdistributor"></td>'+
 							'<td>'+cols[2]+'</td>'+
 							'<td>'+cols[3]+'</td>'+
-							'<td>'+cols[4]+'</td>'+
+							'<td class="stoksisareturdist">'+cols[4]+'</td>'+
 							'<td>'+cols[5]+'</td>'+
 							'<td style="text-align:center;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
 						'</tr>'
 			$(str).appendTo(addDiv1);
 			$(".returQty").editable(); 
+		})
+
+		$('#tbodyinputreturdistributor').on('change', 'tr td .qtyreturdistributor', function (e) {
+			var qty = $(this).val();
+			var sisa = $(this).closest('tr').find('td.stoksisareturdist').text();
+			var jlh = Number(sisa) - Number(qty);
+			$(this).closest('tr').find('td.stoksisareturdist').html(jlh);
+
 		})
 
 		$('#formsubmitreturdistributor').submit(function (e) {
@@ -1626,6 +1681,9 @@
 	    	$('#tbodyinputreturdistributor').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
 		        $(this).find('td').each(function (colIndex, c) {
+		            cols.push(c.textContent);
+		        });
+		        $(this).find('td input[type=text]').each(function (colIndex, c) {
 		            cols.push(c.textContent);
 		        });
 		        data.push(cols);
@@ -1769,7 +1827,7 @@
 
 	});
 
-	function hitung_grandtotal () {
+	/*function hitung_grandtotal () {
 		var data = hitung_penerimaan();
 		var jumlah = 0;
 		for (var i = data.length - 1; i >= 0; i--) {
@@ -1789,7 +1847,7 @@
 		grandtotal += (grandtotal * ppn / 100);
 
 		$('#grandtotal').text(grandtotal);
-	}
+	}*/
 
 	function hitung_penerimaan () {
 		var data = [];
@@ -1798,8 +1856,32 @@
 	        $(this).find('td').each(function (colIndex, c) {
 	            cols.push(c.textContent);
 	        });
+	        $(this).find('td input[type=text]').each(function (colIndex, c) {
+	            cols.push(c.value);
+	        });
 	        data.push(cols);
 	    });
+
+	    var jumlah = 0;
+		for (var i = data.length - 1; i >= 0; i--) {
+			jumlah += Number(data[i][7]);
+		};
+
+		var jenispotongan = $('#selectpotongan').find('option:selected').val();
+		var potongan =  Number($('#potongan').val());
+		var ppn =  Number($('#ppn').val());
+		var grandtotal = 0;
+		if (jenispotongan === 'persen') {
+			grandtotal = (jumlah - ((jumlah * (potongan / 100))))
+		} else{
+			grandtotal = (jumlah - potongan)
+		};
+
+		grandtotal += (grandtotal * ppn / 100);
+
+		$('#grandtotal').text(grandtotal);
+		$('#subtotalterima').text(jumlah);
+
 	    return data;
 	}
 
@@ -1807,6 +1889,7 @@
 		$("#searchpenyediapenerimaan").modal('hide');
 		$("#id_penyediaObatTerima").val(id);
 		$("#penyediaObatTerima").val(nama);
+		$('#modalnamapenyedia').text(nama)
 		$("#penyediapenerimaan").val("");
 		$('#tbody_penyediapenerimaan').empty();
 		$('#tbody_penyediapenerimaan').append(
@@ -1876,7 +1959,13 @@
 			case '12' : bln = "Desember" ;break;
 		}
 
-		var waktu = tgl + " " + bln + " "+ thn;
+		var waktu = "";
+		if(tgl.length > 2){
+			var a = tgl.split(' ');
+			waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
+		}else{
+			waktu = tgl + " " + bln + " "+ thn;
+		}
 		return waktu;
 	}
 
@@ -1938,7 +2027,7 @@
 									'<td class="total_stok_inventori"  data-edit="'+data[i]['total_stok']+'">'+data[i]['total_stok']+'</td>'+
 									'<td class="satuan_inventori" data-edit="'+data[i]['satuan']+'">'+data[i]['satuan']+'</td>'+								
 									'<td class="tahun_pengadaan_inventori" data-edit="'+data[i]['tahun_pengadaan']+'">'+data[i]['tahun_pengadaan']+'</td>'+								
-									'<td class="tgl_kadaluarsa_inventori" data-edit="'+data[i]['tgl_kadaluarsa']+'">'+data[i]['tgl_kadaluarsa']+'</td>'+
+									'<td class="tgl_kadaluarsa_inventori" data-edit="'+data[i]['tgl_kadaluarsa']+'">'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
 									'<td><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
 									'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></td>'+
 									'<td style="display:none" class="merk_id_inventori" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+

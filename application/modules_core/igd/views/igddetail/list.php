@@ -301,7 +301,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-md-3" style="width:310px;">Perawat Jaga Jaga</label>
+							<label class="control-label col-md-3" style="width:310px;">Perawat Jaga</label>
 							<div class="col-md-3">
 								<input type="text" class="form-control" style="cursor:pointer;" readonly id="perawat" placeholder="Search Perawat" data-toggle="modal" data-target="#searchPerawat">
 							</div>

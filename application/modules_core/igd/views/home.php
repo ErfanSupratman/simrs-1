@@ -39,7 +39,7 @@
 			
 			<div class="portlet box red">
 				<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive tableDT">
+					<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
 						<thead>
 							<tr class="info">
 								<th style="text-align:center;width:20px;">No.</th>
@@ -47,8 +47,8 @@
 								<th>Jenis Kelamin</th>
 								<th>Tanggal Lahir</th>
 								<th>Alamat Tinggal</th>
-								<th>Identitas</th>
-								<th style="text-align:center:width:25px;">Action</th>
+								<th>Unit Pengirim</th>
+								<th style="text-align:center;width:25px;">Action</th>
 							</tr>
 						</thead>
 						<tbody>
