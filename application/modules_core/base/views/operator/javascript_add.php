@@ -22,7 +22,7 @@
 		$('#tblriwayatterima').DataTable();
 		$('#tabelreturdepartemen').DataTable();
 		$('#tabelriwayatreturdept').DataTable();
-
+		$('#tabelinventoriunit').DataTable();
 
 	})
 		function format_date (date) {

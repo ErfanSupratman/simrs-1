@@ -83,6 +83,35 @@
 		});
 
 		/*farmasi bersalin*/
+		$('#submitfilterfarmasiunit').submit(function (e) {
+			e.preventDefault();
+			var filter = {};
+			filter['filterby'] = $('#filterInv').find('option:selected').val();
+			filter['valfilter'] = $('#filterby').val();
+			submit_filter(filter);
+		})
+
+		$('#expired').on('click', function (e) {
+			e.preventDefault();
+			var filter = {};
+			filter['expired'] = '0';
+			submit_filter(filter)
+		})
+
+		$('#expired3').on('click', function (e) {
+			e.preventDefault();
+			var filter = {};
+			filter['expired'] = '3';
+			submit_filter(filter)
+		})
+
+		$('#expired6').on('click', function (e) {
+			e.preventDefault();
+			var filter = {};
+			filter['expired'] = '6';
+			submit_filter(filter);
+		})
+
 		$('#formobatfarmasibersalin').submit(function (e) {
 			e.preventDefault();
 			var katakunci = $('#katakuncifarmasibersalin').val();
@@ -288,10 +317,155 @@
 				}
 			})
 		})
-		
 
+		$('#tbodyinventoriunit').on('click','tr td a.inoutobat', function (e) {
+			e.preventDefault();
+			var obat_dept_id = $(this).closest('tr').find('td').eq(12).text();
+			var jlh = $(this).closest('tr').find('td').eq(5).text();
+
+			$('#inout_obat_dept_id').val(obat_dept_id);
+			$('#sisaInOutBer').val(jlh);
+
+			$('#jmlInOutBer').on('change', function (e) {
+				e.preventDefault();
+
+				var is_in = $('#iober').find('option:selected').val();
+				var jmlInOut = $('#jmlInOutBer').val();
+				var sisa = jlh;//$('#sisaInOut').val();
+				var hasil ="";
+				if (is_in == 'IN') {
+					hasil = Number(jmlInOut) + Number(sisa);
+				}else{			
+					hasil = Number(sisa) - Number(jmlInOut);
+				}
+
+				if (jmlInOut == '') {
+					hasil = Number(sisa);
+				}
+				$('#sisaInOutBer').val(hasil);			
+			})
+
+			$('#iober').on('change', function () {
+				var jumlah = Number($('#jmlInOutBer').val());
+				var sisa = Number(jlh);//Number($('#sisaInOut').val());
+
+				var isout = $('#iober').find('option:selected').val();
+				if (isout === 'IN') {
+					$('#sisaInOutBer').val(jumlah + sisa);
+				} else{
+					$('#sisaInOutBer').val(sisa - jumlah);
+				};
+			})
+		})
+
+		$('#submitinoutunit').submit(function (e) {
+			e.preventDefault();
+
+			var item = {};
+			item['obat_dept_id'] = $('#inout_obat_dept_id').val();
+			item['jumlah'] = $('#jmlInOutBer').val();
+			item['sisa'] = $('#sisaInOutBer').val();
+			item['is_out'] = $('#iober').find('option:selected').val();
+			item['tanggal'] = $('#tglInOut').val();
+		    item['keterangan'] = $('#keteranganIO').text();
+
+		    if (item['jumlah'] != "") {
+			    $.ajax({
+			    	type: "POST",
+			    	data: item,
+			    	url: "<?php echo base_url()?>bersalin/homebersalin/input_in_out",
+			    	success: function (data) {
+			    		if (data == "true") {
+			    			alert('data berhasil disimpan');
+			    			$('#inout').modal('hide');	
+			    		} else{
+			    			alert('gagal, terdapat kesalahan');
+			    		};
+			    		
+			    	},
+			    	error: function (data) {
+			    		alert('gagal');
+			    	}
+			    })
+			} else{
+				alert('isi data dengan benar');
+				$('#jmlInOutBer').focus();
+			};		
+		})
+
+		$("#tbodyinventoriunit").on('click', 'tr td a.printobat', function (e) {
+			var obat_dept_id = $(this).closest('tr').find('td').eq(12).text();
+
+			 $.ajax({
+		    	type: "POST",
+		    	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_obat_bydeptid/" + obat_dept_id, //benar
+		    	success: function (data) {
+		    		console.log(data);
+		    		$('#tbodydetailobatinventori').empty();
+		    		for(var i = 0; i < data.length ; i++){
+		    			var a = "";
+		    			var jlh = "";
+		    			if(data[i]['masuk'] == 0) {a = "OUT"} else a = "IN";
+		    			if(data[i]['masuk'] == 0)  {jlh = data[i]['keluar']} else jlh = data[i]['masuk'];
+		    			$('#tbodydetailobatinventori').append(
+							'<tr>'+
+								'<td style="text-align:center">'+format_date(data[i]['tanggal'])+'</td>'+
+								'<td>'+a+'</td>'+
+								'<td>'+jlh+'</td>'+
+								'<td>'+data[i]['total_stok']+'</td>'+
+							'</tr>'
+		    			)
+		    		}
+		    	},
+		    	error: function (data) {
+		    		alert('gagal');
+		    	}
+		    })
+		})
+		
 		/*farmasi bersalin*/
 
 	})
+
+	function submit_filter (filter) {
+		$.ajax({
+			type: "POST",
+			data: filter,
+			url: "<?php echo base_url()?>bersalin/homebersalin/submit_filter_farmasi",
+			success:function (data) {
+				console.log(data);
+				$('#tbodyinventoriunit').empty();
+					if (data.length > 0) {
+						for (var i =  0; i < data.length; i++) {
+							$('#tbodyinventoriunit').append(
+								'<tr>'+
+									'<td>'+(Number(++i))+'</td>'+
+									'<td>'+data[i]['nama']+'</td>'+
+									'<td>'+data[i]['no_batch']+'</td>'+
+									'<td>'+data[i]['harga_jual']+'</td>'+
+									'<td>'+data[i]['nama_merk']+'</td>'+
+									'<td>'+data[i]['total_stok']+'</td>'+
+									'<td>'+data[i]['satuan']+'</td>'+								
+									'<td>'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
+									'<td><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+									'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></td>'+
+									'<td style="display:none">'+data[i]['merk_id']+'</td>'+
+									'<td style="display:none">'+data[i]['jenis_obat_id']+'</td>'+
+									'<td style="display:none">'+data[i]['satuan_id']+'</td>'+	
+									'<td style="display:none">'+data[i]['obat_dept_id']+'</td>'+
+								'</tr>'
+							);
+						}
+					}else{
+						$('#tbodyinventoriunit').append(
+							'<tr><td colspan="9" style="text-align:center">data tidak ditemukan</td></tr>'
+						);
+					}
+			},
+			error:function (data) {
+				console.log(data);
+			}
+		})
+	}
 
 </script>

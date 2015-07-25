@@ -64,6 +64,26 @@
 			}
 		}
 
+		public function addnewmerk($value)
+		{
+			$res = $this->db->insert('obat_merk', $value);
+			if ($res) {
+				return $this->db->insert_id();
+			}else{
+				return false;
+			}
+		}
+
+		public function addnewpenyedia($value)
+		{
+			$res = $this->db->insert('master_penyedia', $value);
+			if ($res) {
+				return $this->db->insert_id();
+			}else{
+				return false;
+			}
+		}
+
 		public function search_merk($search='')
 		{
 			$sql = "SELECT * FROM obat_merk WHERE nama_merk LIKE '%$search%'";
@@ -87,11 +107,11 @@
 				return false;
 		}
 
-		public function get_obat_per_tgl_kadaluarsa($obat_id, $tgl_kadaluarsa)
+		public function get_obat_per_tgl_kadaluarsa($obat_id, $tgl_kadaluarsa) //benar
 		{
 			$sql = "SELECT obat_dept_id
 					FROM obat_detail od left join obat_dept ot on ot.obat_detail_id = od.obat_detail_id
-			 		WHERE od.tgl_kadaluarsa = '$tgl_kadaluarsa' and ot.dept_id = '21'
+			 		WHERE od.tgl_kadaluarsa = '$tgl_kadaluarsa' and ot.dept_id = '21' and od.obat_id = '$obat_id'
 			 		group by od.obat_id";
 			$result = $this->db->query($sql);
 			if($result)
@@ -194,6 +214,17 @@
 				return false;
 			}
 			// jumlah.obat_id = o.obat_id AND
+		}
+
+		public function cek_detail_obat($obat_id, $tgl_kadaluarsa)
+		{
+			$sql = "SELECT * from obat_detail where obat_id = '$obat_id' and tgl_kadaluarsa = '$tgl_kadaluarsa'";
+			$result = $this->db->query($sql);
+			if ($result->num_rows() > 0) {
+				return true;
+			}else{
+				return false;
+			}
 		}
 
 		public function insert_detail_obat($detail)
@@ -884,7 +915,7 @@
 		/*persetujuan permintaan*/
 		public function get_persetujuan()
 		{
-			$sql = "SELECT * FROM 
+			$sql = "SELECT op.*,mp.*, p.nama_petugas, p.petugas_id FROM 
 					obat_permintaan op left join master_dept mp on mp.dept_id = op.dept_id 
 					left join petugas p on p.petugas_id = op.petugas_request 
 					where is_responded = '0'";
@@ -1016,7 +1047,7 @@
 			}
 		}
 
-		public function get_last_stok_by_tgl($tgl_kadaluarsa, $dept_id)
+		public function get_last_stok_by_tgl($tgl_kadaluarsa, $dept_id)//tambah obat id coeg
 		{
 			$sql = "SELECT e.total_stok, e.obat_dept_id
 					FROM obat_detail a left join obat_dept b on a.obat_detail_id = b.obat_detail_id 

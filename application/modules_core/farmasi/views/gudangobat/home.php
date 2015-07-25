@@ -33,43 +33,58 @@
             <div class="informasi" id="infoMasObat">
         		<div class="modal fade" id="nmMerk" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-			   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			   				<h3 class="modal-title" id="myModalLabel">Pilih Merk</h3>
-			   			</div>
-			   			<div class="modal-body" >
-			       			<div class="form-group">
-								<div class="form-group">	
-									<div class="col-md-6" style="margin-left:25px;">
-										<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Cari Merk"/>
-									</div>
-									<div class="col-md-2">
-										<button type="button" class="btn btn-info">Cari</button>
-									</div>
-									<br><br>	
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Pilih Merk</h3>
+				   			</div>
+				   			<div class="modal-body" >
+			       				<div class="form-group">
+									<div class="form-group">	
+										<div class="col-md-6">
+											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Cari Merk"/>
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-info">Cari</button>
+										</div>
+										<br><br>	
 									</div>		
 										<div style="margin-left:20px; margin-right:20px;"><hr></div>
-											<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-												<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchMerk" style="width:90%;">
-													<thead>
-														<tr class="warning">
-															<td>Nama Merk</td>
-															<td width="10%">Pilih</td>
-														</tr>
-													</thead>
-													<tbody id="t_body_merk">
-												 	<!-- pake js yak -->
-													</tbody>
-												</table>												
+										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchMerk" style="width:90%;">
+												<thead>
+													<tr class="warning">
+														<td>Nama Merk</td>
+														<td width="10%">Pilih</td>
+													</tr>
+												</thead>
+												<tbody id="t_body_merk">
+											 		<tr>
+											 			<td colspan="2" class="kosong" style="text-align:center">Cari Merek</td>
+											 		</tr>
+												</tbody>
+											</table>												
 										</div>
 									</div>
-			        			</div>
-			        			<div class="modal-footer">
-			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-						      	</div>
-							</div>
+		        				</div>
+		        				<form class="form-horizontal" role='form' method="post" id="tambahmerkbaru">
+			        				<div style="margin-left:20px; margin-right:20px;"><hr></div>
+									<div class="form-group">	
+										<div class="col-md-4" style="margin-left:25px;">
+											<input type="text" class="form-control" name="newmerk" id="newmerk" placeholder="Tambah Baru"/>
+										</div>
+										<div class="col-md-2">
+											<button type="submit" class="btn btn-success" style="width:150px;">Tambah Baru</button>
+										</div>
+										<br>	
+									</div>
+									<br>
+								</form>	
+		        			<div class="modal-footer">
+		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+					      	</div>
 						</div>
+					</div>
 				</div>
 				<form class="form-horizontal" role="form" method="post" id="forminputobat">			
 					<div class="form-group">
@@ -251,9 +266,9 @@
 								</thead>
 								<tbody id="t_body_obat">
 									<?php  
-										echo '<tr>'.
+										/*echo '<tr>'.
 												'<td style="text-align:center" colspan="14">Filter Obat</td>'.
-											'</tr>';
+											'</tr>';*/
 									?>
 								</tbody>
 							</table>
@@ -315,7 +330,7 @@
 		        			<div class="form-group">
 		        				<form method="post" id="formsearchpenyedia" role="form">
 									<div class="form-group">	
-										<div class="col-md-6" style="margin-left:20px;">
+										<div class="col-md-6">
 											<input type="text" class="form-control" name="katakuncipenyedia" id="katakuncipenyedia" placeholder="Nama Penyedia"/>
 										</div>
 										<div class="col-md-2">
@@ -334,11 +349,26 @@
 											</tr>
 										</thead>
 										<tbody id="t_body_penyedia">
-											
+											<tr>
+												<td style="text-align:center" class="kosong" colspan="2">Cari Penyedia</td>
+											</tr>
 										</tbody>
 									</table>												
 								</div>
-							</div>
+							</div> 
+							<form class="form-horizontal" method="post" role="form" id="tambahpenyediabaru"> 
+								<div style="margin-left:20px; margin-right:20px;"><hr></div>
+								<div class="form-group">	
+									<div class="col-md-4" style="margin-left:25px;">
+										<input type="text" class="form-control" name="newpenyedia" id="newpenyedia" placeholder="Tambah Baru"/>
+									</div>
+									<div class="col-md-2">
+										<button type="submit" class="btn btn-success" style="width:150px;">Tambah Baru</button>
+									</div>
+									<br>	
+								</div>
+								<br>
+							</form>
 	        			</div>
 	        			<div class="modal-footer">
 	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
@@ -1353,8 +1383,6 @@
 														'<td>'.$value['total'].'</td>'.								
 													'</tr>';
 												}
-											}else{
-												echo '<tr><td style="text-align:center" colspan="9">Belum ada riwayat penerimaan obat</td></tr>';
 											}
 										}
 									?>
@@ -1589,11 +1617,11 @@
 										<?php  
 											if (isset($riwayat_persetujuan)) {
 												if (!empty($riwayat_persetujuan)) {
-													$i=0;
+													$i=1;
 													foreach ($riwayat_persetujuan as $value) {
 														$tgl = DateTime::createFromFormat('Y-m-d H:i:s',$value['tanggal_request']);
 														echo '<tr>'.
-															'<td style="text-align:center">'.($i+1).'</td>'.
+															'<td style="text-align:center">'.($i++).'</td>'.
 															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
 															'<td>'.$value['nama_dept'].'</td>'.
 															'<td>'.$value['nama_petugas'].'</td>'.

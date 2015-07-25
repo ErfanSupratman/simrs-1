@@ -29,8 +29,8 @@ class Bersalindetail extends Operator_base {
 
 		//load semua data pasien dengan no rm tertentu
 		$pasien = $this->m_bersalin->get_pasien($rm_id);
-		$params = $this->get_alamat_pasien($pasien);
-		$data['pasien'] = $params;
+		/*$params = $this->get_alamat_pasien($pasien);
+		$data['pasien'] = $params;*/
 
 		$history = $this->get_overview_history($visit_id);
 		$data['overview_history'] = $history;

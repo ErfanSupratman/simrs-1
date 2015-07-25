@@ -81,6 +81,60 @@
 
 		});
 
+		$('#tambahmerkbaru').submit(function (e) {
+			e.preventDefault();
+			var item = {}
+			item['newmerk'] = $('#newmerk').val();
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/addnewmerk",
+				success:function (data) {
+					if (data['error'] == 'n') {
+						$('#t_body_merk').find('tr td.kosong').remove();
+						$("#t_body_merk").append(
+							'<tr>'+
+								'<td class="nama_merk">'+item['newmerk']+'</td>'+
+								'<td class="merk_id" style="display:none">'+data['id']+'</td>'+
+								'<td style="text-align:center"><a href="" class="inputmerk"><i class="glyphicon glyphicon-check" style="cursor:pointer;"></i></a></td>'+
+							'</tr>'
+						);
+					}
+					alert(data['message']);
+				},
+				error: function (data) {
+					
+				}
+			})
+		})
+
+		$('#tambahpenyediabaru').submit(function (e) {
+			e.preventDefault();
+			var item = {}
+			item['newpenyedia'] = $('#newpenyedia').val();
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/addnewpenyedia",
+				success:function (data) {
+					if (data['error'] == 'n') {
+						$('#t_body_penyedia').find('tr td.kosong').remove();
+						$("#t_body_penyedia").append(
+							'<tr>'+
+								'<td class="nama_penyedia">'+item['newpenyedia']+'</td>'+
+								'<td class="penyedia_id" style="display:none">'+data['id']+'</td>'+
+								'<td style="text-align:center"><a href="" class="inputpenyedia"><i class="glyphicon glyphicon-check" style="cursor:pointer;"></i></a></td>'+
+							'</tr>'
+						);
+					}
+					alert(data['message']);
+				},
+				error: function (data) {
+					
+				}
+			})
+		})
+
 		$("#tabelSearchMerk").on('click', 'tr td a.inputmerk', function (e) {
 			e.preventDefault();
 			var nama = jQuery(this).closest('tr').find('td.nama_merk').text();
@@ -592,12 +646,33 @@
 			item['satuan_id'] = $('#selectSatObatBwh').find('option:selected').val();
 			item['is_generik'] = $('#selectGenObatBwh').find('option:selected').val();
 			//console.log(item);return false;
-			$.ajax({
+			$
+			jQuery.ajax({
 				type: "POST",
 				data: item,
 				url: "<?php echo base_url()?>farmasi/homegudangobat/filter_obat",
 				success: function (data) {
-					// console.log(data);return false;
+					console.log(data);
+					/*$('#tabelobat').dataTable({
+						"processing": true,
+						"ajax": data,
+						"columns": [
+							{"data": "obat_id"},
+							{"data": "nama"},
+							{"data": "jenis"},
+							{"data": "nama_merk"},
+							{"data": "nama_penyedia"},
+							{"data": "is_generik"},
+							{"data": "harga_dasar"},
+							{"data": "hps"},
+							{"data": "margin"},
+							{"data": "harga_jual"},
+							{"data": "stok_minimal"},
+							{"data": "jlh"},
+							{"data": "satuan"},
+							{"data": "jlh"}
+						]
+					});*/
 					$('#t_body_obat').empty();
 					if (data.length > 0) {
 						for (var i = 0; i < data.length; i++) {

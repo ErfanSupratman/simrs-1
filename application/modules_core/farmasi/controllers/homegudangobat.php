@@ -50,6 +50,50 @@ class Homegudangobat extends Operator_base {
 	 	echo json_encode($result);
 	}
 
+	public function addnewmerk()
+	{
+		$this->form_validation->set_rules('newmerk', 'nama obat', 'required|trim|xss_clean|is_unique[obat_merk.nama_merk]');
+		$this->form_validation->set_message('is_unique', 'Merek sudah ada');
+		$data['nama_merk'] = $_POST['newmerk'];
+		if ($this->form_validation->run() == TRUE) {
+			$id = $this->m_obat->addnewmerk($data);
+			$result = array(
+				'message'		=> "Data berhasil disimpan",
+				'error' => 'n',
+				'id' => $id
+			);
+		}else{
+			$result = array(
+				'message'		=> strip_tags(str_replace("\n ", "", validation_errors())),
+				'error' => 'n'
+			);	
+		}
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function addnewpenyedia()
+	{
+		$this->form_validation->set_rules('newpenyedia', 'nama obat', 'required|trim|xss_clean|is_unique[master_penyedia.nama_penyedia]');
+		$this->form_validation->set_message('is_unique', 'Penyedia sudah ada');
+		$data['nama_penyedia'] = $_POST['newpenyedia'];
+		if ($this->form_validation->run() == TRUE) {
+			$id = $this->m_obat->addnewpenyedia($data);
+			$result = array(
+				'message'		=> "Data berhasil disimpan",
+				'error' => 'n',
+				'id' => $id
+			);
+		}else{
+			$result = array(
+				'message'		=> strip_tags(str_replace("\n ", "", validation_errors())),
+				'error' => 'n'
+			);	
+		}
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
 	public function search_merk($search='')
 	{
 		$result = $this->m_obat->search_merk($search);
@@ -189,8 +233,9 @@ class Homegudangobat extends Operator_base {
 		$insert['is_generik'] = $_POST['is_generik'];
 		$result = $this->m_obat->filter_obat($insert);
 
+		//$data['data'] = $result;
 		header('Content-Type: application/json');
-	 	echo json_encode($result);
+	 	echo(json_encode($result));
 	}
 
 	public function filter_obat_opname()
@@ -224,50 +269,56 @@ class Homegudangobat extends Operator_base {
 	public function add_detail_obat()
 	{
 		$this->form_validation->set_rules('nama', 'nama obat', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('tgl_kadaluarsa', 'Tanggal Kadaluarsa', 'required|trim|xss_clean|is_unique[obat_detail.tgl_kadaluarsa]');
+		//$this->form_validation->set_rules('tgl_kadaluarsa', 'Tanggal Kadaluarsa', 'required|trim|xss_clean|is_unique[obat_detail.tgl_kadaluarsa]');
 		$this->form_validation->set_rules('tahun_pengadaan', 'Tahun Pengadaan', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('total_stok', 'Jumlah Stok', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('no_batch', 'Nomor Batch', 'required|trim|xss_clean');
 
 
-		$this->form_validation->set_message('is_unique', 'Obat sudah ada, cek tanggal kadaluarsa atau no batch');
+		//$this->form_validation->set_message('is_unique', 'Obat sudah ada, cek tanggal kadaluarsa atau no batch');
 		$this->form_validation->set_message('required', 'isi semua data dengan benar');
 
 		if ($this->form_validation->run() == TRUE) {
 			$insert['obat_id'] = $_POST['obat_id'];
 			$insert['tgl_kadaluarsa'] = $_POST['tgl_kadaluarsa'];
-			$insert['no_batch'] = $_POST['no_batch'];
-			$insert['tahun_pengadaan'] = $_POST['tahun_pengadaan'];
-			$insert['sumber_dana'] = $_POST['sumber_dana'];
+			$cek = $this->m_obat->cek_detail_obat($insert['obat_id'], $insert['tgl_kadaluarsa']);
+			if($cek == false){
+				$insert['no_batch'] = $_POST['no_batch'];
+				$insert['tahun_pengadaan'] = $_POST['tahun_pengadaan'];
+				$insert['sumber_dana'] = $_POST['sumber_dana'];
 
-			$obat_detail_id = $this->m_obat->insert_detail_obat($insert);
+				$obat_detail_id = $this->m_obat->insert_detail_obat($insert);
 
-			if ($obat_detail_id) {
-				$ins = array(
-					'obat_detail_id' => $obat_detail_id,
-					'dept_id' => '21'
-					);
-				$obat_dept_id = $this->m_obat->insert_obat_dept($ins);
-
-				if ($obat_dept_id) {
-					$insert['total_stok'] = $_POST['total_stok'];
-					$ins2 = array(
-						'obat_dept_id' => $obat_dept_id,
-						'tanggal' => date('Y-m-d'),
-						'masuk' => $insert['total_stok'],
-						'total_stok' => $insert['total_stok'],
-						'keterangan' => 'IN'
+				if ($obat_detail_id) {
+					$ins = array(
+						'obat_detail_id' => $obat_detail_id,
+						'dept_id' => '21'
 						);
-					$obat_dept_stok = $this->m_obat->insert_dept_stok($ins2);
+					$obat_dept_id = $this->m_obat->insert_obat_dept($ins);
 
-					$result = "data berhasil disimpan" ;
-					$error = 'n';	
+					if ($obat_dept_id) {
+						$insert['total_stok'] = $_POST['total_stok'];
+						$ins2 = array(
+							'obat_dept_id' => $obat_dept_id,
+							'tanggal' => date('Y-m-d'),
+							'masuk' => $insert['total_stok'],
+							'total_stok' => $insert['total_stok'],
+							'keterangan' => 'IN'
+							);
+						$obat_dept_stok = $this->m_obat->insert_dept_stok($ins2);
+
+						$result = "data berhasil disimpan" ;
+						$error = 'n';	
+					}else{
+						$result = "gagal";
+						$error = 'y';	
+					}
 				}else{
 					$result = "gagal";
 					$error = 'y';	
 				}
 			}else{
-				$result = "gagal";	
+				$result = "Obat sudah ada, cek tanggal kadaluarsa atau no batch";	
 				$error = 'y';	
 			}
 		}else{
@@ -288,27 +339,35 @@ class Homegudangobat extends Operator_base {
 	public function edit_detail_obat()
 	{
 		$this->form_validation->set_rules('nama', 'nama obat', 'required|trim|xss_clean');
-		$this->form_validation->set_rules('tgl_kadaluarsa', 'Tanggal Kadaluarsa', 'required|trim|xss_clean|is_unique[obat_detail.tgl_kadaluarsa]');
+		//$this->form_validation->set_rules('tgl_kadaluarsa', 'Tanggal Kadaluarsa', 'required|trim|xss_clean|is_unique[obat_detail.tgl_kadaluarsa]');
 		$this->form_validation->set_rules('tahun_pengadaan', 'Tahun Pengadaan', 'required|trim|xss_clean');
 
 		$this->form_validation->set_message('required', 'isi semua data dengan benar');
-		$this->form_validation->set_message('is_unique', 'Obat sudah ada');
+		//$this->form_validation->set_message('is_unique', 'Obat sudah ada');
 
 		if ($this->form_validation->run() == TRUE) {
 			$insert['obat_id'] = $_POST['obat_id'];
 			$insert['obat_detail_id'] = $_POST['obat_detail_id'];
-			$insert['tahun_pengadaan'] = $_POST['tahun_pengadaan'];
-			$insert['tgl_kadaluarsa'] = $_POST['tgl_kadaluarsa'];
+			$cek = $this->m_obat->cek_detail_obat($insert['obat_id'], $insert['tgl_kadaluarsa']);
+			if($cek == false){		
+				$insert['tahun_pengadaan'] = $_POST['tahun_pengadaan'];
+				$insert['tgl_kadaluarsa'] = $_POST['tgl_kadaluarsa'];
 
-			$result = $this->m_obat->edit_detail_obat($insert);
-			if ($result) {
+				$result = $this->m_obat->edit_detail_obat($insert);
+				if ($result) {
+						$result = array(
+						'message'		=> "data berhasil diubah",
+						'error' => 'n'
+					);	
+				}else{
 					$result = array(
-					'message'		=> "data berhasil diubah",
-					'error' => 'n'
-				);	
+						'message'		=> "gagal mengubah data",
+						'error' => 'y'
+					);
+				}
 			}else{
 				$result = array(
-					'message'		=> "gagal mengubah data",
+					'message'		=> "Obat sudah ada",
 					'error' => 'y'
 				);
 			}
@@ -752,8 +811,9 @@ class Homegudangobat extends Operator_base {
 				//6 (jumlah) sama 8 (obat detail), 9(tgl_kadaluarsa)
 				$update =  $this->m_obat->update_detail_persetujuan($permintaan_id, $value['8'], $value['6']);
 
-				//update stok obat, kurangi stok (belum)
-				$cek = $this->m_obat->get_last_stok_by_tgl($value[9], $dept_id);
+				//update stok obat, kurangi stok 
+				//$cek = $this->m_obat->get_last_stok_by_tgl($value[9], $dept_id);
+				$cek = $this->m_obat->get_last_stok_by_detail($value[8], $dept_id);
 				if($cek){//klo ada obat, tambah 
 					$params = array(
 						'obat_dept_id' => $cek['obat_dept_id'],
@@ -794,7 +854,8 @@ class Homegudangobat extends Operator_base {
 					}
 				}
 				//update stok di gudang
-				$ck = $this->m_obat->get_last_stok_by_tgl($value[9], '21');
+				//$ck = $this->m_obat->get_last_stok_by_tgl($value[9], '21');
+				$ck = $this->m_obat->get_last_stok_by_detail($value[8], '21');
 				$par = array(
 					'obat_dept_id' => $ck['obat_dept_id'],
 					'tanggal' => date('Y-m-d H:i:s'),
@@ -844,7 +905,8 @@ class Homegudangobat extends Operator_base {
 			foreach ($detail as $value) {
 				//ubah stok (cols[5]) /obat_detail_id
 				$tgl_kadaluarsa =  $value[6];
-				$obat = $this->m_obat->get_last_stok_by_tgl($tgl_kadaluarsa, '21');
+				//$obat = $this->m_obat->get_last_stok_by_tgl($tgl_kadaluarsa, '21');
+				$obat = $this->m_obat->get_last_stok_by_detail($value[5], '21');
 				$params = array(
 					'obat_dept_id' => $obat['obat_dept_id'],
 					'tanggal' => date('Y-m-d H:i:s'),

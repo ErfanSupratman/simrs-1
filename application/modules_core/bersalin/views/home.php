@@ -80,35 +80,39 @@
             </div>
             <br>
             <div id="infoInventori">
-				<form class="form-horizontal informasi" role="form">
 	            	<div class="form-group">
-		            	<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
-						</label>
-						<div class="col-md-2" style="width:200px">
-							<select class="form-control select" name="filterInv" id="filterInv">
-								<option value="Jenis Obat" selected>Jenis Obat</option>
-								<option value="Merek">Merek</option>
-								<option value="Nama Obat">Nama Obat</option>							
-							</select>	
-						</div>
-						<div class="col-md-2" style="margin-left:-15px; width:200px;" >
-							<input type="text" class="form-control" id="filterby" name="valfilter" placeholder="Value"/>
-						</div>
-
+		            	<form class="form-horizontal informasi" role="form" method="post" id="submitfilterfarmasiunit">
+			            	<label class="control-label col-md-2" style="width:120px"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by
+							</label>
+							<div class="col-md-2" style="width:200px">
+								<select class="form-control select" name="filterInv" id="filterInv">
+									<option value="jenis" selected>Jenis Obat</option>
+									<option value="merek">Merek</option>
+									<option value="nama">Nama Obat</option>							
+								</select>	
+							</div>
+							<div class="col-md-2" style="margin-left:-15px; width:200px;" >
+								<input type="text" class="form-control" id="filterby" name="valfilter" placeholder="Value"/>
+							</div>
+							<div class="col-md-1" >
+								<button type="submit" class="btn btn-danger">FILTER</button> 
+							</div>
+						</form>
 						<div class="col-md-1" >
-							<button class="btn btn-danger">EXPIRED</button> 
+							<button class="btn btn-danger" id="expired">EXPIRED</button> 
 						</div>
 						<div class="col-md-1" >
-							<button class="btn btn-warning">EX 3 BULAN</button>
+							<button class="btn btn-warning" id="expired3">EX 3 BULAN</button>
 						</div>
 						<div class="col-md-1" style="margin-left: 20px;">
-							<button class="btn btn-warning">EX 6 BULAN</button>
+							<button class="btn btn-warning" id="expired6">EX 6 BULAN</button>
 						</div>
 					</div>
-				</form>
+					<br>
+				
 				<div class="form-group" >
 					<div class="portlet-body" style="margin: 50px 50px 0px 40px">
-						<table class="table table-striped table-bordered table-hover table-responsive">
+						<table class="table table-striped table-bordered table-hover table-responsive" id="tabelinventoriunit">
 							<thead>
 								<tr class="info">
 									<th width="20">No.</th>
@@ -119,36 +123,38 @@
 									<th> Stok</th>
 									<th> Satuan </th>
 									<th width="150"> Tanggal Kadaluarsa </th>
-									<th width="80"> Action </th>								
+									<th width="80"> Action </th>
+									<th style="display:none"> Action </th>
+									<th style="display:none"> Action </th>
+									<th style="display:none"> Action </th>
+									<th style="display:none"> Action </th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td>A</td>
-									<td>A</td>
-									<td>a</td>
-									<td>a</td>									
-									<td>A</td>
-									<td>A</td>
-									<td>A</td>
-									<td style="text-align:center"><a href="#inout" data-toggle="modal" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="IN-OUT"></i></a>
-											<a href="#edInvenBer" data-toggle="modal" class="edObat"><i class="glyphicon glyphicon-search" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>							
-										</td>										
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>A</td>
-									<td>A</td>
-									<td>a</td>
-									<td>a</td>									
-									<td>A</td>
-									<td>A</td>
-									<td>A</td>
-									<td style="text-align:center"><a href="#inout" data-toggle="modal" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="IN-OUT"></i></a>
-											<a href="#edInvenBer" data-toggle="modal" class="edObat"><i class="glyphicon glyphicon-search" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>							
-									</td>											
-								</tr>
+							<tbody id="tbodyinventoriunit">
+								<?php  
+									if (isset($obatunit)) {
+										$i = 1;
+										foreach ($obatunit as $value) {
+											$tgl = DateTime::createFromFormat('Y-m-d', $value['tgl_kadaluarsa']);
+											echo '<tr>'.
+												'<td>'.($i++).'</td>'.
+												'<td>'.$value['nama'].'</td>'.
+												'<td>'.$value['no_batch'].'</td>'.
+												'<td>'.$value['harga_jual'].'</td>'.
+												'<td>'.$value['nama_merk'].'</td>'.
+												'<td>'.$value['total_stok'].'</td>'.
+												'<td>'.$value['satuan'].'</td>'.								
+												'<td>'.$tgl->format('d F Y').'</td>'.
+												'<td><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'.
+												'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></td>'.
+												'<td style="display:none">'.$value['merk_id'].'</td>'.
+												'<td style="display:none">'.$value['jenis_obat_id'].'</td>'.
+												'<td style="display:none">'.$value['satuan_id'].'</td>'.	
+												'<td style="display:none">'.$value['obat_dept_id'].'</td>'.
+											'</tr>';
+										}
+									}
+								?>
 							</tbody>
 						</table>
 					</div>
@@ -160,70 +166,61 @@
 				<br><br>
 	        </div>
 			<div class="modal fade" id="inout" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content" >
-						<div class="modal-header">
-	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-	        				<h3 class="modal-title" id="myModalLabel">IN OUT</h3>
-	        			</div>
-	        			<div class="modal-body">
-	        			<form class="form-horizontal informasi" role="form">
-	
-		        			<div class="form-group">
+				<form class="form-horizontal informasi" role="form" method="post" id="submitinoutunit">
+					<div class="modal-dialog">
+						<div class="modal-content" >
+							<div class="modal-header">
+		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		        				<h3 class="modal-title" id="myModalLabel">IN OUT</h3>
+		        			</div>
+		        			<div class="modal-body">
+			        			<div class="form-group">
 		        					<label class="control-label col-md-3" >Tanggal 
 									</label>
 									<div class="col-md-4" >
 						         		<div class="input-icon">
 											<i class="fa fa-calendar"></i>
-											<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+											<input type="text" style="cursor:pointer;" id="tglInOut" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
 										</div>
 									</div>
-									
-							</div>
-							<div class="form-group">
-								<label class="control-label col-md-3" >In / Out 
-								</label>
-								<div class="col-md-4">
-					         		<select class="form-control select" name="iober" id="iober">
-										<option value="IN" selected>IN</option>
-										<option value="OUT">OUT</option>					
-									</select>
-								</div>	
-							</div>
-
-							<div class="form-group">
-		        					<label class="control-label col-md-3" >Jumlah 
+								</div>
+								<div class="form-group">
+									<label class="control-label col-md-3" >In / Out 
 									</label>
+									<div class="col-md-4">
+						         		<select class="form-control select" name="iober" id="iober">
+											<option value="IN" selected>IN</option>
+											<option value="OUT">OUT</option>					
+										</select>
+									</div>	
+								</div>
+								<div class="form-group">
+		        					<label class="control-label col-md-3" >Jumlah </label>
 									<div class="col-md-4" >
-					         		<input type="text" class="form-control" name="jmlInOutBer" placeholder="Jumlah">
+					         			<input type="text" class="form-control" id="jmlInOutBer" name="jmlInOutBer" placeholder="Jumlah">
 									</div>
-									
-							</div>
-							<div class="form-group">
-		        					<label class="control-label col-md-3" >Sisa Stok 
-									</label>
+								</div>
+								<div class="form-group">
+		        					<label class="control-label col-md-3" >Sisa Stok </label>
 									<div class="col-md-4" >
-					         		<input type="text" class="form-control" name="sisaInOutBer" placeholder="Sisa Stok">
+					         			<input type="text" class="form-control" id="sisaInOutBer" name="sisaInOutBer" placeholder="Sisa Stok" readonly="">
 									</div>
-									
-							</div>
-							<div class="form-group">
-		        					<label class="control-label col-md-3" >Keterangan 
-									</label>
+								</div>
+								<div class="form-group">
+		        					<label class="control-label col-md-3" >Keterangan </label>
 									<div class="col-md-6" >
-										<textarea class="form-control" placeholder="Keterangan"></textarea>
+										<textarea class="form-control" id="keteranganIO" placeholder="Keterangan"></textarea>
 									</div>
-		
-							</div>
-							</form>
-							
-	        			</div>
-	        			<div class="modal-footer">
-	        				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-	 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
-				      	</div>
+								</div>
+		        			</div>
+		        			<div class="modal-footer">
+		        				<input type="hidden" id="inout_obat_dept_id">
+		        				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+		 			       		<button type="submit" class="btn btn-success">Simpan</button>
+					      	</div>
+						</div>
 					</div>
-				</div>
+				</form>
 			</div>
 			<div class="modal fade" id="edInvenBer" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
@@ -237,30 +234,19 @@
 				            	<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
 									<thead>
 										<tr class="info" >
-											<th  style="text-align:left" width="10%"> Waktu </th>
+											<th  style="text-align:center"> Waktu </th>
 											<th  style="text-align:left"> IN / OUT </th>
 											<th  style="text-align:left"> Jumlah </th>
 											<th  style="text-align:left"> Stok Akhir </th>
-											<th  style="text-align:left"> Jenis </th>
-											<th  style="text-align:left">  Keterangan </th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody id="tbodydetailobatinventori">
 										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td colspan="4" style="text-align:center">Tidak ada Detail</td>
 										</tr>
-											
 									</tbody>
 								</table>
-
-			        			
-								</form>
-								
+							</form>
 		        			</div>
 		        			<div class="modal-footer">
 		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>

@@ -8,6 +8,7 @@ class Homebersalin extends Operator_base {
 		parent:: __construct();
 		$this->load->model('m_bersalin');
 		$this->load->model('m_homebersalin');
+		$this->load->model('farmasi/m_obat');
 	}
 
 	public function index($page = 0)
@@ -27,6 +28,7 @@ class Homebersalin extends Operator_base {
 		//$data['allpasiens'] = $allpasienbersalin;
 		$data['javascript'] = "j_home";
 		$data['page_title'] = 'Home Bersalin';
+		$data['obatunit'] = $this->m_homebersalin->get_obat_unit();
 
 		$this->session->set_userdata($data);
 		$this->load->view('base/operator/template', $data);
@@ -41,6 +43,73 @@ class Homebersalin extends Operator_base {
 	}
 
 	/*farmasi bersalin*/
+	//filter
+	public function submit_filter_farmasi()
+	{
+		if (isset($_POST['filterby'])) {
+			$filteby = $_POST['filterby'];
+			$filterval = $_POST['valfilter'];
+			switch ($filterby) {
+				case 'jenis':
+					
+					break;
+				case 'merek':
+						
+					break;
+				case 'nama':
+					# code...
+					break;
+			}
+		}
+
+		if (isset($_POST['expired'])) {
+			$filterby = $_POST['expired'];
+			$now = date('Y-m-d');
+			$result = $this->m_homebersalin->filter_farmasi_expired($filterby,$now);
+		}
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function input_in_out()
+	{
+		$insert['obat_dept_id'] = $_POST['obat_dept_id'];
+		$tgl = DateTime::createFromFormat('d/m/Y',$_POST['tanggal']);
+		$insert['tanggal'] = $tgl->format('Y-m-d');
+		$insert['is_out'] = $_POST['is_out'];
+		$insert['jumlah'] = $_POST['jumlah'];
+		$insert['keterangan'] = $_POST['keterangan'];
+
+		$res = $this->m_obat->input_in_out($insert); //pake di obat aja :D
+		if ($res) {
+			$ins['obat_dept_id'] = $_POST['obat_dept_id'];
+			$ins['tanggal'] = $tgl;
+			$is_out = $_POST['is_out'];
+			if ($is_out == 'IN') {
+				$ins['masuk'] = $_POST['jumlah'];
+				$ins['keluar'] = '';
+			}else{
+				$ins['keluar'] = $_POST['jumlah'];
+				$ins['masuk'] = '';
+			}
+			$ins['total_stok'] = $_POST['sisa'];
+			$ins['keterangan'] = "IN - OUT";
+
+			$res = $this->m_obat->input_riwayat_out($ins);
+			if ($res) {
+				$message = "true";
+			}else{
+				$message = "false";
+			}
+		}else{
+			$message = "false";
+		}
+
+		header('Content-Type: application/json');
+	 	echo(json_encode($message));
+	}
+
 	//permintaan
 	public function get_obat_gudang($katakunci)
 	{
@@ -134,11 +203,29 @@ class Homebersalin extends Operator_base {
 			if ($id) {
 				foreach ($val as $key) {
 					$ins['retur_dept_id'] = $id;
-					$ins['obat_detail_id'] = $key[0]
+					$ins['obat_detail_id'] = $key[0];
 					$ins['jumlah'] = $key[8];
 
 					$res = $this->m_homebersalin->insert_detail_returdept($ins);
 					//ubah stok di gudang dan unit
+					$last = $this->m_obat->get_last_stok_by_detail($ins['obat_detail_id'],'21');  //gudang
+					$param = array(
+							'obat_dept_id' => $last['obat_dept_id'],
+							'tanggal' => date('Y-m-d H:i:s'),
+							'masuk' => $ins['jumlah'],
+							'total_stok' => ($last['total_stok'] + $ins['jumlah']),
+							'keterangan' => 'RETUR DARI UNIT'
+						);
+					$updateunit = $this->m_obat->update_stok_returdepartemen($param); //insert data baru gudang
+					$last = $this->m_obat->get_last_stok_by_detail($ins['obat_detail_id'],'19');  //gudang
+					$params = array(
+							'obat_dept_id' => $last['obat_dept_id'],
+							'tanggal' => date('Y-m-d H:i:s'),
+							'masuk' => $ins['jumlah'],
+							'total_stok' => ($last['total_stok'] - $ins['jumlah']),
+							'keterangan' => 'RETUR KE GDG'
+						);
+					$update = $this->m_obat->update_stok_returdepartemen($params); //insert data baru unit bersalin
 				}
 
 				$elny2 = array(

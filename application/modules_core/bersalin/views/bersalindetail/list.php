@@ -8,23 +8,24 @@
 		<i class="fa fa-angle-right"></i>
 		<a href="<?php echo base_url() ?>bersalin/homebersalin">Pasien Bersalin</a>
 		<i class="fa fa-angle-right"></i>
-		<a href="<?php echo base_url() ?>bersalin/bersalindetail"><?php echo $pasien['nama']; ?></a>
+		<a href="<?php echo base_url() ?>bersalin/bersalindetail">Nama Pasien</a>
+		<span class="nama">( Marwah 1B/Bed 1&nbsp;-&nbsp;Kelas III&nbsp;-&nbsp;BPJS Kelas 2 )</span>
 	</li>
 </div>
 
 <div class="navigation" style="margin-left: 10px" >
  	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
 	    <li class="active"><a href="#identitas" data-toggle="tab">Identitas Pasien</a></li>
-		<li><a href="#rm" data-toggle="tab">Overview</a></li>
+		<li><a href="#rmklinik" data-toggle="tab">Overview Klinik</a></li>
+		<li><a href="#rmigd" data-toggle="tab">Overview IGD</a></li>
+	    <li><a href="#ibu"  data-toggle="tab">Overview Ibu Hamil</a></li>
+		<li><a href="#rm" data-toggle="tab">Overview Perawatan</a></li>
 	    <li><a href="#resep" data-toggle="tab">Pemberian Resep</a></li>
 	    <li><a href="#penunjang" data-toggle="tab">Pemeriksaan Penunjang</a></li>
 	    <li><a href="#orderkamar" data-toggle="tab">Order Kamar Operasi</a></li>
 	    <li><a href="#konsul" data-toggle="tab">Order Konsultasi Gizi</a></li>
-	    <li><a href="#makan" id="permintaanmakan" data-toggle="tab">Daftar Permintaan Makan</a></li>
-	    <li><a href="#pindah" data-toggle="tab">Pindah Pasien</a></li>
+	    <li><a href="#makan" data-toggle="tab">Daftar Permintaan Makan</a></li>
 	    <li><a href="#catatan" data-toggle="tab">Catatan Persalinan</a></li>
-	    <li><a href="#ibu"  data-toggle="tab">Catatan Kesehatan Ibu Hamil</a></li>
-	    <li><a href="#daftar" data-toggle="tab">Daftar Kelahiran Baru</a></li>
 	    <li><a href="#riwayat" data-toggle="tab">Riwayat Penyakit</a></li>
 	    <li><a href="#resume" data-toggle="tab">Resume Pulang</a></li>	    
 	</ul>
@@ -34,144 +35,166 @@
     	<div class="tab-pane active" id="identitas">
     		<div class="dropdown">
         		<div id="titleInformasi">Identitas Pasien</div>
-            	<div class="btnBawah" id="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-          	<br>
+ 			</div>
             <div class="informasi" id="info1">
 	            <form class="form-horizontal" role="form">
+	            	
 	           		<div class="form-group">
 						<label class="control-label col-md-3" >Jenis Identitas Pasien</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="jnsIdentitas" name="jenis_identitas" placeholder="<?php echo $pasien['jenis_id']; ?>" disabled />
+						<div class="col-md-1">
+							<input  id="jnsIdentitas" name="jenis_identitas" value="KTP" style="border:0px;background-color:transparent;font-weight:bold" disabled />
 						</div>					
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="NomorID" name="nomor_identitas" placeholder="<?php echo $pasien['no_id']; ?>" disabled />
+					</div>	
+					
+					<div class="form-group">
+						<label class="control-label col-md-3" >Nomor Identitas Pasien</label>
+						<div class="col-md-3">
+							<input  id="NomorID" name="nomor_identitas" value="12312312312" style="border:0px;background-color:transparent;font-weight:bold" disabled />
 						</div>
 					</div>	
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
+
 					<div class="form-group">
 						<label class="control-label col-md-3">No RM</label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" id="rm_id" name="rm_id" placeholder="<?php echo $pasien['rm_id']; ?>" disabled />
+						<div class="col-md-4">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="rm_id" name="rm_id" value="123123" disabled />
 						</div>
 					</div>
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
+
 					<div class="form-group">
 						<label class="control-label col-md-3">Nama Lengkap </label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" id="NamaLengkap" name="NamaLengkap" placeholder="<?php echo $pasien['nama']; ?>" disabled />
+						<div class="col-md-4">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="NamaLengkap" name="NamaLengkap" value="Jems Naban" disabled />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Alias </label>
-						<div class="col-md-2">
-							<input type="text" class="form-control" id="alias" name="alias" placeholder="<?php echo $pasien['alias'] ?>" disabled />
+						<div class="col-md-1">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="alias" name="alias" value="Tuan" disabled />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Jenis Kelamin</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="jk" name="jk" placeholder="<?php echo $pasien['jenis_kelamin'] ?>" disabled />
+						<div class="col-md-1">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="jk" name="jk" value="Laki-Laki" disabled />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Golongan Darah </label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="goldarah" name="goldarah" placeholder="<?php echo $pasien['gol_darah']; ?>" disabled />												
+						<div class="col-md-1">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="goldarah" name="goldarah" value="AB" disabled />												
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Agama </label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="agama" name="agama" placeholder="<?php echo $pasien['agama']; ?>" disabled />
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="agama" name="agama" value="Kristen" disabled />
 						</div>
 					</div>
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
+
 					<div class="form-group">
-						<label class="control-label col-md-3">Tempat, tanggal lahir </label>
+						<label class="control-label col-md-3">Tempat Lahir </label>
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="newTempatLahir" name="tempat_lahir" placeholder="<?php echo $pasien['tempat_lahir']; ?>" disabled/>
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="newTempatLahir" name="tempat_lahir" value="NTT" disabled/>
 						</div>
+																		
+					</div>			
+					<div class="form-group">
+						<label class="control-label col-md-3">Tanggal Lahir </label>
 						<div class="col-md-2">
-							<input class="form-control input-medium"  type="text" 
-								placeholder="<?php 
-									$tgl = strtotime($pasien['tanggal_lahir']);
-									$hasil = date('d F Y', $tgl); 
-									echo $hasil;
-								?>" disabled />
+							<input style="border:0px;background-color:transparent;font-weight:bold" class="input-medium date-picker" maxlength="12" type="text" value="12 Desember 2012" 
+								data-date-format="dd/mm/yyyy" id="TanggalLahir" placeholder="Tanggal Lahir" disabled />
 						</div>												
 					</div>			
+
 					<div class="form-group">
 						<label class="control-label col-md-3">Umur</label>
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="umur" name="umur" 
-							placeholder="<?php  
-								$datetime1 = new DateTime();
-								$datetime2 = new DateTime($pasien['tanggal_lahir']);
-								$interval = $datetime1->diff($datetime2);
-																
-								if($interval->y > 0)
-									echo $interval->y ." tahun ";
-								if($interval->m > 0)
-									echo $interval->m." bulan ";
-								if($interval->d > 0)
-									echo $interval->d ." hari";
-							?>" disabled />
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="umur" name="umur" 
+							value="21" disabled />
 						</div>
 					</div>
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
+
 					<div class="form-group">
 						<label class="control-label col-md-3">Status Kawin</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="status kawin" name="statuskawin" placeholder="<?php echo $pasien['status_perkawinan']; ?>" disabled />
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="status kawin" name="statuskawin" value="Kawin" disabled />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Pendidikan Terakhir</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="pendidikan" name="pendidikan" placeholder="<?php echo $pasien['pendidikan']; ?>" disabled />
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="pendidikan" name="pendidikan" value="SMA" disabled />
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Pekerjaan </label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="Pekerjaan" name="pekerjaan" placeholder="<?php echo $pasien['pendidikan']; ?>"/ disabled>
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="Pekerjaan" name="pekerjaan" value="Buruh" disabled>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Nomor Telepon</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" id="nomorPasien" name="nomor_pasien" placeholder="<?php echo $pasien['no_telp']; ?>" disabled />
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="nomorPasien" name="nomor_pasien" value="09123123" disabled />
 						</div>						
 					</div>
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
+
 					<div class="form-group">
 						<label class="control-label col-md-3">Alamat </label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" id="Alamat" name="alamat" placeholder="<?php echo $pasien['alamat_skr']; ?>" disabled />
+						<div class="col-md-5">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="Alamat" name="alamat" value="Rumahnya" disabled />
 						</div>						
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3">Alamat KTP</label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" id="AlamatKTP" name="alamatKTP" placeholder="<?php echo $pasien['alamat_ktp'] ?>" disabled />
+						<div class="col-md-5">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="AlamatKTP" name="alamatKTP" value="Sumba" disabled />
 						</div>						
 					</div>
+					
 					<div class="form-group">
 						<label class="control-label col-md-3">Wilayah </label>									
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="provinsi" name="provinsi" placeholder="<?php echo $pasien['provinsi_skr']; ?>" disabled />
-						</div>												
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="provinsi" name="provinsi" value="NTT" disabled />
+						</div>											
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3">Kabupaten </label>									
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="kabupaten" name="kabupaten" placeholder="<?php echo $pasien['kabupaten_skr']; ?>" disabled />
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="kabupaten" name="kabupaten" value="Kupang" disabled />
 						</div>												
+						
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3">Kecamatan </label>									
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="kecamatan" name="kecamatan" placeholder="<?php echo $pasien['kecamatan_skr']; ?>" disabled />
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="kecamatan" name="kecamatan" value="Apalah" disabled />
 						</div>
+						
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3">Kelurahan </label>									
 						<div class="col-md-2">
-							<input type="text" class="form-control" id="kelurahan" name="kelurahan" placeholder="<?php echo $pasien['kelurahan_skr']; ?>" disabled />
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="kelurahan" name="kelurahan" value="Terserah" disabled />
 						</div>
 					</div>
+					<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:50px;">
+					<br>
 						
 					<div class="form-group">
 						<label class="control-label col-md-3">Cara Pembayaran</label>
-						<div class="col-md-6">
-							<input type="text" class="form-control" id="cara_bayar" name="cara_bayar" placeholder="<?php ?>" disabled />
+						<div class="col-md-2">
+							<input style="border:0px;background-color:transparent;font-weight:bold" id="cara_bayar" name="cara_bayar" value="Ngutang" disabled />
 						</div>						
 					</div>
 				</form>
@@ -179,233 +202,311 @@
 			<br><br>
 		</div>
 
-		<div class="tab-pane" id="rm"> 
-			<div class="dropdown">
-		        <div id="titleInformasi">Overview  
-		          	<span type="submit" class="floatright" id="tmbhOverview"><a href="#" id="tambahOver"  style="color:white"> Tambah</a></span> 
-		          	<span type="submit" class="floatright" id="hstoryOverview"><a data-toggle="modal" id="tambahOver1" class="link"  href="#tabelHistory" style="color:white"> History</a></span> 
+		<div class="tab-pane" id="rmklinik"> 
+		
+			<div class="dropdown"  id="btnBawahTambahCare">
+		        <div id="titleInformasi">Konsultasi Dokter
 		        </div>
-		            
-		        <div id="btnBawahTambahCare" class="btnBawah floatright" style="margin-top:-25px;">
-		           	<i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i>
-		        </div> 
-	       	</div>
-	        <br>
-
-	        <div class="modal fade" id="tabelHistory" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog" style="width:1300px;">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-							<h3 class="modal-title" id="myModalLabel">Details Overview</h3>
+		        <div class="btnBawah floatright" style="margin-top:-25px;">
+		           	<i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i>
+		        </div>
+		    </div>
+	        <div class="tabelinformasi" id="tbhCare">
+	        	<div class="informasi">
+		 			<form class="form-horizontal" role="form" method="POST" id="submitOver">
+				       	<br>
+		 				<div class="form-group">
+							<label class="control-label col-md-3">Waktu</label>
+							<div class="col-md-2" >
+								<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								</div>
+							</div>
 						</div>
-				        <div class="modal-body">
-					    	<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table id="tableOverview" class="table table-striped table-bordered table-hover">
-									<thead>
-										<tr class="warning" style="text_align: center;">
-											<td>Tanggal Periksa</td>
-											<td>Jenis Pelayanan</td>
-											<td>Anamesa</td>
-											<td>Temperatur</td>
-											<td>Tensi</td>
-											<td>Diagnosa Utama</td>
-											<td>Diagnosa Sekunder</td>
-											<td>Detail Dignosa</td>
-											<td>Terapi</td>
-											<td>Dokter Pemeriksa</td>
-											<td>Keterangan</td>
-										</tr>
-									</thead>
-									<tbody>
-										<?php  
-											if (!empty($overview_history)) {
-												foreach ($overview_history as $history) {
-													echo "<tr>".
-														"<td>".$history['tanggal']."</td>".
-														"<td>Jenis Pelayanan</td>".
-														"<td>".$history['anamnesa']."</td>".
-														"<td>".$history['temperatur']."</td>".
-														"<td>".$history['tensi']."</td>".
-														"<td>".$history['diagnosa_utama']."</td>".
-														"<td>".$history['diagnosa_sekunder']."</td>".
-														"<td>".$history['detail_diagnosa']."</td>".
-														"<td>".$history['terapi']."</td>".
-														"<td>".$history['id_pemeriksa']."</td>".
-														"<td>".$history['keterangan']."</td>".
-														"</tr>";			
-												}
-											}
-										?>
-									</tbody>
-								</table>												
-							</div>	
-					    </div>
-				        <div class="modal-footer">
-				      		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-				      	</div>
-					</div>
+						
+						<div class="form-group">
+							<label class="control-label col-md-3">Anamnesa</label>
+							<div class="col-md-4">
+								<textarea class="form-control isian" id="anamnesa" name="anamnesa" placeholder="Anamnesa"></textarea>
+							</div>
+						</div>
+
+						<fieldset class="fsStyle">
+							<legend>
+				                Tanda Vital
+							</legend>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Tekanan Darah</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" >
+								</div>
+								<label class="control-label col-md-2">mmHg</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Temperatur</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" >
+								</div>
+								<label class="control-label col-md-2">&deg;C</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Nadi</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" >
+								</div>
+								<label class="control-label col-md-2">x/menit</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Pernapasan</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" >
+								</div>
+								<label class="control-label col-md-2">x/menit</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Berat Badan</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" >
+								</div>
+								<label class="control-label col-md-2">Kg</label>
+							</div>
+				  		</fieldset>
+
+				  		<fieldset class="fsStyle">
+							<legend>
+				                Diagnosa & Terapi
+							</legend>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Dokter Pemeriksa</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control" style="cursor:pointer;" readonly id="dokter" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Diagnosa Utama</label>
+								<div class="col-md-1">
+									<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_utama" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Diagnosa Sekunder</label>
+								<div class="col-md-1">
+									<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek1" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<label class="control-label">1</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;"></label>
+								<div class="col-md-1">
+									<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek2" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<label class="control-label">2</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;"></label>
+								<div class="col-md-1">
+									<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek3" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<label class="control-label">3</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;"></label>
+								<div class="col-md-1">
+									<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek4" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<div class="col-md-2">
+									<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+								</div>
+								<label class="control-label">4</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Detail Diagnosa</label>
+								<div class="col-md-4">
+									<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" ></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Terapi</label>
+								<div class="col-md-4">
+									<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" ></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Alergi</label>
+								<div class="col-md-3">
+									<input type="text" class="form-control isian" id="alergi" name="alergi" placeholder="Alergi">
+								</div>
+							</div>
+				  		</fieldset>
+
+						<div class="form-group">
+							<label class="control-label col-md-3"> </label>
+							<div class="col-md-5">
+								<button type="reset" id="bcancel" class="btn btn-danger">Reset</button>
+								<input type="hidden" id="v_id" value="">&nbsp;&nbsp;
+						    	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
+						    </div>
+			        	</div>
+					</form>
+				</div>
+				<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:20px;margin-left:20px;">
+					
+				<div class="portlet-body" style="margin: 20px 40px 0px 30px">
+					<table id="tableOverview" class="table table-striped table-bordered table-hover table-responsive">
+						<thead>
+							<tr class="info" style="text_align: center;">
+								<th width="20">No.</th>
+								<th>Unit</th>
+								<th>Anamnesa</th>
+								<th>Dokter Pemeriksa</th>
+								<th width="20">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>Poli Umum</td>
+								<td>Ini isinya panjang</td>
+								<td>Jems Naban</td>
+								<td style="text-align:center;"><a href="#riwayatkonsultasidokter" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+							</tr>
+						</tbody>
+					</table>												
 				</div>
 			</div>
-
-	 		<div class="informasi" id="tbhCare">
-	 			<form class="form-horizontal" role="form" method="post" action="#">
- 					<div class="form-group">
-						<label class="control-label col-md-3" >Tanggal Periksa </label>
-						<div class="col-md-2">
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" class="form-control isian calder" name="date" id="inputdate" data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" required disabled>
-							</div>	
-						</div>				
-					</div>	
-				
-					<div class="form-group">
-						<label class="control-label col-md-3">Jenis Pelayanan</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control isian" id="jenisPelayanan" name="jenisPelayanan" placeholder="Jenis Pelayanan" disabled>
-						</div>
-					</div>
-						<div class="form-group">
-						<label class="control-label col-md-3">Anamnesa</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control isian" id="anamnesa" name="anamnesa" placeholder="Anamnesa" disabled>
-						</div>
-					</div>
-						<div class="form-group">
-						<label class="control-label col-md-3">Temperatur / Tensi</label>
-						<div class="col-md-2">
-							<input type="text" class="form-control isian" id="temperatur" name="temperatur" placeholder="Temperatur" disabled>
-						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control isian" id="tensi" name="tensi" placeholder="Tensi" disabled>
-						</div>
-					</div>				
-					<div class="form-group">
-						<label class="control-label col-md-3">Diagnosa Utama</label>
-						<div class="col-md-1">
-							<input type="text" class="form-control isian" id="kode_utama" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" disabled>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Diagnosa Sekunder</label>
-						<div class="col-md-1">
-							<input type="text" class="form-control isian" id="kode_sekunder" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" disabled>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Keterangan</label>
-						<div class="col-md-5">
-							<textarea class="form-control isian" id="keterangan" name="keterangan" placeholder="keterangan" disabled></textarea>
-						</div>
-					</div>
-						<div class="form-group">
-						<label class="control-label col-md-3">Detail Diagnosa</label>
-						<div class="col-md-5">
-							<textarea class="form-control isian" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" disabled></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Terapi</label>
-						<div class="col-md-5">
-							<input type="text" class="form-control isian" id="terapi" name="terapi" placeholder="Terapi" disabled>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Alergi</label>
-						<div class="col-md-5">
-							<input type="text" class="form-control isian" id="alergi" name="alergi" placeholder="Alergi" disabled>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3">Dokter Pemeriksa</label>
-						<div class="col-md-3">
-							<input type="text" class="form-control isian" id="dokter" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokterOverview" disabled>
-							<input type="hidden" id="iddokter">
-						</div>
-					</div>
-						<div class="form-group">
-						<label class="control-label col-md-3">Perawat Pemeriksa</label>
-						<div class="col-md-3">
-							<select class="form-control select isian" name="perawat" id="perawat" disabled>
-								<?php  
-									//ini harusnya perawat lho, bukan dokter
-									if (isset($petugas)) {
-										if (!empty($petugas)) {
-											foreach ($petugas as $value) {
-												echo '<option value="'.$value['petugas_id'].'">'.$value['nama_petugas'].'</option>';
-											}
-										}
-									}
-								?>
-							</select>	
-						</div>
-					</div>
-						<div class="form-group">
-						<label class="control-label col-md-3"> </label>
-						<div class="col-md-5">
-							<input type="hidden" id="v_id" value="<?php echo $this->session->userdata('visit_id'); ?>">
-					    	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
-					    </div>
-		        	</div>
-		        	<br>
-				</form>
-
-				<div class="modal fade" id="searchDokterOverview" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="riwayatkonsultasidokter" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="riwayatkonsultasidokter">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		        				<h3 class="modal-title" id="myModalLabel">Pilih Dokter</h3>
-		        			</div>
-		        			<div class="modal-body">
-								<div class="form-group">	
-									<div class="col-md-5">
-										<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Konsultasi Dokter</h3>
+				   			</div>
+							<div class="modal-body" style="padding-left:80px;">
+
+				   				<div class="form-group">
+									<label class="control-label col-md-4">Waktu Tindakan</label>
+									<div class="col-md-5">	
+										<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
 									</div>
-									<div class="col-md-2">
-										<button type="button" class="btn btn-info">Cari</button>
-									</div>	
-								</div>	
-								<br>	
-								<div style="margin-left:5px; margin-right:5px;"><hr></div>
-								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-									<table class="table table-striped table-bordered table-hover" id="tabelSearchDokterOverview">
-										<thead>
-											<tr class="warning">
-												<td>Nama Dokter</td>
-												<td width="10%">Pilih</td>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>Jems</td>
-												<td style="text-align:center"><i class="glyphicon glyphicon-check"></i></td>
-											</tr>
-											<tr>
-												<td>Putu</td>
-												<td style="text-align:center"><i class="glyphicon glyphicon-check"></i></td>
-											</tr>
-										</tbody>
-									</table>												
+			        			</div>	
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Anamnesa</label>
+									<div class="col-md-7">
+										<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+									</div>
 								</div>
-		        			</div>
-		        			<div class="modal-footer">
-		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-					      	</div>
+
+								<fieldset class="fsStyle">
+									<legend>
+						                Tanda Vital
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Tekanan Darah</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+										</div>
+										<label class="control-label col-md-2">mmHg</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Temperatur</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+										</div>
+										<label class="control-label col-md-2">&deg;C</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Nadi</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Pernapasan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Berat Badan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+										</div>
+										<label class="control-label col-md-2">Kg</label>
+									</div>
+						  		</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Diagnosa & Terapi
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Dokter Pemeriksa</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Diagnosa</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Detail Diagnosa</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Terapi</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Alergi</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="alergi" name="alergi" placeholder="Alergi" readonly>
+										</div>
+									</div>
+						  		</fieldset>
+				        	</div>
+			        		
+			        		<div class="modal-footer">
+			        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						    </div>
 						</div>
 					</div>
-				</div>
-			</div>  
-
-		 	<div class="dropdown">
-		 	  	<div id="titleInformasi">Uraian Tindakan <span type="submit" class="floatright" id="tndknOverview"><a data-toggle="modal" href="#tambahTindakan" id="tambahOver2" style="color:white"> Tambah</a></span></div>
+				</form>
+			</div>
+			<br>
+		 	
+		 	<div class="dropdown" id="btnBawahCare">
+		 	  	<div id="titleInformasi" >Uraian Tindakan Klinik</div>
 		        <div id="btnBawahCare" class="btnBawah floatright"  style="margin-top:-25px;"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
 		    </div>
 	        <br>
-
 	        <div class="modal fade" id="tambahTindakan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	        	<form class="form-horizontal" role="form" method="post" id="submitTindakan">
+				<form class="form-horizontal" role="form" method="POST" id="submitTindakan">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -416,49 +517,23 @@
 								<div class="informasi">
 					   				<div class="form-group">
 										<label class="control-label col-md-4">Waktu Tindakan</label>
-										<div class="col-md-4">	
-											<div class="input-icon">
-												<i class="fa fa-calendar"></i>
-												<input type="text" style="cursor:pointer;" class="form-control isian calder" id="inputwaktutindakan" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" required>
-											</div>
+										<div class="col-md-5">	
+											<input type="text" style="cursor:pointer;" class="form-control"  readonly data-provide="datetimepicker" data-date-format="dd/mm/yyyy hh:ii" placeholder="<?php echo date("d/m/Y H:i");?>"/>
 										</div>
-				        			</div>
-
+				        			</div>							
 				        			<div class="form-group">
-										<label class="control-label col-md-4">Nama Tindakan</label>
-										<div class="col-md-6">
-											<select class="form-control select" name="namaTindakan" id="namaTindakan" >
-												<?php  
-													foreach ($tindakan as $key) {
-														echo "<option value=".$key['tindakan_id'].">".$key['nama_tindakan']."</option>";		
-													}
-												?>
-												
-											</select>												
+										<label class="control-label col-md-4">Tindakan</label>
+										<div class="col-md-5">
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false">												
 										</div>
 									</div>
-
 				        			<div class="form-group">
-										<label class="control-label col-md-4">JS</label>
+										<label class="control-label col-md-4">Tarif</label>
 										<div class="col-md-5">	
-											<input type="text" class="form-control" id="js" name="js" placeholder="Jasa Saranan" >
+											<input type="text" class="form-control" id="tarif" name="tarif" placeholder="Tarif" readonly > 
 										</div>
 				        			</div>
-
-				        			<div class="form-group">
-										<label class="control-label col-md-4">JP</label>
-										<div class="col-md-5">	
-											<input type="text" class="form-control" id="jp" name="jp" placeholder="Jasa PElayanan" >
-										</div>
-				        			</div>
-
-				        			<div class="form-group">
-										<label class="control-label col-md-4">BAKHP</label>
-										<div class="col-md-5">	
-											<input type="text" class="form-control" id="bakhp" name="bakhp" placeholder="Bakhp" >
-										</div>
-				        			</div>
-
+				        			
 				        			<div class="form-group">
 										<label class="control-label col-md-4">On Faktur</label>
 										<div class="col-md-5">	
@@ -466,96 +541,2266 @@
 										</div>
 				        			</div>
 
-									<div class="form-group">
-										<label class="control-label col-md-4">Paramedis</label>
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Jumlah</label>
 										<div class="col-md-5">	
-											<input type="text" class="form-control" id="paramedis" name="paramedis" placeholder="Paramedis" >
+											<input type="text" class="form-control" id="jumlah" name="jumlah" placeholder="Jumlah" readonly>
 										</div>
 				        			</div>
 
-				        			<div class="form-group">
-										<label class="control-label col-md-4">Kategori Tindakan</label>
-										<div class="col-md-6">
-											<select class="form-control select" name="kategori" id="kategori" >
-												<?php  
-													foreach ($kategori as $kat) {
-														echo '<option value="'.$kat["kat_id"].'">'.$kat["keterangan"].'</option>';		
-													}
-												?>
-											</select>												
-										</div>
-									</div>
-
 									<div class="form-group">
-										<label class="control-label col-md-4">Uraian Tindakan</label>
-										<div class="col-md-7">
-											<textarea class="form-control" name="tindakan" id="uraiantindakan" placeholder="Uraian Tindakan"></textarea>
+										<label class="control-label col-md-4">Paramedis</label>
+										<div class="col-md-5">	
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" id="paramedis" name="paramedis" placeholder="Paramedis">
+											
 										</div>
-									</div>
+				        			</div>
+				        			
 			        			</div>
-			       			</div>
+		       				</div>
 			        		<br><br>
 			        		<div class="modal-footer">
-			        			<input type="hidden" id="visit_id" value="<?php echo $this->session->userdata('visit_id'); ?>">
+			        		 	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
 			 			     	<button type="submit" class="btn btn-success" id="saveTindakan">Simpan</button>
 						    </div>
 						</div>
 					</div>
 				</form>
 			</div>
-	
 			<div class="tabelinformasi" id="tabelcare">
-			        <div class="portlet-body" style="margin: 0px 40px 0px 10px">
-			            <table class="table table-striped table-bordered table-hover" id="tableCare">
-							<thead>
-							<tr class="info">
-								<th>Waktu Tindakan</th>
-								<th>Jasa Sarana</th>
-								<th>Jasa Pelayanan</th>
-								<th>BAKHP</th>
-								<th>On faktur</th>
-								<th>Paramedis</th>
-								<th>Jasa Pelayanan</th>
-								<th>Kategori Tindakan</th>
-							</tr>
-							</thead>
-							<tbody>
-								<?php  
-									if (!empty($visit_care)) {
-										foreach($visit_care as $value){
-											echo "<tr>";
-												echo "<td>".$value['waktu_tindakan']."</td>";										
-												echo "<td>".$value['js']."</td>";										
-												echo "<td>".$value['jp']."</td>";
-												echo "<td>".$value['bakhp']."</td>";										
-												echo "<td>".$value['on_faktur']."</td>";
-												echo "<td>".$value['nama_petugas']."</td>";										
-												echo "<td>".$value['nama_tindakan']."</td>";
-												echo "<td>".$value['keterangan']."</td>";
-											echo "</tr>";
-										}
-									}
-								?>
-							</tbody>
-						</table>
+				<form class="form-horizontal" role="form" method="POST" style="margin-left:20px;margin-right:20px;">
+					<div class="form-group">
+						<div class="col-md-6"><a data-toggle="modal" href="#tambahTindakan" style="color:white">
+							<button type="submit" class="btn btn-success" id="tndknOvervieww" style="margin-left:15px;"> Tambah</button></a>
+						</div>        
 					</div>
+				    <div class="form-group">
+				        <div class="portlet-body" style="margin: 0px 40px 0px 30px">
+				            <table class="table table-striped table-bordered table-hover" id="tableCare">
+								<thead>
+									<tr class="info">
+										<th style="width:10px;">No.</th>
+										<th>Waktu</th>
+										<th>Tindakan</th>
+										<th>Jasa Sarana</th>
+										<th>Jasa Pelayanan</th>
+										<th>BAKHP</th>
+										<th>On faktur</th>
+										<th>Paramedis</th>
+										<th>Jumlah</th>
+										<th>Total</th>
+										<th width="80">Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr><td colspan='10' style='text-align:center'>Data Kosong</td>
+									<td style="text-align:center">
+									<a href="#hapusResep">
+									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+								</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</form>
+			</div>
+
+	        <br>
+		</div>
+
+		<div class="tab-pane" id="rmigd"> 
+			<div class="dropdown" id="btnBawahTambahCare">
+		        <div id="titleInformasi">Penanganan IGD  
+		        </div>
+		        <div class="btnBawah floatright" style="margin-top:-25px;">
+		           	<i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i>
+		        </div>
+		   	</div>
+			<div class="informasi" id="tbhCare">
+	 			<form class="form-horizontal" role="form" method="POST" id="submitOver">
+			       	<br>
+	 				<div class="form-group">
+						<label class="control-label col-md-3">Waktu</label>
+						<div class="col-md-2" >
+							<div class="input-icon">
+								<i class="fa fa-calendar"></i>
+								<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-3">Anamnesa</label>
+						<div class="col-md-4">
+							<textarea class="form-control isian" id="anamnesa" name="anamnesa" placeholder="Anamnesa"></textarea>
+						</div>
+					</div>
+
+					<fieldset class="fsStyle">
+						<legend>
+			                Tanda Vital
+						</legend>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Tekanan Darah</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" >
+							</div>
+							<label class="control-label col-md-2">mmHg</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Temperatur</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" >
+							</div>
+							<label class="control-label col-md-2">&deg;C</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Nadi</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" >
+							</div>
+							<label class="control-label col-md-2">x/menit</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Pernapasan</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" >
+							</div>
+							<label class="control-label col-md-2">x/menit</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Berat Badan</label>
+							<div class="col-md-2">
+								<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" >
+							</div>
+							<label class="control-label col-md-2">Kg</label>
+						</div>
+			  		</fieldset>
+
+			  		<fieldset class="fsStyle">
+						<legend>
+			                Pemeriksaan Fisik
+						</legend>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Kepala & Leher</label>
+							<div class="col-md-5">
+								<textarea class="form-control" id="kepala" name="kepala" placeholder="Hasil Pemeriksaan" ></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Thorax & ABD</label>
+							<div class="col-md-5">
+								<textarea class="form-control" id="thorax" name="thorax" placeholder="Hasil Pemeriksaan" ></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Extremitas</label>
+							<div class="col-md-5">
+								<textarea class="form-control" id="ex" name="ex" placeholder="Hasil Pemeriksaan" ></textarea>
+							</div>
+						</div>
+
+					</fieldset>
+
+			  		<fieldset class="fsStyle">
+						<legend>
+			                Diagnosa & Terapi
+						</legend>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Dokter Jaga</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" style="cursor:pointer;" readonly id="dokter" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Perawat Jaga</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" style="cursor:pointer;" readonly id="perawat" placeholder="Search Perawat" data-toggle="modal" data-target="#searchPerawat">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Diagnosa Utama</label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_utama" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Diagnosa Sekunder</label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek1" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label">1</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek2" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label">2</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek3" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label">3</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek4" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label">4</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Detail Diagnosa</label>
+							<div class="col-md-4">
+								<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" ></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Terapi</label>
+							<div class="col-md-4">
+								<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" ></textarea>
+							</div>
+						</div>
+						<!-- <div class="form-group">
+							<label class="control-label col-md-3" style="width:310px;">Alergi</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control isian" id="alergi" name="alergi" placeholder="Alergi">
+							</div>
+						</div> -->
+			  		</fieldset>
+
+					<div class="form-group">
+						<label class="control-label col-md-3"> </label>
+						<div class="col-md-5">
+							<button type="reset" id="bcancel" class="btn btn-danger">Reset</button>
+							<input type="hidden" id="v_id" value="">&nbsp;&nbsp;
+					    	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
+					    </div>
+		        	</div>
+				</form>
+			</div>
+			<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:20px;margin-left:20px;">
+			<div class="portlet-body" style="margin: 20px 40px 0px 30px">
+				<table id="tableOverview" class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
+					<thead>
+						<tr class="info" style="text_align: center;">
+							<th width="20">No.</th>
+							<th>Waktu</th>
+							<th>Anamnesa</th>
+							<th>Dokter Jaga</th>
+							<th>Perawat Jaga</th>
+							<th style="width:20px;">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td width="230" style="text-align:center">12 Desember 2012 - 12:12</td>
+							<td>Sakit</td>
+							<td>Putu</td>
+							<td>Jems Naban</td>
+							<td style="text-align:center;"><a href="#riwayatpenangananigd" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+						</tr>
+					</tbody>
+				</table>												
+			</div>
+
+		 	<div class="dropdown" id="btnBawahCare">
+		 	  	<div id="titleInformasi" >Uraian Tindakan IGD</div>
+		        <div id="btnBawahCare" class="btnBawah floatright"  style="margin-top:-25px;"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+		    </div>
+	        <div class="modal fade" id="tambahTindakanigd" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="submitTindakan">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Tambah Tindakan</h3>
+				   			</div>
+							<div class="modal-body">
+								<div class="informasi">
+					   				<div class="form-group">
+										<label class="control-label col-md-4">Waktu Tindakan</label>
+										<div class="col-md-5">	
+											<input type="text" style="cursor:pointer;" class="form-control"  readonly data-provide="datetimepicker" data-date-format="dd/mm/yyyy hh:ii:ss" placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+										</div>
+				        			</div>							
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Tindakan</label>
+										<div class="col-md-5">
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false">											
+										</div>
+									</div>
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Tarif</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="tarif" name="tarif" placeholder="Tarif" readonly > 
+										</div>
+				        			</div>
+				        			
+				        			<div class="form-group">
+										<label class="control-label col-md-4">On Faktur</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="onfaktur" name="onfaktur" placeholder="On Faktur" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Jumlah</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="jumlah" name="jumlah" placeholder="Jumlah" >
+										</div>
+				        			</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Paramedis</label>
+										<div class="col-md-5">	
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" id="paramedis" name="paramedis" placeholder="Paramedis" >
+										</div>
+				        			</div>
+				        			
+			        			</div>
+		       				</div>
+			        		<br><br>
+			        		<div class="modal-footer">
+			        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+			 			     	<button type="submit" class="btn btn-success" id="saveTindakan">Simpan</button>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tabelinformasi" id="tabelcare">
+				<form class="form-horizontal" role="form" method="POST" style="margin-left:20px;margin-right:20px;">
+					<div class="form-group">
+						<br>
+						<div class="col-md-6"><a data-toggle="modal" href="#tambahTindakanigd" style="color:white">
+							<button type="submit" class="btn btn-success" style="margin-left:15px;"> Tambah</button></a>
+						</div>        
+					</div>
+				    <div class="form-group">
+				        <div class="portlet-body" style="margin: 0px 40px 0px 30px">
+				            <table class="table table-striped table-bordered table-hover" id="tableCare">
+								<thead>
+									<tr class="info">
+										<th style="width:10px;">No.</th>
+										<th>Waktu</th>
+										<th>Tindakan</th>
+										<th>Jasa Sarana</th>
+										<th>Jasa Pelayanan</th>
+										<th>BAKHP</th>
+										<th>On faktur</th>
+										<th>Paramedis</th>
+										<th>Jumlah</th>
+										<th>Total</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr><td colspan='10' style='text-align:center'>Data Kosong</td>
+									<td style="text-align:center">
+										<a href="#hapusResep">
+										<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+									</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</form>
 			</div>
 			<br>
+	     
+	        <div class="modal fade" id="riwayatpenangananigd" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="riwayatpenangananigd">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Penanganan IGD</h3>
+				   			</div>
+							<div class="modal-body" style="padding-left:80px;">
+
+				   				<div class="form-group">
+									<label class="control-label col-md-4">Waktu Tindakan</label>
+									<div class="col-md-5">	
+										<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+									</div>
+			        			</div>	
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Anamnesa</label>
+									<div class="col-md-7">
+										<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+									</div>
+								</div>
+
+								<fieldset class="fsStyle">
+									<legend>
+						                Tanda Vital
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Tekanan Darah</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+										</div>
+										<label class="control-label col-md-2">mmHg</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Temperatur</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+										</div>
+										<label class="control-label col-md-2">&deg;C</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Nadi</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Pernapasan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Berat Badan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+										</div>
+										<label class="control-label col-md-2">Kg</label>
+									</div>
+						  		</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Pemeriksaan Fisik
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4">Kepala & Leher</label>
+										<div class="col-md-2">
+											<input type="text" class="form-control" id="kepalaleher" name="kepalaleher" placeholder="Hasil Pemeriksaan" >
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Thorax & ABD</label>
+										<div class="col-md-2">
+											<input type="text" class="form-control" id="thorax" name="thorax" placeholder="Hasil Pemeriksaan" >
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Extremitas</label>
+										<div class="col-md-2">
+											<input type="text" class="form-control" id="extremitas" name="extremitas" placeholder="Hasil Pemeriksaan" >
+										</div>
+									</div>
+								</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Diagnosa & Terapi
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Dokter Pemeriksa</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Diagnosa Utama</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Diagnosa Sekunder</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+										</div>
+										<label class="control-label">1</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4"></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek2" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+										</div>
+										<label class="control-label">2</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4"></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+										</div>
+										<label class="control-label">3</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4"></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+										</div>
+										<label class="control-label">4</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Detail Diagnosa</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Terapi</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Alergi</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="alergi" name="alergi" placeholder="Alergi" readonly>
+										</div>
+									</div>
+						  		</fieldset>
+				        	</div>
+			        		
+			        		<div class="modal-footer">
+			        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</div>
+	        <br>
+		</div> 
+
+		<div class="tab-pane" id="ibu">
+			<div class="dropdown" id="ovih">
+        		<div id="titleInformasi"> Tambah Overview Ibu Hamil</div>
+            	<div class="btnBawah" id="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+            </div>
+          	<br>
+            <div class="informasi" id="inovih">
+	            <form class="form-horizontal" role="form">
+		            <table width="95%" >
+		            	<tr>
+		            		<td width="50%">
+		            			<fieldset class="fsStyle">
+									<legend>
+						                Haid
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-5">Umur Pertama HAID</label>
+										<div class=" input-group col-md-3">
+											<input type="text" class="form-control" id="pertamahaid" name="pertamahaid" placeholder="tahun" >
+											<span class="input-group-addon" id="basic-addon" style="width:60px">tahun</span>
+										</div>	
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Lama HAID</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" id="lamahaid" name="lamahaid" placeholder="hari" >
+											<span class="input-group-addon" id="basic-addon1" style="width:60px">hari</span>
+										</div>	
+										
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Siklus HAID</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" id="siklus" name="siklus" placeholder="hari" >
+											<span class="input-group-addon" id="basic-addon1" style="width:60px">hari</span>
+										</div>	
+										
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">HPHT</label>
+										<div class=" input-group col-md-3">
+											<input type="text" class="form-control" id="hpht" name="hpht" placeholder="hpht" >
+										</div>	
+									</div>
+								</fieldset>
+		            		</td>
+		            		<td width="50%">
+		            			<fieldset class="fsStyle">
+									<legend>
+						                GPA
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-5">Perkawinan</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" id="perkawinan" name="perkawinan" placeholder="jumlah" >
+											<span class="input-group-addon" id="basic-addon1" style="width:60px">kali</span>
+										</div>	
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Umur Pernikahan</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" id="umurpernikahan" name="umurpernikahan" placeholder="tahun" >
+											<span class="input-group-addon" id="basic-addon1" style="width:60px">tahun</span>
+										</div>	
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Ikut KB</label>
+										<div class="input-group col-md-3">
+											<select class="form-control select" name="kb" id="kb">
+												<option value="ya" selected>Ya</option>
+												<option value="tidak">Tidak</option>							
+											</select>
+										</div>	
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Metode</label>
+										<div class="input-group col-md-3">
+											<select class="form-control select" name="metoda" id="metoda" >
+												<option value="" selected>Pilih</option>
+												<option value="Selesai" >IUD</option>
+												<option value="Belum Selesai">Pil </option>
+												<option value="Belum Selesai">Kondom </option>
+												<option value="Belum Selesai">Obat Vaginal </option>
+												<option value="Belum Selesai">MO Pria </option>
+												<option value="Belum Selesai">MO Wanita </option>
+												<option value="Belum Selesai">Suntikan </option>
+												<option value="Belum Selesai">Implant </option>
+											</select>
+
+											<input type="text" class="form-control" id="metode" name="metode" placeholder="Metode KB" >
+										</div>	
+									</div>
+								</fieldset>
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td >
+		            			<fieldset class="fsStyle">
+									<legend>
+						                Info Ibu Hamil
+									</legend>
+
+									<div class="form-group">
+										<label class="control-label col-md-5">Hari Perkiraan Kelahiran</label>
+										<div class="input-group col-md-3" >
+											<div class="input-icon">
+												<i class="fa fa-calendar"></i>
+												<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-5">Lingkar Lengan Atas</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="lingkarLengan" placeholder="Ex: 12">
+											<span class="input-group-addon" id="basic-addon1">Cm</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5">Tinggi Badan</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="tinggi" placeholder="Ex: 12">
+											<span class="input-group-addon" id="basic-addon1">Cm</span>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Hamil Ke - </label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="hamilke" >
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jumlah Persalinan</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="jumlah">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5">Riwayat Alergi</label>
+										<div class="input-group col-md-5">
+											<input type="text" class="form-control" name="alergi" placeholder="Alergi">
+										</div>
+									</div>
+								</fieldset>
+		            		</td>
+
+		            		<td>
+		            			<fieldset class="fsStyle">
+									<legend>
+						                Catatan Kelahiran
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jumlah Keguguran</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="gugur">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jumlah Anak Hidup</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="hidup">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jumlah Lahir Mati</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="mati">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jumlah Anak lahir prematur</label>
+										<div class="input-group col-md-3">
+											<input type="text" class="form-control" name="kurang">
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Jarak dengan anak terakhir</label>
+										<div class="input-group col-md-4">
+											<input type="text" class="form-control" name="jarak">
+											<span class="input-group-addon">
+												<select class="select" name="jarak" >
+													<option value="hari" selected>Hari</option>
+													<option value="minggu">Minggu</option>
+													<option value="bulan">Bulan</option>
+													<option value="tahun">Tahun</option>
+												</select>
+											</span>	
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-5"> Imunisasi TT Terakhir</label>
+										<div class="input-group col-md-4">
+											<input type="text" class="form-control" name="imuneter">
+											<span class="input-group-addon">
+												<select class="select" name="jarak" >
+													<option value="hari" selected>Hari</option>
+													<option value="minggu">Minggu</option>
+													<option value="bulan">Bulan</option>
+													<option value="tahun">Tahun</option>
+												</select>
+											</span>	
+										</div>
+									</div>
+								</fieldset>
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td colspan="2">
+		            			
+		            			<div class="form-group">
+									<label class="control-label col-md-2" style="width:235px;">Penolong Persalinan Terakhir</label>
+									<div class="input-group col-md-3">
+										<input type="text" class="form-control" style="cursor:pointer;" placeholder="Penolong" data-toggle="modal" data-target="#penolong" readonly>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="control-label col-md-2" style="width:235px;">Riwayat Obstetrik</label>
+									<div class="input-group col-md-5">
+										<textarea class="form-control" name="riwobstetrik" placeholder="Detail Riwayat"></textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-2" style="width:235px;">Penyakit & Operasi</label>
+									<div class="input-group col-md-5">
+										<textarea class="form-control" name="penyakitoperasi" placeholder="Detail Penyakit & Operasi"></textarea>
+									</div>
+								</div>
+								
+		            		</td>
+		            	</tr>
+		            	<tr>
+		            		<td colspan="2">
+		            			<hr class="biru">
+		            		</td>
+		            	</tr>
+		            </table>				
+					<center>
+						<a href="#resetResume"><button type="submit" class="btn btn-warning">Reset </button></a>
+						&nbsp;&nbsp;
+					 	
+					 	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
+							
+					</center> <br>
+
+					<div class="modal fade" id="penolong" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			        				<h3 class="modal-title" id="myModalLabel">Penolong </h3>
+			        			</div>
+			        			<div class="modal-body">
+				        			<div class="form-group">
+										<div class="form-group">	
+											<div class="col-md-5" style="margin-left:15px;">
+												<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama Obat"/>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-info">Cari</button>
+											</div>
+											<br><br>	
+										</div>		
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="portlet-body" style="margin: 0px 30px 0px 20px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelpenolong">
+												<thead>
+													<tr class="info">
+														<th>Nama Penolong</th>
+														<th width="10%">Pilih</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Khrisna</td>
+														<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+													</tr>
+													<tr>
+														<td>Abadi</td>
+														<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+													</tr>
+
+												</tbody>
+											</table>												
+										</div>
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="form-group">	
+											<div class="col-md-4" style="margin-left:15px;">
+												<input type="text" class="form-control" name="new" id="new" placeholder="Tambah Baru"/>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-success" style="width:150px;">Tambah Baru</button>
+											</div>
+											<br>	
+										</div>	
+									</div>
+			        			</div>
+			        			<div class="modal-footer">
+			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						      	</div>
+							</div>
+						</div>
+					</div>	
+
+					<div class="modal fade" id="searchdokter" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			        				<h3 class="modal-title" id="myModalLabel">Dokter </h3>
+			        			</div>
+			        			<div class="modal-body">
+				        			<div class="form-group">
+										<div class="form-group">	
+											<div class="col-md-5" style="margin-left:35px;">
+												<input type="text" class="form-control" name="katakunci" id="key" placeholder="Nama Dokter"/>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-info">Cari</button>
+											</div>
+											<br><br>	
+										</div>		
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="portlet-body" style="margin: 0px 30px 0px 20px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabledokter">
+												<thead>
+													<tr class="info">
+														<th>Nama Dokter</th>
+														<th width="10%">Pilih</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Jems </td>
+														<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+													</tr>
+													<tr>
+														<td>Putu</td>
+														<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+													</tr>
+
+												</tbody>
+											</table>												
+										</div>
+									</div>
+			        			</div>
+			        			<div class="modal-footer">
+			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						      	</div>
+							</div>
+						</div>
+					</div>	
+				</form>
+			</div>
+
+		    <div class="dropdown" id="rovih">
+        		<div id="titleInformasi">Riwayat Overview Ibu Hamil</div>
+            	<div class="btnBawah" ><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+            </div>
+            <br>
+            <div class="tabelinformasi" id="inrovih">
+            	<div class="portlet-body" id="inrovih" style="margin: 0px 20px 0px 20px">
+            	
+					<table class="table table-striped table-bordered table-hover table-responsive tableDT">
+						<thead>
+							<tr class="info" style="text_align: center;">
+								<th width="20">No.</th>
+								<th>Hari Perkiraan Lahir</th>
+								<th>Hamil Ke</th>
+								<th width="120">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td style="text-align:center">12 Desember 2012</td>
+								<td style="text-align:right">12</td>
+								<td style="text-align:center;">
+									<a href="#detibuhamil" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>
+									<a href="#tambahpemeriksaanfisikibu" data-toggle="modal"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Tambah Pemeriksaan Fisik Ibu"></i></a>
+									<a href="#riwpfi" data-toggle="modal"><i class="glyphicon glyphicon-th-list" data-toggle="tooltip" data-placement="top" title="Riwayat Pemeriksaan Fisik Ibu"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>												
+				</div>
+
+				<div class="modal fade" id="tambahpemeriksaanfisikibu" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog" style="width:1100px">
+						<div class="modal-content">
+							<form class="form-horizontal" role="form"> 
+								<div class="modal-header">
+			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			        				<h3 class="modal-title" id="myModalLabel">Tambah Pemeriksaan Fisik Ibu</h3>
+			        			</div>
+			        			<div class="modal-body" style="margin-left:50px;">
+		        		        	<table width="100%">
+					            		<tr>
+					            			<td width="50%">
+												<div class="form-group">			
+									            	<label class="control-label col-md-4">Keadaan Umum 
+													</label>
+													<div class="col-md-6">
+														<input type="text" class="form-control" id="keadaan" name="keadaan" placeholder="Keadaan Umum"/>
+													</div>
+												</div>
+							            		<div class="form-group">			
+									            	<label class="control-label col-md-4">Pemeriksaan Luar 
+													</label>
+													<div class="col-md-6">
+														<textarea class="form-control" id="pemeriksaanluar" name="pemeriksaanluar"></textarea>
+													</div>
+												</div>
+												<div class="form-group">			
+									            	<label class="control-label col-md-4">Pemeriksaan Dalam 
+													</label>
+													<div class="col-md-6">
+														<textarea class="form-control" id="periksadalam" name="periksadalam"></textarea>
+													</div>
+												</div>
+												<div class="form-group">			
+									            	<label class="control-label col-md-4">Dokter Pemeriksa 
+													</label>
+													<div class="col-md-6">
+														<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false" id="dokterperiksa" name="dokter" placeholder="Pilih Dokter"/>
+													</div>
+												</div>
+												<div class="form-group">			
+									            	<label class="control-label col-md-4">Diagnosa Kerja 
+													</label>
+													<div class="col-md-2">
+														<input type="text" style="cursor:pointer" readonly data-toggle="modal" data-target="#searchDiagnosa" class="form-control" id="kode_utama" placeholder="Kode">
+													</div>
+													<div class="col-md-4">
+														<input type="text" style="cursor:pointer" readonly data-toggle="modal" data-target="#searchDiagnosa" class="form-control" placeholder="Nama Diagnosa">
+													</div>
+												</div>
+												<div class="form-group">			
+									            	<label class="control-label col-md-4">Rencana Terapi 
+													</label>
+													<div class="col-md-6">
+														<input type="text" class="form-control" id="rencanaterapi" name="rencanterapi" placeholder="Rencana Terapi"/>
+													</div>
+												</div>
+											</td>
+											<td width="50%">
+												<fieldset class="fsStyle">
+													<legend>
+										                Vital Sign
+													</legend>
+													<div class="form-group">
+														<label class="control-label col-md-5" style="margin-left:20px">Tensi</label>
+														<div class="input-group col-md-5">
+															<input type="text" class="form-control" id="tensi" name="tensi" placeholder="Tensi">
+															<span class="input-group-addon" id="basic-addon1" style="width:80px">MmHg</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5" style="margin-left:20px">Nadi</label>
+														<div class="input-group col-md-5">
+															<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi">
+															<span class="input-group-addon" id="basic-addon1" style="width:80px">x/mnt</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5" style="margin-left:20px">Pernafasan</label>
+														<div class="input-group col-md-5">
+															<input type="text" class="form-control" id="pernafasan" name="pernafasan" placeholder="Pernafasan">
+															<span class="input-group-addon" id="basic-addon1" style="width:80px">x/mnt</span>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5" style="margin-left:20px">Suhu</label>
+														<div class="input-group col-md-5">
+															<input type="text" class="form-control" id="suhu" name="suhu" placeholder="Suhu">
+															<span class="input-group-addon" id="basic-addon1" style="width:80px">&deg;C</span>
+														</div>
+													</div>
+
+												</fieldset>
+											</td>
+										</tr>
+									</table>
+								</div>
+			        			
+			        			<div class="modal-footer">
+			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+			 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+						      	</div>
+						    </form>
+						</div>
+					</div>
+				</div>	
+
+				<div class="modal fade" id="detibuhamil" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-700px">
+					<form class="form-horizontal" role="form" method="POST">
+						<div class="modal-dialog">
+							<div class="modal-content" style="width:1300px">
+								<div class="modal-header">
+					   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+					   				<h3 class="modal-title" id="myModalLabel">Detail Overview Ibut Hamil</h3>
+					   			</div>
+								<div class="modal-body" style="margin-left:40px">
+									<table width="100%" >
+						            	<tr>
+						            		<td width="50%">
+						            			<fieldset class="fsStyle">
+													<legend>
+										                Haid
+													</legend>
+													<div class="form-group">
+														<label class="control-label col-md-5">Umur Pertama HAID</label>
+														<div class=" input-group col-md-3">
+															<input type="text" class="form-control" readonly id="pertamahaid" name="pertamahaid" placeholder="tahun" >
+															<span class="input-group-addon" id="basic-addon" style="width:60px">tahun</span>
+														</div>	
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Lama HAID</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly id="lamahaid" name="lamahaid" placeholder="hari" >
+															<span class="input-group-addon" id="basic-addon1" style="width:60px">hari</span>
+														</div>	
+														
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Siklus HAID</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" id="siklus" readonly name="siklus" placeholder="hari" >
+															<span class="input-group-addon" id="basic-addon1" style="width:60px">hari</span>
+														</div>	
+														
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">HPHT</label>
+														<div class=" input-group col-md-3">
+															<input type="text" class="form-control" id="hpht" readonly name="hpht" placeholder="hpht" >
+														</div>	
+													</div>
+												</fieldset>
+						            		</td>
+						            		<td width="50%">
+						            			<fieldset class="fsStyle">
+													<legend>
+										                GPA
+													</legend>
+													<div class="form-group">
+														<label class="control-label col-md-5">Perkawinan</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly id="perkawinan" name="perkawinan" placeholder="jumlah" >
+															<span class="input-group-addon" id="basic-addon1" style="width:60px">kali</span>
+														</div>	
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Umur Pernikahan</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly id="umurpernikahan" name="umurpernikahan" placeholder="tahun" >
+															<span class="input-group-addon" id="basic-addon1" style="width:60px">tahun</span>
+														</div>	
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Ikut KB</label>
+														<div class="input-group col-md-3">
+															<select class="form-control select" disabled name="kb" id="kb">
+																<option value="ya" selected>Ya</option>
+																<option value="tidak">Tidak</option>							
+															</select>
+														</div>	
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Metode</label>
+														<div class="input-group col-md-3">
+															<input type="text" readonly class="form-control" id="metode" name="metode" placeholder="Metode KB" >
+														</div>	
+													</div>
+												</fieldset>
+						            		</td>
+						            	</tr>
+						            	<tr>
+						            		<td >
+						            			<fieldset class="fsStyle">
+													<legend>
+										                Info Ibu Hamil
+													</legend>
+
+													<div class="form-group">
+														<label class="control-label col-md-5">Hari Perkiraan Kelahiran</label>
+														<div class="input-group col-md-3" >
+															<div class="input-icon">
+																<i class="fa fa-calendar"></i>
+																<input type="text" style="cursor:pointer;" readonly class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<label class="control-label col-md-5">Lingkar Lengan Atas</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="lingkarLengan" placeholder="Ex: 12">
+															<span class="input-group-addon" id="basic-addon1">Cm</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5">Tinggi Badan</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="tinggi" placeholder="Ex: 12">
+															<span class="input-group-addon" id="basic-addon1">Cm</span>
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Hamil Ke - </label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="hamilke" >
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jumlah Persalinan</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="jumlah">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5">Riwayat Alergi</label>
+														<div class="input-group col-md-5">
+															<input type="text" class="form-control" readonly name="alergi" placeholder="Alergi">
+														</div>
+													</div>
+												</fieldset>
+						            		</td>
+
+						            		<td>
+						            			<fieldset class="fsStyle">
+													<legend>
+										                Catatan Kelahiran
+													</legend>
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jumlah Keguguran</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="gugur">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jumlah Anak Hidup</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="hidup">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jumlah Lahir Mati</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="mati">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jumlah Anak lahir prematur</label>
+														<div class="input-group col-md-3">
+															<input type="text" class="form-control" readonly name="kurang">
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Jarak dengan anak terakhir</label>
+														<div class="input-group col-md-4">
+															<input type="text" readonly class="form-control" name="jarak">
+															<span class="input-group-addon">
+																<select class="select" disabled name="jarak" >
+																	<option value="hari" selected>Hari</option>
+																	<option value="minggu">Minggu</option>
+																	<option value="bulan">Bulan</option>
+																	<option value="tahun">Tahun</option>
+																</select>
+															</span>	
+														</div>
+													</div>
+
+													<div class="form-group">
+														<label class="control-label col-md-5"> Imunisasi TT Terakhir</label>
+														<div class="input-group col-md-4">
+															<input type="text" readonly class="form-control" name="imuneter">
+															<span class="input-group-addon">
+																<select class="select" disabled name="jarak" >
+																	<option value="hari" selected>Hari</option>
+																	<option value="minggu">Minggu</option>
+																	<option value="bulan">Bulan</option>
+																	<option value="tahun">Tahun</option>
+																</select>
+															</span>	
+														</div>
+													</div>
+												</fieldset>
+						            		</td>
+						            	</tr>
+						            	<tr>
+						            		<td colspan="2">
+						            			
+						            			<div class="form-group">
+													<label class="control-label col-md-2" style="width:235px;">Penolong Persalinan Terakhir</label>
+													<div class="input-group col-md-3">
+														<input type="text" class="form-control" placeholder="Penolong" readonly>
+													</div>
+												</div>
+												
+												<div class="form-group">
+													<label class="control-label col-md-2" style="width:235px;">Riwayat Obstetrik</label>
+													<div class="input-group col-md-5">
+														<textarea class="form-control" name="riwobstetrik" placeholder="Detail Riwayat" readonly></textarea>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label class="control-label col-md-2" style="width:235px;">Penyakit & Operasi</label>
+													<div class="input-group col-md-5">
+														<textarea class="form-control" name="penyakitoperasi" readonly placeholder="Detail Penyakit & Operasi"></textarea>
+													</div>
+												</div>
+												
+						            		</td>
+						            	</tr>
+						            </table>
+					        	</div>
+				        		<div class="modal-footer">
+				        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+							    </div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal fade" id="riwpfi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-400px">
+					<form class="form-horizontal" role="form" method="POST">
+						<div class="modal-dialog">
+							<div class="modal-content" style="width:1000px">
+								<div class="modal-header">
+					   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+					   				<h3 class="modal-title" id="myModalLabel">Riwayat Pemeriksaan Fisik Ibu </h3>
+					   			</div>
+								<div class="modal-body" style="margin-left:20px">
+									<table class="table table-striped table-bordered table-hover" id="riwayatpemeriksaanfisikibu">
+										<thead>
+											<tr class="info" >
+												<th width="20"> No. </th>
+												<th> Tanggal Pemeriksaan </th>
+												<th> Dokter Pemeriksa </th>
+												<th> Diagnosa </th>
+												<th width="80"> Action </th>
+											</tr>
+										</thead>
+										<tbody>
+												<tr>
+													<td>1</td>
+													<td>12 Mei 2012</td>
+													<td>dr. Putu</td>
+													<td>MFSA - MASAMSAS</td>
+													<td style="text-align:center"><a href="#pemfisikibu" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="detail"></i></a>
+													</td>					
+												</tr>
+										</tbody>
+									</table>
+					        	</div>
+				        		<div class="modal-footer">
+				        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+							    </div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="modal fade" id="pemfisikibu" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<form class="form-horizontal" role="form" method="POST">
+						<div class="modal-dialog" style="width:1100px;">
+							<div class="modal-content">
+								<div class="modal-header">
+					   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+					   				<h3 class="modal-title" id="myModalLabel">Detail Pemeriksaan Fisik Ibu </h3>
+					   			</div>
+								<div class="modal-body" style="margin-left:40px">
+									<form class="form-horizontal" role="form"> 
+						            	<table width="95%">
+						            		<tr>
+						            			<td width="50%">
+													<div class="form-group">			
+										            	<label class="control-label col-md-4">Keadaan Umum 
+														</label>
+														<div class="col-md-6">
+															<input type="text" readonly class="form-control" id="keadaan" name="keadaan" placeholder="Keadaan Umum"/>
+														</div>
+													</div>
+								            		<div class="form-group">			
+										            	<label class="control-label col-md-4">Pemeriksaan Luar 
+														</label>
+														<div class="col-md-6">
+															<textarea class="form-control" readonly id="pemeriksaanluar" name="pemeriksaanluar"></textarea>
+														</div>
+													</div>
+													<div class="form-group">			
+										            	<label class="control-label col-md-4">Pemeriksaan Dalam 
+														</label>
+														<div class="col-md-6">
+															<textarea class="form-control" readonly id="periksadalam" name="periksadalam"></textarea>
+														</div>
+													</div>
+													<div class="form-group">			
+										            	<label class="control-label col-md-4">Dokter Pemeriksa 
+														</label>
+														<div class="col-md-6">
+															<input type="text" readonly class="form-control" readonly id="dokterperiksa" name="dokter" placeholder="Pilih Dokter"/>
+														</div>
+													</div>
+													<div class="form-group">			
+										            	<label class="control-label col-md-4">Diagnosa Kerja 
+														</label>
+														<div class="col-md-2">
+															<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+														</div>
+														<div class="col-md-4">
+															<input type="text"class="form-control" placeholder="Nama Diagnosa" readonly>
+														</div>
+													</div>
+													<div class="form-group">			
+										            	<label class="control-label col-md-4">Rencana Terapi 
+														</label>
+														<div class="col-md-6">
+															<input type="text" class="form-control" readonly id="rencanaterapi" name="rencanterapi" placeholder="Rencana Terapi"/>
+														</div>
+													</div>
+												</td>
+												<td width="50%">
+													<fieldset class="fsStyle">
+														<legend>
+											                Vital Sign
+														</legend>
+														<div class="form-group">
+															<label class="control-label col-md-5" style="margin-left:20px">Tensi</label>
+															<div class="input-group col-md-5">
+																<input type="text" class="form-control" readonly id="tensi" name="tensi" placeholder="Tensi">
+																<span class="input-group-addon" id="basic-addon1" style="width:80px">MmHg</span>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="control-label col-md-5" style="margin-left:20px">Nadi</label>
+															<div class="input-group col-md-5">
+																<input type="text" class="form-control" readonly id="nadi" name="nadi" placeholder="Nadi">
+																<span class="input-group-addon" id="basic-addon1" style="width:80px">x/mnt</span>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="control-label col-md-5" style="margin-left:20px">Pernafasan</label>
+															<div class="input-group col-md-5">
+																<input type="text" class="form-control" readonly id="pernafasan" name="pernafasan" placeholder="Pernafasan">
+																<span class="input-group-addon" id="basic-addon1" style="width:80px">x/mnt</span>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="control-label col-md-5" style="margin-left:20px">Suhu</label>
+															<div class="input-group col-md-5">
+																<input type="text" class="form-control" readonly id="suhu" name="suhu" placeholder="Suhu">
+																<span class="input-group-addon" id="basic-addon1" style="width:80px">&deg;C</span>
+															</div>
+														</div>
+
+													</fieldset>
+												</td>
+											</tr>
+										</table>
+									</form>
+					        	</div>
+				        		<div class="modal-footer">
+				        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+							    </div>
+							</div>
+						</div>
+					</form>
+				</div>
+            </div>
+		</div>
+		
+		<div class="tab-pane" id="rm"> 
+			<div class="dropdown" id="btnBawahTambahCare">
+		        <div id="titleInformasi">Kunjungan dan Penanganan Dokter  
+		        </div>
+		        <div class="btnBawah floatright" style="margin-top:-25px;">
+		           	<i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i>
+		        </div>
+		   	</div>
+		   	<div id="tbhCare">
+				<div class="informasi" >
+		 			<form class="form-horizontal" role="form" method="POST" id="submitOver">
+				       	<br>
+		 				<div class="form-group">
+							<label class="control-label col-md-3">Waktu Tindakan</label>
+							<div class="col-md-2" >
+								<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								</div>
+							</div>
+	        			</div>	
+
+	        			<div class="form-group">
+							<label class="control-label col-md-3">Dokter Visit</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" style="cursor:pointer;" readonly id="dokteroverperawatan" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter">
+							</div>
+						</div>
+
+	        			<div class="form-group">
+							<label class="control-label col-md-3">Anamnesa</label>
+							<div class="col-md-4">
+								<textarea class="form-control isian" id="anamnesaoverperawatan" name="anamnesaoverperawatan" placeholder="Anamnesa"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Diagnosa Utama</label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_utamaoverperawatan" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3" >Diagnosa Sekunder</label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek1overperawatan" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label col-md-2">1</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek2overperawatan" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label col-md-2">2</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek3overperawatan" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label col-md-2">3</label>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3"></label>
+							<div class="col-md-1">
+								<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_sek4overperawatan" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<div class="col-md-2">
+								<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+							</div>
+							<label class="control-label col-md-2">4</label>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Perkembangan Penyakit</label>
+							<div class="col-md-5">
+								<textarea class="form-control" id="perkembanganoverperawatan" name="perkembanganoverperawatan" placeholder="Perkembangan Penyakit"></textarea>
+							</div>
+						</div>
+
+						<fieldset class="fsStyle">
+							<legend>
+				                Tanda Vital
+							</legend>
+							<div class="form-group">
+								<label class="control-label col-md-3"  style="width:310px;">Tekanan Darah</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="tekanandarahoverperawatan" name="takanandarahoverperawatan" placeholder="Tekanan Darah" readonly>
+								</div>
+								<label class="control-label col-md-2">mmHg</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Temperatur</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="temperaturoverperawatan" name="temperaturoverperawatan" placeholder="Temperatur" readonly>
+								</div>
+								<label class="control-label col-md-2">&deg;C</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Nadi</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="nadioverperawatan" name="nadioverperawatan" placeholder="Nadi" readonly>
+								</div>
+								<label class="control-label col-md-2">x/menit</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Pernapasan</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="pernapasanoverperawatan" name="pernapasanoverperawatan" placeholder="Pernapasan" readonly>
+								</div>
+								<label class="control-label col-md-2">x/menit</label>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-3" style="width:310px;">Berat Badan</label>
+								<div class="col-md-2">
+									<input type="text" class="form-control" id="beratoverperawatan" name="beratoverperawatan" placeholder="Berat Badan" readonly>
+								</div>
+								<label class="control-label col-md-2">Kg</label>
+							</div>
+						</fieldset>
+
+						<div class="form-group">
+							<label class="control-label col-md-3"> </label>
+							<div class="col-md-5">
+								<button type="reset" id="bcancel" class="btn btn-danger">Reset</button>
+								<input type="hidden" id="v_id" value="">&nbsp;&nbsp;
+						    	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
+						    </div>
+			        	</div>
+
+			   		</form>
+			   	</div>
+
+		   		<div class="tabelinformasi">
+		   			<br>
+	        		<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:20px;margin-left:20px;">
+					
+		        	<div class="portlet-body" style="margin: 10px 25px 0px 20px">
+						<table id="tableOverview" class="table table-striped table-bordered table-hover table-responsive">
+							<thead>
+								<tr class="info" style="text_align: center;">
+									<th width="20">No.</th>
+									<th>Waktu</th>
+									<th>Dokter Visit</th>
+									<th>Diagnosa Utama</th>
+									<th>Diagnosa Sekunder</th>
+									<th>Unit</th>
+									<th style="width:20px;">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td>12 Desember 2012 12:12</td>
+									<td>Jems</td>
+									<td>Jems</td>
+									<td>Bebas</td>
+									<td>Bebas</td>
+									<td style="text-align:center;"><a href="#riwperawatan" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+								</tr>
+							</tbody>
+						</table>												
+						<div class="modal fade" id="riwperawatan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<form class="form-horizontal" role="form" method="POST" id="riwperawatan">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+							   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+							   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Perawatan</h3>
+							   			</div>
+										<div class="modal-body" style="padding-left:80px;">
+
+							   				<div class="form-group">
+												<label class="control-label col-md-4">Waktu Tindakan</label>
+												<div class="col-md-5">	
+													<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+												</div>
+						        			</div>	
+
+						        			<div class="form-group">
+												<label class="control-label col-md-4">Dokter Visit</label>
+												<div class="col-md-5">
+													<input type="text" class="form-control" id="dokterv" name="dokterv" placeholder="Dokter" readonly></textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4">Petugas</label>
+												<div class="col-md-5">
+													<input type="text" class="form-control" id="petugas" name="petugas" placeholder="Petugas" readonly></textarea>
+												</div>
+											</div>
+
+						        			<div class="form-group">
+												<label class="control-label col-md-4">Anamnesa</label>
+												<div class="col-md-6">
+													<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4" >Diagnosa Utama</label>
+												<div class="col-md-2">
+													<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+												</div>
+												<div class="col-md-4">
+													<input type="text" class="form-control" placeholder="Keterangan" readonly>
+												</div>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4" >Diagnosa Sekunder</label>
+												<div class="col-md-2">
+													<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+												</div>
+												<div class="col-md-4">
+													<input type="text" class="form-control" placeholder="Keterangan" readonly>
+												</div>
+												<label class="control-label col-md-1" >1</label>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4" ></label>
+												<div class="col-md-2">
+													<input type="text" class="form-control" id="kode_se2" placeholder="Kode" readonly>
+												</div>
+												<div class="col-md-4">
+													<input type="text" class="form-control" placeholder="Keterangan" readonly>
+												</div>
+												<label class="control-label col-md-1" >2</label>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4" ></label>
+												<div class="col-md-2">
+													<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+												</div>
+												<div class="col-md-4">
+													<input type="text" class="form-control" placeholder="Keterangan" readonly>
+												</div>
+												<label class="control-label col-md-1" >3</label>
+											</div>
+
+											<div class="form-group">
+												<label class="control-label col-md-4" ></label>
+												<div class="col-md-2">
+													<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+												</div>
+												<div class="col-md-4">
+													<input type="text" class="form-control" placeholder="Keterangan" readonly>
+												</div>
+												<label class="control-label col-md-1" >4</label>
+											</div>
+
+
+											<div class="form-group">
+												<label class="control-label col-md-4">Perkembangan Penyakit</label>
+												<div class="col-md-6">
+													<textarea class="form-control" id="perkembangan" name="perkembangan" placeholder="Perkembangan Penyakit" readonly></textarea>
+												</div>
+											</div>
+
+											<fieldset class="fsStyle">
+												<legend>
+									                Tanda Vital
+												</legend>
+												<div class="form-group">
+													<label class="control-label col-md-4" >Tekanan Darah</label>
+													<div class="col-md-5">
+														<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+													</div>
+													<label class="control-label col-md-2">mmHg</label>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-md-4">Temperatur</label>
+													<div class="col-md-5">
+														<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+													</div>
+													<label class="control-label col-md-2">&deg;C</label>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-md-4">Nadi</label>
+													<div class="col-md-5">
+														<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+													</div>
+													<label class="control-label col-md-2">x/menit</label>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-md-4">Pernapasan</label>
+													<div class="col-md-5">
+														<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+													</div>
+													<label class="control-label col-md-2">x/menit</label>
+												</div>
+												<div class="form-group">
+													<label class="control-label col-md-4" >Berat Badan</label>
+													<div class="col-md-5">
+														<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+													</div>
+													<label class="control-label col-md-2">Kg</label>
+												</div>
+									  		</fieldset>
+
+							        	</div>
+						        		
+						        		<div class="modal-footer">
+						        			<input type="hidden" id="visit_id" value="<?php echo $this->session->userdata('visit_id'); ?>">
+						 			     	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+									    </div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+		        
+			        <div class="modal fade" id="riwkondok" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<form class="form-horizontal" role="form" method="POST" id="riwkondok">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+					   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+					   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Penanganan IGD</h3>
+					   			</div>
+								<div class="modal-body" style="padding-left:80px;">
+
+					   				<div class="form-group">
+										<label class="control-label col-md-4">Waktu Tindakan</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+										</div>
+				        			</div>	
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Anamnesa</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+										</div>
+									</div>
+
+									<fieldset class="fsStyle">
+										<legend>
+							                Tanda Vital
+										</legend>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Tekanan Darah</label>
+											<div class="col-md-5">
+												<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+											</div>
+											<label class="control-label col-md-2">mmHg</label>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Temperatur</label>
+											<div class="col-md-5">
+												<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+											</div>
+											<label class="control-label col-md-2">&deg;C</label>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Nadi</label>
+											<div class="col-md-5">
+												<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+											</div>
+											<label class="control-label col-md-2">x/menit</label>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Pernapasan</label>
+											<div class="col-md-5">
+												<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+											</div>
+											<label class="control-label col-md-2">x/menit</label>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Berat Badan</label>
+											<div class="col-md-5">
+												<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+											</div>
+											<label class="control-label col-md-2">Kg</label>
+										</div>
+							  		</fieldset>
+
+							  		<fieldset class="fsStyle">
+										<legend>
+							                Pemeriksaan Fisik
+										</legend>
+										<div class="form-group">
+											<label class="control-label col-md-4">Kepala & Leher</label>
+											<div class="col-md-2">
+												<input type="text" class="form-control" id="kepalaleher" name="kepalaleher" placeholder="Hasil Pemeriksaan" >
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Thorax & ABD</label>
+											<div class="col-md-2">
+												<input type="text" class="form-control" id="thorax" name="thorax" placeholder="Hasil Pemeriksaan" >
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Extremitas</label>
+											<div class="col-md-2">
+												<input type="text" class="form-control" id="extremitas" name="extremitas" placeholder="Hasil Pemeriksaan" >
+											</div>
+										</div>
+									</fieldset>
+
+							  		<fieldset class="fsStyle">
+										<legend>
+							                Diagnosa & Terapi
+										</legend>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Dokter Pemeriksa</label>
+											<div class="col-md-7">
+												<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Diagnosa Utama</label>
+											<div class="col-md-3">
+												<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+											</div>
+											<div class="col-md-4">
+												<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4">Diagnosa Sekunder</label>
+											<div class="col-md-3">
+												<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+											</div>
+											<div class="col-md-4">
+												<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4"></label>
+											<div class="col-md-3">
+												<input type="text" class="form-control" id="kode_sek2" placeholder="Kode" readonly>
+											</div>
+											<div class="col-md-4">
+												<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4"></label>
+											<div class="col-md-3">
+												<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+											</div>
+											<div class="col-md-4">
+												<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4"></label>
+											<div class="col-md-3">
+												<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+											</div>
+											<div class="col-md-4">
+												<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Detail Diagnosa</label>
+											<div class="col-md-7">
+												<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" readonly></textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Terapi</label>
+											<div class="col-md-7">
+												<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" readonly></textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-md-4" >Alergi</label>
+											<div class="col-md-7">
+												<input type="text" class="form-control" id="alergi" name="alergi" placeholder="Alergi" readonly>
+											</div>
+										</div>
+							  		</fieldset>
+					        	</div>
+				        		
+				        		<div class="modal-footer">
+				        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+							    </div>
+							</div>
+						</div>
+					</form>
+					</div>
+				</div>
+			</div>
+			<br> 
+
+		 	<div class="dropdown" id="btnBawahCare">
+		 	  	<div id="titleInformasi" >Asuhan Keperawatan</div>
+		        <div id="btnBawahCare" class="btnBawah floatright"  style="margin-top:-25px;"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+		    </div>
+	        <div class="modal fade" id="searchPerawat1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Perawat</h3>
+	        			</div>
+	        			<div class="modal-body">
+							<div class="form-group">	
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="btn btn-info">Cari</button>
+								</div>	
+							</div>	
+							<br>	
+							<div style="margin-left:5px; margin-right:5px;"><hr></div>
+							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+								<table class="table table-striped table-bordered table-hover" id="tabelperawat">
+									<thead>
+										<tr class="info">
+											<th>Nama Perawat</th>
+											<th width="10%">Pilih</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Jems</td>
+											<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+										</tr>
+										<tr>
+											<td>Putu</td>
+											<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+										</tr>
+									</tbody>
+								</table>												
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade" id="searchPerawat2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+	        				<h3 class="modal-title" id="myModalLabel">Pilih Perawat</h3>
+	        			</div>
+	        			<div class="modal-body">
+							<div class="form-group">	
+								<div class="col-md-5">
+									<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="btn btn-info">Cari</button>
+								</div>	
+							</div>	
+							<br>	
+							<div style="margin-left:5px; margin-right:5px;"><hr></div>
+							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+								<table class="table table-striped table-bordered table-hover" id="tabelPerawat2">
+									<thead>
+										<tr class="info">
+											<th>Nama Perawat</th>
+											<th width="10%">Pilih</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Jems</td>
+											<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+										</tr>
+										<tr>
+											<td>Putu</td>
+											<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+										</tr>
+									</tbody>
+								</table>												
+							</div>
+	        			</div>
+	        			<div class="modal-footer">
+	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+				      	</div>
+					</div>
+				</div>
+			</div>
+			<div id="tabelcare">
+				<div class="informasi">
+					<form class="form-horizontal" role="form" method="POST" id="submitOver">
+				       	<br>
+		 				<div class="form-group">
+							<label class="control-label col-md-3">Waktu Tindakan</label>
+							<div class="col-md-2" >
+								<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								</div>
+							</div>
+	        			</div>
+	        			<div class="form-group">
+							<label class="control-label col-md-3">Perawat 1 </label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" style="cursor:pointer;" readonly id="perawat1" placeholder="Search Perawat" data-toggle="modal" data-target="#searchPerawat1">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label col-md-3">Perawat 2 </label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" style="cursor:pointer;" readonly id="perawat2" placeholder="Search Perawat" data-toggle="modal" data-target="#searchPerawat2">
+							</div>
+						</div>
+
+	        			<div class="form-group">
+							<label class="control-label col-md-3">Perjalanan Penyakit</label>
+							<div class="col-md-4">
+								<textarea class="form-control" id="perjalanan" name="perjalanan" placeholder="Keterangan"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Pemberian Obat</label>
+							<div class="col-md-4">
+								<textarea class="form-control" id="pemberianobat" name="pemberianobat" placeholder="Keterangan"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Diet</label>
+							<div class="col-md-4">
+								<textarea class="form-control" id="diet" name="diet" placeholder="Keterangan"></textarea>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3"> </label>
+							<div class="col-md-5">
+								<button type="reset" id="bcancel" class="btn btn-danger">Reset</button>
+								<input type="hidden" id="v_id" value="">&nbsp;&nbsp;
+						    	<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
+						    </div>
+						</div>
+	        		</form>	
+	        		<br>
+	        	</div>
+	        	<hr class="garis" style="border: solid 1px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:20px;margin-left:20px;">
+				
+	        	<div class="tabelinformasi">
+	        		<div class="portlet box red">
+						<div class="portlet-body" style="margin: 10px 20px 0px 20px">
+							<table class="table table-striped table-bordered table-hover table-responsive">
+								<thead>
+									<tr class="info" >
+										<th style="width:30px"> No.</th>
+										<th > Waktu </th>
+										<th > Perawat 1 </th>
+										<th > Perawat 2 </th>
+										<th > Unit </th>
+										<th width="80"> Action</th>
+										
+									</tr>
+								</thead>
+								<tbody>
+									<tr>	
+										<td colspan="7"><center> Data Kosong </center></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+					</div>
+	        	</div>
+	        </div>
+			<br>
+
+			<div class="dropdown" id="btnBawahHis">
+		 	  	<div id="titleInformasi" >Uraian Tindakan </div>
+		        <div id="btnBawahCare" class="btnBawah floatright"  style="margin-top:-25px;"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+		    </div>
+	        <div class="modal fade" id="tambahTindakanok" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="submitTindakan">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Tambah Tindakan</h3>
+				   			</div>
+							<div class="modal-body">
+								<div class="informasi">
+					   				<div class="form-group">
+										<label class="control-label col-md-4">Waktu Tindakan</label>
+										<div class="col-md-5">	
+											<input type="text" style="cursor:pointer;" class="form-control"  readonly data-provide="datetimepicker" data-date-format="dd/mm/yyyy hh:ii" placeholder="<?php echo date("d/m/Y H:i");?>"/>
+										</div>
+				        			</div>							
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Tindakan</label>
+										<div class="col-md-5">
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false">											
+										</div>
+									</div>
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Tarif</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="tarif" name="tarif" placeholder="Tarif" readonly > 
+										</div>
+				        			</div>
+				        			
+				        			<div class="form-group">
+										<label class="control-label col-md-4">On Faktur</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="onfaktur" name="onfaktur" placeholder="On Faktur" >
+										</div>
+				        			</div>
+
+				        			<div class="form-group">
+										<label class="control-label col-md-4">Jumlah</label>
+										<div class="col-md-5">	
+											<input type="text" class="form-control" id="jumlah" name="jumlah" placeholder="Jumlah" >
+										</div>
+				        			</div>
+
+									<div class="form-group">
+										<label class="control-label col-md-4">Paramedis</label>
+										<div class="col-md-5">	
+											<input type="text" class="typeahead form-control" autocomplete="off" spellcheck="false">											
+										</div>
+				        			</div>
+				        			
+			        			</div>
+		       				</div>
+			        		<br><br>
+			        		<div class="modal-footer">
+			        			<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+			 			     	<button type="submit" class="btn btn-success" id="saveTindakan">Simpan</button>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="tabelinformasi" id="tabelhis">
+				<form class="form-horizontal" role="form" method="POST" style="margin-left:20px;margin-right:20px;">
+					<div class="form-group">
+						<div class="col-md-6"><a data-toggle="modal" href="#tambahTindakanok" style="color:white">
+							<button type="submit" class="btn btn-success" id="tndknOvervieww" style="margin-left:15px;"> Tambah</button></a>
+						</div>        
+					</div>
+				    <div class="form-group">
+				        <div class="portlet-body" style="margin: 0px 20px 0px 15px">
+				            <table class="table table-striped table-bordered table-hover" id="tableCare">
+								<thead>
+									<tr class="info">
+										<th style="width:10px;">No.</th>
+										<th>Waktu</th>
+										<th>Tindakan</th>
+										<th>Jasa Sarana</th>
+										<th>Jasa Pelayanan</th>
+										<th>BAKHP</th>
+										<th>On faktur</th>
+										<th>Paramedis</th>
+										<th>Jumlah</th>
+										<th>Total</th>
+										<th>Delete</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr><td colspan='11' style='text-align:center'>Data Kosong</td></tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+	        <br>
 		</div>  	
-	
+		
 		<div class="tab-pane" id="resep">
-	 		<div class="dropdown">
+	 		<div class="dropdown" id="btnBawahTambahResep">
     		    <div id="titleInformasi">Tambah Resep</div>
-        		<div id="btnBawahTambahResep" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+        		<div id="btnBawahTambahResep" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
         	</div>
             <br>
         	<div class="informasi" id="tambahResep">
-        		<form class="form-horizontal" role="form" id="submitresepbersalin" method="post">
+        		<form class="form-horizontal" role="form" method="POST" id="submitresep">
 					<div class="form-group">
 						<label class="control-label col-md-3">Dokter</label>
 						<div class="col-md-3">
-							<input type="text" id="namadokterresep" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#resepDokter">
-							<input type="hidden" id="iddokterresep">
+							<input type="hidden" id="resepdokter">
+							<input type="text" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter" id="namadokter">
 						</div>
 					</div>
 					
@@ -564,7 +2809,7 @@
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tglResep" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
 					</div>
@@ -572,121 +2817,54 @@
 					<div class="form-group">
 						<label class="control-label col-md-3">Deskripsi Resep</label>
 						<div class="col-md-5">
-							<textarea class="form-control" id="deskripsiResep" name="deskripsiResep" placeholder="Deskripsi Resep"></textarea>
+							<textarea class="form-control" name="deskripsiResep" placeholder="Deskripsi Resep" id="deskripsiResep"></textarea>							
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3">Status Bayar</label>
-						<div class="col-md-3">
-							<input type="text" class="form-control" name="statusBayar" placeholder="Belum Lunas" readonly>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3">Status Ambil</label>
-						<div class="col-md-3">
-							<input type="text" class="form-control" name="statusBayar" placeholder="Belum Ambil" readonly>
-						</div>
-					</div>
-					
 					<div class="form-group">
 						<label class="control-label col-md-3"> </label>
 						<div class="col-md-5">
+							<button type="reset" data-dismiss="modal" class="btn btn-danger">Reset</button>	&nbsp;
 					    	<button type="submit" class="btn btn-success">Simpan</button>
 					    </div>
 			        </div>
 			        <br>
-				</form>
-				<div class="modal fade" id="resepDokter" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		        				<h3 class="modal-title" id="myModalLabel">Pilih Dokter</h3>
-		        			</div>
-		        			<div class="modal-body">
-			        			<div class="form-group">
-									<div class="form-group">	
-										<div class="col-md-3" style="margin-left:35px;">
-											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Cari</button>
-										</div>	
-									</div>
-									<br>		
-									<div style="margin-left:20px; margin-right:20px;"><hr></div>
-									<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-										<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelDokterResep" style="width:90%;">
-											<thead>
-												<tr class="warning">
-													<td>Nama Dokter</td>
-													<td width="10%">Pilih</td>
-												</tr>
-											</thead>
-											<tbody>
-												<?php  
-													if (!empty($petugas)) {
-														foreach ($petugas as $value) {
-															echo "<tr>";
-																echo "<td class='idpetugasresep' style='display:none'>".$value['petugas_id']."</td>";
-																echo "<td class='namapetugasresep'>".$value['nama_petugas']."</td>";
-																echo "<td style='text-align:center'><a href='' class='inputpetugasresep'><i class='glyphicon glyphicon-check'></i></a></td>";
-															echo "</tr>";
-														}
-													}
-												?>	
-											</tbody>
-										</table>												
-									</div>
-								</div>
-		        			</div>
-		        			<div class="modal-footer">
-		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-					      	</div>
-						</div>
-					</div>
-				</div>	
+				</form>	
 			</div>
 
-	 		<div class="dropdown">
-		        <div id="titleInformasi">Tabel Resep</div>
-		        <div id="btnBawahTabelResep" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+	 		<div class="dropdown" id="btnBawahTabelResep">
+		        <div id="titleInformasi">Riwayat Tabel Resep</div>
+		        <div id="btnBawahTabelResep" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 	        </div>
             <br>
 
         	<div class="tabelinformasi" id="tblResep">
-	        	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover" id="tabelresepbersalin">
+	        	<div class="portlet-body" style="margin: 0px 40px 0px 35px">
+					<table class="table table-striped table-bordered table-hover tableDT" id="tabelresepbersalin">
 						<thead>
 							<tr class="info">
-								<th> Dokter</th>
+								<th width="20">No.</th>
+								<th>Dokter</th>
 								<th>Tanggal</th>
 								<th>Deskripsi Resep</th>
 								<th>Status Bayar</th>
 								<th>Status Ambil</th>
-								<th></th>
+								<th>Delete</th>
 							</tr>
 						</thead>
-						<tbody>
-							<?php  
-								if (!empty($visit_resep)) {
-									foreach ($visit_resep as $value) {
-										echo '<tr>';
-										echo '<td>'.$value['nama_petugas'].'</td>';										
-										echo '<td>'.$value['tanggal'].'</td>';										
-										echo '<td>'.$value['resep'].'</td>';										
-										echo '<td>status ambil</td>';										
-										echo '<td>status bayar</td>';										
-										echo '<td style="text-align:center">';
-										echo '<a href="#" class="hapus-resep"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>';
-										echo '</td>';
-										echo '<td class="resep_id" style="display:none" >'.$value['resep_id'].'</td>';											
-										echo '</tr>';
-									}
-								}
-							?>
+						<tbody id="tbody_resep">
+							<tr>
+								<td width="20">No.</td>
+								<td>Dokter</td>
+								<td style="text-align:center">12 Mei 1201</td>
+								<td>Deskripsi Resep</td>
+								<td>Status Bayar</td>
+								<td>Status Ambil</td>
+								<td style="text-align:center">
+									<a href="#hapusResep">
+									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -694,9 +2872,9 @@
         </div>
 
         <div class="tab-pane" id="penunjang">
-	        <div class="dropdown">
+	        <div class="dropdown" id="btnBawahPenunjang">
 		        <div id="titleInformasi">Pemeriksaan Penunjang</div>
-		        <div class="btnBawah" id="btnBawahPenunjang"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+		        <div class="btnBawah" id="btnBawahPenunjang"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 		    </div>
 		    <br>
 
@@ -707,7 +2885,7 @@
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
 					</div>	
@@ -743,18 +2921,18 @@
 			        			<div class="modal-body">
 				        			<div class="form-group">
 										<div class="form-group">	
-											<div class="col-md-4" style="margin-left:35px;">
+											<div class="col-md-5" style="margin-left:35px;">
 												<input type="text" class="form-control" name="katakuncipengirim" id="katakuncipengirim" placeholder="Nama Pengirim"/>
 											</div>
 											<div class="col-md-2">
 												<button type="button" class="btn btn-info">Cari</button>
 											</div>	
 										</div>		
-										<div style="margin-left:20px; margin-right:20px;"><hr></div>
-										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPengirim" style="width:90%;">
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="portlet-body" style="margin: 0px 10px 0px 20px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPengirim">
 												<thead>
-													<tr class="warning">
+													<tr class="info">
 														<td>Nama Pengirim</td>
 														<td width="10%">Pilih</td>
 													</tr>
@@ -781,820 +2959,49 @@
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-md-3" >Keterangan</label>
+						<label class="control-label col-md-3" >Jenis Pemeriksaan</label>
 						<div class="col-md-5">			
-							<textarea class="form-control" rows="5" id="keteranganPenunjang" placeholder="Keterangan"></textarea>
+							<textarea class="form-control" id="keteranganPenunjang" placeholder="Jenis Pemeriksaan"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-md-3" ></label>
 						<div class="col-md-7">			
-							<a href="#tambahPeri" data-toggle="modal">
-								<button class="btn btn-success">Tambah</button>
-							</a>		
+							<button class="btn btn-success">Kirim</button>
 					 	</div>							
 					</div>
 				</form>		
 				<br>
 	        </div>
 
-	        <div class="modal fade" id="tambahPeri" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-600px">
-	        	<div class="modal-dialog">
-	        		<div class="modal-content" style="width:1200px">
-	        			<div class="modal-header">
-	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-	        				<h3 class="modal-title" id="myModalLabel">Tambah Jenis Pemeriksaan</h3>
-	        			</div>	
-	        			<div class="modal-body">
-	        				<div class="navigation" style="margin-left: 10px" >
-							 	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-								    <li class="active"><a href="#hematologi" data-toggle="tab">Hematologi</a></li>
-								    <li><a href="#hemlain" data-toggle="tab">Hematologi Lainnya</a></li>
-								    <li><a href="#hemostasis" data-toggle="tab">Hemostasis</a></li>
-								    <li><a href="#kimia" data-toggle="tab">Kimia Darah</a></li>
-								    <li><a href="#imun" data-toggle="tab">Immunoserologi</a></li>
-								    <li><a href="#tumor" data-toggle="tab">Penanda Tumor</a></li>
-								    <li><a href="#hormon" data-toggle="tab">Hormon</a></li>
-								    <li><a href="#urine" data-toggle="tab">Urine</a></li>
-								    <li><a href="#urinlain" data-toggle="tab">Tes Urine Lainnya</a></li>
-								    <li><a href="#narkoba" data-toggle="tab">Narkoba</a></li>
-								    <li><a href="#feses" data-toggle="tab">Analisa Feses</a></li>
-								    <li><a href="#tubuhlain" data-toggle="tab">Analisa Cairan Tubuh Lainnya</a></li>
-								    <li><a href="#mikro" data-toggle="tab">Mikrobiologi</a></li>
-								    <li><a href="#pato" data-toggle="tab">Pemeriksaan Patologi Anatomi</a></li>
-								</ul>
-							
-								<div id="my-tab-content" class="tab-content" >
-							        <div class="tab-pane active" id="hematologi">
-							        	<table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Hemoglobin">Hemoglobin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Leukosit">Leukosit</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="LED">LED</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Hitung Jenis Leukosit">Hitung Jenis Leukosit</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="DLO">DLO</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Trombosit">Trombosit</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Eritrosit">Eritrosit</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Retikulosit">Retikulosit</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Hematokrit">Hematokrit</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Masa Pendarahan">Masa Pendarahan</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Masa Pembekuan">Masa Pembekuan</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Retraksi Bekuan">Retraksi Bekuan</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="MCV">MCV</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="MCH">MCH</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Golongan Darah">Golongan Darah</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Gambaran Darah Tepi">Gambaran Darah Tepi</label>
-												</td>
-											</tr>
-										</table>
-								        <br><br>
-								    </div>
-								    
-								    <div class="tab-pane" id="urine">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr >
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Makroskopis">Makroskopis</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein">Protein</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Reduksi">Reduksi</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Sedimen">Urobilin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Urobilinogen">Urobilinogen</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Bilirubin">Bilirubin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Keton">Keton</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HCG">HCG</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Esbach">Protein Esbach</label>
-												</td>							
-											</tr>
-										</table>
-								        <br><br>
-								    </div>
-								    
-								    <div class="tab-pane" id="hemlain">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Asam Folat">Asam Folat</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Eletroforesa Hb">Elektroforesa Hb</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ferritin">Ferritin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="G-6PD">G-6PD</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Hapusan Darah Malaria">Hapusan Darah Malaria</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HbF">HbF</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Morfologi Darah Tepi">Morfologi Darah Tepi</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan Sumsum Tulang">Pewarnaan Sumsum Tulang</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Serum Iron">Serum Iron(Fe)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Tes Coombs">Tes Coombs Direct/Indirect</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="TIBC">TIBC</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Transferrin">Transferrin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Vitamin B12">Vitamin B12</label>
-												</td>
-											</tr>	
-										</table>
-									</div>
-								    
-								    <div class="tab-pane" id="hemostasis">
-								        <table class="table table-striped table-bordered table-hover">
-								        	<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="APTT">Activate Partial Protrombin Time (APTT)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="ADP">Agregasi Trombosit</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="D-Dimer">D-Dimer</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Faktor IX">Faktor IX</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Faktor VIII">Faktor VIII</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Fibrinogen">Fibrinogen</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="INR">INR</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CT">Masa Pembekuan/CT</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="BT">Masa Pendarahan/BT</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Paket Hemostasis">Paket Hemostasis (PT,APTT,INR)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="PT">Protombin Time(PT)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="TT">Thrombin Time(TT)</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="aPTT">aPTT</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-								    <div class="tab-pane" id="kimia">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Glukosa Darah 2 jam PP">Glukosa Darah 2 jam PP</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Glukosa Darah Puasa">Glukosa Darah Puasa</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Glukosa Darah Sewaktu">Glukosa Darah Sewaktu</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HbA1C">HbA1C</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Tes Toleransi Glukosa">Tes Toleransi Glukosa</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Albumin">Albumin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Alkaline Fosfatase">Alkaline Fosfatase</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Bilirubin Direct">Bilirubin Direct</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Bilirubin Indirect">Bilirubin Indirect</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Bilirubin Total">Bilirubin Total</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Gamma GT">Gamma GT</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Globulin">Globulin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kolinesterase">Kolinesterase</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Total">Protein Total</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="SGOT/AST">SGOT/AST</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="SGPT/ALT">SGPT/ALT</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Asam Urat">Asam Urat</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="BUN">BUN</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Creatinin">Creatinin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Creatinin Clearance">Creatinin Clearance</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ureum">Ureum</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kolesterol HDL">Kolesterol HDL</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kolesterol LDL">Kolesterol LDL</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kolesterol Total">Kolesterol Total</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Trigliserida">Trigliserida</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CK">CK</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CKMB">CKMB</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="h-FABP">h-FABP</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="LDH">LDH</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Troponin-I">Troponin-I</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Troponin-T">Troponin-T</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Hs-CRP">Hs-CRP</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kalium Darah">Kalium Darah</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kalsium Darah">Kalsium Darah</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Klorida Darah">Klorida Darah</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Magnesium Darah">Magnesium Darah</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Natrium Darah">Natrium Darah</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Paket Elektrolit">Paket Elektrolit(Na, K, CL)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Analisa Gas Darah">Analisa Gas Darah</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-								    <div class="tab-pane" id="imun">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="ANA">ANA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti ds-DNA">Anti ds-DNA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HAV Rapid">Anti HAV Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HBc Rapid">Anti HBc Rapid</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HBe Rapid">Anti HBe Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HBs Rapid">Anti HBs Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HCV Rapid">Anti HCV Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HIV">Anti HIV</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CD 4">CD 4</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti M.Tbc Rapid">Anti M.Tbc Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="ASTO/ASO(Kuantitatif)">ASTO/ASO(Kuantitatif)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="ASTO/ASO(Kualitatif)">ASTO/ASO(Kualitatif)</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CRP(kualitatif)">CRP(kualitatif)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CRP(kuantitatif)">CRP(kuantitatif)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Dengue Blot Rapid (IGM dan IGG)">Dengue Blot Rapid (IGM dan IGG)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Dengue NS1 Antigen">Dengue NS1 Antigen</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HBeAg Rapid">HBeAg Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HBsAg Rapid">HBsAg Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HBsAg Kuantitatif">HBsAg Kuantitatif</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Anti HBs Kuantitatif">Anti HBs Kuantitatif</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Malaria Antigen Rapid">Malaria Antigen Rapid</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Paket Torch">Paket Torch</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Rheumatoid Factor">Rheumatoid Factor</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="TPHA">TPHA</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="VDRL">VDRL</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Widal">Widal</label>
-												</td>
-												
-											</tr>
-										</table>
-									</div>
-
-						        	<div class="tab-pane" id="tumor">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="AFP">AFP</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ca 15-3">Ca 15-3</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ca 19-9">Ca 19-9</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ca-125">Ca-125</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CEA">CEA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="PSA Total">PSA Total</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Free PSA">Free PSA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="NSE">NSE</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ca-72 4">Ca-72 4</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CYFRA 21.1">CYFRA 21.1</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="SCC">SCC</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="hormon">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="AFP">AFP</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ca 15-3">Ca 15-3</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Beta HCG Kuantitatif">Beta HCG Kuantitatif</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Estradiol">Estradiol</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Free T-3">Free T-3</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Free T4">Free T4</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="FSH">FSH</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="LH">LH</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Progesteron">Progesteron</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Prolaktin">Prolaktin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="T3">T3</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="T4">T4</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Testosteron">Testosteron</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="TSH-s">TSH-s</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="urinlain">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Asam Urat Urin">Asam Urat Urin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Creatinin Urin">Creatinin Urin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Glukosa Urin">Glukosa Urin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Mikroalbumin Urin">Mikroalbumin Urin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Bence-Jones">Protein Bence-Jones</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Esbach">Protein Esbach</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Kuantitatif">Protein Kuantitatif</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Protein Urin">Protein Urin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="HCG">Tes Kehamilan (HCG)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Ureum Urin">Ureum Urin</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="narkoba">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Amfetamin">Amfetamin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Benzodiazepin">Benzodiazepin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Morfin">Morfin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="THC">THC</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Paket Tes Narkoba">Paket Tes Narkoba</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="feses">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Feses Lengkap">Feses Lengkap (Feses Rutin + Darah Samar)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Feses Rutin">Feses Rutin</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Tes Darah Samar">Tes Darah Samar (FOB)</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="tubuhlain">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="CSF">Analisa Cairan Otak (CSF)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Analisis Cairan Pleura">Analisis Cairan Pleura</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Analisis Sperma">Analisis Sperma</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="mikro">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan BTA">Pewarnaan BTA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur BTA">Kultur BTA</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Cairan Tubuh">Kultur Cairan Tubuh</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Darah">Kultur Darah</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Feses">Kultur Feses</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Gall">Kultur Gall</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Mikroorganisme">Kultur Mikroorganisme</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Pus">Kultur Pus</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Sekret">Kultur Sekret</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Sputum">Kultur Sputum</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur SS(Salmonella/Shigela)">Kultur SS(Salmonella/Shigela)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Kultur Urin">Kultur Urin</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan GO">Pewarnaan GO</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan Gram">Pewarnaan Gram</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan Jamur">Pewarnaan Jamur</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pewarnaan Negatif">Pewarnaan Negatif</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-
-							        <div class="tab-pane" id="pato">
-								        <table class="table table-striped table-bordered table-hover">
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Biopsi Jaringan Kecil">Biopsi Jaringan Kecil</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Biopsi Jaringan Sedang">Biopsi Jaringan Sedang</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Biopsi Jaringan Besar">Biopsi Jaringan Besar</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Biopsi Khusus(Hati, Ginjal, Sumsum Tulang)">Biopsi Khusus(Hati, Ginjal, Sumsum Tulang)</label>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="VC Jaringan Beku(Potong Beku)">VC Jaringan Beku(Potong Beku)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="FNAB Deep(Toraks,Abdomen,tulang)">FNAB Deep(Toraks,Abdomen,tulang)</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="FNAB Dengan Tindakan">FNAB Dengan Tindakan</label>
-												</td>
-												<td>
-													<label class="checkbox-inline"><input type="checkbox" value="Pap Smear">Pap Smear</label>
-												</td>
-											</tr>
-										</table>
-									</div>
-						    	</div>
-	        				</div>
-	        			</div>	
-	      				<div class="modal-footer">
-	 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Tambah</button>
-				      	</div>
-	        		</div>        	
-	        	</div>
-	        </div>
-
-	        <div class="dropdown">
-		        <div id="titleInformasi">Tabel Riwayat Pemeriksaan</div>
-		        <div id="btnBawahTabelRiwayat" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+	        <div class="dropdown" id="btnBawahTabelRiwayat">
+		        <div id="titleInformasi">Riwayat Pemeriksaan</div>
+		        <div id="btnBawahTabelRiwayat" class="btnBawah"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 	        </div>
             <br>
 
         	<div class="tabelinformasi" id="tblRiwayat">
-	        	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover">
+	        	<div class="portlet-body" style="margin: 0px 40px 0px 30px">
+					<table class="table table-striped table-bordered table-hover tableDT">
 						<thead>
 							<tr class="info">
-								<th> Tgl. Tindakan</th>
+								<th width="20">No.</th>
+								<th> Tanggal Tindakan</th>
 								<th> Departemen Penunjang</th>
 								<th> Rujukan</th>
 								<th> Keterangan Order</th>
-								<th></th>
+								<th style="width:20px;"> Details</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td>12/12/2012</td>										
+								<td>1</td>
+								<td style="text-align:center">12 Desember 2012</td>										
 								<td>Labolatorium</td>										
 								<td>APS</td>										
 								<td>Obat</td>											
 								<td style="text-align:center">
-									<a href="#viewRiwayat" data-toggle="modal" data-placement="top"><i class="glyphicon glyphicon-search" data-toggle="tooltip" data-placement="top" title="View Details"></i></a>
+									<a href="#viewRiwayat" data-toggle="modal" data-placement="top"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="View Details"></i></a>
 								</td>												
 							</tr>
 						</tbody>
@@ -1613,61 +3020,42 @@
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label1 col-md-3">Order ID:</label>
-										<div class="col-md-9">
-											<p class="form-control-static">
-												 <span class="detail-order-id"> 0001</span>
-											</p>
-										</div>
+										<label class="control-label1 col-md-3 nama goright">Order ID:</label>
+										<div class="col-md-9 nama">	0001 </div>
 									</div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label1 col-md-3">Tanggal Tindakan:</label>
-										<div class="col-md-9">
-											<p class="form-control-static">
-												 <span class="detail-order-id">12/12/2012</span>
-											</p>
+										<label class="control-label1 col-md-3 goright">Tanggal Tindakan:</label>
+										<div class="col-md-8">
+											12 Desember 2012
 										</div>
 									</div>
 								</div>
 								
-								<!--/span-->
+								
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label1 col-md-4">Departemen Penunjang:</label>
-										<div class="col-md-8">
-											<p class="form-control-static">
-												 <span id="detail-departemen">Labolatorium</span>
-											</p>
-										</div>
+										<label class="control-label1 col-md-4 goright">Departemen Penunjang:</label>
+										<div class="col-md-8"> Labolatorium	</div>
 									</div>
 								</div>
-								<!--/span-->
+								
 							</div>
+
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label1 col-md-3">Keterangan Order:</label>
-										<div class="col-md-9">
-											<p class="form-control-static">
-												 <span id="detail-departemen"></span> 
-											</p>
-										</div>
+										<label class="control-label1 col-md-3 goright">Keterangan Order:</label>
+										<div class="col-md-8">terserah</div>
 									</div>
-								</div>
-								
-								<!--/span-->
+								</div>								
 								<div class="col-md-6">
 									<div class="form-group">
-										<label class="control-label1 col-md-4">Status Hasil:</label>
-										<div class="col-md-8">
-											<p class="form-control-static">
-												 <span id="detail-status">SELESAI</span>
-											</p>
-										</div>
+										<label class="control-label1 col-md-4 goright">Status Hasil:</label>
+										<div class="col-md-8">SELESAI</div>
 									</div>
 								</div>
 								<!--/span-->
@@ -1729,61 +3117,42 @@
         </div>
 
         <div class="tab-pane" id="orderkamar">
-        	<!-- dropdown order kamar operasi -->
-        	<div class="dropdown">
+        	<div class="dropdown" id="btnBawahOrder">
 	            <div id="titleInformasi">Order Kamar Operasi</div>
-	            <div class="btnBawah" id="btnBawahOrder"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+	            <div class="btnBawah" id="btnBawahOrder"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 	        </div>
 	        <br>
 
 	        <div class="informasi" id="infoKamar">
-	            <form class="form-horizontal" id="orderoperasi" method="post">
+	            <form class="form-horizontal">
 	          		<div class="form-group">
 						<label class="control-label col-md-3">Waktu Pelaksanaan</label>
-						<div class="col-md-3" >
+						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggal_mulai" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								<input type="text" style="cursor:pointer;" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
 							</div>
 						</div>
 					</div>	
-										
+					
 					<div class="form-group">
 						<label class="control-label col-md-3">Dokter</label>
 						<div class="col-md-3">
-							<input type="text" id="dokteroperasi" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokterOperasi" >
-							<input type="hidden" id="id_dokteroperasi">
+							<input type="text" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter">
 						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Tujuan Order</label>
-						<div class="col-md-3">			
-							<input type="text" class="form-control" value="Kamar Operasi" disabled="disabled">		
-						</div>							
 					</div>
 					
 					<div class="form-group">
 						<label class="control-label col-md-3" >Jenis Operasi</label>
 						<div class="col-md-3">			
-							<input type="text" class="form-control" placeholder="Jenis Operasi" id="jnsOperasi">
+							<input type="text" class="form-control" placeholder="Jenis Operasi" id="jnsOperasi" data-toggle="modal" data-target="#jenisoperasi">
 				 		</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Lingkup Operasi</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="lkpOprasi" id="lkpOprasi">
-								<option value="Elektif" selected>Elektif</option>
-								<option value="Emergency">Emergency</option>
-							</select>		
-						</div>							
 					</div>
 							
 					<div class="form-group">
 						<label class="control-label col-md-3" >Alasan</label>
 						<div class="col-md-5">			
-							<textarea class="form-control" rows="5" id="alasanoperasi" placeholder="alasan operasi"></textarea>
+							<textarea class="form-control" rows="5" id="alasanoprasi" placeholder="Alasan"></textarea>
 				 		</div>
 					</div>
 
@@ -1795,178 +3164,43 @@
 					 	</div>			
 					 					
 					</div>	
-				</form>
 
-				<div class="modal fade" id="searchDokterOperasi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		        				<h3 class="modal-title" id="myModalLabel">Pilih Dokter</h3>
-		        			</div>
-		        			<div class="modal-body">
-			        			<div class="form-group">
-									<div class="form-group">	
-										<div class="col-md-3" style="margin-left:35px;">
-											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Cari</button>
-										</div>	
-									</div>
-									<br>		
-									<div style="margin-left:20px; margin-right:20px;"><hr></div>
-									<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-										<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelDokterOperasi" style="width:90%;">
-											<thead>
-												<tr class="warning">
-													<td>Nama Dokter</td>
-													<td width="10%">Pilih</td>
-												</tr>
-											</thead>
-											<tbody>
-												<?php  
-													if (!empty($petugas)) {
-														foreach ($petugas as $value) {
-															echo "<tr>";
-																echo "<td class='idpetugasoperasi' style='display:none'>".$value['petugas_id']."</td>";
-																echo "<td class='namapetugasoperasi'>".$value['nama_petugas']."</td>";
-																echo "<td style='text-align:center'><a href='' class='inputpetugasoperasi'><i class='glyphicon glyphicon-check'></i></a></td>";
-															echo "</tr>";
-														}
-													}
-												?>	
-											</tbody>
-										</table>												
-									</div>
-								</div>
-		        			</div>
-		        			<div class="modal-footer">
-		 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-					      	</div>
-						</div>
-					</div>
-				</div>
-				<br>
-			</div>	<!-- End Dropdown -->
-
-			<div class="dropdown">
-	            <div id="titleInformasi">Table Daftar Kamar Operasi</div>
-	            <div class="btnBawah" id="btnTableKamarOperasi"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-	        <br>
-
-	        <div class="tabelinformasi" id="tabelKamar">
-	           	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive" id="tabelorderoperasi">
-						<thead>
-							<tr class="info">
-								<th>Tanggal Tindakan</th>
-								<th>Dokter</th>
-								<th>Tujuan Order</th>
-								<th>Keterangan Order</th>
-								<th> </th>
-							</tr>
-						</thead>
-						<tbody id="t_body_order">
-							<?php  
-								if (!empty($order_operasi)) {
-									 foreach($order_operasi as $hasil) {
-										echo '<tr>';
-										
-										echo '<td>'.$hasil['waktu_mulai'].'</td>';
-										echo '<td>'.$hasil['nama_petugas'].'</td>';										
-										echo '<td>'.$hasil['nama_dept'].'</td>';
-										echo '<td>'.$hasil['alasan'].'</td>';
-										echo '<td style="text-align:center">';
-										echo '<a href="#" class="hapus-order">';
-										echo '<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>';
-										echo '</td>';
-										echo '<td class="order_operasi_id" style="display:none;">'.$hasil['order_operasi_id'].'</td>';										
-										echo '</tr>';	
-									}
-									
-								}else{
-									echo '<tr>';
-									echo '<td colspan="6" style="text-align:center;">Tidak ada order</td>';
-									echo '</tr>';
-								}
-								
-							?>
-						</tbody>
-					</table>
-				</div>	<br><br>
-			</div>	<!-- End Dropdown -->
-        </div> 
-
-        <div class="tab-pane" id="konsul">
-        	<div class="dropdown">
-	            <div id="titleInformasi">Order Konsultasi Gizi</div>
-	            <div class="btnBawah" id="btnBawahOrderKonsul"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-	        <br>
-	       
-	        <div class="informasi" id="infoKonsul">
-		      	<form class="form-horizontal" role="form" method="post" id="konsultasigizi">
-	          		<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Konsultasi</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggalordergizi" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
-							</div>
-						</div>
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Konsultan Gizi</label>
-						<div class="col-md-3">
-							<input type="text" id="konsultan" class="form-control" placeholder="Search Konsultan" data-toggle="modal" data-target="#searchKonsultan">
-							<input type="hidden" id="id_petugas" value="">
-						</div>
-					</div>
-
-					<div class="modal fade" id="searchKonsultan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="jenisoperasi" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
 			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			        				<h3 class="modal-title" id="myModalLabel">Pilih Dokter</h3>
+			        				<h3 class="modal-title" id="myModalLabel">Pilih Jenis Operasi</h3>
 			        			</div>
 			        			<div class="modal-body">
-				        			<div class="form-group">
-										<div class="form-group">	
-											<div class="col-md-3" style="margin-left:35px;">
-												<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
-											</div>
-											<div class="col-md-2">
-												<button type="button" class="btn btn-info">Cari</button>
-											</div>	
-										</div>		
-										<div style="margin-left:20px; margin-right:20px;"><hr></div>
-										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelKonsultan" style="width:90%;">
-												<thead>
-													<tr class="warning">
-														<td>Nama Dokter</td>
-														<td width="10%">Pilih</td>
-													</tr>
-												</thead>
-												<tbody>
-													<?php  
-														if (!empty($petugas)) {
-															foreach ($petugas as $value) {
-																echo "<tr>";
-																	echo "<td class='idpetugas' style='display:none'>".$value['petugas_id']."</td>";
-																	echo "<td class='namapetugas'>".$value['nama_petugas']."</td>";
-																	echo "<td style='text-align:center'><a href='' class='inputpetugas'><i class='glyphicon glyphicon-check'></i></a></td>";
-																echo "</tr>";
-															}
-														}
-													?>
-												</tbody>
-											</table>												
+									<div class="form-group">	
+										<div class="col-md-5" style="margin-left:15px">
+											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Jenis Operasi"/>
 										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-info">Cari</button>
+										</div>	
+									</div>	
+									<div style="margin-left:5px; margin-right:5px;"><hr></div>
+									<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+										<table class="table table-striped table-bordered table-hover" id="tabeljenisoperasi">
+											<thead>
+												<tr class="info">
+													<th>Jenis Operasi</th>
+													<th width="10%">Pilih</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Cecar</td>
+													<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+												</tr>
+												<tr>
+													<td>Katarak</td>
+													<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+												</tr>
+											</tbody>
+										</table>												
 									</div>
 			        			</div>
 			        			<div class="modal-footer">
@@ -1974,311 +3208,841 @@
 						      	</div>
 							</div>
 						</div>
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Kajian Gizi</label>
-						<div class="col-md-5">			
-							<textarea class="form-control" rows="2" id="kajianGizi" placeholder="Kajian Gizi"></textarea>
-					 	</div>				
 					</div>
+				</form>
+				<br>
+			</div>	<!-- End Dropdown -->
 
-					<div class="form-group">
-						<label class="control-label col-md-3" >Anamnesa Diet</label>
-						<div class="col-md-5">			
-							<textarea class="form-control" rows="2" id="anamnesaDiet" placeholder="Anamnesa Diet"></textarea>
+			<div class="dropdown" id="btnTableKamarOperasi">
+	            <div id="titleInformasi">Riwayat Operasi</div>
+	            <div class="btnBawah" id="btnTableKamarOperasi"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+	        </div>
+	           	<br>
+
+	        <div class="tabelinformasi" id="tabelKamar">
+	           	<div class="portlet-body" style="margin: 0px 40px 0px 30px">
+					<table class="table table-striped table-bordered table-hover table-responsive tableDT" >
+						<thead>
+							<tr class="info">
+								<th width="20">No. </th>
+								<th width="200">Waktu Tindakan</th>
+								<th>Dokter</th>
+								<th>Status</th>
+								<th>Keterangan Order</th>
+								<th width="20">Delete</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>11</td>
+								<td style="text-align:center">12 Desember 2012 12:12</td>
+								<td>Labolatorium</td>										
+								<td>Belum</td>
+								<td>Bebas </td>
+								<td style="text-align:center">
+									<a href="#hapusResep">
+									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+								</td>										
+							</tr>
 							
-					 	</div>		
-					</div>
+						</tbody>
+					</table>
+				</div>	<br><br>
+			</div>	<!-- End Dropdown -->
+        </div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3">Data Lab Pasien</label>
-						<div class="col-md-4">
-							<input type="text" class="form-control" name="dataLabPasien" placeholder="Data Lab Pasien">
+        <div class="tab-pane" id="konsul">
+        	<div class="dropdown" id="btnBawahOrderKonsul">
+	            <div id="titleInformasi">Order Konsultasi Gizi</div>
+	            <div class="btnBawah" id="btnBawahOrderKonsul"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+	        </div>
+	        <br>
+	       
+	        <div class="informasi" id="infoKonsul">
+		      	<form class="form-horizontal" role="form">
+		          		<div class="form-group">
+							<label class="control-label col-md-3">Tanggal Konsultasi</label>
+							<div class="col-md-2" >
+								<div class="input-icon">
+									<i class="fa fa-calendar"></i>
+									<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
+								</div>
+							</div>
+						</div>	
+
+						<div class="form-group">
+							<label class="control-label col-md-3" >Konsultan Gizi</label>
+							<div class="col-md-3">
+								<input type="text" class="form-control" placeholder="Search Konsultan" data-toggle="modal" data-target="#searchKonsultan">
+							</div>
 						</div>
-					</div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3">Kajian Diet</label>
-						<div class="col-md-5">			
-							<textarea class="form-control" rows="2" id="kajianDiet"  placeholder="Kajian Diet"></textarea>
-					 	</div>		
-					</div>
+						<div class="modal fade" id="searchKonsultan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+				        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				        				<h3 class="modal-title" id="myModalLabel">Pilih Konsultan</h3>
+				        			</div>
+				        			<div class="modal-body">
+					        			<div class="form-group">
+											<div class="form-group">	
+												<div class="col-md-5" style="margin-left:35px;">
+													<input type="text" class="form-control" name="katakunci" id="inputKonsultan" placeholder="Nama Konsultan"/>
+												</div>
+												<div class="col-md-2">
+													<button type="button" class="btn btn-info">Cari</button>
+												</div>	
+											</div>		
+											<div style="margin-left:10px; margin-right:10px;"><hr></div>
+											<div class="portlet-body" style="margin: 0px 20px 0px 20px">
+												<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelkonsultan">
+													<thead>
+														<tr class="info">
+															<th>Nama Konsultan</th>
+															<th width="10%">Pilih</th>
+														</tr>
+													</thead>
+													<tbody id="t_body_konsultan">
+														<tr >
+															<td>Jems</td>
+															<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+														</tr>
+													</tbody>
+												</table>												
+											</div>
+										</div>
+				        			</div>
+				        			<div class="modal-footer">
+				 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+							      	</div>
+								</div>
+							</div>
+						</div>	
 
-					<div class="form-group">
-						<label class="control-label col-md-3">Detail Menu Sehari-hari</label>
-						<div class="col-md-5">			
-							<textarea class="form-control" rows="2" id="detailMenu"  placeholder="Detail Menu"></textarea>
-					 	</div>		
-					</div>
+						<div class="form-group">
+							<label class="control-label col-md-3" >Kajian Gizi</label>
+							<div class="col-md-5">			
+								<textarea class="form-control" rows="2" id="kajianGizi" placeholder="Kajian Gizi"></textarea>
+								
+						 	</div>				
+						</div>
 
-					<div class="form-group">
-						<label class="control-label col-md-3" ></label>
-						<div class="col-md-7">			
-							<a href="#tambahGizi" style="color:white">
-							<button type="submit" class="btn btn-success">Tambah</button></a>		
-					 	</div>							
-					</div>		
-					<br>
+						<div class="form-group">
+							<label class="control-label col-md-3" >Anamnesa Diet</label>
+							<div class="col-md-5">			
+								<textarea class="form-control" rows="2" id="anamnesaDiet" placeholder="Anamnesa Diet"></textarea>
+								
+						 	</div>		
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Kajian Diet</label>
+							<div class="col-md-5">			
+								<textarea class="form-control" rows="2" id="kajianDiet"  placeholder="Kajian Diet"></textarea>
+								
+						 	</div>		
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3">Detail Menu Sehari-hari</label>
+							<div class="col-md-5">			
+								<textarea class="form-control" rows="2" id="DetailMenu"  placeholder="Detail Menu"></textarea>
+								
+						 	</div>		
+						</div>
+
+						<div class="form-group">
+							<label class="control-label col-md-3" ></label>
+							<div class="col-md-7">			
+								
+								<a href="#tambahGizi" style="color:white">
+								<button type="submit" class="btn btn-success">Tambah</button></a>		
+						 	</div>							
+						</div>		
+						<br>
 				</form>
 			</div>	
 
-			<div class="dropdown">
-	            <div id="titleInformasi">Table Daftar Konsultasi Gizi</div>
-	           	<div class="btnBawah" id="btnTabelKonsultasi"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+			<div class="dropdown" id="btnTabelKonsultasi">
+	            <div id="titleInformasi">Riwayat Konsultasi Gizi</div>
+	           	<div class="btnBawah" id="btnTabelKonsultasi"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 	        </div>
 	        <br>
 
 	        <div class="tabelinformasi" id="tabelKonsultasi" >
-	           	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover" id="tabelgizibersalin">
+	           	<div class="portlet-body" style="margin: 0px 40px 0px 35px">
+					<table class="table table-striped table-bordered table-hover tableDT" >
 						<thead>
 							<tr class="info">
+								<th width="20">No.</th>
 								<th>Tanggal Konsultasi </th>
 								<th>Konsultan</th>
 								<th>Kajian Gizi</th>
 								<th>Anamnesa Diet</th>
-								<th>Data Lab Pasien</th>
 								<th>Kajian Diet</th>
 								<th>Detail Menu Sehari-hari</th>
-								<th>Action</th>
+								<th width="100">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php  
-								if (!empty($gizi)) {
-									foreach ($gizi as $value) {
-										echo "<tr>";
-										echo "<td>".$value['tanggal']."</td>";
-										echo "<td>".$value['nama_petugas']."</td>";
-										echo "<td>".$value['kajian_gizi']."</td>";										
-										echo "<td>".$value['anamnesa_diet']."</td>";
-										echo "<td>".$value['data_lab']."</td>";
-										echo "<td>".$value['kajian_diet']."</td>";
-										echo "<td>".$value['detail_menu']."</td>";
-										echo "<td style='text-align:center'>";
-										echo '<a href="#" class="hapus-gizi"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>';
-										echo '<a href="#" class="print-gizi"><i class="glyphicon glyphicon-print"  data-toggle="tooltip" data-placement="top" title="Print"></i></a>';
-										echo "</td>";
-										echo "<td class='gizi_id' style='display:none;'>".$value['gizi_id']."</td>";										
-										echo "</tr>";
-									}
-								}
-							?>
+							<tr>
+								<td>1</td>
+								<td style="text-align:center;">11/12/2015</td>
+								<td>Dokter Gizi</td>
+								<td>Banyak Sekali</td>										
+								<td>Telur</td>
+								<td>Diet terus</td>
+								<td>Gorengan</td>
+								<td style="text-align:center">
+									<a href="#hapus"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+									<a href="#print"><i class="glyphicon glyphicon-print"  data-toggle="tooltip" data-placement="top" title="Print"></i></a>
+								</td>										
+							</tr>
+							
 						</tbody>
 					</table>
-				</div>	<br><br>
+				</div>	<br>
 			</div>	
-        </div>  
+        </div> 
 
         <div class="tab-pane" id="riwayat">
-         	<div class="dropdown">
-            	<div id="titleInformasi">Riwayat Pasien</div>
-        		<div id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-        	</div>
-        	<br>	
-
-            <div class="tabelinformasi" id="infoRiwayat">
-		       	<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive" id="tabel_riwayat">
-						<thead>
-						<tr class="info">
-							<th> ID </th>
-							<th> Tanggal </th>
-							<th> Tujuan </th>
-							<th> Dokter </th>
-							<th> Diagnosis </th>
-							<th> Details</th>
+         	<div class="dropdown" id="rwp1">
+            	<div id="titleInformasi">Riwayat Klinik</div>
+            	<div class="btnBawah" id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+            <div class="portlet-body" id="tblrwp1" style="margin: 20px 40px 0px 40px">
+            	
+				<table class="table table-striped table-bordered table-hover table-responsive tableDT">
+					<thead>
+						<tr class="info" style="text_align: center;">
+							<th width="20">No.</th>
+							<th>Tanggal</th>
+							<th>Waktu</th>
+							<th>Unit</th>
+							<th>Anamnesa</th>
+							<th>Dokter Pemeriksa</th>
+							<th style="width:20px;">Action</th>
 						</tr>
-						</thead>
-						<tbody>
-							<?php  
-								if (isset($riwayat)) {
-									if (!empty($riwayat)) {
-										foreach($riwayat as $value){
-											echo '<tr>'.
-													'<td class="visit_riwayat">'.$value['visit_id'].'</td>'.										
-													'<td>'.$value['tanggal_visit'].'</td>'.										
-													'<td>'.$value['nama_dept'].'</td>'.
-													'<td>'.$value['petugas_registrasi'].'</td>'.
-													'<td></td>'.
-													'<td style="text-align:center">'.
-														'<a href="#cekRiwayat" class="rm_detail" data-toggle="modal" data-placement="top" data-original-title="Detail RM">'.
-														'<i class="glyphicon glyphicon-search"  data-toggle="tooltip" data-placement="top" title="Lihat Detail"></i></a>'.
-													'</td>'.																		
-												'</tr>';
-										}
-									}
-								}
-							?>
-						</tbody>
-					</table>
-				</div>
-            </div>	
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td style="text-align:center">12 Januari 2012 </td>
+							<td style="text-align:center">12:12</td>
+							<td>Poli Umum</td>
+							<td>Ini isinya panjang</td>
+							<td>Jems Naban</td>
+							<td style="text-align:center;"><a href="#riwkklin" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+						</tr>
+					</tbody>
+				</table>												
+			</div>
+			<div class="modal fade" id="riwkklin" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="riwkondok">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Klinik</h3>
+				   			</div>
+							<div class="modal-body" style="padding-left:80px;">
 
-            <div class="modal fade" id="cekRiwayat" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	        	<div class="modal-dialog">
-	        		<div class="modal-content">
-	        			<div class="modal-header">
-	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-							<h4 class="modal-title">Catan Rekam Medis <b><?php echo($pasien['nama']) ?></b></h4>
-						</div>
-						<div class="modal-body">
-						<!--BEGIN TABS-->
-							<div class="tabbable tabbable-custom tabbable-full-width">
-								<ul class="nav nav-tabs">
-									<li class="active"><a href="#tab_overview" data-toggle="tab">Overview </a></li>
-									<li><a href="#tab_therapy" data-toggle="tab">Therapy </a></li>
-									<li><a href="#tab_resep" data-toggle="tab">Resep </a></li>
-									<li><a href="#tab_penunjang" data-toggle="tab">Pemeriksaan Penunjang </a></li>
-								</ul>
-								<div class="tab-content">
-									<!--BEGIN Overview-->
-									<div class="tab-pane active" id="tab_overview">
-										<div class="row">
-											<div class="col-md-12">
-												<div class="col-md-12">
-													<h3>Infomasi Kunjungan</h3>
-												</div>
-												<div class="col-md-6">
-													<span>Tanggal Visit: &nbsp;</span><span class="riwayat-tanggal"></span> 
-												</div>
-												<div class="col-md-6">
-													<span>Departemen: &nbsp;</span><span class="riwayat-departemen"></span>
-												</div>
-												<div class="col-md-6">
-													<span>Dokter: &nbsp;</span><span class="riwayat-dokter"></span>
-												</div>
-												<div class="col-md-6"></div>
-												<div class="col-md-6">
-													<span>Anamnesa: &nbsp;</span><span class="riwayat-anamnesa"></span>
-												</div>
-												<div class="col-md-6">
-													<span>Diagnosa: &nbsp;</span><span class="riwayat-diagnosa"></span>
-												</div>
-											</div>
+				   				<div class="form-group">
+									<label class="control-label col-md-4">Waktu Tindakan</label>
+									<div class="col-md-5">	
+										<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+									</div>
+			        			</div>	
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Anamnesa</label>
+									<div class="col-md-7">
+										<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+									</div>
+								</div>
+
+								<fieldset class="fsStyle">
+									<legend>
+						                Tanda Vital
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Tekanan Darah</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+										</div>
+										<label class="control-label col-md-2">mmHg</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Temperatur</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+										</div>
+										<label class="control-label col-md-2">&deg;C</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Nadi</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Pernapasan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Berat Badan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+										</div>
+										<label class="control-label col-md-2">Kg</label>
+									</div>
+						  		</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Diagnosa & Terapi
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Dokter Pemeriksa</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
 										</div>
 									</div>
-									<!--END Overview-->
-										
-									<!--BEGIN Therapy-->
-									<div class="tab-pane" id="tab_therapy">
-										<div class="row">
-											<div class="col-md-12">
-												<table class="table table-striped table-bordered table-hover" id="rm-history-therapy">
-													<thead>
-														<tr>
-															<th>Tanggal</th>
-															<th>Dokter</th>
-															<th>Terapi</th>
-														</tr>
-													</thead>
-													<tbody id="t_body_history_therapy">
-													</tbody>
-												</table>										
-											</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Diagnosa Utama</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
 										</div>
-									</div>	
-									<!--END Therapy-->										
-
-									<!--BEGIN Penunjang-->
-									<div class="tab-pane" id="tab_resep">
-										<div class="row">
-											<div class="col-md-12">
-												<table class="table table-striped table-bordered table-hover" id="rm-history-resep">
-													<thead>
-														<tr>
-															<th>ID</th>
-															<th>Tanggal</th>
-															<th>Deskripsi Resep</th>
-														</tr>
-													</thead>
-													<tbody id="t_body_history_resep">
-
-													</tbody>
-												</table>										
-											</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Diagnosa" readonly>
 										</div>
-									</div>	
-									<!--END Penunjang-->
-
-									<!--BEGIN Penunjang-->
-									<div class="tab-pane" id="tab_penunjang">
-										<div class="row">
-											<div class="col-md-12">
-												<table class="table table-striped table-bordered table-hover" id="rm-history-penunjang">
-													<thead>
-														<tr>
-															<th>ID</th>
-															<th>Tanggal</th>
-															<th>Departemen</th>
-															<th> Keterangan Order</th>
-														</tr>
-													</thead>
-													<tbody id="t_body_history_penunjang">
-													</tbody>
-												</table>										
-											</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Diagnosa Sekunder</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
 										</div>
-									</div>	<!--END Penunjang-->
-								</div>
-							</div><!-- 	end TABS	 -->
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Diagnosa" readonly>
+										</div>
+										<label class="control-label">1</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek2" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Diagnosa" readonly>
+										</div>
+										<label class="control-label">2</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Diagnosa" readonly>
+										</div>
+										<label  class="control-label">3</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Diagnosa" readonly>
+										</div>
+										<label class="control-label">4</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Detail Diagnosa</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Terapi</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Alergi</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="alergi" name="alergi" placeholder="Alergi" readonly>
+										</div>
+									</div>
+						  		</fieldset>
+				        	</div>
+			        		
+			        		<div class="modal-footer">
+			        			
+			 			     	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						    </div>
 						</div>
-					</div><!-- /.modal-content -->
-				</div><!-- /.modal-dialog -->
+					</div>
+				</form>
 			</div>
+            <br>	
+
+            <div class="dropdown" id="rwp2">
+            	<div id="titleInformasi">Riwayat IGD</div>
+            	<div class="btnBawah" id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+            <div class="portlet-body" id="tblrwp2" style="margin: 20px 40px 0px 40px">
+            	
+				<table class="table table-striped table-bordered table-hover table-responsive tableDT">
+					<thead>
+						<tr class="info" style="text_align: center;">
+							<th width="20">No.</th>
+							<th>Tanggal</th>
+							<th>Waktu</th>
+							<th>Anamnesa</th>
+							<th>Dokter Jaga</th>
+							<th>Perawat Jaga</th>
+							<th style="width:20px;">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td style="text-align:center">12 Desember 2012 </td>
+							<td style="text-align:center">12:12</td>
+							<td>Bebas</td>
+							<td>Bebas</td>
+							<td>Bebas</td>
+							<td style="text-align:center;"><a href="#riwigd" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+						</tr>
+					</tbody>
+				</table>												
+			</div>
+			<div class="modal fade" id="riwigd" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="riwkondok">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Penanganan IGD</h3>
+				   			</div>
+							<div class="modal-body" style="padding-left:80px;">
+
+				   				<div class="form-group">
+									<label class="control-label col-md-4">Waktu Tindakan</label>
+									<div class="col-md-5">	
+										<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i:s");?>"/>
+									</div>
+			        			</div>	
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Anamnesa</label>
+									<div class="col-md-7">
+										<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+									</div>
+								</div>
+
+								<fieldset class="fsStyle">
+									<legend>
+						                Tanda Vital
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Tekanan Darah</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+										</div>
+										<label class="control-label col-md-2">mmHg</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Temperatur</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+										</div>
+										<label class="control-label col-md-2">&deg;C</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Nadi</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Pernapasan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Berat Badan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+										</div>
+										<label class="control-label col-md-2">Kg</label>
+									</div>
+						  		</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Pemeriksaan Fisik
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Kepala & Leher</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="kepalaleher" name="kepalaleher" placeholder="Kepala & Leher" readonly>
+										</div>
+										
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Thorax & ABD</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="thorax" name="thorax" placeholder="Thorax & ABD" readonly>
+										</div>
+										
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Extremitas</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="Extremitas" name="Extremitas" placeholder="Extremitas" readonly>
+										</div>
+										
+									</div>
+									
+						  		</fieldset>
+
+						  		<fieldset class="fsStyle">
+									<legend>
+						                Diagnosa & Terapi
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Dokter Jaga</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Perawat Jaga</label>
+										<div class="col-md-7">
+											<input type="text" class="form-control" id="dokter" placeholder="Search Dokter" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Diagnosa Utama</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Diagnosa Sekunder</label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+										<label class="control-label">1</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek2" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+										<label class="control-label">2</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+										<label class="control-label">3</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" ></label>
+										<div class="col-md-3">
+											<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+										</div>
+										<div class="col-md-4">
+											<input type="text" class="form-control" placeholder="Keterangan" readonly>
+										</div>
+										<label class="control-label">4</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Detail Diagnosa</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa" readonly></textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Terapi</label>
+										<div class="col-md-7">
+											<textarea class="form-control" id="terapi" name="terapi" placeholder="Terapi" readonly></textarea>
+										</div>
+									</div>
+									
+						  		</fieldset>
+				        	</div>
+			        		
+			        		<div class="modal-footer">
+			        			<input type="hidden" id="visit_id" value="<?php echo $this->session->userdata('visit_id'); ?>">
+			 			     	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<br>
+
+			<div class="dropdown" id="rwp3">
+            	<div id="titleInformasi">Riwayat Perawatan</div>
+            	<div class="btnBawah" id="btnBawahRiwayat"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div>
+            <div class="portlet-body" id="tblrwp3" style="margin: 20px 40px 0px 40px">
+            	
+            	<table class="table table-striped table-bordered table-hover table-responsive tableDT">
+					<thead>
+						<tr class="info" style="text_align: center;">
+							<th style="width:10px;">No.</th>
+							<th>Tanggal</th>
+							<th>Waktu</th>
+							<th>Dokter Visit</th>
+							<th>Diagnosa Utama</th>
+							<th>Diagnosa Sekunder</th>
+							<th>Perkembangan Penyakit</th>
+							<th style="width:20px;">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td style="text-align:center">12 Desember 2012</td>
+							<td>12:12</td>
+							<td>Jems</td>
+							<td>Bebas</td>
+							<td>Bebas</td>
+							<td>Bebas</td>
+							<td style="text-align:center;"><a href="#riwperawat" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a></td>
+						</tr>
+					</tbody>
+				</table>												
+			</div>
+			<div class="modal fade" id="riwperawat" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<form class="form-horizontal" role="form" method="POST" id="riwkondok">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+				   				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+				   				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Perawatan</h3>
+				   			</div>
+							<div class="modal-body" style="padding-left:50px;">
+
+				   				<div class="form-group">
+									<label class="control-label col-md-4">Waktu Tindakan</label>
+									<div class="col-md-5">	
+										<input type="text" class="form-control" readonly placeholder="<?php echo date("d/m/Y H:i");?>"/>
+									</div>
+			        			</div>	
+
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Dokter Visit</label>
+									<div class="col-md-5">
+										<input type="text" class="form-control" id="dokterv" name="dokterv" placeholder="Dokter" readonly></textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4">Petugas</label>
+									<div class="col-md-6">
+										<input type="text" class="form-control" id="petugas" name="petugas" placeholder="Petugas" readonly></textarea>
+									</div>
+								</div>
+
+			        			<div class="form-group">
+									<label class="control-label col-md-4">Anamnesa</label>
+									<div class="col-md-6">
+										<textarea class="form-control" id="anamnesa" name="anamnesa" placeholder="Anamnesa" readonly></textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" >Diagnosa Utama</label>
+									<div class="col-md-2">
+										<input type="text" class="form-control" id="kode_utama" placeholder="Kode" readonly>
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="Keterangan" readonly>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" >Diagnosa Sekunder</label>
+									<div class="col-md-2">
+										<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="Keterangan" readonly>
+									</div>
+									<label class="label-cntrol">1</label>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" ></label>
+									<div class="col-md-2">
+										<input type="text" class="form-control" id="kode_se2" placeholder="Kode" readonly>
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="Keterangan" readonly>
+									</div>
+									<label class="label-cntrol">2</label>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" ></label>
+									<div class="col-md-2">
+										<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="Keterangan" readonly>
+									</div>
+									<label class="label-cntrol">3</label>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" ></label>
+									<div class="col-md-2">
+										<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+									</div>
+									<div class="col-md-4">
+										<input type="text" class="form-control" placeholder="Keterangan" readonly>
+									</div>
+									<label class="label-cntrol">4</label>
+								</div>
+
+
+								<div class="form-group">
+									<label class="control-label col-md-4">Perbangan Penyakit</label>
+									<div class="col-md-6">
+										<textarea class="form-control" id="perkembangan" name="perkembangan" placeholder="Perkembangan Penyakit" readonly></textarea>
+									</div>
+								</div>
+
+								<fieldset class="fsStyle">
+									<legend>
+						                Tanda Vital
+									</legend>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Tekanan Darah</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="tekanandarah" name="takanandarah" placeholder="Tekanan Darah" readonly>
+										</div>
+										<label class="control-label col-md-2">mmHg</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Temperatur</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="temperatur" name="temperatur" placeholder="Temperatur" readonly>
+										</div>
+										<label class="control-label col-md-2">&deg;C</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Nadi</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="nadi" name="nadi" placeholder="Nadi" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4">Pernapasan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="pernapasan" name="pernapasan" placeholder="Pernapasan" readonly>
+										</div>
+										<label class="control-label col-md-2">x/menit</label>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-md-4" >Berat Badan</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" id="berat" name="berat" placeholder="Berat Badan" readonly>
+										</div>
+										<label class="control-label col-md-2">Kg</label>
+									</div>
+						  		</fieldset>
+
+				        	</div>
+			        		
+			        		<div class="modal-footer">
+			        			<input type="hidden" id="visit_id" value="<?php echo $this->session->userdata('visit_id'); ?>">
+			 			     	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<br>
         </div>
 
         <div class="tab-pane" id="makan">
         	<div class="dropdown">
 	            <div id="titleInformasi">Permintaan Makan</div>
-		        <div class="btnBawah" id="btnBawahOrderMakan"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+		        <div class="btnBawah" id="btnBawahOrderMakan"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 		   	</div>
 		    <br>
 
             <div class="informasi" id="infoMakan">
             	<form class="form-horizontal" role="form">
 	          		<div class="form-group">
-						<label class="control-label col-md-3">Waktu Permintaan Makan</label>
+						<label class="control-label col-md-3">Tanggal</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggalpermintaanmakan" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-md-3" >Nama Ruang</label>
-						<div class="col-md-2">			
-							<input class="form-control" type="text" id="namaruangbersalin" disabled="">		
-						</div>							
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Nomor Bed</label>
-						<div class="col-md-2">			
-							<input class="form-control" type="text" id="nomorbedbersalin" disabled="">		
+						<label class="control-label col-md-3" >Tipe Diet Penyakit</label>
+						<div class="col-md-2">
+							<select class="form-control select" name="tipediet" >
+								<option value="" selected>Pilih</option>
+								<option value="">blm tau </option>
+								<option value="">isinya apa ?</option>							
+							</select>			
 						</div>							
 					</div>
 
 					<div class="form-group">
 						<label class="control-label col-md-3" >Paket Makanan</label>
-						<div class="col-md-3">			
-							<input type="hidden" id="id_paket">			
-							<input type="text" id="searchmakanbersalin" class="form-control" placeholder="Search Paket Makanan" data-toggle="modal" data-target="#searchPaketMakanan">
+						<div class="col-md-2">			
+							<select class="form-control select" name="paketmakan">
+								<option value="" selected>Pilih</option>
+								<option value="">ini isinya </option>
+								<option value="">difilter berdasarkan tipe diet penyakit dan kelas kamar</option>							
+							</select>	
 						</div>							
 					</div>
 
 					<div class="form-group">
 						<label class="control-label col-md-3" >Keterangan</label>
-						<div class="col-md-5">			
-							<textarea class="form-control" rows="3" id="keteranganmakan"></textarea>
+						<div class="col-md-4">			
+							<textarea class="form-control" id="keterangan"></textarea>
 					 	</div>
 													
 					</div>
 
-					<div class="modal fade" id="searchPaketMakanan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<!-- 	<div class="modal fade" id="searchPaketMakanan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -2288,23 +4052,23 @@
 			        			<div class="modal-body">
 				        			<div class="form-group">
 										<div class="form-group">	
-											<div class="col-md-3" style="margin-left:35px;">
+											<div class="col-md-5" style="margin-left:15px;">
 												<input type="text" class="form-control" name="katakuncipaket" id="katakuncipaket" placeholder="Nama paket"/>
 											</div>
 											<div class="col-md-2">
 												<button type="button" class="btn btn-info">Cari</button>
 											</div>	
 										</div>		
-										<div style="margin-left:20px; margin-right:20px;"><hr></div>
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
 										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchMakan" style="width:90%;">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa">
 												<thead>
-													<tr class="warning">
-														<td>Nama Paket</td>
-														<td width="10%">Pilih</td>
+													<tr class="info">
+														<th>Nama Paket</th>
+														<th width="10%">Pilih</th>
 													</tr>
 												</thead>
-												<tbody id="t_body_paket">
+												<tbody>
 													<tr>
 														<td>Paket Kremes</td>
 														<td style="text-align:center"><a href="#"><i class="glyphicon glyphicon-check"></i></a></td>
@@ -2323,92 +4087,185 @@
 						      	</div>
 							</div>
 						</div>
-					</div>
+					</div> -->
 
 					<div class="form-group">
-						<label class="control-label col-md-3" ></label>
-						<div class="col-md-6">			
-							<br>
-							<button type="submit" id="tombolMakan" class="btn btn-success">Tambah</button>		
+						<label class="control-label col-md-3" > 
+						</label>
+						<div class="col-md-7">			
+						<br>
+						<button type="reset" class="btn btn-warning">Reset </button></a>		
+					 	<button type="submit" id="tombolMakan" class="btn btn-success">Tambah </button></a>		
 					 	</div>							
-					</div>	<br>
+					</div>	
 				</form>
 			</div>	
 
 			<div class="dropdown">
-	            <div id="titleInformasi">Table Daftar Makanan Pasien</div>
-	          	<div class="btnBawah" id="btnDaftarmakan"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+	            <div id="titleInformasi">Riwayat Permintaan Makan </div>
+	          	<div class="btnBawah" id="btnDaftarmakan"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
 	        </div>
 	        <br>
 
             <div class="tabelinformasi" id="tabelDaftarMakan" >
-              	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover" id="tabeldaftarmakan" >
+              	<div class="portlet-body" style="margin: 0px 20px 0px 20px">
+					<table class="table table-striped table-bordered table-hover tableDT" >
 						<thead>
 							<tr class="info">
-								<th>Tanggal Masuk </th>
-								<th>Nama Ruangan</th>
-								<th>No bed</th>
-								<th>Jenis Makanan</th>
-								<th>Tipe</th>
+								<th width="20">No</th>
+								<th>Tanggal</th>
+								<th>Tipe Diet Penyakit</th>
+								<th>Paket Makanan</th>
 								<th>Keterangan</th>
-								<th>Kelas</th>
+								<th>Status</th>
 								<th>Action</th>
 							</tr>
 						</thead>
-						<tbody id="tbody_tbl_permintaan">
+						<tbody>
 							<tr>
-								<td>11/12/2015</td>
-								<td>Tasdik</td>
-								<td>2b</td>										
-								<td>Telur</td>
-								<td>Goreng</td>
+								<td>1</td>
+								<td style="text-align:center">11 Desember 2015</td>
+								<td>Apa aja</td>
+								<td>Telur lah</td>
 								<td>3x sehari</td>
-								<td>VIP</td>
+								<td>Belum Dikirim</td>
 								<td style="text-align:center">
-									<a href="#hapus"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+									<a href="#editpaketmakan" data-toggle="modal"><i class="glyphicon glyphicon-edit"  data-toggle="tooltip" data-placement="top" title="Edit"></i></a>
+									<a href="#"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
+									
 								</td>										
 							</tr>
-							<tr>
-								<td>11/12/2015</td>
-								<td>Tasdik</td>
-								<td>2b</td>										
-								<td>Telur</td>
-								<td>Goreng</td>
-								<td>3x sehari</td>
-								<td>VIP</td>
-								<td style="text-align:center">
-									<a href="#hapus"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
-								</td>										
-							</tr>
-							<tr>
-								<td>11/12/2015</td>
-								<td>Tasdik</td>
-								<td>2b</td>										
-								<td>Telur</td>
-								<td>Goreng</td>
-								<td>3x sehari</td>
-								<td>VIP</td>
-								<td style="text-align:center">
-									<a href="#hapus"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
-								</td>										
+																	
 							</tr>
 						</tbody>
 					</table>
-				</div>	<br><br>
+				</div>	<br>
+				<div class="modal fade" id="editpaketmakan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content" >
+							<div class="modal-header">
+		        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+		        				<h3 class="modal-title" id="myModalLabel">Edit Permintaan Makan</h3>
+		        			</div>
+		        			<div class="modal-body">
+		        			<form class="form-horizontal informasi" role="form">
+								<div class="form-group">
+									<label class="control-label col-md-4">Tanggal</label>
+									<div class="col-md-5" >
+										<div class="input-icon">
+											<i class="fa fa-calendar"></i>
+											<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" >Tipe Diet Penyakit</label>
+									<div class="col-md-5">
+										<select class="form-control select" name="tipediet" >
+											<option value="" selected>Pilih</option>
+											<option value="">blm tau </option>
+											<option value="">isinya apa ?</option>							
+										</select>			
+									</div>							
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" >Paket Makanan</label>
+									<div class="col-md-5">			
+										<select class="form-control select" name="paketmakan">
+											<option value="" selected>Pilih</option>
+											<option value="">ini isinya </option>
+											<option value="">difilter berdasarkan tipe diet penyakit dan kelas kamar</option>							
+										</select>	
+									</div>							
+								</div>
+
+								<div class="form-group">
+									<label class="control-label col-md-4" >Keterangan</label>
+									<div class="col-md-5">			
+										<textarea class="form-control" id="keterangan"></textarea>
+								 	</div>
+																
+								</div>
+			        				
+							</form>
+								
+		        			</div>
+		        			<div class="modal-footer">
+		        				<button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
+		 			       		<button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+					      	</div>
+						</div>
+					</div>
+				</div>
 			</div>	
         </div>
 
-        <div class="tab-pane" id="pindah">
-			<div class="dropdown">
-	            <div id="titleInformasi">Pindah Pasien</div>
-	            <div class="btnBawah" id="btnBawahPindah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+        <div class="tab-pane" id="catatan">
+        	<div class="dropdown" id="btnBawahBersalin">
+            	<div id="titleInformasi">Tambah Kegiatan Bersalin</div>
+            	<div class="btnBawah" ><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
             </div>
             <br>
-            <div class="informasi" id="infoPindah">
-            	<form class="form-horizontal" role="form" id="formpindahkamar">
+            <div class="informasi" id="infoBersalin">
+            	<form class="form-horizontal" role="form">
 	            	<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Pindah Kamar</label>
+						<label class="control-label col-md-3" >Jenis Kegiatan
+						</label>
+						<div class="col-md-2">			
+							<select class="form-control select" name="pilJnsKegiatan" id="pilJnsKegiatan">
+								<option value="" selected>Pilih</option>
+								<option value="Persalinan">Persalinan</option>
+								<option value="Non Persalinan">Non Persalinan</option>
+							</select>
+						</div>					
+					</div>	
+
+					<div class="form-group">
+						<label class="control-label col-md-3" >Kegiatan
+						</label>
+						<div class="col-md-2">			
+							<select class="form-control select" name="pilKegiatan" id="pilKegiatan">
+								<option value="" selected>Pilih</option>
+								<option value="Kegiatan A">Kegiatan A</option>
+								<option value="Kegiatan B">Kegiatan B</option>
+								<option value="Kegiatan C">Kegiatan C</option>
+							</select>
+						</div>							
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" >Rujukan
+						</label>
+						<div class="col-md-2">			
+							<select class="form-control select" name="rujukan" id="rujukan">
+								<option value="" selected>Pilih</option>
+								<option value="Rumah Sakit">Rumah Sakit </option>
+								<option value="Bidan">Bidan</option>
+								<option value="Puskesmas">Puskesmas</option>
+								<option value="Faskes Lainnya">Faskes Lainnya </option>
+								<option value="Non Medis">Non Medis</option>
+							</select>
+						</div>							
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-md-3" >Status
+						</label>
+						<div class="col-md-2">			
+							<select class="form-control select" name="rujukan" id="rujukan">
+								<option value="" selected>Pilih</option>
+								<option value="hidup" selected>Hidup</option>
+								<option value="mati" selected>Mati</option>
+								
+							</select>
+						</div>							
+					</div>
+
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Tanggal Pelaksanaan</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
@@ -2418,152 +4275,8 @@
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-md-3" >Pilihan Unit
+						<label class="control-label col-md-3" >Dirujuk
 						</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="pilUnit" id="pilUnit">
-								<?php  
-									if (isset($alldepartment)) {
-										if (!empty($alldepartment)) {
-											foreach ($alldepartment as $value) {
-												echo '<option value="'.$value['dept_id'].'">'.$value['nama_dept'].'</option>';
-											}
-										}
-									}
-								?>
-							</select>
-						</div>							
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Kelas Kamar
-						</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="klsKamar" id="klsKamar">
-								<option value="VIP" selected>VIP</option>
-								<option value="I">I</option>
-								<option value="II">II</option>
-							</select>
-						</div>							
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >
-						</label>
-						<div class="col-md-7">			
-						<a href="#tambahPasien"><button type="submit" id="tombolPasien" class="btn btn-success">
-								Tambah </button></a>		
-					 	</div>							
-					</div>
-				</form>	
-				<br>
-            </div>
-
-            <div class="dropdown">
-	            <div id="titleInformasi">Status Pindah Pasien</div>
-	            <div class="btnBawah" id="btnBawahInventori"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-	        <br>
-
-            <div class="tabelinformasi" id="infoInventori">
-              	<div class="portlet-body" style="margin: 0px 40px 0px 10px">
-					<table class="table table-striped table-bordered table-hover table-responsive" >
-						<thead>
-							<tr class="info">
-								<th>No. </th>
-								<th>Tanggal Tindakan</th>
-								<th>Dokter</th>
-								<th>Tujuan Order</th>
-								<th>Keterangan Order</th>
-								<th>Status Hasil</th>
-								<th> </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>11</td>
-								<td>4/18/2015</td>
-								<td>Labolatorium</td>										
-								<td>APS</td>
-								<td>Bebas </td>
-								<td>BELUM</td>
-								<td style="text-align:center">
-									<a href="#hapusResep">
-									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
-								</td>										
-							</tr>
-							<tr>
-								<td>11</td>
-								<td>4/18/2015</td>
-								<td>Labolatorium</td>										
-								<td>APS</td>
-								<td>Bebas </td>
-								<td>BELUM</td>
-								<td style="text-align:center">
-									<a href="#hapusResep">
-									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>
-								</td>										
-							</tr>
-							<tr>
-								<td>11</td>
-								<td>4/18/2015</td>
-								<td>Labolatorium</td>										
-								<td>APS</td>
-								<td>Bebas </td>
-								<td>BELUM</td>
-								<td style="text-align:center">
-									<a href="#hapusResep">
-									<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"	></i></a>
-								</td>										
-							</tr>
-						</tbody>
-					</table>
-		
-				</div>	<br><br>
-			</div>	
-		</div>
-
-        <div class="tab-pane" id="catatan">
-        	<div class="dropdown">
-            	<div id="titleInformasi">Tambah Kegiatan Bersalin</div>
-            	<div class="btnBawah" id="btnBawahBersalin"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-            <br>
-            <div class="informasi" id="infoBersalin">
-            	<form class="form-horizontal" role="form" method="post" id="submitVisitBersalin">
-	            	<div class="form-group">
-						<label class="control-label col-md-3" >Jenis Kegiatan</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="pilJnsKegiatan" id="pilJnsKegiatan">
-								<option value="Non Persalinan" selected>Non Persalinan</option>
-								<option value="Persalinan">Persalinan</option>
-							</select>
-						</div>					
-					</div>	
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Kegiatan</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="pilKegiatan" id="pilKegiatan">
-								<option value="Kegiatan A" selected>Kegiatan A</option>
-								<option value="Kegiatan B">Kegiatan B</option>
-								<option value="Kegiatan C">Kegiatan C</option>
-							</select>
-						</div>							
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Pelaksanaan</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggalpelaksanaanbersalin" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Dirujuk</label>
 						<div class="col-md-2">			
 							<select class="form-control select" name="statusRujukan" id="statusRujukan">
 								<option value="Tidak" selected>Tidak</option>
@@ -2572,43 +4285,31 @@
 						</div>							
 					</div>
 
-					<div class="form-group" id="asalRujukan">
-						<label class="control-label col-md-3" >Asal Rujukan</label>
-						<div class="col-md-2">			
-							<select class="form-control select" name="rujukan" id="rujukan">
-								<option value="Non Rujukan" selected>Non Rujukan</option>
-								<option value="Rumah Sakit">Rumah Sakit</option>
-								<option value="Bidan">Bidan</option>
-								<option value="Puskesmas">Puskesmas</option>
-								<option value="Faskes Lainnya">Faskes Lainnya</option>
-								<option value="Non Medis">Non Medis</option>
-							</select>
-						</div>							
-					</div>
-
-
 					<div class="form-group" id="tujuanRujuk">
-						<label class="control-label col-md-3" >Tujuan Rujukan</label>
+						<label class="control-label col-md-3" >Tujuan Rujukan
+						</label>
 						<div class="col-md-2">			
-							<select class="form-control select" name="tujuanRujukann" id="tujuanRujukan">
-								<?php  
-									if (!empty($dept_rujukan)) {
-										foreach ($dept_rujukan as $key) {
-											echo '<option value="'.$key['dept_id'].'">'.$key['nama_dept'].'</option>';
-										}
-									}
-								?>
+							<select class="form-control select" name="tujuanRujuk" id="tujuanRujuk">
+								<option value="Laboratorium" selected>Laboratorium</option>
+								<option value="EKG">EKG</option>
+								<option value="USG">USG</option>
 							</select>
 						</div>							
 					</div>
-					
 					
 					<div class="form-group">
-						<label class="control-label col-md-3" >Dokter Peminta
+						<label class="control-label col-md-3" >Dokter Penolong
 						</label>
 						<div class="col-md-3">
-							<input type="text" id="namadokterbersalin" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokterpeminta">
-							<input type="hidden" id="iddokterbersalin">
+							<input type="text" style="cursor:pointer;" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokterpeminta" readonly>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" >Asisten Penolong
+						</label>
+						<div class="col-md-3">
+							<input type="text" style="cursor:pointer;" class="form-control" placeholder="Search Asisten" data-toggle="modal" data-target="#searchAsisten" readonly>
 						</div>
 					</div>
 
@@ -2622,23 +4323,23 @@
 			        			<div class="modal-body">
 				        			<div class="form-group">
 										<div class="form-group">	
-											<div class="col-md-3" style="margin-left:35px;">
+											<div class="col-md-5" style="margin-left:15px;">
 												<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
 											</div>
 											<div class="col-md-2">
 												<button type="button" class="btn btn-info">Cari</button>
 											</div>	
 										</div>		
-										<div style="margin-left:20px; margin-right:20px;"><hr></div>
-										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelDokterBersalin" style="width:90%;">
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="portlet-body" style="margin: 0px 20px 0px 10px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa">
 												<thead>
-													<tr class="warning">
+													<tr class="info">
 														<td>Nama Dokter</td>
 														<td width="10%">Pilih</td>
 													</tr>
 												</thead>
-												<tbody id="t_body_dokterbersalin">
+												<tbody>
 													<tr>
 														<td>Jems</td>
 														<td style="text-align:center"><i class="glyphicon glyphicon-check"></i></td>
@@ -2659,230 +4360,44 @@
 						</div>
 					</div>
 
-					
-					<div class="form-group">
-						<label class="control-label col-md-3" >Keterangan Kegiatan</label>
-						<div class="col-md-7">
-							<textarea class="form-control" rows="3" id="ketKegiatan"></textarea>
-						</div>							
-					</div>
-					
-					<div class="form-group">
-						<label class="control-label col-md-3" > </label>
-						<div class="col-md-6">			
-						<br>
-						<button type="submit" class="btn btn-success">Tambah </button>		
-					 	</div>							
-					</div>	
-				</form>
-				<br>
-            </div>            
-		</div>
-
-		<div class="tab-pane" id="ibu">
-			<div class="dropdown">
-        		<div id="titleInformasi">Tambah Catatan Kesehatan Ibu Hamil</div>
-            	<div class="btnBawah" id="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-            </div>
-          	<br>
-
-            <div class="informasi" id="info1">
-	            <form class="form-horizontal" role="form">
-
-		            <table width="95%">
-		            	<tr>
-		            		<td width="50%">
-		            			<div class="form-group">
-									<label class="control-label col-md-5">Hari Pertama Haid</label>
-									<div class="col-md-4" >
-										<div class="input-icon">
-											<i class="fa fa-calendar"></i>
-											<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Hari Terlaksana Persalinan</label>
-									<div class="col-md-4" >
-										<div class="input-icon">
-											<i class="fa fa-calendar"></i>
-											<input type="text" style="cursor:pointer;" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
-										</div>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Lingkar Lengan Atas</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="lingkarLengan" placeholder="Ex: 12">
-									</div>
-									<label class="control-label">Cm</label>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Tinggi Badan</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="tinggi" placeholder="Ex: 12">
-									</div>
-									<label class="control-label">Cm</label>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Penggunaan Kontrasepsi</label>
-									<div class="col-md-4">
-										<input type="text" class="form-control" name="kontrasepsi" placeholder="Kontrasepsi">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Riwayat Alergi</label>
-									<div class="col-md-4">
-										<input type="text" class="form-control" name="alergi" placeholder="Alergi">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Penolong Persalinan Terakhir</label>
-									<div class="col-md-4">
-										<input type="text" class="form-control" placeholder="Penolong" data-toggle="modal" data-target="#penolong">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5">Status imunisasi TT</label>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="imune" placeholder="Status">
-									</div>
-								</div>
-		            		</td>
-
-		            		<td width="50%">
-		            			<div class="form-group">
-									<label class="control-label col-md-5"> Hamil Ke - </label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="hamilke" >
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jumlah Persalinan</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="jumlah">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jumlah Keguguran</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="gugur">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jumlah Anak Hidup</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="hidup">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jumlah Lahir Mati</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="mati">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jumlah Anak lahir prematur</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="kurang">
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Jarak kelahiran ini dengan anak terakhir</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="jarak">
-									</div>
-									<div class="col-md-3">
-										<select class="form-control select" name="jarak" >
-											<option value="" selected>Hari</option>
-											<option value="Breki">Minggu</option>
-											<option value="Arya">Bulan</option>
-											<option value="Jems">Tahun</option>
-										</select>	
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label class="control-label col-md-5"> Imunisasi TT Terakhir</label>
-									<div class="col-md-2">
-										<input type="text" class="form-control" name="imuneter">
-									</div>
-									<div class="col-md-3">
-										<select class="form-control select" name="imuneter" >
-											<option value="" selected>Hari</option>
-											<option value="Breki">Minggu</option>
-											<option value="Arya">Bulan</option>
-											<option value="Jems">Tahun</option>
-										</select>	
-									</div>
-								</div>
-		            		</td>
-		            	</tr>
-		            	<tr>
-		            		<td colspan="2">
-		            			<hr class="biru">
-		            		</td>
-		            	</tr>
-		            </table>				
-					<center>
-						<button type="submit" id="simpanOver" class="btn btn-success">Simpan</button>
-						&nbsp;&nbsp;
-					 	<a href="#resetResume"><button type="submit" class="btn btn-warning">Reset </button></a>	
-					</center> <br>
-
-					<div class="modal fade" id="penolong" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal fade" id="searchAsisten" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
 			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-			        				<h3 class="modal-title" id="myModalLabel">Penolong </h3>
+			        				<h3 class="modal-title" id="myModalLabel">Pilih Asisten</h3>
 			        			</div>
 			        			<div class="modal-body">
-									<div class="form-group" style="margin-left: 5px;">	
-										<div class="col-md-5">
-											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama dokter"/>
+				        			<div class="form-group">
+										<div class="form-group">	
+											<div class="col-md-5" style="margin-left:15px;">
+												<input type="text" class="form-control" name="katakunci" id="key" placeholder="Nama Asisten"/>
+											</div>
+											<div class="col-md-2">
+												<button type="button" class="btn btn-info">Cari</button>
+											</div>	
+										</div>		
+										<div style="margin-left:10px; margin-right:10px;"><hr></div>
+										<div class="portlet-body" style="margin: 0px 20px 0px 10px">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelAsisten">
+												<thead>
+													<tr class="info">
+														<td>Nama Asisten</td>
+														<td width="10%">Pilih</td>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>Jems</td>
+														<td style="text-align:center"><i class="glyphicon glyphicon-check"></i></td>
+													</tr>
+													<tr>
+														<td>Putu</td>
+														<td style="text-align:center"><i class="glyphicon glyphicon-check"></i></td>
+													</tr>
+												</tbody>
+											</table>												
 										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Cari</button>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-success">Tambah Penolong</button>
-										</div>	
-									</div>	
-									<br>	
-									<div style="margin-left:5px; margin-right:5px;"><hr></div>
-									<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-										<table class="table table-striped table-bordered table-hover" id="tabelSearchDiagnosa">
-											<thead>
-												<tr class="warning">
-													<td>Nama Dokter</td>
-													<td width="10%">Pilih</td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>Jems</td>
-													<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
-												</tr>
-												<tr>
-													<td>Putu</td>
-													<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
-												</tr>
-											</tbody>
-										</table>												
 									</div>
 			        			</div>
 			        			<div class="modal-footer">
@@ -2890,204 +4405,189 @@
 						      	</div>
 							</div>
 						</div>
-					</div>	
-				</form>
-			</div>
-		</div>
-		
-        <div class="tab-pane" id="daftar">
-	        <div class="dropdown">
-	            <div id="titleInformasi">Daftar Kelahiran Baru</div>
-	            <div class="btnBawah" id="btnBawahLahir"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
-	        </div>
-            <br>
-            <div class="informasi" id="infoKelahiran">
-            	<form class="form-horizontal" role="form" id="submitKelahiran" method="post">
-	            	<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Kelahiran</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tglKelahiran" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy HH:ii" data-provide="datetimepicker" value="<?php echo date("d/m/Y H:i");?>" required>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group" >
-						<label class="control-label col-md-3" >Status Kelahiran</label>
-						<div class="col-md-2">	
-							<select class="form-control select" name="statusLahir" id="statusLahir">
-								<option value="Hidup" selected>Hidup</option>
-								<option value="Mati">Mati</option>
-							</select>
-						</div>					
 					</div>
 
 					<div class="form-group">
-						<label class="control-label col-md-3" >Diagnosa</label>
-						<div class="col-md-1">
-							<input type="text" class="form-control" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosaLahir">
-						</div>
-						<div class="col-md-2">
-							<input type="text" class="form-control" placeholder="Keterangan" data-toggle="modal" data-target="#searchDiagnosaLahir">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Nama</label>
-						<div class="col-md-4">			
-							<input type="text" class="form-control" id="nama" name ="nama" placeholder="Nama">
+						<label class="control-label col-md-3" >Keterangan Kegiatan
+						</label>
+						<div class="col-md-4">
+							<textarea class="form-control" id="ketKegiatan"></textarea>
 						</div>							
 					</div>
-
+					
 					<div class="form-group">
-						<div class="form-inline">
-							<label class="control-label col-md-3">Jenis Kelamin</label>
-							<div class="col-md-4">
-								<div class="radio-list">
-									<label>
-										<input type="radio" style="margin-left: 0px" name="jk" id="newJenisKelamin" value="Pria" data-title="Pria" checked="checked" /><span style="margin-left:5px">Pria</span> 
-									</label >
-									<label style="margin-left: 10px">
-										<input type="radio" style="margin-left: 10px" name="jk" id="newJenisKelamin2" value="Wanita" data-title="Wanita"/><span style="margin-left:5px">Wanita</span> 
-									</label>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Berat Badan / panjang Badan</label>
-						<div class="col-md-1">		
-							<input type="text" class="form-control numberrequired" name="beratBadan" id="beratBadan" placeholder="Gr."> 
-						</div>		
-						<div class="col-md-1">		
-							<input type="text" class="form-control numberrequired" name="pjgBadan" id="pjgBadan" placeholder="cm">
-						</div>						
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Penolong</label>
-						<div class="col-md-3">			
-							<select class="form-control select" name="penolong" id="penolong">
-								<option value="Arya" selected>Arya</option>
-								<option value="Jems">Jems</option>
-							</select>
-						</div>							
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" >Asisten</label>
-						<div class="col-md-3">			
-							<select class="form-control select" name="asisten" id="asisten">
-								<option value="Arya" selected>Arya</option>
-								<option value="Jems">Jems</option>
-							</select>
-						</div>							
-					</div>
-
-					<div class="form-group">
-						<div class="form-inline">
-							<label class="control-label col-md-3" >Status Fisik</label>
-							<div class="col-md-6">		
-								<label class="checkbox-inline"><input type="checkbox" name="statusfisik" value="Anus">Anus Hilang</label>
-								<label class="checkbox-inline"><input type="checkbox" name="statusfisik" value="Cacat">Cacat Fisik</label>
-							</div>							
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="control-label col-md-3" ></label>
-						<div class="col-md-6">		
-							<button type="submit" id="tombolBayiTambah" class="btn btn-success">Tambah </button>		
+						<label class="control-label col-md-3" >
+						</label>
+						<div class="col-md-7">			
+						<br>
+						<button type="reset" class="btn btn-danger">Reset </button>&nbsp;	
+						<a href="#tambahBersalin">
+							<button type="submit" class="btn btn-success">Tambah </button></a>		
 					 	</div>							
 					</div>	
-					<br><br><br><br>
 				</form>
-            </div>
-            <div class="modal fade" id="searchDiagnosaLahir" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-	        				<h3 class="modal-title" id="myModalLabel">Pilih Diagnosa</h3>
-	        			</div>
-	        			<div class="modal-body">
-							<div class="form-group">	
-								<div class="col-md-5">
-									<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Kata kunci"/>
-								</div>
-								<div class="col-md-2">
-									<button type="button" class="btn btn-info">Cari</button>
-								</div>	
-							</div>	
-							<br>	
-							<div style="margin-left:5px; margin-right:5px;"><hr></div>
-							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover" id="tabelSearchDiagnosa">
-									<thead>
-										<tr class="warning">
-											<td width="30%;">Kode Diagnosa</td>
-											<td>Keterangan</td>
-											<td width="10%">Pilih</td>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>99999</td>
-											<td>Diagnosa Lain-lain</td>
-											<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
-										</tr>
-									</tbody>
-								</table>												
-							</div>
-	        			</div>
-	        			<div class="modal-footer">
-	 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-				      	</div>
+				<br>
+            </div>        
+
+            <div class="dropdown" id="btnBawahMintaBarang">
+            	<div id="titleInformasi">Riwayat Kegiatan Bersalin</div>
+            	<div class="btnBawah" ><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div> 
+            </div> 
+            <div class="tabelinformasi" id="infoMintaBarang">
+				<div class="portlet box red">
+					<div class="portlet-body" style="margin: 25px 10px 0px 10px">
+						<table class="table table-striped table-bordered table-hover table-responsive">
+							<thead>
+								<tr class="info" >
+									<th style="width:20px"> No.</th>
+									<th > Jenis Kegiatan </th>
+									<th > Kegiatan </th>
+									<th > Rujukan </th>
+									<th > Status </th>
+									<th > Dirujuk </th>
+									<th > Dokter Penolong</th>
+									<th > Asisten</th>
+									<th > Tanggal Pelaksanaan </th>
+									<th width="30"> Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>	
+									<td>1</td>
+									<td>Bersalin</td>
+									<td>Melahirkan</td>
+									<td>RS lain</td>
+									<td>Sudah</td>
+									<td>Jems</td>
+									<td>Khrisna</td>
+									<td>sesudah</td>
+									<td>12 Desember 2012</td>
+									<td style="text-align:center" ><a href="#"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a></td>			
+								</tr>
+							</tbody>
+						</table>
 					</div>
-				</div>
-			</div>
+					
+				</div>            	
+            </div>  
+            <br>
 		</div>
 
         <div class="tab-pane" id="resume">
         	<div class="dropdown">
-	            <div id="titleInformasi">Resume Pulang Pasien</div>
-	            <div id="btnBawahResumePulang"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
+	            <div id="titleInformasi">Resume Medis <span style="color:red; margin-left:30px;font-style:italic;">WAJIB DIISI!</span> </div>
+	            <!-- <div class="btnBawah" id="btnBawahResumePulang"><i class="glyphicon glyphicon-chevron-up" style="margin-right: 5px"></i></div>  -->
             </div>
 
             <div class="informasi" id="infoResumePulang">
-            	<form class="form-horizontal" role="form" id="formresume">
-            		<input type="hidden" id="inap_id" value="<?php echo $pasien_on_bed['inap_id']?>" data-required="1" class="form-control"/>
-					<input type="hidden" id="biaya_per_hari" value="<?php echo $pasien_on_bed['tarif_kamar']?>" data-required="1" class="form-control"/>
-					<input type="hidden" id="old_kamar_id" value="<?php echo $pasien_on_bed['kamar_id']?>" data-required="1" class="form-control"/>
-					<input type="hidden" id="old_bed_id" value="<?php echo $pasien_on_bed['bed_id']?>" data-required="1" class="form-control"/>
+            	<form class="form-horizontal" role="form">
             		<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Masuk RS</label>
+						<label class="control-label col-md-3">Waktu Keluar <span class="required">* </span></label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" id="tglMasukRS" class="form-control isian calder" disabled data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo $visit_ri_info['waktu_masuk'];?>">
-							</div>
-						</div>
-					</div>
-            		<div class="form-group">
-						<label class="control-label col-md-3">Tanggal Keluar RS</label>
-						<div class="col-md-2" >
-							<div class="input-icon">
-								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tglKeluarRS" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
 							</div>
 						</div>
 					</div>	
-	
+					
 					<div class="form-group">
-						<label class="control-label col-md-3" >Alasan Keluar
+						<label class="control-label col-md-3">Diagnosa Masuk <span class="required">* </span></label>
+						<div class="col-md-1">
+							<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_utama" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Dokter Pengirim</label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter" id="dokkirim">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Dokter Penanggung Jawab</label>
+						<div class="col-md-3">
+							<input type="text" class="form-control" placeholder="Search Dokter" data-toggle="modal" data-target="#searchDokter" id="dokrawat">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Anamnesa & Pemeriksaan Fisik</label>
+						<div class="col-md-4">
+							<textarea class="form-control isian" id="anamnesa" name="anamnesa" placeholder="Anamnesa"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Diagnosa Akhir <span class="required">* </span></label>
+						<div class="col-md-1">
+							<input type="text" style="cursor:pointer;" class="form-control isian" id="kode_utama" placeholder="Kode" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" style="cursor:pointer;" class="form-control isian" placeholder="Nama Diagnosa" data-toggle="modal" data-target="#searchDiagnosa" readonly>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Diagnosa Sekunder</label>
+						<div class="col-md-1">
+							<input type="text" class="form-control" id="kode_sek1" placeholder="Kode" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+						</div>
+						<label class="control-label">1</label>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3"></label>
+						<div class="col-md-1">
+							<input type="text" class="form-control" id="kode_sek2" placeholder="Kode" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+						</div>
+						<label class="control-label">2</label>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3"></label>
+						<div class="col-md-1">
+							<input type="text" class="form-control" id="kode_sek3" placeholder="Kode" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+						</div>
+						<label class="control-label">3</label>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-md-3"></label>
+						<div class="col-md-1">
+							<input type="text" class="form-control" id="kode_sek4" placeholder="Kode" readonly>
+						</div>
+						<div class="col-md-2">
+							<input type="text" class="form-control" placeholder=" Diagnosa" readonly>
+						</div>
+						<label class="control-label">4</label>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" >Detail Diagnosa</label>
+						<div class="col-md-4">
+							<textarea class="form-control" id="detailDiagnosa" name="detailDiagnosa" placeholder="Detail Diagnosa"></textarea>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3" >Alasan Keluar<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
 							<select class="form-control select" name="alasanKeluarPasien" id="alasanKeluarPasien">
-								<option value="Pasien Dipulangkan" selected>Pasien Dipulangkan</option>									
-								<option value="Pasien Dipindahkan">Pasien Dipindahkan</option>
+								<option value="" selected>Pilih</option>									
+								<option value="Pasien Dipulangkan">Pasien Dipulangkan</option>									
+								<option value="Pasien Dipindahkan">Pasien Pindah Poli Lain</option>
 								<option value="Atas Permintaan Sendiri">Atas Permintaan Sendiri</option>
 								<option value="Rujuk Rumah Sakit Lain"  >Rujuk ke Rumah Sakit Lain</option>
 								<option value="Pasien Meninggal" >Pasien Meninggal</option>
@@ -3107,21 +4607,21 @@
 						<label class="control-label col-md-3" >Alasan Pindah
 						</label>
 						<div class="col-md-4">			
-						<textarea class="form-control" rows="3" id="alasanPindah"></textarea>
-						<br>
+							<textarea class="form-control" rows="3" id="alasanPindah"></textarea>
+							<br>
 					 	</div>
 					</div>
 					
 					<div class="form-group" id="isiRujuk">
-						<label class="control-label col-md-3" >Isian Rumah Sakit Rujukan
+						<label class="control-label col-md-3" >Isian Rumah Sakit Rujukan<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
-						<input type="text" class="form-control" id="isianRSRujuk" name="isianRSRujuk" placeholder="Rumah Sakit Rujukan">
+							<input type="text" class="form-control" name="isianRSRujuk" placeholder="Rumah Sakit Rujukan">
 					 	</div>
 					</div>				
 
 					<div class="form-group" id="semuaPoli">
-						<label class="control-label col-md-3" >Semua Poli
+						<label class="control-label col-md-3" >Semua Poli<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
 							<select class="form-control select" name="allPoli" id="allPoli">
@@ -3133,7 +4633,7 @@
 					</div>
 
 					<div class="form-group" id="formRekDokter">
-						<label class="control-label col-md-3" >Rekomendasi Dokter
+						<label class="control-label col-md-3" >Rekomendasi Dokter<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
 							<select class="form-control select" name="rekDokter" id="rekDokter">
@@ -3145,7 +4645,7 @@
 					</div>
 					
 					<div class="form-group" id="formRekUnit">
-						<label class="control-label col-md-3" >Rekomendasi Unit
+						<label class="control-label col-md-3" >Rekomendasi Unit<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
 							<select class="form-control select" name="rekUnit" id="rekUnit">
@@ -3157,32 +4657,83 @@
 					</div>
 
 					<div class="form-group" id="detPasienMeninggal">
-						<label class="control-label col-md-3" >Detail Pasien Meninggal
+						<label class="control-label col-md-3" >Detail Pasien Meninggal<span class="required">* </span>
 						</label>
 						<div class="col-md-4">			
 							<select class="form-control select" name="detPasDie" id="detPasDie">
 								<option value="sebelum dirawat" selected>Meninggal sebelum dirawat</option>
 								<option value="sesudah dirawat > 48">Meninggal sesudah dirawat > 48 jam</option>
-								<option value="sesudah dirawat < 48">Meninggal sesudah dirawat &#8924; 48 jam</option>
+								<option value="sesudah dirawat < 48">Meninggal sesudah dirawat < 48 jam</option>
 							</select>
 					 	</div>							
 					</div>
 
 					<div class="form-group" id="pasienMeninggal">
-						<label class="control-label col-md-3">Waktu Kematian</label>
+						<label class="control-label col-md-3">Waktu Pasien Meninggal</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="waktumeninggal" class="form-control isian calder" readonly data-date-format="dd/mm/yyyy HH:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
+								<input type="text" style="cursor:pointer;" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy hh:ii" data-provide="datetimepicker" placeholder="<?php echo date("d/m/Y H:i");?>">
 							</div>
 						</div>
 					</div>
-
+					
 					<div class="form-group" id="ketMati">
-						<label class="control-label col-md-3"> Keterangan Kematian</label>
+						<label class="control-label col-md-3"> Keterangan Kematian
+						</label>
 						<div class="col-md-4">			
-							<textarea class="form-control" rows="3" id="ketMati"></textarea>
+						<textarea class="form-control" rows="3" id="ketMati"></textarea>
 					 	</div>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label col-md-3">Golongan Sebeb Penyakit Luar</label>
+						<div class="col-md-4">
+							<input type="text" style="cursor:pointer;" class="form-control isian" id="golo" placeholder="Golongan Sebab Penyakit" data-toggle="modal" data-target="#searchGolongan" readonly>
+						</div>
+					</div>
+
+					<div class="modal fade" id="searchGolongan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+			        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			        				<h3 class="modal-title" id="myModalLabel">Pilih Golongan Sebab Penyakit Luar</h3>
+			        			</div>
+			        			<div class="modal-body">
+									<div class="form-group">	
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Kata kunci"/>
+										</div>
+										<div class="col-md-2">
+											<button type="button" class="btn btn-info">Cari</button>
+										</div>	
+									</div>	
+									<div style="margin-left:5px; margin-right:5px;"><hr></div>
+									<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+										<table class="table table-striped table-bordered table-hover" id="tabelSearchDiagnosa">
+											<thead>
+												<tr class="info">
+													<td width="30%;">No Daftar Terperinci</td>
+													<td>Golongan Sebab Penyakit Luar</td>
+													<td width="10%">Pilih</td>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>V 01 - V 8</td>
+													<td>Kecelakaan angkutan darat</td>
+													<td style="text-align:center; cursor:pointer;"><a href="#"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>
+												</tr>
+											</tbody>
+										</table>												
+									</div>
+			        			</div>
+			        			<div class="modal-footer">
+			 			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+						      	</div>
+							</div>
+						</div>
 					</div>
 
 					<div class="form-group">
@@ -3191,10 +4742,10 @@
 							<div class="col-md-4">
 								<div class="radio-list">
 									<label>
-										<input type="radio"  name="jeniskasus" id="klama" value="Kasus Lama" checked="checked" /><span style="margin-left:15px">Kasus Lama </span> 
+										<input type="radio"  name="jk" id="klama" value="Kasus Lama"/><span style="margin-left:15px">Kasus Lama </span> 
 									</label>
-									<label style="margin-left: 10px">
-										<input type="radio"  name="jeniskasus" id="kbaru" value="Kasus Baru"/><span style="margin-left:15px">Kasus Baru </span>
+									<label style="margin-left:40px;">
+										<input type="radio"  name="jk" id="kbaru" value="Kasus Baru"/><span style="margin-left:15px">Kasus Baru </span>
 									</label>
 								</div>
 							</div>
@@ -3204,12 +4755,16 @@
 					<div class="form-group">
 						<label class="control-label col-md-3" >
 						</label>
-						<div class="col-md-6">
-							<a href="#simpanResume"><button type="submit" class="btn btn-success">Simpan </button></a>		
+						<div class="col-md-5">
+							<a href="#cancelResume"><button type="submit" class="btn btn-danger">
+								Cancel </button></a>
 							&nbsp;&nbsp;
-					 		<a href="#resetResume"><button type="button" class="btn btn-warning">Reset </button></a>		
+					 		<a href="#resetResume"><button type="submit" class="btn btn-warning">
+								Reset </button></a>		
 							&nbsp;&nbsp;
-							<a href="#cancelResume"><button type="button" class="btn btn-danger">Cancel </button></a>		
+							<a href="#simpanResume"><button type="submit" class="btn btn-success">
+							Simpan </button></a>		
+						
 					 	</div>								
 					</div>
 				</form>	
@@ -3239,10 +4794,10 @@
 						<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							<table class="table table-striped table-bordered table-hover" id="tabelSearchDiagnosa">
 								<thead>
-									<tr class="warning">
-										<td width="30%;">Kode Diagnosa</td>
-										<td>Keterangan</td>
-										<td width="10%">Pilih</td>
+									<tr class="info">
+										<th width="30%;">Kode Diagnosa</th>
+										<th>Keterangan</th>
+										<th width="10%">Pilih</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -3283,9 +4838,9 @@
 						<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							<table class="table table-striped table-bordered table-hover" id="tabelSearchDiagnosa">
 								<thead>
-									<tr class="warning">
-										<td>Nama Dokter</td>
-										<td width="10%">Pilih</td>
+									<tr class="info">
+										<th>Nama Dokter</th>
+										<th width="10%">Pilih</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -3308,6 +4863,5 @@
 			</div>
 		</div>
 
-		
 	</div>		
 </div>			
