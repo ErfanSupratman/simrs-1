@@ -1,6 +1,6 @@
 
 <div class="title">
-	KASIR OBAT
+	PENJUALAN OBAT
 </div>
 <div class="bar">
 		<li style="list-style: none">
@@ -18,7 +18,7 @@
 		<div style="padding-top:10px"></div>
 						
 		<div class="dropdown" style="margin-left:10px;width:98.5%;">
-            <div id="titleInformasi" style=" color:white">Pencarian Invoice Pembelian Obat</div>
+            <div id="titleInformasi" style=" color:white">Pencarian Resep Penjualan Obat</div>
             <div id="btnBawahDataKaryawan" class="btnBawah" style="color:white"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 
 		</div>
 		

@@ -1,52 +1,56 @@
-<div class="title">NICU</div>
+
+<div class="title">
+	NICU
+</div>
 <div class="bar">
-	<li style="list-style: none">
-		<i class="fa fa-home"></i>
-		<a href="<?php echo base_url() ?>dashboard/operator">Dashboard</a>
-		<i class="fa fa-angle-right"></i>
-		<a href="<?php echo base_url() ?>nicu/homenicu">NICU</a>
-	</li>
+		<li style="list-style: none">
+			<i class="fa fa-home"></i>
+			<a href="<?php echo base_url() ?>dashboard/operator">Dashboard</a>
+			<i class="fa fa-angle-right"></i>
+			<a href="<?php echo base_url() ?>nicu/homenicu">NICU</a>
+	 	
+		</li>
+	
 </div>
 <div class="navigation" style="margin-left: 10px" >
-	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-	    <li class="active"><a href="#list" data-toggle="tab">List Pasien Bersalin</a></li>
-	    <li><a href="#kamar" data-toggle="tab">Data Kamar</a></li>
-	    <li><a href="#farmasi" data-toggle="tab">Farmasi dan Logistik</a></li>
-	    <li><a href="#laporan" data-toggle="tab">Laporan</a></li>
-	    <li><a href="#master" data-toggle="tab">Master</a></li>
-	</ul>
+ <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#list" data-toggle="tab">List Pasien Bersalin</a></li>
+    <li><a href="#kamar" data-toggle="tab">Data Kamar</a></li>
+    <li><a href="#farmasi" data-toggle="tab">Farmasi dan Logistik</a></li>
+    <li><a href="#laporan" data-toggle="tab">Laporan</a></li>
+    <li><a href="#master" data-toggle="tab">Master</a></li>
+</ul>
 
-	<div id="my-tab-content" class="tab-content">
-    	<div class="tab-pane active" id="list">
-        	<form method="post" id="search_pasien">
+<div id="my-tab-content" class="tab-content">
+        <div class="tab-pane active" id="list">
             	<div class="search">
-					<label class="control-label col-md-3">Nama Pasien / Rekam Medik <span class="required" style="color : red">* </span></label>
-					<div class="col-md-4">		
-							<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
-			        </div>
-			        <button type="submit" class="btn btn-danger">Cari</button>
-				</div>
-			</form>	<!-- END FORM-->			
-			<!-- END search pasien STATES-->
+
+				<label class="control-label col-md-3">Nama Pasien / Rekam Medik <span class="required" style="color : red">
+							* </span>
+				</label>
+				<div class="col-md-4">		
+						<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
+		        </div>
+		        <button type="submit" class="btn btn-danger">Cari</button>
+				</div>	
+		
+
+				<!-- END FORM-->
+			
+		<!-- END search pasien STATES-->
+
+
 		<!-- BEGIN EXAMPLE TABLE PORTLET-->
 		<br>
 		<br>
 		<hr class="garis">
 		<br>
-		<label class=" col-md-1" style="margin-right:-60px; padding-top:7px;">Filter :</label>
-		<div class="col-md-3" style="margin-right:-20px; margin-top:2px">
-			<div class="input-daterange input-group" id="datepicker">
-			    <input type="text" style="cursor:pointer;" class="input-sm form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly placeholder="<?php echo date("d/m/Y");?>" />
-			    <span class="input-group-addon">to</span>
-			    <input type="text" style="cursor:pointer;" class="input-sm form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" />
-			</div>
-		</div>
-		<br><br>
 		<div class="portlet box red">
 			<div class="portlet-title">
 				<label class="control-label col-md-3">Daftar Rekam Medik</label>
 			</div>
 			<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+			
 				<table class="table table-striped table-bordered table-hover table-responsive">
 					<thead>
 						<tr class="info">
@@ -59,9 +63,28 @@
 							<th> Periksa</th>
 						</tr>
 					</thead>
-					<tbody id="t_body">
+					<tbody>
 						<tr>
-							<td colspan="7"><center>Cari Data Pasien Poli NICU</center></td>						
+							<td>RM0111</td>
+							<td>Arya</td>
+							<td>Laki</td>
+							<td>30 Mei 1994</td>									
+							<td>Bali</td>
+							<td>KTP</td>
+							<td style="text-align:center">
+								<a href="<?php echo base_url() ?>nicu/nicudetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
+							</td>										
+						</tr>
+						<tr>
+							<td>RM0111</td>
+							<td>jems</td>
+							<td>Laki</td>
+							<td>30 Mei 1994</td>										
+							<td>NTT</td>
+							<td>KTP</td>
+							<td style="text-align:center">
+								<a href="<?php echo base_url() ?>nicu/nicudetail" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>
+							</td>										
 						</tr>
 					</tbody>
 				</table>
@@ -78,4 +101,22 @@
         <div class="tab-pane" id="master">        
         </div>
     </div>
+
 </div>
+
+				<!-- BEGIN FORM--><!-- 
+				<form action="#" class="form-horizontal" id="searchPasien">
+					<div class="form-body">
+						<div class="form-group">
+							<label class="control-label col-md-3">#Rekam Medik / Nama Pasien <span class="required">
+							* </span>
+							</label>
+							<div class="col-md-4">
+								<input type="text" id="searchPasienValue" name="pasien_id" class="form-control" placeholder="Masukkan Nomor RM atau Nama Lengkap Pasien"/>
+							</div>
+								<button type="submit" id="tombolCari" class="btn green submit">Submit</button>
+								<button type="button" class="btn red">Clear Pencarian</button>
+						</div>
+					</div>
+					 -->
+											

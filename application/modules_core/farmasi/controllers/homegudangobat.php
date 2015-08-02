@@ -29,7 +29,7 @@ class Homegudangobat extends Operator_base {
 		// $data['obat'] = $this->m_obat->get_all_obat($dept_id);
 		$data['inventori'] =  $this->m_obat->get_inventori($dept_id);
 		$item = "a";
-		$data['opname'] = $this->m_obat->get_alpha_obat_opname($item);
+		$data['opname'] = $this->m_obat->get_alpha_obat_opname($item, $dept_id);
 		$data['riwayat_pengadaan'] = $this->m_obat->get_riwayat_pengadaan();
 		$data['riwayat_penerimaan'] = $this->m_obat->get_riwayat_penerimaan($dept_id);
 		$data['persetujuan'] = $this->m_obat->get_persetujuan();
@@ -249,9 +249,9 @@ class Homegudangobat extends Operator_base {
 	/*akhir add obat*/
 
 	/*detail obat*/
-	public function search_obat($search)
+	public function search_obat()
 	{
-		//$result = $this->m_obat->search_obat($search);
+		$search = $_POST['katakunci'];
 		$result = $this->m_obat->get_obat_all($search);		
 
 		header('Content-Type: application/json');
@@ -348,6 +348,7 @@ class Homegudangobat extends Operator_base {
 		if ($this->form_validation->run() == TRUE) {
 			$insert['obat_id'] = $_POST['obat_id'];
 			$insert['obat_detail_id'] = $_POST['obat_detail_id'];
+			$insert['tgl_kadaluarsa'] = $_POST['tgl_kadaluarsa'];
 			$cek = $this->m_obat->cek_detail_obat($insert['obat_id'], $insert['tgl_kadaluarsa']);
 			if($cek == false){		
 				$insert['tahun_pengadaan'] = $_POST['tahun_pengadaan'];
@@ -476,12 +477,13 @@ class Homegudangobat extends Operator_base {
 
 	/*stok opname*/
 	public function get_alpha_obat_opname($alpha){
-		$result = $this->m_obat->get_alpha_obat_opname($alpha);
+		$result = $this->m_obat->get_alpha_obat_opname($alpha, '21');
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result);		
 	}
-	public function get_opname_by_name($value){
+	public function get_opname_by_name(){
+		$value = $_POST['kunci'];
 		$result = $this->m_obat->get_opname_by_name($value);
 
 		header('Content-Type: application/json');
@@ -525,15 +527,11 @@ class Homegudangobat extends Operator_base {
 				if (intval($selisih) < 0) {
 					//update plus
 					$update = $this->m_obat->update_history_after_opname($obat_dept_id, $tanggal, abs($selisih), "IN");
-					//ambil stok terakhir setelah diupdate
-					//$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id); //ambil stok
-					//$total_stok = intval($obat_opname['total_stok']);
+				
 				}else{
 					//update minus
 					$update = $this->m_obat->update_history_after_opname($obat_dept_id, $tanggal, abs($selisih), "OUT");
-					//ambil stok terakhir setelah diupdate
-					//$obat_opname = $this->m_obat->get_obat_deptstok_history($obat_dept_id);
-					//$total_stok = intval($obat_opname['total_stok']);
+					
 				}
 
 				$last_stok = $this->m_obat->get_last_stokopname($obat_dept_id);
@@ -699,7 +697,7 @@ class Homegudangobat extends Operator_base {
 					$res = $this->m_obat->add_detail_penerimaan($value);
 
 					//ambil obat dengan tanggal kedaluarsa sama, tambah history
-					$obat = $this->m_obat->get_obat_per_tgl_kadaluarsa($value['obat_id'], $value['tgl_kadaluarsa']); //ini blm fix coeg
+					$obat = $this->m_obat->get_obat_per_tgl_kadaluarsa($value['obat_id'], $value['tgl_kadaluarsa']); 
 					if ($obat) {
 						$last_stok = $this->m_obat->get_obat_deptstok_history($obat['obat_dept_id']);
 						$riwayat['obat_dept_id'] = $obat['obat_dept_id'];
@@ -808,9 +806,14 @@ class Homegudangobat extends Operator_base {
 		$update = $this->m_obat->update_persetujuan_permintaan($permintaan_id, $insert);
 		if ($update) {
 			foreach ($persetujuan as $value) {
-				//6 (jumlah) sama 8 (obat detail), 9(tgl_kadaluarsa)
+				//6 (jumlah) sama 8 (obat detail), 9(tgl_kadaluarsa), 10(obat_id),11 (stok_min)
 				$update =  $this->m_obat->update_detail_persetujuan($permintaan_id, $value['8'], $value['6']);
 
+				$stokmin = $this->m_obat->get_stok_min($dept_id, $value[10]);
+				if ($stokmin == false) {
+					$stk = array('obat_id'=>$value[10],'dept_id'=>$dept_id,'stok_minimal'=>$value['11']);
+					$this->m_obat->insert_stock_dept($stk);
+				}
 				//update stok obat, kurangi stok 
 				//$cek = $this->m_obat->get_last_stok_by_tgl($value[9], $dept_id);
 				$cek = $this->m_obat->get_last_stok_by_detail($value[8], $dept_id);
@@ -919,7 +922,7 @@ class Homegudangobat extends Operator_base {
 				//update stok di departemen, kurangi
 				$det = $this->m_obat->get_last_stok_by_detail($value[5], $dept_id);
 				$upd = array(
-					'obat_dept_id' => $value[5],
+					'obat_dept_id' => $det['obat_dept_id'],
 					'tanggal' => date('Y-m-d H:i:s'),
 					'keluar' => $value[3],
 					'total_stok' => ($det['total_stok'] - $value[3]),
@@ -1022,6 +1025,7 @@ class Homegudangobat extends Operator_base {
 	{
 		$filter['now'] = date('Y-m-d');
 		$filter['end'] = $_POST['hd'];
+		$
 		$data['result'] = $this->m_obat->get_filter_tgl($filter);
 		$data['nama_dept'] = 'GUDANG OBAT';
 	
@@ -1094,12 +1098,13 @@ class Homegudangobat extends Operator_base {
 	{		
 		$awal = $_POST['start'];
 		$akhir = $_POST['end'];
+		$dept_id = $_POST['dept_id'];
 
-		$result = $this->m_obat->get_laporan_stokopname($awal, $akhir);
+		$result = $this->m_obat->get_laporan_stokopname($awal, $akhir,$dept_id);
 		$data['awal'] = $awal;
 		$data['akhir'] = $akhir;
 		
-		$data['nama_dept'] = "GUDANG OBAT";
+		$data['nama_dept'] = $this->m_obat->get_nama_dept($dept_id)['nama_dept'];
 		
 		$data['hasil'] = $result;
 		$this->load->view('farmasi/gudangobat/laporan/stokopname',$data);
@@ -1107,12 +1112,12 @@ class Homegudangobat extends Operator_base {
 
 	public function print_laporan_stokwarning($value='')
 	{
-		# code...
+		//di homeapotikumum
 	}
 
 	public function print_laporan_stokterakhir($value='')
 	{
-		# code...
+		//di homeapotikumum
 	}
 	/*akhir print laporan*/
 
@@ -1143,9 +1148,9 @@ class Homegudangobat extends Operator_base {
 		return $tgl;
 	}
 
-	public function print_kartustok($id)
+	public function print_kartustok($id,$dept_id)
 	{
-		$obat = $this->m_obat->get_kartustok($id, '21');
+		$obat = $this->m_obat->get_kartustok($id, $dept_id);
 		$data['obat'] = $obat;
 		$data['nama_dept'] = $obat[0]['nama_dept'];
 		$data['satuan'] = $obat[0]['satuan'];

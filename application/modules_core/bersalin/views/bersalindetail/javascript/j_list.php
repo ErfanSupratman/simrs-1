@@ -1,1213 +1,945 @@
-<?php  
-	/*
-	* dafuq lah ini :-(
-	*/
-?>
-
 <script type="text/javascript">
-	$(document).ready(function() {
-		$("#search_bersalin").submit(function(event){
-			event.preventDefault();
-			var search = $("input:first").val();
-			if(search!=""){
-				$.ajax({
-					type:'POST',
-					url :'<?php echo base_url()?>bersalin/homebersalin/search_pasien/'+search,
-					success:function(data){
-						// $("#t_body").html(hasil);
-						console.log(data);
-						
-						if(data.length>0){
-							$('#t_body').empty();
-							for(var i = 0; i<data.length;i++){
-								var rm_id = data[i]['rm_id'],
-									name = data[i]['nama'],									
-									jk = data[i]['jenis_kelamin'],
-									tgl_lahir = data[i]['tanggal_lahir'],
-									alamat = data[i]['alamat_skr'],
-									id = data[i]['jenis_id'],
-									visit_id = data[i]['visit_id'];;
+	$(document).ready(function () {
+		/*---------------------------------baru----------------------------*/
+		/*overview klinis*/
+		var diagnosa = 0;
+		$('.d1').click(function(){diagnosa = 1;});
+		$('.d2').click(function(){diagnosa = 2;});
+		$('.d3').click(function(){diagnosa = 3;});
+		$('.d4').click(function(){diagnosa = 4;});
+		$('.d5').click(function(){diagnosa = 5;});
+		$('.d1igd').click(function(){diagnosa = 6;});
+		$('.d2igd').click(function(){diagnosa = 7;});
+		$('.d3igd').click(function(){diagnosa = 8;});
+		$('.d4igd').click(function(){diagnosa = 9;});
+		$('.d5igd').click(function(){diagnosa = 10;});
+		$('.fisik1').click(function(){diagnosa = 11;});
+		$('.ov').click(function(){diagnosa = 12;});
+		$('.ov1').click(function(){diagnosa = 13;});
+		$('.ov2').click(function(){diagnosa = 14;});
+		$('.ov3').click(function(){diagnosa = 15;});
+		$('.ov4').click(function(){diagnosa = 16;});
+		$('#search_diagnosa').submit(function(e){
+			e.preventDefault();
+			var key = $('#katakunci_diag').val();
 
-								var remove = tgl_lahir.split("-");
-								var bulan;
-								switch(remove[1]){
-									case "01": bulan="Januari";break;
-									case "02": bulan="Februari";break;
-									case "03": bulan="Maret";break;
-									case "04": bulan="April";break;
-									case "05": bulan="Mei";break;
-									case "06": bulan="Juni";break;
-									case "07": bulan="Juli";break;
-									case "08": bulan="Agustus";break;
-									case "09": bulan="September";break;
-									case "10": bulan="Oktober";break;
-									case "11": bulan="November";break;
-									case "12": bulan="Desember";break;
-								}
-								var tgl = remove[2]+" "+bulan+" "+remove[0];
+			$.ajax({
+				type:'POST',
+				url:'<?php echo base_url() ?>bersalin/bersalindetail/search_diagnosa/'+key,
+				success:function(data){
+					$('#tbody_diagnosa').empty();
 
-								$('#t_body').append(
-									'<tr>'+
-							 			'<td>'+rm_id+'</td>'+
-							 			'<td>'+name+'</td>'+
-							 			'<td>'+jk+'</td>'+
-							 			'<td>'+tgl+'</td>'+
-							 			'<td>'+alamat+'</td>'+
-							 			'<td>'+id+'</td>'+
-
-							 			'<td style="text-align:center">'+
-							 				'<a href="<?php echo base_url() ?>bersalin/bersalindetail/daftar/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
-										'</td>'+
-							 		'</tr>'
-									);
-							}
-						}else{
-							$('#t_body').empty();
-
-							$('#t_body').append(
-									'<tr>'+
-							 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
-							 		'</tr>'
-								);
+					if(data.length>0){
+						for(var i = 0; i<data.length;i++){
+							$('#tbody_diagnosa').append(
+								'<tr>'+
+									'<td>'+data[i]['diagnosis_id']+'</td>'+
+									'<td>'+data[i]['diagnosis_nama']+'</td>'+
+									'<td style="text-align:center; cursor:pointer;"><a onclick="get_diagnosa(&quot;'+data[i]['diagnosis_id']+'&quot;, &quot;'+data[i]['diagnosis_nama']+'&quot;, &quot;'+diagnosa+'&quot;)"><i class="glyphicon glyphicon-check" data-toggle="tooltip" data-placement="top" title="Pilih"></i></a></td>'+
+								'</tr>'
+							);
 						}
-
-					},
-					error:function (data){
-						$('#t_body').empty();
-
-						$('#t_body').append(
-							'<tr>'+
-					 			'<td colspan="7"><center>Error</center></td>'+
-					 		'</tr>'
+					}else{
+						$('#tbody_diagnosa').append(
+							'<tr><td colspan="3" style="text-align:center;">Data Diagnosa Tidak Ditemukan</td></tr>'
 						);
 					}
-
-				});
-			}
-
-			event.preventDefault();
-		});
-		
-		var visit_id = $('#v_id').val();
-		localStorage.setItem("visit_id", visit_id);
-		//var test = localStorage.getItem("visit_id");
-		var tindakan_id = $('#namaTindakan').find('option:selected').val();
-
-		$.ajax({
-			type: "POST",
-			data : tindakan_id,
-			url: "<?php echo base_url()?>bersalin/bersalindetail/get_tindakan/" + tindakan_id,
-			success: function (data) {
-				$('#js').val(data['js']);
-				$('#jp').val(data['jp']);
-				$('#bakhp').val(data['bakhp']);
-				//console.log(data);
-			},
-			error: function (data) {
-				//alert('gagal');
-			}
-		});
-
-		$('#namaTindakan').change(function() {
-			var tindakan_id = $('#namaTindakan').find('option:selected').val();
-			$.ajax({
-				type: "POST",
-				data : tindakan_id,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_tindakan/" + tindakan_id,
-				success: function (data) {
-					$('#js').val(data['js']);
-					$('#jp').val(data['jp']);
-					$('#bakhp').val(data['bakhp']);
-					//console.log(data);
-				},
-				error: function (data) {
+				}, error:function(data){
+					console.log(data);
 					alert('gagal');
-					
-				}
-			});
-		})
-
-		$('#submitTindakan').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-			item[number]['tindakan_id'] = $('#namaTindakan').find('option:selected').val();
-			item[number]['visit_id'] = localStorage.getItem("visit_id");//$('#visit_id').val();
-			item[number]['js'] = $('#js').val();
-			item[number]['jp'] = $('#jp').val();
-			item[number]['bakhp'] = $('#bakhp').val();
-			item[number]['on_faktur'] = $('#onfaktur').val();
-			item[number]['paramedis'] = $('#paramedis').val();
-			item[number]['kat_id'] = $('#kategori').find('option:selected').val();
-			item[number]['uraian'] = $('#uraiantindakan').val();
-			//waktu tindakan
-			var str = $('#inputwaktutindakan').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item[number]['waktu_tindakan'] = tanggal;
-		    console.log(item);
-			/*console.log(visit_id);
-			return false;*/
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_tindakan",
-				success: function (data) {
-					console.log(data);
-
-					//$('#namaTindakan').find('option:selected').val();
-					//$('#visit_id').val('');
-					$('#js').val('');
-					$('#jp').val('');
-					$('#bakhp').val('');
-					$('#onfaktur').val('');
-					$('#paramedis').val('');
-					//$('#kategori').find('option:selected').val();
-						jQuery('#tableCare tbody:first').append(
-							"<tr>"+
-							"<td>"+data['waktu_tindakan']+"</td>"+
-							"<td>"+data['js']+"</td>"+
-							"<td>"+data['jp']+"</td>"+
-							"<td>"+data['bakhp']+"</td>"+
-							"<td>"+data['on_faktur']+"</td>"+
-							"<td>"+data['nama_petugas']+"</td>"+
-							"<td>"+data['nama_tindakan']+"</td>"+
-							"<td>"+data['keterangan']+"</td>"+
-							"</tr>"
-						);
-				},
-				error: function (data) {
-					//alert('gagal');
-					
-				}
-			});
-			$('#tambahTindakan').modal('hide');
-		});
-
-		/*resep bersalin mulai dari sini*/
-		$("#tabelDokterResep").on('click', 'tr td a.inputpetugasresep', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugasresep').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugasresep').text();
-			$("#namadokterresep").val(nama);
-			$('#iddokterresep').val(id);
-			$('#resepDokter').modal('hide');
-		})
-
-		$('#submitresepbersalin').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-			item[number]['dokter'] = $('#iddokterresep').val();
-			item[number]['visit_id'] = localStorage.getItem('visit_id');
-			item[number]['resep'] = $('#deskripsiResep').val();
-			var str = $('#tglResep').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-			item[number]['tanggal'] = tanggal;
-
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_visit_resep",
-				success: function (data) {
-					console.log(data);
-
-					$('#namadokterresep').val('');
-					$('#iddokterresep').val('');
-					$('#deskripsiResep').val('');
-						jQuery('#tabelresepbersalin tbody:first').append(
-							"<tr>"+
-							"<td>"+data['nama_petugas']+"</td>"+
-							"<td>"+data['tanggal']+"</td>"+
-							"<td>"+data['resep']+"</td>"+
-							"<td>status ambil</td>"+
-							"<td>status bayar</td>"+
-							'<td style="text-align:center"><a href="#" class="hapus-resep"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a></td>'+
-							'<td class="resep_id" style="display:none" >'+data['resep_id']+'</td>'+
-							"</tr>"
-						);
-
-				},
-				error: function (data) {
-					//alert('gagal');
-					
 				}
 			});
 		});
 
-		
-		jQuery("#tabelresepbersalin").on('click','tr td a.hapus-resep',function(e){
+		$("#submitOverKlinis").submit(function(e){
 			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.resep_id').text();
-			    //console.log(id);//return false;
-
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_resep/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});						
-
-		        jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });
-
-				if(document.getElementById('tabelresepbersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelresepbersalin tbody:first').append(
-						'<tr>'+
-							'<td colspan="7" style="text-align:center"><strong>Tidak ada resep yang diberikan</strong></td>'+
-						'</tr>'
-				    );	        	
-		        }				
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-		
-		// ambil dari pop-up
-		$("#tabelKonsultan").on('click', 'tr td a.inputpetugas', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugas').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugas').text();
-			$("#konsultan").val(nama);
-			$('#id_petugas').val(id);
-			$('#searchKonsultan').modal('hide');
-		})
-
-		/*input konsultasi gizi*/
-		$('#konsultasigizi').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-		    item[number]['visit_id'] = localStorage.getItem("visit_id");
-		    item[number]['konsultan'] = $('#id_petugas').val();
-		    item[number]['kajian_gizi'] = $('#kajianGizi').val();
-		    item[number]['anamnesa_diet'] = $('#anamnesaDiet').val();
-		    item[number]['data_lab'] = $('#dataLabPasien').val();
-		    item[number]['kajian_diet'] = $('#kajianDiet').val();
-		    item[number]['detail_menu'] = $('#detailMenu').val();
-		    var str = $('#tanggalordergizi').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item[number]['tanggal'] = tanggal;
-
-		    $.ajax({
-		    	type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_gizi",
-				success: function (data) {
-					/*console.log(data);
-					alert('berhasil ditambahkan');*/
-					$('#konsultan').val('');
-					$('#kajianGizi').val('');
-					$('#anamnesaDiet').val('');
-					$('#dataLabPasien').val('');
-					$('#kajianDiet').val('');
-					$('#detailMenu').val('');
-
-					/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-					    jQuery('#tabelgizibersalin tbody:first').remove();
-		        	}	*/	
-					jQuery('#tabelgizibersalin tbody:first').append(
-						"<tr>"+
-						"<td>"+data['nama_petugas']+"</td>"+
-						"<td>"+data['tanggal']+"</td>"+
-						"<td>"+data['kajian_gizi']+"</td>"+
-						"<td>"+data['anamnesa_diet']+"</td>"+
-						"<td>"+data['data_lab']+"</td>"+
-						"<td>"+data['kajian_diet']+"</td>"+
-						"<td>"+data['detail_menu']+"</td>"+
-						"<td style='text-align:center'>"+
-						'<a href="#" class="hapus-gizi"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
-						'<a href="#" class="print-gizi"><i class="glyphicon glyphicon-print"  data-toggle="tooltip" data-placement="top" title="Print"></i></a>'+
-						"</td>"+
-						'<td class="gizi_id" style="display:none" >'+data['gizi_id']+'</td>'+
-						"</tr>"
-					);
-				},
-				error: function (data) {
-					alert(data);
-				}
-		    });
-		})
-
-		/*delete gizi*/
-		jQuery("#tabelgizibersalin").on('click','tr td a.hapus-gizi',function(e){
-			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.gizi_id').text();
-			    //console.log(id);//return false;
-
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_gizi/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});						
-
-		        jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });
-
-				/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelgizibersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="8" style="text-align:center"><strong>Tidak ada gizi yang diberikan</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }	*/			
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-		/*akhir konsultasi gizi*/
-
-		/*input overview*/
-		$('#dokter').click(function (e) {
-			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_all_petugas",
-				success: function (data) {
-					console.log(data);
-					$('#tabelSearchDokterOverview tbody').empty();
-					for (var i = 0; i < data.length; i++) {
-						$('#tabelSearchDokterOverview tbody').append(
-							'<tr>'+
-								'<td class="namadokteroverview">'+data[i]['nama_petugas']+'</td>'+
-								'<td style="display:none" class="iddokteroverview">'+data[i]['petugas_id']+'</td>'+
-								'<td style="text-align:center;cursor:pointer;" ><a href="#" class="inputpetugasoverview"><i class="glyphicon glyphicon-check"></i></a></td>'+
-							'</tr>'
-						)
-					};
-				}
-			})
-		})
-
-		$("#tabelSearchDokterOverview").on('click', 'tr td a.inputpetugasoverview', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namadokteroverview').text();
-			var id = jQuery(this).closest('tr').find('td.iddokteroverview').text();
-			$("#dokter").val(nama);
-			$('#iddokter').val(id);
-			$('#searchDokterOverview').modal('hide');
-		})
-		$('#simpanOver').on('click',function(e) {
-			e.preventDefault();
-			/*alert('ak');
-			return false;*/
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-		    var str = $('#inputdate').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item[number]['tanggal'] = tanggal;
-			//item[number]['jenis'] = $('#jenisPelayanan').val();
-			item[number]['anamnesa'] = $('#anamnesa').val();
-			item[number]['temperatur'] = $('#temperatur').val();
-			item[number]['tensi'] = $('#tensi').val();
-			item[number]['diagnosa_utama'] = $('#kode_utama').val();
-			item[number]['diagnosa_sekunder'] = $('#kode_sekunder').val();
-			item[number]['keterangan'] = $('#keterangan').val();
-			item[number]['detail_diagnosa'] = $('#detailDiagnosa').val();
-			item[number]['terapi'] = $('#terapi').val();
-			item[number]['alergi'] = $('#alergi').val();
-			item[number]['id_pemeriksa'] = $('#iddokter').val();
-			item[number]['visit_id'] = $('#v_id').val();
-			//item[number]['perawat'] = $('#perawat').find('option:selected').val();
-
-			save_overview(item);
-			return false;
-		});
-
-		function save_overview (item) {
-			/*alert(item[1]['jenis']);
-			return false;*/
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/save_overview",
-				success: function (data) {
-					$('#anamnesa').val('');
-					$('#temperatur').val('');
-					$('#tensi').val('');
-					$('#kode_utama').val('');
-					$('#kode_sekunder').val('');
-					$('#keterangan').val('');
-					$('#detailDiagnosa').val('');
-					$('#terapi').val('');
-					$('#alergi').val('');
-					$('#dokter').val('');
-					//console.log(data);
-					 	jQuery('#tableOverview tbody:first').append(
-							"<tr>"+
-							"<td>"+data['tanggal']+"</td>"+
-							"<td>Jenis Pelayanan</td>"+
-							"<td>"+data['anamnesa']+"</td>"+
-							"<td>"+data['temperatur']+"</td>"+
-							"<td>"+data['tensi']+"</td>"+
-							"<td>"+data['diagnosa_utama']+"</td>"+
-							"<td>"+data['diagnosa_sekunder']+"</td>"+
-							"<td>"+data['detail_diagnosa']+"</td>"+
-							"<td>"+data['terapi']+"</td>"+
-							"<td>"+data['id_pemeriksa']+"</td>"+
-							"<td>"+data['keterangan']+"</td>"+
-							"</tr>"
-						);	
-					
-					alert('berhasil ditambahkan');
-				},
-				error: function (data) {
-					alert(data);
-				}
-			});
-
-			return false;
-		}
-		/*akhir simpan overview*/
-
-		/*order kamar operasi*/
-		$("#tabelDokterOperasi").on('click', 'tr td a.inputpetugasoperasi', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugasoperasi').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugasoperasi').text();
-			$("#dokteroperasi").val(nama);
-			$('#id_dokteroperasi').val(id);
-			$('#searchDokterOperasi').modal('hide');
-		})
-
-		$('#orderoperasi').submit(function (e) {
-			e.preventDefault();
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-			item[number]['pengirim'] = $('#id_dokteroperasi').val();
-			item[number]['dept_id'] = '19'; //departemen id bersalin = 19
-			item[number]['dept_tujuan'] = '20'; //departemen id kamar operasi = 20
-			item[number]['visit_id'] = localStorage.getItem('visit_id');
-			item[number]['alasan'] = $('#alasanoperasi').val();
-			item[number]['jenis_operasi'] = $('#jnsOperasi').val();
-			item[number]['lingkup_operasi'] = $('#lkpOprasi').find('option:selected').val();
-
-			var str = $('#tanggal_mulai').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-			item[number]['waktu_mulai'] = tanggal;
-			//console.log(item);return false;
-			$.ajax({
-				type: "POST",
-				data : item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/order_kamar_operasi",
-				success: function (data) {					
-					console.log(data);
-					$('#id_dokteroperasi').val('');
-					$('#alasanoperasi').val('');
-					$('#jnsOperasi').val('');
-
-					if (document.getElementById('tabelorderoperasi').getElementsByTagName("tr").length == 2) {
-						$('#t_body_order').empty();
-					};
-
-					jQuery('#tabelorderoperasi tbody:first').append(
-							"<tr>"+
-							"<td>"+data['waktu_mulai']+"</td>"+
-							"<td>"+data['nama_petugas']+"</td>"+
-							"<td>"+data['nama_dept']+"</td>"+
-							"<td>"+data['alasan']+"</td>"+
-							'<td style="text-align:center"><a href="#" class="hapus-order">'+
-							'<i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
-							'</td>'+
-							'<td class="order_operasi_id" style="display:none;">'+data['order_operasi_id']+'</td>'+
-							"</tr>"
-						);	
-
-				},
-				error: function (data) {
-					/*console.log("error");
-					console.log(data);*/
-				}
-			});
-
-		})
-
-		//delete order
-		jQuery("#tabelorderoperasi").on('click','tr td a.hapus-order',function(e){
-			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.order_operasi_id').text();
-			    //console.log(id);//return false;
-
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_order/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});
-
-				jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });						
-
-				if(document.getElementById('tabelorderoperasi').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelorderoperasi tbody:first').append(
-							'<tr>'+
-								'<td colspan="6" style="text-align:center"><strong>Tidak ada order</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }				
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-
-		/*akhir order kamar operasi*/
-
-		/*pemeriksaan penunjang di sini*/
-		$("#tabelSearchPengirim").on('click', 'tr td a.inputpetugaspenunjang', function (e) {
-			e.preventDefault();
-			var nama = jQuery(this).closest('tr').find('td.namapetugaspenunjang').text();
-			var id = jQuery(this).closest('tr').find('td.idpetugaspenunjang').text();
-			$("#pengirim").val(nama);
-			$('#id_pengirim').val(id);
-			$('#searchPengirim').modal('hide');
-		})
-
-		$('#submitpenunjang').submit(function(e){
-			e.preventDefault();
-			//alert('aku mah apa atuh?');
 			
-			//belum selesai boss
-			$('#tambahPeri').modal('hide');
-		});
-
-
-		/*akhir pemeriksaan penunjang*/
-
-		/*permintaan makan*/
-		var isTableNull;
-
-		var rm_id = localStorage.getItem('rm_id');
-		var visit_id = localStorage.getItem('visit_id');
-		$.ajax({
-			type:'POST',
-			url :'<?php echo base_url()?>bersalin/bersalindetail/get_ruang/'+visit_id,
-			success:function(data){
-				console.log(data);
-				var nama_ruang = data[0]['nama_kamar'],
-					no_bed = data[0]['nama_bed'];
-				$('#namaruangbersalin').val(nama_ruang);
-				$('#nomorbedbersalin').val(no_bed);
-			},
-			error:function(data){
-
+			var item = {};
+		    var number = 1;
+		    item[number] = {};
+			item[number]['waktu'] = $('#inputdate').val();
+			item[number]['visit_id'] = $('#v_id').val();
+			item[number]['rj_id'] = $('#r_id').val();
+			item[number]['tekanan_darah'] = $("#tekanandarahOver").val();
+			item[number]['anamnesa'] = $('#anamnesaOver').val();
+			item[number]['temperatur'] = $('#tempOver').val();
+			item[number]['nadi'] = $('#nadiOver').val();
+			item[number]['pernapasan'] = $('#pernapasanOver').val();
+			item[number]['berat_badan'] = $('#beratOver').val();
+			item[number]['dokter'] = $('#id_dokterOver').val();
+			item[number]['diagnosa1'] = $('#k_utama_over').val();
+			item[number]['diagnosa2'] = $('#k_sek_over').val();
+			item[number]['diagnosa3'] = $('#k_sek_over2').val();
+			item[number]['diagnosa4'] = $('#k_sek_over3').val();
+			item[number]['diagnosa5'] = $('#k_sek_over4').val();
+			item[number]['detail_diagnosa'] = $('#detail_over').val();
+			item[number]['terapi'] = $('#terapi_over').val();
+			item[number]['alergi'] = $('#alergi_over').val();
+			if(item[number]['dokter'] == ''){
+				alert('isi data dengan benar');$('#nama_dOver').focus();return false;
 			}
-		});		
+			console.log(item);
+			save_overview(item);
 
-		$('#permintaanmakan').click(function(){
-			$.ajax({
-				type:'POST',
-				url :'<?php echo base_url()?>bersalin/bersalindetail/get_permintaan_awal/'+visit_id,
-				success:function(data){
-					console.log(data);
-					$('#tbody_tbl_permintaan').empty();
-					if(data.length>0){
-						for(var i = 0; i<data.length; i++){
-							$('#tbody_tbl_permintaan').append(
-								'<tr>'+
-									'<td>'+data[i]['waktu_permintaan']+'</td>'+
-									'<td>'+$('#namaruangbersalin').val()+'</td>'+
-									'<td>'+$('#nomorbedbersalin').val()+'</td>'+
-									'<td>'+data[i]['nama_paket']+'</td>'+
-									'<td>'+data[i]['menu_paket']+'</td>'+
-									'<td>'+data[i]['keterangan']+'</td>'+
-									'<td>'+data[i]['kelas']+'</td>'+							
-									'<td style="text-align:center">'+
-									'<a href="#" class="deletemakan"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
-									'</td>'+
-									'<td class="makan_id" style="display:none">'+data[0]['id']+'</>'+
-								'</tr>'
-							);
-						}
-					}else{
-						isTableNull = 0;
-						$('#tbody_tbl_permintaan').append(
-							'<tr>'+
-								'<td colspan="9" style="text-align:center;">Data Kosong</td>'+
-							'</tr>'
-						);
-					}
-				}
-			});
+			return false;
 		});
 
-		$('#searchmakanbersalin').click(function(){
+		var d_click = 0;
 
-			$('#t_body_paket').empty();
+		$('#nama_dOver').click(function(){d_click = 1;});
+		$('#dokteroverigd').click(function(){d_click = 2;});
+		$('#dokterperiksafisik').click(function(){d_click = 3;});		
+		$('#dokteroverperawatan').click(function(){d_click = 4;});
+		$('#dokterpenolongbersalin').click(function(){d_click = 5;});
 
-			$.ajax({
-				type:'POST',
-				url :'<?php echo base_url()?>bersalin/bersalindetail/get_paket_makan',
-				success:function(data){
-					console.log(data);
-					
-					if(data.length>0){
-						for(var i = 0; i<data.length; i++){
-							var nama_paket = data[i]['nama_paket'],
-								paket_id = data[i]['paket_id'];
-
-							$("#t_body_paket").append(
-								'<tr>'+
-									'<td>'+nama_paket+'</td>'+
-									'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPaket(&quot;'+paket_id+'&quot; , &quot;'+nama_paket+'&quot;)"></i></td>'+
-								'</tr>'
-							);
-						}
-					}else{
-						$('#t_body_paket').empty();
-						$('#t_body_paket').append(
-							'<tr>'+
-					 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
-					 		'</tr>'
-						);
-					}
-				},
-				error:function(data){
-					//console.log(data);return false;
-					$('#t_body_paket').empty();
-
-						$('#t_body_paket').append(
-							'<tr>'+
-					 			'<td colspan="2"><center>Error</center></td>'+
-					 		'</tr>'
-						);
-				}
-			});
-		});
-
-		$("#katakuncipaket").keyup(function(event){
-			var p_item = $('#katakuncipaket').val();
-
+		$('#inputDokter').keyup(function(event){
+			var d_item = $('#inputDokter').val();
 			event.preventDefault();
 
-			if(p_item!=""){
-				$.ajax({
-					type:"POST",
-					url:"<?php echo base_url()?>bersalin/bersalindetail/search_paket_makan/"+p_item,
-					success:function(data){
-						console.log(data);
-						$('#t_body_paket').empty();
-	 					if(data.length>0){
-							for(var i = 0; i<data.length; i++){
-								var nama_paket = data[i]['nama_paket'],
-									paket_id = data[i]['paket_id'];
-
-								$("#t_body_paket").append(
-									'<tr>'+
-										'<td>'+nama_paket+'</td>'+
-										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPaket(&quot;'+paket_id+'&quot; , &quot;'+nama_paket+'&quot;)"></i></td>'+
-									'</tr>'
-								);
-							}
-						}else{
-							$('#t_body_paket').empty();
-							$('#t_body_paket').append(
-								'<tr>'+
-						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
-						 		'</tr>'
-							);
-						}
-					},
-					error:function(data){
-
-					}
-				});
-			}else{
-				$.ajax({
-					type:'POST',
-					url :'<?php echo base_url()?>icu/icudetail/get_paket_makan/',
-					success:function(data){
-						console.log(data);
-						$('#t_body_paket').empty();
-						if(data.length>0){
-							for(var i = 0; i<data.length; i++){
-								var nama_paket = data[i]['nama_paket'],
-									paket_id = data[i]['paket_id'];
-
-								$("#t_body_paket").append(
-									'<tr>'+
-										'<td>'+nama_paket+'</td>'+
-										'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPaket(&quot;'+paket_id+'&quot; , &quot;'+nama_paket+'&quot;)"></i></td>'+
-									'</tr>'
-								);
-							}
-						}else{
-							$('#t_body_paket').empty();
-							$('#t_body_paket').append(
-								'<tr>'+
-						 			'<td colspan="2"><center>Data Paket Tidak Ditemukan</center></td>'+
-						 		'</tr>'
-							);
-						}
-					},
-					error:function(data){
-						$('#t_body_paket').empty();
-
-							$('#t_body_paket').append(
-								'<tr>'+
-						 			'<td colspan="2"><center>Error</center></td>'+
-						 		'</tr>'
-							);
-					}
-				});
-			}
-
-		});
-		
-		//submit_permintaanmakan
-		var item_makan = {};
-		$("#submit_permintaanmakan").submit(function(e){
-			e.preventDefault();
-			//item_makan['waktu_permintaan'] = $('#permintaanmakan').val();
-			item_makan['visit_id'] = localStorage.getItem('visit_id');
-			item_makan['paket_id'] = $('#id_paket').val();
-			item_makan['keterangan'] = $('#keteranganmakan').val();
-
-			var str = $('#tanggalpermintaanmakan').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item_makan['waktu_permintaan'] = tanggal;
-
-			console.log(item_makan);
-			
-
 			$.ajax({
-				type:"POST",
-				data:item_makan,
-				url:'<?php echo base_url()?>bersalin/bersalindetail/add_permintaan_makan',
+				type:'POST',
+				url:"<?php echo base_url()?>bersalin/bersalindetail/search_dokter/"+d_item,
 				success:function(data){
-					if(isTableNull == 0){
-						$('#tbody_tbl_permintaan').empty();
-					}
-
-					$('#keteranganmakan').val('');
-					$('#searchmakanbersalin').val('');
-					$('#id_paket').val('');
-
 					console.log(data);
-					$('#tbody_tbl_permintaan').append(
-						'<tr>'+
-							'<td>'+data[0]['waktu_permintaan']+'</td>'+
-							'<td>'+$('#namaruangbersalin').val()+'</td>'+
-							'<td>'+$('#nomorbedbersalin').val()+'</td>'+
-							'<td>'+data[0]['nama_paket']+'</td>'+
-							'<td>'+data[0]['menu_paket']+'</td>'+
-							'<td>'+data[0]['keterangan']+'</td>'+
-							'<td>'+data[0]['kelas']+'</td>'+							
-							'<td style="text-align:center">'+
-								'<a href="#" class="deletemakan"><i class="glyphicon glyphicon-trash"  data-toggle="tooltip" data-placement="top" title="Hapus"></i></a>'+
-							'</td>'+
-							'<td class="makan_id" style="display:none">'+data[0]['id']+'</>'+
-						'</tr>'
-					);
-					isTableNull = 1;
+					$('#tbody_dokter').empty();
+ 					if(data.length>0){
+						for(var i = 0; i<data.length; i++){
+							var nama = data[i]['nama_petugas'],
+								id = data[i]['petugas_id'];
+
+							$("#tbody_dokter").append(
+								'<tr>'+
+									'<td>'+nama+'</td>'+
+									'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getDokter(&quot;'+id+'&quot; , &quot;'+nama+'&quot;, &quot;'+d_click+'&quot;)"></i></td>'+
+								'</tr>'
+							);
+						}
+					}else{
+						$('#tbody_dokter').empty();
+						$('#tbody_dokter').append(
+							'<tr>'+
+					 			'<td colspan="2"><center>Data Tidak Ditemukan</center></td>'+
+					 		'</tr>'
+						);
+					}
 				},
 				error:function(data){
-					console	.log('gagal');
-					console.log(data);
+
 				}
 			});
 		});
 
-		jQuery("#tabeldaftarmakan").on('click','tr td a.deletemakan',function(e){
+		$('#tbody_overview').on('click', 'tr td a.viewdetailoverviewklinis', function (e) {
 			e.preventDefault();
-	   		var d = confirm('apakah akan dihapus?');
-	   		if ( d == true ) {
-		 		var id = jQuery(this).closest('tr').find('td.makan_id').text();
-			    //console.log(id);//return false;
-
-			    //alert('bisa');return false;
-			    jQuery.ajax({
-					type: "POST",
-					url: "<?php echo base_url()?>bersalin/bersalindetail/delete_permintaan_makan/"+id,
-					data: id,
-					success: function(data)
-					{  
-					  //berhasil kembalikan hasil 
-					  //alert("yeee");       
-					},
-					error: function (data)
-					{  
-					  //gagal
-					  console.log('pait');
-					}
-				});						
-
-		        jQuery(this).closest('tr').fadeOut(function(){
-			        jQuery(this).remove();		  	          
-		        });
-
-				/*if(document.getElementById('tabelgizibersalin').getElementsByTagName("tr").length == 2) {
-				    jQuery('#tabelgizibersalin tbody:first').append(
-							'<tr>'+
-								'<td colspan="8" style="text-align:center"><strong>Tidak ada gizi yang diberikan</strong></td>'+
-							'</tr>'
-				    );	        	
-		        }	*/			
-		        return false;   		
-		    }
-	   		return false;
-	   	});
-		/*akhir permintaan makan*/
-
-
-		/*visit kegiatan bersalin*/
-		$('#catatan').click(function (e) {
+			var id = $(this).closest('tr').find('td .overviewid_detail').val();
 			$.ajax({
 				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_all_petugas",
+				url: "<?php echo base_url()?>bersalin/bersalindetail/get_detail_overview_klinis/" + id,
 				success: function (data) {
-					//console.log(data);
-					$('#t_body_dokterbersalin').empty();
-					for (var i = 0; i < data.length ; i++) {
-						$('#t_body_dokterbersalin').append(
-							'<tr>'+
-								'<td class="namapetugasbersalin">'+data[i]['nama_petugas']+'</td>'+
-								'<td style="text-align:center"><a href="" class="inputdokterbersalin"><i class="glyphicon glyphicon-check"></i></a></td>'+
-								'<td style="display:none;" class="idpetugasbersalin">'+data[i]['petugas_id']+'</td>'+
-							'</tr>'
-						)
-					};
+					console.log(data);
+					$('#waktutindakanklinis').val(data['waktu']);
+					$('#anamnesaklinis').val(data['anamnesa']);
+					$('#tekanandarahklinis').val(data['tekanan_darah']);
+					$('#temperaturklinis').val(data['temperatur']);
+					$('#nadiklinis').val(data['nadi']);
+					$('#pernapasanklinis').val(data['pernapasan']);
+					$('#beratklinis').val(data['berat_badan']);
+					$('#dokterklinis').val(data['nama_petugas']);
+					$('#kode_utamaklinis').val(data['diag_u']);
+					$('#diagutamaklinis').val(data['diagnosa_utama']);
+					$('#sekunderklinis1_1').val(data['diagnosa_1']);
+					$('#sekunderklinis2_2').val(data['diagnosa_2']);
+					$('#sekunderklinis3_3').val(data['diagnosa_3']);
+					$('#sekunderklinis4_4').val(data['diagnosa_4']);
+					$('#sekunderklinis1').val(data['diag_1']);
+					$('#sekunderklinis2').val(data['diag_2']);
+					$('#sekunderklinis3').val(data['diag_3']);
+					$('#sekunderklinis4').val(data['diag_4']);
+					$('#detailDiagnosaklinis').val(data['detail_diagnosa']);
+					$('#terapiklinis').val(data['terapi']);
+					$('#alergiklinis').val(data['alergi']);
+
+				},
+				error: function (data) {
+					console.log(data);
 				}
 			})
 		})
 
-		$('#t_body_dokterbersalin').on('click','tr td a.inputdokterbersalin', function (e) {
-			e.preventDefault();
-			var id = jQuery(this).closest('tr').find('td.idpetugasbersalin').text();
-			var nama = jQuery(this).closest('tr').find('td.namapetugasbersalin').text();
-			$('#namadokterbersalin').val(nama);
-			$('#iddokterbersalin').val(id);
-			$('#searchDokterpeminta').modal('hide');
-		})
+		/*akhir overview klinis*/
 
-		$('#submitVisitBersalin').submit(function (e) {
+		/*overview IGD*/
+		var p_click = 0;
+
+		$('#perawatoverigd').click(function(){p_click = 1;});
+		$('#perawatasuhan1').click(function(){p_click = 2;});
+		$('#perawatasuhan2').click(function(){p_click = 3;});
+
+		$('#katakunciperawat').keyup(function(event){
+			var p_item = $('#katakunciperawat').val();
+			event.preventDefault();
+
+			$.ajax({
+				type:'POST',
+				url:"<?php echo base_url()?>bersalin/bersalindetail/search_perawat/"+p_item,
+				success:function(data){
+					console.log(data);
+					$('#tbody_perawat').empty();
+ 					if(data.length>0){
+						for(var i = 0; i<data.length; i++){
+							var nama = data[i]['nama_petugas'],
+								id = data[i]['petugas_id'];
+
+							$("#tbody_perawat").append(
+								'<tr>'+
+									'<td>'+nama+'</td>'+
+									'<td style="text-align:center"><i class="glyphicon glyphicon-check" style="cursor:pointer;" onclick="getPerawat(&quot;'+id+'&quot; , &quot;'+nama+'&quot;, &quot;'+p_click+'&quot;)"></i></td>'+
+								'</tr>'
+							);
+						}
+					}else{
+						$('#tbody_perawat').empty();
+						$('#tbody_perawat').append(
+							'<tr>'+
+					 			'<td colspan="2"><center>Data Tidak Ditemukan</center></td>'+
+					 		'</tr>'
+						);
+					}
+				},
+				error:function(data){
+
+				}
+			});
+		});
+		$('#submitOverIGD').submit(function (e) {
 			e.preventDefault();
-			
 			var item = {};
 		    var number = 1;
 		    item[number] = {};
-
-		    item[number]['visit_id'] = localStorage.getItem('visit_id');
-			item[number]['jenis_kegiatan'] = $('#pilJnsKegiatan').find('option:selected').val();
-			item[number]['kegiatan'] = $('#pilKegiatan').find('option:selected').val();
-			if ($('#statusRujukan').find('option:selected').val() == "Ya") {
-				item[number]['dirujuk_ke'] = $('#tujuanRujukan').find('option:selected').val();
-				item[number]['rujukan_dari'] = $('#rujukan').find('option:selected').val();
-			}else{
-				item[number]['dirujuk_ke'] = "-";
-				item[number]['rujukan_dari'] = "-";
+			item[number]['waktu'] = format_date3($('#waktuoverigd').val());
+			item[number]['visit_id'] = $('#v_id_igd').val();
+			item[number]['igd_id'] = $('#r_id_igd').val();
+			item[number]['tekanan_darah'] = $("#tekanandarahoverigd").val();
+			item[number]['anamnesa'] = $('#anamnesaoverigd').val();
+			item[number]['temperatur'] = $('#temperaturoverigd').val();
+			item[number]['nadi'] = $('#nadioverigd').val();
+			item[number]['pernapasan'] = $('#pernapasanoverigd').val();
+			item[number]['berat_badan'] = $('#beratoverigd').val();
+			item[number]['dokter'] = $('#id_dokter_jaga').val();
+			item[number]['perawat'] = $('#id_perawat_jaga').val();
+			item[number]['kepala_leher'] = $('#kepalaoverigd').val();
+			item[number]['thorax_abd'] = $('#thoraxoverigd').val();
+			item[number]['extrimitas'] = $('#exoverigd').val();
+			item[number]['diagnosa1'] = $('#kode_utamaoverigd').val();
+			item[number]['diagnosa2'] = $('#kode_sek1overigd').val();
+			item[number]['diagnosa3'] = $('#kode_sek2overigd').val();
+			item[number]['diagnosa4'] = $('#kode_sek3overigd').val();
+			item[number]['diagnosa5'] = $('#kode_sek4overigd').val();
+			item[number]['detail_diagnosa'] = $('#detailDiagnosaoverigd').val();
+			item[number]['terapi'] = $('#terapioverigd').val();
+			if(item[number]['dokter'] == ''){
+				alert('isi data dengan benar');$('#dokteroverigd').focus();return false;
 			}
-			item[number]['dokter'] = $('#iddokterbersalin').val();
-			item[number]['keterangan'] = $('#ketKegiatan').val();
-			var str = $('#tanggalpelaksanaanbersalin').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
 
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-			item[number]['waktu'] = tanggal;
-			
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>bersalin/bersalindetail/submit_overview_igd",
+				success: function (data) {
+					alert('data Berhasil disimpan');
+					var jml = $('#jml_overigd').val();
+					var no = parseInt(jml)+1;
+					$('#inputdate').val("<?php echo date('d/m/Y H:i') ?>");
+					$(':input','#submitOverKlinis')
+					  .not(':button, :submit, :reset, :hidden')
+					  .val('');
+					
+					var last = '<a href="#riwayatpenangananigd" class="viewdetailoverviewigd" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>'+
+							'<input type="hidden" class="overviewigdid_detail" value="'+data['id']+'">'
+					var dok = ($('#dokteroverigd').val() == '' ? '-' : $('#dokteroverigd').val());
+					var per = ($('#perawatoverigd').val() == ''? '-' : $('#perawatoverigd').val());
+					var t = $('#tableoverviewigd').DataTable();
+					t.row.add([
+						no,
+						data['waktu'],
+						data['anamnesa'],
+						dok,
+						per,
+						last,
+						"fa"						
+					]).draw();
+					
+					$('#jml_overigd').val(no);
+				alert("Data Berhasil Disimpan");
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+		})
+
+		$('#tbody_overviewigd').on('click', 'tr td a.viewdetailoverviewigd', function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .overviewigdid_detail').val();
+			$.ajax({
+				type: "POST",
+				url: "<?php echo base_url()?>bersalin/bersalindetail/get_detail_overview_igd/" + id,
+				success: function (data) {
+					//console.log(data);
+					$('#waktutindakanigd').val(data['waktu']);
+					$('#anamnesaigd').val(data['anamnesa']);
+					$('#tekanandarahigd').val(data['tekanan_darah']);
+					$('#temperaturigd').val(data['temperatur']);
+					$('#nadiigd').val(data['nadi']);
+					$('#pernapasanigd').val(data['pernapasan']);
+					$('#beratigd').val(data['berat_badan']);
+					$('#dokterigd').val(data['nama_petugas']);
+					$('#kode_utamaigd').val(data['diag_u']);
+					$('#diagutamaigd').val(data['diagnosa_utama']);
+					$('#igd1igd').val(data['diagnosa_1']);
+					$('#igd2igd').val(data['diagnosa_2']);
+					$('#igd3igd').val(data['diagnosa_3']);
+					$('#igd4igd').val(data['diagnosa_4']);
+					$('#kode_sek1igd').val(data['diag_1']);
+					$('#kode_sek2igd').val(data['diag_2']);
+					$('#kode_sek3igd').val(data['diag_3']);
+					$('#kode_sek4igd').val(data['diag_4']);
+					$('#detailDiagnosaigd').val(data['detail_diagnosa']);
+					$('#kepalaleherigd').val(data['kepala_leher']);
+					$('#thoraxigd').val(data['thorax_abd']);
+					$('#extremitasigd').val(data['extrimitas']);
+					$('#terapiigd').val(data['terapi']);
+
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+		})
+
+		/*overview igd*/
+		$('#submitoverviewibuhamil').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+		    var number = 1;
+		    item[number] = {};
+			item[number]['perkiraan_lahir'] = format_date3($('#perkiraanlahir').val());
+			item[number]['visit_id'] = $('#v_idhamil').val();
+			item[number]['ri_hamil_id'] = $('#ri_idhamil').val();
+			item[number]['umur_haid'] = $("#pertamahaid").val();
+			item[number]['lama_haid'] = $('#lamahaid').val();
+			item[number]['siklus_haid'] = $('#siklushaid').val();
+			item[number]['hpht'] = $('#hpht').val();
+			item[number]['perkawinan'] = $('#perkawinan').val();
+			item[number]['umur_pernikahan'] = $('#umurpernikahan').val();
+			item[number]['ikut_kb'] = $('#kb').find('option:selected').val();
+			item[number]['metode'] = $('#metoda').find('option:selected').val();
+			item[number]['lingkar_lg_atas'] = $('#lingkarLengan').val();
+			item[number]['tinggi_badan'] = $('#tinggibadan').val();
+			item[number]['hamil_ke'] = $('#hamilke').val();
+			item[number]['jml_persalinan'] = $('#jml_persalinan').val();
+			item[number]['riw_alergi'] = $('#riw_alergi').val();
+			item[number]['jml_gugur'] = $('#jml_gugur').val();
+			item[number]['jml_hidup'] = $('#jml_hidup').val();
+			item[number]['jml_mati'] = $('#jml_mati').val();
+			item[number]['jml_prematur'] = $('#jml_prematur').val();
+			item[number]['jarak_akhir'] = ($('#jarak_akhir').val() + " " + $('#ketjarak').find('option:selected').val());
+			item[number]['imun_akhir'] = ($('#imun_akhir').val() + " " + $('#ket_imun').find('option:selected').val());
+			item[number]['penolong_akhir'] = $('#penolong_akhir').val();
+			item[number]['obstetrik'] = $('#riwobstetrik').val();
+			item[number]['penyakit_operasi'] = $('#penyakitoperasi').val();
+			if(item[number]['perkiraan_lahir'] == ''){
+				alert('isi data dengan benar');$('#perkiraanlahir').focus();return false;
+			}
+			if ($('#metoda').find('option:selected').val() == '') {
+				alert('isi data dengan benar');$('#metoda').focus();return false;
+			};
 			//console.log(item);return false;
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: '<?php echo base_url() ?>bersalin/bersalindetail/submit_visit_hamil',
+				success: function (data) {
+					console.log(data);
+					$(':input','#submitoverviewibuhamil')
+					  .not(':button, :submit, :reset, :hidden')
+					  .val('');
+
+					var jml = $('#jml_overhamil').val();
+					var no = parseInt(jml)+1;
+
+					var t = $('#tabeloverhamil').DataTable();
+					var last = '<a href="#detibuhamil" class="viewdetailoverviewhamil" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>'+
+								'<input type="hidden" class="overviewighamil_detail" value="'+data['id']+'">'+
+								'<a href="#tambahpemeriksaanfisikibu" class="tambahperiksafisikibu" data-toggle="modal"><i class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Tambah Pemeriksaan Fisik Ibu"></i></a>'+
+								'<a href="#riwpfi" class="riwpfisikibu" data-toggle="modal"><i class="glyphicon glyphicon-th-list" data-toggle="tooltip" data-placement="top" title="Riwayat Pemeriksaan Fisik Ibu"></i></a>'
+					var tgl = format_date(data['perkiraan_lahir']);
+					t.row.add([
+						no,
+						tgl,
+						data['hamil_ke'],
+						last,
+						"fa"						
+					]).draw();
+					
+					$('#jml_overhamil').val(no);
+					alert("Data Berhasil Disimpan");
+				},
+				error:function (data) {
+					console.log(data);
+					alert('gagal')
+				}
+			})
+
+		})
+
+		$('#tabeloverhamil').on('click', 'tr td a.viewdetailoverviewhamil', function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .overviewighamil_detail').val();
+			$.ajax({
+				type: "POST",
+				url: '<?php echo base_url() ?>bersalin/bersalindetail/get_detail_overview_hamil/' + id,
+				success: function (data) {
+					//console.log(data);
+					$('#perkiraanlahirrev').val(data['perkiraan_lahir']);
+					$("#pertamahaidrev").val(data['umur_haid']);
+					$('#lamahaidrev').val(data['lama_haid']);
+					$('#siklushaidrev').val(data['siklus_haid']);
+					$('#hphtrev').val(data['hpht']);
+					$('#perkawinanrev').val(data['perkawinan']);
+					$('#umurpernikahanrev').val(data['umur_pernikahan']);
+					$('#kbrev').val(data['ikut_kb']);
+					$('#metodarev').val(data['metoda']);
+					$('#lingkarLenganrev').val(data['lingkar_lg_atas']);
+					$('#tinggirev').val(data['tinggi_badan']);
+					$('#hamilkerev').val(data['hamil_ke']);
+					$('#jmlpersalinanrev').val(data['jml_persalinan']);
+					$('#alergirev').val(data['riw_alergi']);
+					$('#gugurrev').val(data['jml_gugur']);
+					$('#hiduprev').val(data['jml_hidup']);
+					$('#matirev').val(data['jml_mati']);
+					$('#prematurrev').val(data['jml_prematur']);
+					$('#jarakrev').val(data['jarak_akhir']);
+					$('#jarakimunrev').val(data['imun_akhir']);
+					$('#penolongrev').val(data['penolong_akhir']);
+					$('#obstetrikrev').val(data['obstetrik']);
+					$('#penyakitrev').val(data['penyakit_operasi']);
+				},
+				error:function (data) {
+					console.log(data);
+				}
+			})
+
+		})
+
+		$('#tabeloverhamil').on('click', 'tr td a.tambahperiksafisikibu', function (e) {
+			var id = $(this).closest('tr').find('td .overviewighamil_detail').val();
+			$('#id_periksaibuhamil').val(id);
+		})
+
+		$('#formperiksafisikibu').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+			item['ri_id_overview'] = $('#id_periksaibuhamil').val();
+			item['rencana_terapi'] = $('#rencanaterapi').val();
+			item['keadaan_umum'] = $('#keadaan_umum').val();
+			item['pemeriksaan_luar'] = $('#pemeriksaan_luar').val();
+			item['pemeriksaan_dalam'] = $('#pemeriksaan_dalam').val();
+			item['dokter_periksa'] = $('#iddokterfisikibu').val();
+			item['diagnosa_kerja'] = $('#kode_utamafisikibu').val();
+			item['tensi'] = $('#tensifisikibu').val();
+			item['nadi'] = $('#nadifisikibu').val();
+			item['pernafasan'] = $('#pernafasanfisikibu').val();
+			item['suhu'] = $('#suhufisikibu').val();
+			
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: '<?php echo base_url() ?>bersalin/bersalindetail/submit_fisik_hamil',
+				success: function (data) {
+					alert(data['message']);
+					if (data['error'] == 'n') {
+						$('#tambahpemeriksaanfisikibu').modal('hide');	
+					};
+				},
+				error: function (data) {
+					//console.log(data);
+				}
+			})
+
+		})
+
+		$('#tabeloverhamil').on('click', 'tr td a.riwpfisikibu', function (e) {
+			var id = $(this).closest('tr').find('td .overviewighamil_detail').val();
+			
+			$.ajax({
+				type: "POST",
+				url: '<?php echo base_url() ?>bersalin/bersalindetail/get_fisik_ibu/' + id,
+				success: function (data) {
+					//console.log(data);
+					$('#riwayatpemeriksaanfisikibu tbody').empty();
+					var j = 0;
+					for (var i = 0; i < data.length; i++) {
+						$('#riwayatpemeriksaanfisikibu tbody').append(
+							'<tr>'+
+								'<td>'+(Number(++j))+'</td>'+
+								'<td>'+format_date(data[i]['tanggal_periksa'])+'</td>'+
+								'<td>'+data[i]['nama_petugas']+'</td>'+
+								'<td>'+data[i]['diagnosa_kerja'] + " - "+ data[i]['diagnosis_nama']+'</td>'+
+								'<td style="text-align:center">'+
+									'<a href="#pemfisikibu" class="detailpemfisikibu" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="detail"></i></a>'+
+									'<input type="hidden" class="detail_fisikibu" value="'+data[i]['prime_id']+'">'+
+								'</td>'+					
+							'</tr>'
+						)
+					};
+						
+				},
+				error: function (data) {
+					
+				}
+			})
+		})
+
+		$('#riwayatpemeriksaanfisikibu tbody').on('click', 'tr td a.detailpemfisikibu', function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .detail_fisikibu').val();
+
+			$.ajax({
+				type: "POST",
+				url: '<?php echo base_url() ?>bersalin/bersalindetail/get_detail_fisik_ibu/' + id,
+				success: function (data) {
+					//console.log(data);
+					$('#rencanaterapi').val(data['rencana_terapi']);
+					$('#keadaandet').val(data['keadaan_umum']);
+					$('#pemeriksaanluardet').val(data['pemeriksaan_luar']);
+					$('#periksadalamdet').val(data['pemeriksaan_dalam']);
+					$('#dokterperiksadet').val(data['nama_petugas']);
+					$('#kode_utamadet').val(data['diagnosa_kerja']);
+					$('#namadiagdet').val(data['diagnosis_nama']);
+					$('#tensidet').val(data['tensi']);
+					$('#nadidet').val(data['nadi']);
+					$('#pernafasandet').val(data['pernafasan']);
+					$('#suhudet').val(data['suhu']);
+				},
+				error: function (data) {
+					
+				}
+			})
+		})
+		/*overview ibu hamil*/
+
+		/*overview perawatan*/
+		$('#submitoverviewperawatan').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+			item[1] = {};
+			item[1]['visit_id'] = $('#v_id_perawatan').val();
+			item[1]['ri_id'] = $('#ri_id_perawatan').val();
+			item[1]['waktu_visit'] = format_date3($('#waktukunjungandokter').val());
+			item[1]['dokter_visit'] = $('#id_dokteroverperawatan').val();
+			item[1]['anamnesa'] = $('#anamnesaoverperawatan').val();
+			item[1]['diagnosa_utama'] = $('#kode_utamaoverperawatan').val();
+			item[1]['sekunder1'] = $('#kode_sek1overperawatan').val();
+			item[1]['sekunder2'] = $('#kode_sek2overperawatan').val();
+			item[1]['sekunder3'] = $('#kode_sek3overperawatan').val();
+			item[1]['sekunder4'] = $('#kode_sek4overperawatan').val();
+			item[1]['perkembangan_penyakit'] = $('#perkembanganoverperawatan').val();
+			item[1]['tekanan_darah'] = $('#tekanandarahoverperawatan').val();
+			item[1]['temperatur'] = $('#temperaturoverperawatan').val();
+			item[1]['nadi'] = $('#nadioverperawatan').val();
+			item[1]['pernafasan'] = $('#pernapasanoverperawatan').val();
+			item[1]['berat_badan'] = $('#beratoverperawatan').val();
+
+			if(item[1]['dokter_visit'] == ''){
+				alert('isi data dengan benar');$('#dokteroverperawatan').focus();return false;
+			}
+			if(item[1]['diagnosa_utama'] == ''){
+				alert('isi data dengan benar');$('#kode_utamaoverperawatan').focus();return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>bersalin/bersalindetail/submitoverviewperawatan",
+				success: function (data) {
+					console.log(data);
+					var jml = $('#jml_overkunjungan').val();
+					var no = parseInt(jml)+1;					
+					var last = '<a href="#riwperawatan" class="viewdetailriwperawatan" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>'+
+							'<input type="hidden" class="id_detailriwperawatan" value="'+data['kunjungan_dok_id']+'">'					
+
+					var t = $('#tableoverviewperawatan').DataTable();
+					var dok =  $('#dokteroverperawatan').val();
+					var diag_utama = $('#diagutamaoverperawatan').val();
+					var waktu = format_date(data['waktu_visit']);
+					t.row.add([no,waktu,dok,diag_utama,'Bersalin',last]).draw();
+
+					$('#waktukunjungandokter').val("<?php echo date('d/m/Y H:i') ?>");
+					$(':input','#submitOverKlinis')
+					  .not(':button, :submit, :reset, :hidden')
+					  .val('');
+
+					$('#jml_overkunjungan').val(no);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+		})
+
+		$('#tableoverviewperawatan tbody').on('click', 'tr td a.viewdetailriwperawatan', function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .id_detailriwperawatan').val();
+			$.ajax({
+				type: "POST",
+				url: "<?php echo base_url()?>bersalin/bersalindetail/get_detail_over_perawatan/" + id,
+				success: function (data) {
+					console.log(data);
+					$('#waktutindakanrawat').val(format_date(data['waktu_visit']));
+					$('#dokterrawat').val(data['dokter']);
+					$('#anamnesarawat').val(data['anamnesa']);
+					$('#kode_utamarawat').val(data['diag_u']);
+					$('#diagnosautamarawat').val(data['diagnosa_utama']);
+					$('#kode_sek1rawat').val(data['diag_1']);
+					$('#sek1rawat').val(data['diagnosa_1']);
+					$('#kode_sek2rawat').val(data['diag_2']);
+					$('#sek2rawat').val(data['diagnosa_2']);
+					$('#kode_sek3rawat').val(data['diag_3']);
+					$('#sek3rawat').val(data['diagnosa_3']);
+					$('#kode_sek4rawat').val(data['diag_4']);
+					$('#sek4rawat').val(data['diagnosa_4']);
+					$('#perkembanganrawat').val(data['perkembangan_penyakit']);
+					$('#tekanandarahrawat').val(data['tekanan_darah']);
+					$('#temperaturrawat').val(data['temperatur']);
+					$('#nadirawat').val(data['nadi']);
+					$('#pernapasanrawat').val(data['pernafasan']);
+					$('#beratrawat').val(data['berat_badan']);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+
+			})
+		})
+
+		//asuhan keperawatan
+		$('#submitasuhankeperawatan').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+			item[0] = {};
+			item[0]['visit_id'] = $('#v_id_asuhan').val();
+			item[0]['ri_id'] = $('#ri_id_asuhan').val();
+			item[0]['waktu_tindakan'] = format_date3($('#waktuasuhan').val());
+			item[0]['perawat1'] = $('#idperawatasuh1').val();
+			item[0]['perawat2'] = $('#idperawatasuh2').val();
+			item[0]['perjalanan_penyakit'] = $('#perjalananpenyakitasuhan').val();
+			item[0]['pemberian_obat'] = $('#pemberianobatasuhan').val();
+			item[0]['diet'] = $('#dietasuhan').val();
+			if(item[0]['perawat1'] == ''){
+				alert('isi data dengan benar');$('#perawatasuhan1').focus();return false;
+			}
+
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>bersalin/bersalindetail/submit_asuhan",
+				success: function (data) {
+					console.log(data);
+					var jml = $('#jml_overasuhan').val();
+					var no = parseInt(jml)+1;					
+					var last = '<a href="#riwperawatan" class="viewdetailriwperawatan" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>'+
+							'<input type="hidden" class="id_detailriwperawatan" value="'+data['asuhan_id']+'">'					
+
+					var t = $('#tabelasuhan').DataTable();
+					var p1 =  $('#perawatasuhan1').val();
+					var p2 =  $('#perawatasuhan2').val();
+					var waktu = format_date(data['waktu_tindakan']);
+					t.row.add([no,waktu,p1,p2,'Bersalin',"tambah"]).draw();
+
+					$('#waktuasuhan').val("<?php echo date('d/m/Y H:i') ?>");
+					$(':input','#submitasuhankeperawatan')
+					  .not(':button, :submit, :reset, :hidden')
+					  .val('');
+
+					$('#jml_overasuhan').val(no);
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+		})
+		/*akhir overview perawatan*/
+
+		/*--------------*/
+		/*visit bersalin*/	
+		$('#komp').hide();
+		$('#pilJnsKegiatan').on('change', function (e) {
+			e.preventDefault();
+			var a = $('#pilJnsKegiatan').find('option:selected').val();
+			if (a == 'komplikasi') {
+				$('#komp').show();
+			}else{
+				$('#komp').hide();
+			}
+		});
+
+		$('#submitkegiatanbersalin').submit(function (e) {
+			e.preventDefault();
+
+			var item = {};
+		    item['visit_id'] = $('#v_id_bersalin').val();
+		    item['ri_id'] = $('#ri_id_bersalin').val();
+
+			var jenis = $('#pilJnsKegiatan').find('option:selected').val();
+			if (jenis == 'komplikasi') {
+				item['jenis_kegiatan'] = $('#pilkomplikasi').find('option:selected').val();
+			}else{
+				item['jenis_kegiatan'] = jenis;
+			}
+
+			item['rujukan_dari'] = $('#rujukanbresalin').find('option:selected').val();
+			if ($('#statusRujukan').find('option:selected').val() == "Ya") {
+				item['dirujuk_ke'] = $('#tujuanRujuk').find('option:selected').val();
+				if(item['dirujuk_ke'] == '') {$('#tujuanRujuk').focus(); alert('isi data dengan benar');return false;}
+			}else{
+				item['dirujuk_ke'] = "-";
+			}
+			item['dokter'] = $('#id_dokterpenolongbersalin').val();
+			item['asisten'] = $('#id_penolongbersalin').val();
+			item['keterangan'] = $('#ketKegiatan').val();
+			item['waktu'] = format_date3($('#tgl_pelaksanaanbersalin').val());
+			item['status'] = $('#statusbersalin').val();
+
+			//console.log(item);
 			$.ajax({
 				type: "POST",
 				data : item,
 				url: "<?php echo base_url()?>bersalin/bersalindetail/submit_kegiatan_bersalin",
 				success: function (data) {					
-					//console.log(data);
-					$('#iddokterbersalin').val('');
-					$('#namadokterbersalin').val('');
-					$('#ketKegiatan').val('');
-					alert('data berhasil disimpan');
-				},
-				error: function (data) {
-					//console.log(data);
-				}
-			})
+					console.log(data);
+					if (data['error'] == 'n') {
+						var d = data['data'];
+						var last = '<a href="#" class="hapuskegiatanbersalin"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>';
+						var jml = $('#jml_kegbersalin').val();
+						var no = parseInt(jml)+1;
 
-		})
-		/*akhir visit kegiatan bersalin*/
-
-		/*daftar kelahiran baru*/
-		$('#submitKelahiran').submit(function (e) {
-			e.preventDefault();
-			
-			var str = $('#tglKelahiran').val();
-			
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-
-			var item = {};
-		    var number = 1;
-		    item[number] = {};
-
-		    item[number]['waktu_kelahiran'] = tanggal;
-		    var status = '1';
-		    if ($('#statusLahir').find('option:selected').val() == 'Tidak') {status = '0'};
-
-		    item[number]['nama_bayi'] = $('#namabayi').val();
-		    item[number]['berat'] = $('#beratBadan').val();
-		    item[number]['panjang'] = $('#pjgBadan').val();
-		    item[number]['jenis_kelamin'] = $("input[name='jk']:checked").val();
-		    item[number]['is_hidup'] = status;
-
-		    alert(item[number]['jenis_kelamin']);
-		})
-
-		/*akhir daftar kelahiran baru*/
-
-
-		/*riwayat penyakit*/
-		$('#tabel_riwayat').on('click', 'tr td a.rm_detail', function (e) {
-			var v_id = $(this).closest('tr').find('td.visit_riwayat').text();
-
-			//overview
-			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_overview_riwayat/"+v_id,
-				success: function (result) {
-					//console.log(result)
-					var data = result[0];
-					var time = data['tanggal_visit'];
-
-					if (result.length > 0) {
-						$('.riwayat-tanggal').val(data['tanggal_visit']);
-						$('.riwayat-departemen').text((data['overview_id'] != null ? data['nama_dept'] : ""));
-						$('.riwayat-dokter').text(data['nama_petugas']);
-						$('.riwayat-anamnesa').text(data['anamnesa']);
-						$('.riwayat-diagnosa').text(data['diagnosa_utama']);
-
-						$('#t_body_history_therapy').empty();
-						for (var i = result.length - 1; i >= 0; i--) {
-							var tanggal = (result[i]['tanggal'] == null) ? "-": result[i]['tanggal'];
-							var dokter = (result[i]['nama_petugas'] == null) ? "-": result[i]['nama_petugas'];
-							var terapi = (result[i]['terapi'] == null) ? "-": result[i]['terapi'];
-							$('#t_body_history_therapy').append(
-								'<tr>'+
-									'<td>'+tanggal+'</td>'+
-									'<td>'+dokter+'</td>'+
-									'<td>'+terapi+'</td>'+
-								'</tr>'
-							)
-							
-						};
-					};
-
-				},
-				error: function (data) {
-					// body...
-				}
-			})
-			//therapy
-			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_therapy_riwayat/"+v_id,
-				success: function (data) {
+						var t = $('#tabelhistorybersalin').DataTable();
+						var last = '<a href="#" class="hapuskegiatanbersalin"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>'+
+								'<input type="hidden" class="bersalin_id" value="'+data['bersalin_id']+'">'
+						var dokter = $('#dokterpenolongbersalin').val();
+						var asisten = $('#penolongbersalin').val();
+						var waktu = format_date(d['waktu'])
+						t.row.add([no,d['jenis_kegiatan'],d['rujukan_dari'],d['status'],d['dirujuk_ke'],dokter,asisten,waktu,last,"fa"]).draw();
+						
+						$('#jml_kegbersalin').val(no);
+						alert("Data Berhasil Disimpan");
+						$('#id_dokterpenolongbersalin').val('');
+						$('#id_penolongbersalin').val('');
+						$('#dokterpenolongbersalin').val('');
+						$('#penolongbersalin').val('');
+						$('#tgl_pelaksanaanbersalin').val("<?php echo date('d/m/Y H:i:s') ?>");
+					}else{
+						alert(data['data']);
+					}
 					
 				},
 				error: function (data) {
-					// body...
+					console.log(data);
 				}
 			})
-			//resep
+		})
+		$('#formcariasisten').submit(function (e) {
+			e.preventDefault();
+			var p = $('#keyasisten').val();
 			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_resep_riwayat/"+v_id,
-				success: function (data) {
-					if (data.length > 0) {
-						$('#t_body_history_resep').empty();
-						for (var i = data.length - 1; i >= 0; i--) {
-							var tanggal = (data[i]['tanggal'] == null) ? "-": data[i]['tanggal'];
-							var resep_id = (data[i]['resep_id'] == null) ? "-": data[i]['resep_id'];
-							var resep = (data[i]['resep'] == null) ? "-": data[i]['resep'];
-							$('#t_body_history_resep').append(
+				type:'POST',
+				url:"<?php echo base_url()?>bersalin/bersalindetail/search_asisten/"+p,
+				success:function(data){
+					console.log(data);
+					$('#tbodyasisten').empty();
+ 					if(data.length>0){
+						for(var i = 0; i<data.length; i++){
+							var nama = data[i]['nama_petugas'],
+								id = data[i]['petugas_id'];
+
+							$("#tbodyasisten").append(
 								'<tr>'+
-									'<td>'+resep_id+'</td>'+
-									'<td>'+tanggal+'</td>'+
-									'<td>'+resep+'</td>'+
+									'<td>'+nama+'</td>'+
+									'<td style="text-align:center">'+
+										'<a class="inputasistenbersalin"><i class="glyphicon glyphicon-check" style="cursor:pointer;"></i></a>'+
+										'<input type="hidden" class="idasist" value="'+id+'">'+
+									'</td>'+
 								'</tr>'
-							)
-							
-						};
+							);
+						}
 					}else{
-						$('#t_body_history_resep').append(
+						$('#tbodyasisten').empty();
+						$('#tbodyasisten').append(
 							'<tr>'+
-								'<td colspan="3" style="text-align:center">tidak ada resep</td>'+
-							'</tr>'
-						)
+					 			'<td colspan="2"><center>Data Tidak Ditemukan</center></td>'+
+					 		'</tr>'
+						);
 					}
 				},
-				error: function (data) {
-					// body...
+				error:function(data){
+
 				}
-			})
-			//penunjang
-			$.ajax({
-				type: "POST",
-				url: "<?php echo base_url()?>bersalin/bersalindetail/get_penunjang_riwayat/"+v_id,
-				success: function (data) {
-					// body...
-				},
-				error: function (data) {
-					// body...
-				}
-			})
+			});
 		})
-		
-		/*akhir riwayat*/
-
-		/*pindah kamar*/
-
-
-		/*akhir pindah kamar*/
-
-		/*resume pulang*/
-		$('#formresume').submit(function (e) {
+		$('#tbodyasisten').on('click', 'tr td a.inputasistenbersalin', function (e) {
 			e.preventDefault();
-
-			var item={};
-			item[1]={};
-
-			var alasan = $('#alasanKeluarPasien').find('option:selected').val();
-			item[1]['detail_alasan_pulang'] = "";
-			switch(alasan){
-				case "Pasien Dipulangkan": item[1]['detail_alasan_pulang'] = $('#alasanPulang').val();break;
-				case "Pasien Dipindahkan": item[1]['detail_alasan_pulang'] = $('#alasanPindah').val();break;
-				case "Rujuk Rumah Sakit Lain": item[1]['detail_alasan_pulang'] = "Dirujuk Ke RS "+$('#isianRSRujuk').val();break;
-				case "Atas Permintaan Sendiri": item[1]['detail_alasan_pulang'] = $('#alasanPulang').val();break;
-				case "Pasien Meninggal": {
-						item[1]['detail_alasan_pulang'] = $('#detPasDie').find('option:selected').val();
-						var str = $('#waktumeninggal').val();
-						var res = str.split("/");
-					    var bln = res[1];
-						var tgl = res[0];
-					    var thn = res[2];
-
-					    var tanggal = thn + '-' + bln + '-' + tgl;
-					    item[1]['waktu_kematian'] = tanggal;
-					    item[1]['keterangan_kematian'] = $('#ketMati').val();
-						break;
-					}	
-			}
-			item[1]['alasan_keluar'] = alasan;
-			var str = $('#tglKeluarRS').val();
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item[1]['waktu_keluar'] = tanggal;
-		    item[1]['visit_id'] = $('#v_id').val();
-		    item[1]['waktumasuk'] = $('#tglMasukRS').val();
-
-			item[1]['biaya_per_hari'] = $('#biaya_per_hari').val();
-			item[1]['old_kamar_id'] = $('#old_kamar_id').val();
-			item[1]['old_bed_id'] = $('#old_bed_id').val();		    
-			item[1]['inap_id'] = $('#inap_id').val();
-			//console.log(item);return false;
-
-			$.ajax({
-				type: "POST",
-				data: item,
-				url: "<?php echo base_url()?>bersalin/bersalindetail/checkout_process",
-				success: function (data) {
-					console.log(data);
-				},
-				error: function (data) {
-					console.log(data);
-				}
-			})
-
+			$('#penolongbersalin').val($(this).closest('tr').find('td').eq(0).text());
+			$('#id_penolongbersalin').val($(this).closest('tr').find('td .idasist').val());
+			$('#searchAsisten').modal('hide');
 		})
-		/*akhir resume pulang*/
 
+		$('#tabelhistorybersalin').on('click','tr td a.hapuskegiatanbersalin',function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .bersalin_id').val();
+			var visit_id = $('#v_id_bersalin').val();
+		    var ri_id = $('#ri_id_bersalin').val();
+			var a = confirm('yakin dihapus ?');
+			if (a == true) {
+				var table = $('#tabelhistorybersalin').DataTable();
+				table.row( $(this).parents('tr') ).remove().draw();
+				$.ajax({
+					type: "POST",
+					url: "<?php echo base_url()?>bersalin/bersalindetail/hapus_kegiatan_bersalin/"+id +"/"+visit_id+"/"+ri_id,
+					success: function (d) {
+						/*if (d['ket'] == 'y') {
+							console.log(d['result']);
+							var data = d['result'];
+							$('#jml_kegbersalin').val(Number(data.length));
+							table.clear().draw();
+							for (var i = 0; i < data.length; i++) {
+								var no = (Number(i) + 1);
+								var waktu = format_date(data[i]['waktu'])
+								var last = '<a href="#" class="hapuskegiatanbersalin"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>'+
+									'<input type="hidden" class="bersalin_id" value="'+data[i]['bersalin_id']+'">'
+								table.row.add([no, data[i]['jenis_kegiatan'], data[i]['rujukan_dari'], data[i]['status'],
+												data[i]['dirujuk_ke'], data[i]['dokter'], data[i]['asisten'],
+												waktu, last, "fa"]).draw();
+							};
+							
+						}else{
+							alert(d['result']);
+						}
+						*/
+						alert('Berhasil dihapus');
+					},
+					error: function (data) {
+						alert('terjadi kesalahan, gagal');
+					}
+				})
+			};
+		})
 
-		
-	});
+		/*akhir visit bersalin*/
+	})
+
+	function get_diagnosa(id, nama, diagnosa){
+		//alert(diagnosa);
+		switch(diagnosa){
+			case '1': $('#k_utama_over').val(id);$('#dnama1').val(nama);break;
+			case '2': $('#k_sek_over').val(id);$('#dnama2').val(nama);break;
+			case '3': $('#k_sek_over2').val(id);$('#dnama3').val(nama);break;
+			case '4': $('#k_sek_over3').val(id);$('#dnama4').val(nama);break;
+			case '5': $('#k_sek_over4').val(id);$('#dnama5').val(nama);break;
+			case '6': $('#kode_utamaoverigd').val(id);$('#diagutamaoverigd').val(nama);break;
+			case '7': $('#kode_sek1overigd').val(id);$('#sek1overigd').val(nama);break;
+			case '8': $('#kode_sek2overigd').val(id);$('#sek2overigd').val(nama);break;
+			case '9': $('#kode_sek3overigd').val(id);$('#sek3overigd').val(nama);break;
+			case '10': $('#kode_sek4overigd').val(id);$('#sek4overigd').val(nama);break;
+			case '11': $('#kode_utamafisikibu').val(id);$('#namadiagfisikibu').val(nama);break;
+			case '12': $('#kode_utamaoverperawatan').val(id);$('#diagutamaoverperawatan').val(nama);break;
+			case '13': $('#kode_sek1overperawatan').val(id);$('#diagsek1overperawatan').val(nama);break;
+			case '14': $('#kode_sek2overperawatan').val(id);$('#diagsek2overperawatan').val(nama);break;
+			case '15': $('#kode_sek3overperawatan').val(id);$('#diagsek3overperawatan').val(nama);break;
+			case '16': $('#kode_sek4overperawatan').val(id);$('#diagsek4overperawatan').val(nama);break;
+		}
+
+		$('#tbody_diagnosa').empty();
+		$('#tbody_diagnosa').append('<tr><td colspan="3" style="text-align:center;">Cari Data Diagnosa</td></tr>');
+		$('#katakunci_diag').val("");
+		$('#searchDiagnosa').modal('hide');
+	}
+
+	function getDokter(id, nama, dokter){
+		switch(dokter){
+			case '1': $('#id_dokterOver').val(id);$('#nama_dOver').val(nama);break;
+			case '2': $('#id_dokter_jaga').val(id);$('#dokteroverigd').val(nama);break;
+			case '3': $('#iddokterfisikibu').val(id);$('#dokterperiksafisik').val(nama);break;
+			case '4': $('#id_dokteroverperawatan').val(id);$('#dokteroverperawatan').val(nama);break;
+			case '5': $('#id_dokterpenolongbersalin').val(id);$('#dokterpenolongbersalin').val(nama);break;
+		}		
+
+		$("#searchDokter").modal('hide');
+		$("#inputDokter").val("");
+		$('#tbody_dokter').empty();
+		$('#tbody_dokter').append('<tr><td colspan="2" style="text-align:center;">Cari dokter</td></tr>');
+	}
+
+	function getPerawat(id, nama, perawat){
+		switch(perawat){
+			case '1': $('#id_perawat_jaga').val(id);$('#perawatoverigd').val(nama);break;
+			case '2': $('#idperawatasuh1').val(id);$('#perawatasuhan1').val(nama);break;
+			case '3': $('#idperawatasuh2').val(id);$('#perawatasuhan2').val(nama);break;
+		}		
+
+		$("#searchPerawat").modal('hide');
+		$("#katakunciperawat").val("");
+		$('#tbody_perawat').empty();
+		$('#tbody_perawat').append('<tr><td colspan="2" style="text-align:center;">Cari perawat</td></tr>');
+	}
 
 	function getPaket(id, nama){
 		$("#searchPaketMakanan").modal('hide');
 		$("#id_paket").val(id);
-		$("#searchmakanbersalin").val(nama);
+		$("#searchpaket").val(nama);
 		$("#katakuncipaket").val("");
+	}
+
+	function save_overview (item) {
+		var petugas = $('#nama_dOver').val();
+
+		$.ajax({
+			type: "POST",
+			data : item,
+			url: "<?php echo base_url()?>bersalin/bersalindetail/save_overview",
+			success: function (data) {				
+				$('#inputdate').val("<?php echo date('d/m/Y H:i') ?>");
+				$(':input','#submitOverKlinis')
+				  .not(':button, :submit, :reset, :hidden')
+				  .val('');
+
+				console.log(data);
+				var jml = $('#jml_over').val();
+				var no = parseInt(jml)+1;
+
+				var t = $('#tabelhistoryoverklinis').DataTable();
+				var last = '<a href="#riwayatoverviewklinis" class="viewdetailoverviewklinis" data-toggle="modal"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Lihat detail"></i></a>'+
+						'<input type="hidden" class="overviewid_detail" value="'+data['id']+'">'
+
+				t.row.add([
+					no,
+					'Bersalin',
+					data['anamnesa'],
+					petugas,
+					last,
+					"fa"						
+				]).draw();
+				
+				$('#jml_over').val(no);
+				alert("Data Berhasil Disimpan");
+			},
+			error: function (data) {
+				console.log(data);
+				alert(data);
+			}
+		});
+
+		return false;
 	}
 
 </script>

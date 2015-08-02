@@ -1,0 +1,40 @@
+/* Timeline Custom Stylesheet */
+
+/*----------------------------------------------------------------------------*/
+/* Body
+/*----------------------------------------------------------------------------*/
+ul.timeline .timeline-body
+{
+	background: #fff;
+	margin: 0 0 20px 25%;
+}
+
+ul.timeline .timeline-body:after
+{
+	border: none;
+}
+.timeline-footer.col-md-12
+{
+	padding: 0;
+	float: none;
+	margin: 25px 0 0 0;
+}
+/*----------------------------------------------------------------------------*/
+/* Typography
+/*----------------------------------------------------------------------------*/
+
+.timeline-content, .timeline-body h2, .timeline-body p, .timeline-body span
+{
+	color: #000;
+}
+
+.timeline-body h2
+{
+	text-transform: uppercase;
+}
+
+.timeline-delete
+{
+	background: #ffbb00;
+	padding: 8px 10px !important;
+}

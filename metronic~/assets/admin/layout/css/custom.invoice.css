@@ -1,0 +1,58 @@
+/* CSS Style and Override for Invoice Page */
+
+/*Available Jenis Perawatan*/
+.invoice-tab #sample_2_wrapper > div:nth-child(1),
+.invoice-tab #sample_2_wrapper > div:nth-child(2) > div:nth-child(1),
+.invoice-tab #sample_2_wrapper > div:nth-child(4),
+.invoice-tab #sample_2 thead{
+	display: none;
+}
+.invoice-tab #sample_2_filter input{
+	width: 196px !important;
+}
+.invoice-tab #sample_2 tbody{
+	max-height: 550px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+.invoice-tab #sample_2 tbody, .invoice-tab #sample_2 tbody tr, .invoice-tab #sample_2 tbody td{
+	display: inline-block;
+	width: 100%;
+}
+.invoice-tab #sample_2 tbody td .actions{
+	float: right;
+	margin-right: 10px;
+}
+
+
+/* Form Invoice*/
+ul.patients-info li,ul.sickness-info li{
+	text-transform: capitalize;
+}
+
+/* Form Invoice on Kasir Page */
+.invoice-patient-info
+{
+	margin: 30px 0 0;
+}
+.invoice-patient-info h3
+{
+	margin: 0;
+}
+.kasir-form .well
+{
+	display: none;
+}
+/*
+#invoiceBill tbody{
+	max-height: 250px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: inline-block;	
+}
+#invoiceBill thead, #invoiceBill thead tr,
+#invoiceBill tbody, #invoiceBill tbody tr{
+	display: inline-block;
+	width: 100%;
+}
+*/

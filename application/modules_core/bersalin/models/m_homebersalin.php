@@ -10,16 +10,23 @@
 		}
 
 		/*farmasi besalin*/
-		public function get_obat_unit()
+		public function get_obat_unit($dept_id)
 		{
-			$sql = "SELECT z.nama,z.obat_id,z.harga_jual,a.no_batch,a.tgl_kadaluarsa, e.total_stok, a.obat_detail_id, om.nama_merk, os.satuan,
+			/*$sql = "SELECT z.nama,z.obat_id,z.harga_jual,a.no_batch,a.tgl_kadaluarsa, e.total_stok, a.obat_detail_id, om.nama_merk, os.satuan,
 					om.merk_id, os.satuan_id, e.obat_dept_id, z.jenis_obat_id
 					FROM obat z left join obat_detail a on z.obat_id = a.obat_id left join obat_dept b on a.obat_detail_id = b.obat_detail_id 
 					left join (select c.obat_dept_id, d.total_stok from obat_dept_stok c 
 					left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) d 
 					on c.obat_dept_id = d.obat_dept_id group by c.obat_dept_id) e on e.obat_dept_id = b.obat_dept_id
 					left join obat_merk om on om.merk_id = z.merk_id left join obat_satuan os on os.satuan_id = z.satuan_id
-					where b.dept_id = '19'";		
+					where b.dept_id = '$dept_id'";	*/	
+			$sql = "SELECT *  FROM obat o left join obat_detail od on o.obat_id = od.obat_id 
+					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id left join 
+					(select * from obat_dept_stok order by obat_dept_stok_id desc) ods on ot.obat_dept_id = ods.obat_dept_id 
+					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
+					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
+					left join obat_satuan os on os.satuan_id = o.satuan_id
+					where ot.dept_id = '$dept_id' group by ods.obat_dept_id";
 			$result = $this->db->query($sql);
 			if ($result) {
 				return $result->result_array();
@@ -28,7 +35,7 @@
 			}
 		}
 
-		public function filter_farmasi_expired($filterby,$now)
+		public function filter_farmasi_expired($filterby,$now,$dept_id)
 		{
 			$end = $filterby;
 			$sql = "SELECT *  FROM obat o left join obat_detail od on o.obat_id = od.obat_id 
@@ -37,7 +44,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where ot.dept_id = '19' 
+					where ot.dept_id = '$dept_id' 
 					AND TIMESTAMPDIFF(MONTH, '$now', od.tgl_kadaluarsa) +
 						  DATEDIFF(
 						    od.tgl_kadaluarsa,
@@ -75,6 +82,21 @@
 			}else{
 				return false;
 			}
+		}
+
+		public function filter_farmasi_jenis($filterval)
+		{
+			# code...
+		}
+
+		public function filter_farmasi_nama($filterval)
+		{
+			# code...
+		}
+
+		public function filter_farmasi_merek($filterval)
+		{
+			# code...
 		}
 
 		public function get_obat_farmasi($q, $dept_id)
@@ -149,5 +171,31 @@
 			}
 		}
 		/*akhir farmasi bersalin*/
+
+		/*logistik bersalin*/
+		public function get_barang_unit($dept_id)
+		{
+			# code...
+		}
+		public function insert_permintaanbarang($insert)
+		{
+			$result = $this->db->insert('barang_permintaan', $insert);
+			if ($result) {
+				return $this->db->insert_id();
+			}else{
+				return false;
+			}
+		}
+
+		public function insert_detail_permintaanbarang($insert)
+		{
+			$result = $this->db->insert('barang_permintaan_detail', $insert);
+			if ($result) {
+				return $this->db->insert_id();
+			}else{
+				return false;
+			}
+		}
+		/*logistik bersalin*/
 	}
 ?>

@@ -23,11 +23,11 @@ License: You must have a valid license purchased only from themeforest(the above
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="" name="description"/>
 <meta content="" name="author"/>
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href="<?php echo base_url();?>metronic/assets/font-awesome/fontcss.css" rel="stylesheet" type="text/css"/>
+
     <link href="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-slider/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="<?php echo base_url();?>metronic/assets/global/plugins/bootstrap-slider/css/full-slider.css" rel="stylesheet" type="text/css"/>
-    <link href="<?php echo base_url();?>metronic/assets/global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css"/>
-   <!--  <link href="<?php echo base_url();?>metronic/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
+     <!--  <link href="<?php echo base_url();?>metronic/assets/global/css/components.css" rel="stylesheet" type="text/css"/>
     -->  
 <!--  END THEME STYLES -->
     <link href="<?php echo base_url();?>metronic/assets/css/bootstrap.css" rel="stylesheet">
@@ -51,8 +51,12 @@ License: You must have a valid license purchased only from themeforest(the above
 
     <link href="<?php echo base_url();?>metronic/assets/css/datepicker.css" rel="stylesheet">
     <link href="<?php echo base_url();?>metronic/assets/css/qunit.css">
-    <!-- <link href="<?php echo base_url();?>metronic/assets/global/plugins/datatablesnew/media/css/jquery.dataTables.css"> -->
-    <link href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.css" rel="stylesheet">
+    <style type="text/css">
+        .dataTables_empty{
+            text-align: center;
+        }
+    </style>
+
     <script src="<?php echo base_url();?>metronic/assets/js/jquery-2.1.3.js"></script>
     <script src="<?php echo base_url();?>metronic/assets/js/chart-master/Chart.js"></script>
 

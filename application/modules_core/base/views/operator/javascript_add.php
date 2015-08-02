@@ -18,78 +18,80 @@
 		    }
 		});
 
-		$('#tabelpermintaangudang').DataTable();
-		$('#tblriwayatterima').DataTable();
-		$('#tabelreturdepartemen').DataTable();
-		$('#tabelriwayatreturdept').DataTable();
-		$('#tabelinventoriunit').DataTable();
+		/**/
 
 	})
-		function format_date (date) {
-			var sp = date.split('-');
-			var tgl = sp[2];
-			var thn = sp[0];
-			var temp = sp[1];
-			var bln = "";
-			switch(temp){
-				case '01' : bln = "Januari" ;break;
-				case '02' : bln = "Februari" ;break;
-				case '03' : bln = "Maret" ;break;
-				case '04' : bln = "April" ;break;
-				case '05' : bln = "Mei" ;break;
-				case '06' : bln = "Juni" ;break;
-				case '07' : bln = "Juli" ;break;
-				case '08' : bln = "Agustus" ;break;
-				case '09' : bln = "September" ;break;
-				case '10' : bln = "Oktober" ;break;
-				case '11' : bln = "November" ;break;
-				case '12' : bln = "Desember" ;break;
-			}
-
-			var waktu = "";
-			if(tgl.length > 2){
-				var a = tgl.split(' ');
-				waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
-			}else{
-				waktu = tgl + " " + bln + " "+ thn;
-			}
-			return waktu;
+	function format_date (date) {
+		var sp = date.split('-');
+		var tgl = sp[2];
+		var thn = sp[0];
+		var temp = sp[1];
+		var bln = "";
+		switch(temp){
+			case '01' : bln = "January" ;break;
+			case '02' : bln = "February" ;break;
+			case '03' : bln = "March" ;break;
+			case '04' : bln = "April" ;break;
+			case '05' : bln = "May" ;break;
+			case '06' : bln = "June" ;break;
+			case '07' : bln = "July" ;break;
+			case '08' : bln = "Agust" ;break;
+			case '09' : bln = "September" ;break;
+			case '10' : bln = "October" ;break;
+			case '11' : bln = "November" ;break;
+			case '12' : bln = "December" ;break;
 		}
 
-		function format_date2 (date) {
-			var sp = date.split(' ');
-			var tgl = sp[0];
-			var thn = sp[2];
-			var temp = sp[1];
-			var bln = "";
-			switch(temp){
-				case 'Januari' : bln = "01" ;break;
-				case 'Februari' : bln = "02" ;break;
-				case 'Maret' : bln = "03" ;break;
-				case 'April' : bln = "04" ;break;
-				case 'Mei' : bln = "05" ;break;
-				case 'Juni' : bln = "06" ;break;
-				case 'Juli' : bln = "07" ;break;
-				case 'Agustus' : bln = "08" ;break;
-				case 'September' : bln = "09" ;break;
-				case 'Oktober' : bln = "10" ;break;
-				case 'November' : bln = "11" ;break;
-				case 'Desember' : bln = "12" ;break;
-			}
+		var waktu = "";
+		if(tgl.length > 2){
+			var a = tgl.split(' ');
+			waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
+		}else{
+			waktu = tgl + " " + bln + " "+ thn;
+		}
+		return waktu;
+	}
 
-			var waktu = tgl + "/" + bln + "/"+ thn;
-			return waktu;
+	function format_date2 (date) {
+		var sp = date.split(' ');
+		var tgl = sp[0];
+		var thn = sp[2];
+		var temp = sp[1];
+		var bln = "";
+		switch(temp){
+			case 'January' : bln = "01" ;break;
+			case 'February' : bln = "02" ;break;
+			case 'March' : bln = "03" ;break;
+			case 'April' : bln = "04" ;break;
+			case 'May' : bln = "05" ;break;
+			case 'June' : bln = "06" ;break;
+			case 'July' : bln = "07" ;break;
+			case 'Agust' : bln = "08" ;break;
+			case 'September' : bln = "09" ;break;
+			case 'October' : bln = "10" ;break;
+			case 'November' : bln = "11" ;break;
+			case 'December' : bln = "12" ;break;
 		}
 
-		function format_date3(date){
-			var res = date.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
+		var waktu = tgl + "/" + bln + "/"+ thn;
+		return waktu;
+	}
 
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    return tanggal;
-		}
+	function format_date3(date){
+		var res = date.split("/");
+	    var bln = res[1];
+		var tgl = res[0];
+	    var thn = res[2];
+	    var waktu = "";
+	    if (thn.length > 4) {
+	    	var a = thn.split(' ');
+	    	waktu = a[0] + '-' + bln + '-' + tgl + ' '+  a[1];
+	    }else{
+	    	waktu = thn + '-' + bln + '-' + tgl;
+	    }
+	    
+	    return waktu;
+	}
 </script>
 
 <!-- END JAVASCRIPTS -->

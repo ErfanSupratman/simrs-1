@@ -105,6 +105,7 @@
 	            		<label class="control-label col-md-2" >Satuan Obat </label>
 						<div class="col-md-2">
 		         			<select class="form-control select" name="selectSatObat" id="selectSatObat" >
+		         				<option value="" selected>Pilih</option>
 								<?php if (!empty($satuan_obat)) {
 		         					foreach ($satuan_obat as $value) {
 		         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
@@ -123,6 +124,7 @@
 	            		<label class="control-label col-md-2" >Jenis Obat </label>
 						<div class="col-md-2">
 		         			<select class="form-control select" name="selectJnsObat" id="selectJnsObat" >
+		         				<option value="" selected>Pilih</option>
 								<?php if (!empty($jenis_obat)) {
 		         					foreach ($jenis_obat as $value) {
 		         						echo '<option value="'.$value['jenis_obat_id'].'">'.$value['jenis_obat'].'</option>';	
@@ -166,8 +168,8 @@
 						<label class="control-label col-md-2" > Generik </label>
 						<div class="col-md-2">
 		         			<select class="form-control select" name="selectGenerik" id="selectGenerik" >
-								<option value="1" selected>Generik</option>
-								<option value="0">Non-generik</option>
+								<option value="generik" selected>Generik</option>
+								<option value="non-generik">Non-generik</option>
 							</select>
 						</div>		
 					</div>
@@ -226,8 +228,8 @@
 						<div class="col-md-2" style="margin-left:-100px">
 							<select class="form-control select" name="selectGenObatBwh" id="selectGenObatBwh">
 								<option value="" selected>Pilih</option>
-								<option value="1">Generik</option>
-								<option value="0">Non Generik</option>
+								<option value="generik">Generik</option>
+								<option value="non-generik">Non Generik</option>
 							</select>
 						</div>
 						<div class="col-md-2" style="margin-left:-10px">
@@ -245,10 +247,10 @@
 						</div>
 						<br>
 						<div class="portlet-body" style="margin: 30px 10px 0px 10px">
-							<table class="table table-striped table-bordered table-hover table-responsive" id="tabelobat">
+							<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelobat">
 								<thead>
 									<tr class="info" >
-										<th  style="text-align:left"> Kode </th>
+										<th  style="text-align:left" width="3%"> No. </th>
 										<th  style="text-align:left"> Nama Obat </th>
 										<th  style="text-align:left"> Jenis </th>
 										<th  style="text-align:left"> Merek </th>
@@ -488,7 +490,7 @@
 						</div>
 						<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 						
-							<table class="table table-striped table-bordered table-hover table-responsive" id="tabeldetailobat">
+							<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tabeldetailobat">
 								<thead>
 									<tr class="info" >
 										<th  style="text-align:left"> Tgl Kadaluarsa </th>
@@ -500,11 +502,6 @@
 									</tr>
 								</thead>
 								<tbody id="t_body_detail_obat">
-									<?php  
-										echo '<tr>'.
-												'<td style="text-align:center" colspan="6">Pilih nama Obat</td>'.
-											'</tr>';
-									?>
 								</tbody>
 							</table>
 						</div>
@@ -543,19 +540,19 @@
 						
 							<div class="col-md-1">
 								<select class="form-control select" name="filterSat" id="filterSat" style="margin-left:-15px;width:120px">
-										<option value="" selected="selected">Pilih</option>;
-										<?php if (!empty($satuan_obat)) {
-				         					foreach ($satuan_obat as $value) {
-				         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
-				         					}
-				         				} ?>			
+									<option value="" selected="selected">Pilih</option>;
+									<?php if (!empty($satuan_obat)) {
+			         					foreach ($satuan_obat as $value) {
+			         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
+			         					}
+			         				} ?>			
 								</select>
 							</div>
 							<div class="col-md-1" >
 								<select class="form-control select" name="filterGen" id="filterGen" style="margin-left:13px; width:150px">
-										<option value="" selected="selected">Pilih</option>;
-										<option value="1">Generik</option>
-										<option value="0">Non Generik</option>					
+									<option value="" selected="selected">Pilih</option>;
+									<option value="1">Generik</option>
+									<option value="0">Non Generik</option>					
 								</select>
 							</div>
 							<div class="col-md-1" style="padding-left: 80px;">
@@ -571,7 +568,7 @@
 								<button class="btn btn-warning" id="expiredenam">EX. 6 BLN</button>
 							</div>
 	
-					</div>		
+						</div>		
 				</form>
 			
 				<hr class="garis" style="margin-left:-65px">
@@ -583,10 +580,11 @@
 					</div>
 					<div class="portlet-body" style="margin: 20px 10px 0px -10px">
 						
-						<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
+						<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelinventoriutama">
 							<thead>
 								<tr class="info" >
-									<th  style="text-align:left" width="10%"> Nama Obat </th>
+									<th  style="text-align:left" width="3%"> No. </th>
+									<th  style="text-align:left"> Nama Obat </th>
 									<th  style="text-align:left"> No Batch </th>
 									<th  style="text-align:left"> Harga Dasar </th>
 									<th  style="text-align:left"> HPS </th>
@@ -602,11 +600,6 @@
 								</tr>
 							</thead>
 							<tbody id="t_body_inventory">
-								<?php  
-									echo '<tr>'.
-											'<td style="text-align:center" colspan="12">Filter Obat Inventori</td>'.
-										'<tr>';
-								?>									
 							</tbody>
 						</table>
 						<br>
@@ -768,13 +761,13 @@
 							<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven">
 								<thead>
 									<tr class="info" >
-										<th  style="text-align:left" width="10%"> Nama Obat </th>
+										<th  style="text-align:left"> Nama Obat </th>
 										<th  style="text-align:left"> Penyedia </th>
-										<th  style="text-align:left"> Quantity </th>
+										<th  style="text-align:left" width="10%"> Quantity </th>
 										<th  style="text-align:left"> Satuan </th>
 										<th  style="text-align:left"> HPS </th>
 										<th  style="text-align:left"> Total </th>
-										<th  style="text-align:left"> Action </th>
+										<th  style="text-align:left" width="8%"> Action </th>
 									</tr>
 								</thead>
 								<tbody  id="tbody_addpengadaan">
@@ -824,8 +817,8 @@
 					<hr class="garis" style="margin-left:-50px;">
 					<br>
 					<div class="portlet-body" style="margin: 0px 10px 0px -50px">
-					
-						<table class="table table-striped table-bordered table-hover table-responsive">
+						<?php echo "<input type='hidden' id='jml_pengadaan' value='".count($riwayat_pengadaan)."'>"; ?>
+						<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatpengadaan">
 							<thead>
 								<tr class="info" >
 									<th  style="text-align:left" width="5%"> Nomor </th>
@@ -852,15 +845,12 @@
 											'<td>'.$value['nama_petugas'].'</td>'.
 											'<td>'.$value['keterangan'].'</td>'.
 											'<td>'.$value['status'].'</td>'.
-											'<td style="display:none;" class="pengadaan_id">'.$value['obat_rencana_id'].'</td>'.
 											'<td style="text-align:center;"><a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'.
-												'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a></td>'.
+												'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>
+												<input type="hidden" class="pengadaan_id" value="'.$value['obat_rencana_id'].'">
+												</td>'.
 										'</tr>';			
 									}
-								}else{
-									echo '<tr>
-										<td colspan=6 style="text-align:center;">Belum ada Riwayat Pengadaan</td>
-									</tr>';
 								}
 								?>
 							</tbody>
@@ -1350,7 +1340,7 @@
 					<br>
 
 					<div class="portlet-body" style="margin: 20px 10px 0px 15px">
-							<table class="table table-striped table-bordered table-hover table-responsive" id="tblriwayatterima">
+							<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tblriwayatterima">
 								<thead>
 									<tr class="info" >
 										<th style="text-align:center; width:30px;">No.</th>
@@ -1460,7 +1450,7 @@
 				<div class="portlet box red">
 					<div class="portlet-body" style="margin: 25px 10px 0px 10px">
 					
-						<table class="table table-striped table-bordered table-hover table-responsive" cellspacing="0" id="tabelpermintaangudang">
+						<table class="table table-striped table-bordered table-hover table-responsive tableDT" cellspacing="0" id="tabelpermintaangudang">
 							<thead>
 								<tr class="info" >
 									<th style="text-align:center;width:30px;">No.</th>
@@ -1478,7 +1468,7 @@
 											$i=0;
 											foreach ($persetujuan as $value) {
 												echo '<tr>'.
-													'<td style="text-align:center">'.($i+1).'</td>'.
+													'<td style="text-align:center">'.(++$i).'</td>'.
 													'<td>'.$value['tanggal_request'].'</td>'.
 													'<td>'.$value['nama_dept'].'</td>'.
 													'<td>'.$value['nama_petugas'].'</td>'.
@@ -1583,25 +1573,13 @@
 					</div>
 					
 					<hr class="garis" style="margin-left:15x;">
-
-					<div class="pull-right" style="margin-right:40px;">
-						<ul class="pagination">
-							<li class="disabled"><a href="#"><i class="fa fa-angle-left" style="height:5px;"></i></a></li>
-							<li class="paginate-button active"><a href="#">1</a></li>
-							<li class="paginate-button"><a href="#">2</a></li>
-							<li class="paginate-button"><a href="#">3</a></li>
-							<li class="paginate-button"><a href="#">4</a></li>
-							<li class="paginate-button"><a href="#">5</a></li>
-							<li><a href="#"><i class="fa fa-angle-right" style="height:5px;"></i></a></li>
-						</ul>
-					</div>
-					<br>
+					<br><br>
 
 	           		<div class="portlet box red">
 						<br>
 						<div class="tabelinformasi">	
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover table-responsive">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
 									<thead>
 										<tr class="info" >
 											<th  style="text-align:center; width:30px;"> No.</th>
@@ -1740,7 +1718,7 @@
 				<br>
 				<div class="portlet box red">
 					<div class="portlet-body" style="margin: 25px 10px 0px 10px">
-						<table class="table table-striped table-bordered table-hover table-responsive" id="tabelreturdepartemen">
+						<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tabelreturdepartemen">
 							<thead>
 								<tr class="info" >
 									<th style="width:30px"> No.</th>
@@ -1758,7 +1736,7 @@
 											$i=0;
 											foreach ($returdept as $value) {
 												echo '<tr>'.
-													'<td>'.($i+1).'</td>'.
+													'<td>'.(++$i).'</td>'.
 													'<td>'.$value['waktu'].'</td>'.
 													'<td>'.$value['nama_dept'].'</td>'.
 													'<td>'.$value['nama_petugas'].'</td>'.
@@ -1872,7 +1850,7 @@
 						<div class="tabelinformasi">
 		            		<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							
-								<table class="table table-striped table-bordered table-hover table-responsive" id="tabelriwayatreturdept">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatreturdept">
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center;width:20px;">No.</th>
@@ -1891,7 +1869,7 @@
 													foreach ($riwayat_retur as $value) {
 														$tgl = DateTime::createFromFormat('Y-m-d H:i:s',$value['tanggal_confirm']);
 														echo '<tr>'.
-															'<td style="text-align:center">'.($i+1).'</td>'.
+															'<td style="text-align:center">'.(++$i).'</td>'.
 															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
 															'<td>'.$value['nama_dept'].'</td>'.
 															'<td>'.$value['nama_petugas'].'</td>'.
@@ -2189,7 +2167,7 @@
 						<div class="tabelinformasi">
 		            		<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							
-								<table class="table table-striped table-bordered table-hover table-responsive">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatreturdistributor">
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center; width:20px;">No. </th>
@@ -2354,7 +2332,7 @@
             			<div class="col-md-2">
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggalacuan" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" id="tanggalacuan" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
             		</div>
@@ -2366,9 +2344,10 @@
 						</div>
 						<div class="portlet-body" style="margin: 0px -10px 0px -60px">
 							
-							<table class="table table-striped table-bordered table-hover table-responsive" id="tblInven1">
+							<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tblInven1">
 								<thead>
 									<tr class="info" >
+										<th  style="text-align:left" width="3%"> No </th>
 										<th  style="text-align:left"> Opname Terakhir </th>
 										<th  style="text-align:left"> Nama Obat </th>
 										<th  style="text-align:left"> Merek </th>
@@ -2384,7 +2363,8 @@
 								</thead>
 								<tbody id="tbody_opname">
 									<?php
-									if (!empty($opname)) {
+									if (isset($opname)) {
+										$i = 0;
 										foreach ($opname as $value) {
 											if(empty($value['tgl_opname'])){
 												$value['tgl_opname'] = $value['tanggal'];
@@ -2397,32 +2377,28 @@
 											$tgl2 = strtotime($value['tgl_kadaluarsa']);
 											$date2 = date('d F Y', $tgl2);
 											echo '<tr>'.
-												'<td style="display:none;" class="obat_dept_id">'.$value['obat_process'].'</td>'.
-												'<td style="display:none;" class="obat_opname_id">'.$value['obat_opname_id'].'</td>'.
+												'<td>'.(++$i).'</td>'.
 												'<td>'.$date.'</td>'.
 												'<td>'.$value['nama'].'</td>'.
 												'<td>'.$value['nama_merk'].'</td>'.
 												'<td>'.$date2.'</td>'.
-												'<td class="stoksistemopname">'.$value['total_stok'].'</td>'.
+												'<td>'.$value['total_stok'].'</td>'.
 												'<td><span class="stokfisikopname">'.$value['stok_fisik'].'</span></td>'.
-												'<td class="h_jual">'.$value['harga_jual'].'</td>'.
+												'<td>'.$value['harga_jual'].'</td>'.
 												'<td>'.($value['stok_fisik'] - $value['total_stok']).'</td>'.
 												'<td>'.(($value['stok_fisik'] - $value['total_stok']) * $value['harga_jual']).'</td>'.
 												'<td style="text-align: center">
 													<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>
 													<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>
 													<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>
+													<input type="hidden" class="obat_dept_id" value="'.$value['obat_process'].'">
+													<input type="hidden" class="obat_opname_id" value="'.$value['obat_opname_id'].'">
 												</td>'.
 											'</tr>';	
 												
 										}
-									}else{
-										echo '<tr>
-											<td colspan=10 style="text-align:center;">Tidak Ada Obat Opname</td>
-										</tr>';
 									}
 									?>
-										<!-- <a href="#" data-type="text" data-pk="1" data-original-title="Edit" class="editInven" style="color:black;cursor:default;">'.$value['stok_fisik'].'</a> -->
 								</tbody>
 							</table>
 							<div class="pull-right">
@@ -2694,6 +2670,7 @@
 							    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly value="<?php echo date("d/m/Y");?>" />
 							    <span class="input-group-addon">to</span>
 							    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>" />
+							    <input type="hidden" name="dept_id" value="21">
 							</div>
 						</div>
 
@@ -2706,15 +2683,16 @@
 	        	</form>
 	        </div>
 
-	                <div class="informasi" id="ibblsw">
+	        <div class="informasi" id="ibblsw">
 	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Stok Warning</div>
-	        	<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form">
+	        	<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homeapotikumum/print_laporan_stokwarning">
 	        		
 
 	        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
 						<div class="form-group">
 							
 							<div class="col-md-3" style="margin-left:110px;">
+								<input type="hidden" name="dept_id" value="21">
 								<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 							</div>
 						</div>
@@ -2725,10 +2703,11 @@
      
             <div class="informasi" id="ibblosot">
 	        	<div id="titleInformasi" style="margin-bottom:-30px;">Laporan Stok Obat Terakhir</div>
-	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form">
+	        		<form class="form-horizontal laporan" style="border: solid 3px #50BFF9;border-top-width:30px;margin-right:40px;" role="form" method="post" action="<?php echo base_url()?>farmasi/homeapotikumum/print_laporan_last_stok">
 		        		<div class="form-group" style="margin-top:20px;margin-left:10px;">
 							<div class="form-group">
 								<div class="col-md-3" style="margin-left:110px;">
+									<input type="hidden" name="dept_id" value="21">
 									<button class="btn btn-info ">SIMPAN KE EXCEL (.xls)</button> 
 								</div>
 							</div>
@@ -2868,7 +2847,7 @@
 		    var d = [];
 		    $('#tbody_addpengadaan').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
-		        $(this).find('td>input[type="text"]').each(function (colIndex, c) {
+		        $(this).find('td>input[type="number"]').each(function (colIndex, c) {
 		            cols.push(c.value);
 		        });
 		        d.push(cols);
@@ -2908,20 +2887,26 @@
 					if (data['error'] == 'y') {
 						$('#nmrAdaan').focus();
 						return false;
-					} 
+					}
+				
+					var jml = $('#jml_pengadaan').val();
+					var no = parseInt(jml)+1;
+					var t = $('#tabelriwayatpengadaan').DataTable();
+					var last = '<a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'+
+								'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>'+
+								'<input type="hidden" class="pengadaan_id" value="'+data['hasil']['pengadaan_id']+'">'
+					t.row.add([
+						no,
+						data['hasil']['no_pengadaan'],
+						data['hasil']['tanggal'],
+						data['hasil']['nama_petugas'],
+						data['hasil']['keterangan'],
+						data['hasil']['status'],
+						last,
+						"daf"
+						]).draw();
+					$('#jml_pengadaan').val(no);
 
-					$('#tbody_riwayat').append(
-						'<tr>'+
-							'<td>'+data['hasil']['no_pengadaan']+'</td>'+
-							'<td>'+data['hasil']['tanggal']+'</td>'+
-							'<td>'+datad['hasil']['nama_petugas']+'</td>'+
-							'<td>'+data['hasil']['keterangan']+'</td>'+
-							'<td>'+data['hasil']['status']+'</td>'+
-							'<td style="display:none;">'+data['hasil']['pengadaan_id']+'</td>'+
-							'<td style="text-align:center;"><a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'+
-							'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a></td>'+
-						'</tr>'
-					);
 					$('#tbody_addpengadaan').empty();
 					$('#nmrAdaan').val('');
 					$('#ketAdaan').val('');
@@ -2939,7 +2924,7 @@
 	        $(this).closest('tr').find('td').each(function (colIndex, c) {
 	            cols.push(c.textContent);
 	        });
-	        var pengadaan_id = cols[6];
+	        var pengadaan_id = $(this).closest('tr').find('td .pengadaan_id').val();
 
 			$.ajax({
 				type: "POST",
@@ -2993,16 +2978,20 @@
 		$('a.edIvenBatal').hide();
 
 		$('#submit_filter_opname').submit(function(event){
-			var item = $('#filterOpname').val();
+			var item = {};
+			item['kunci'] = $('#filterOpname').val();
 			event.preventDefault();
 			// alert('ok');
 			// return false;
 			$.ajax({
 				type:'POST',
-				url:'<?php echo base_url()?>farmasi/homegudangobat/get_opname_by_name/'+item,
+				data: item,
+				url:'<?php echo base_url()?>farmasi/homegudangobat/get_opname_by_name',
 				success:function(data){
 					$('#tbody_opname').empty();
-					if(data.length>0){
+					var t = $('#tblInven1').DataTable();
+
+					t.clear().draw();
 						for(var i = 0; i<data.length; i++){
 							if(data[i]['tgl_opname'] == null){
 								data[i]['tgl_opname'] = data[i]['tanggal'];
@@ -3011,38 +3000,31 @@
 							if (data[i]['stok_fisik'] == null) {
 								data[i]['stok_fisik'] = data[i]['total_stok'];
 							}
-							var selisih = (data[i]['selisih'] == null ? "" : data[i]['selisih']);
-							var harga = (data[i]['harga'] == null ? "" : data[i]['harga']);
-							$('#tbody_opname').append(
-							 '<tr>'+
-							 	'<td style="display:none;" class="obat_dept_id">'+data[i]['obat_dept_id']+'</td>'+
-								'<td style="display:none;" class="obat_opname_id">'+data[i]['obat_opname_id']+'</td>'+
-								'<td>'+format_date(data[i]["tgl_opname"])+'</td>'+
-								'<td>'+data[i]['nama']+'</td>'+
-								'<td>'+data[i]['nama_merk']+'</td>'+
-								'<td>'+format_date(data[i]["tgl_kadaluarsa"])+'</td>'+
-								'<td class="stoksistemopname">'+data[i]['total_stok']+'</td>'+
-								'<td><span class="stokfisikopname">'+data[i]['stok_fisik']+'</span></td>'+
-								'<td class="h_jual">'+data[i]['harga_jual']+'</td>'+
-								'<td>'+selisih+'</td>'+
-								'<td>'+harga+'</td>'+
-								'<td style="text-align:center">'+
-									'<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+							var tglopname = format_date(data[i]["tgl_opname"]);
+							var tglKadaluarsa = format_date(data[i]["tgl_kadaluarsa"]);
+							var last = '<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
 									'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
 									'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
-								'</td>'+
-							'</tr>'
-							);
+									'<input type="hidden" class="obat_dept_id" value="'+data[i]['obat_process']+'">'+
+									'<input type="hidden" class="obat_opname_id" value="'+data[i]['obat_opname_id']+'">';
+							var a = '<span class="stokfisikopname">'+data[i]['stok_fisik']+'</span>'
+							t.row.add([
+								(Number(i)+1),
+								tglopname,
+								data[i]['nama'],
+								data[i]['nama_merk'],
+								tglKadaluarsa,
+								data[i]['total_stok'],
+								a,
+								data[i]['harga_jual'],
+								(data[i]['stok_fisik'] - data[i]['total_stok']),
+								((data[i]['stok_fisik'] - data[i]['total_stok']) * data[i]['harga_jual']),
+								last
+							]).draw();
 						}
 						$("a.editInvenBut").hide();
 						$('a.edIvenBatal').hide();
-					}else{
-						$('#tbody_opname').append(
-							'<tr>'+
-								'<td colspan="10" style="text-align:center;">Data Tidak Ditemukan</td>'+
-							'</tr>'
-						);
-					}
+					
 				}
 			});
 		});
@@ -3052,53 +3034,47 @@
 	//function stock opname
 	function getObatAlphabet(alpha){
 		
-
 		$.ajax({
 			type:"POST",
 			url:"<?php echo base_url()?>farmasi/homegudangobat/get_alpha_obat_opname/"+alpha,
 			success:function(data){
-				$('#tbody_opname').empty();
-				if(data.length>0){
-					for(var i = 0; i<data.length; i++){
-						if(data[i]['tgl_opname'] == null){
-							data[i]['tgl_opname'] = data[i]['tanggal'];
-						}
+			$('#tbody_opname').empty();
+				var t = $('#tblInven1').DataTable();
 
-						if (data[i]['stok_fisik'] == null) {
-							data[i]['stok_fisik'] = data[i]['total_stok'];
-						}
-						var selisih = (data[i]['selisih'] == null ? "" : data[i]['selisih']);
-						var harga = (data[i]['harga'] == null ? "" : data[i]['harga']);
-						$('#tbody_opname').append(
-						 '<tr>'+
-						 	'<td style="display:none;" class="obat_dept_id">'+data[i]['obat_dept_id']+'</td>'+
-							'<td style="display:none;" class="obat_opname_id">'+data[i]['obat_opname_id']+'</td>'+
-							'<td>'+format_date(data[i]["tgl_opname"])+'</td>'+
-							'<td>'+data[i]['nama']+'</td>'+
-							'<td>'+data[i]['nama_merk']+'</td>'+
-							'<td>'+format_date(data[i]["tgl_kadaluarsa"])+'</td>'+
-							'<td class="stoksistemopname">'+data[i]['total_stok']+'</td>'+
-							'<td><span class="stokfisikopname">'+data[i]['stok_fisik']+'</span></td>'+
-							'<td class="h_jual">'+data[i]['harga_jual']+'</td>'+
-							'<td>'+selisih+'</td>'+
-							'<td>'+harga+'</td>'+
-							'<td style="text-align:center">'+
-								'<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
-								'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
-								'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
-							'</td>'+
-						'</tr>'
-						);
+				t.clear().draw();
+				for(var i = 0; i<data.length; i++){
+					if(data[i]['tgl_opname'] == null){
+						data[i]['tgl_opname'] = data[i]['tanggal'];
 					}
-					$("a.editInvenBut").hide();
-					$('a.edIvenBatal').hide();
-				}else{
-					$('#tbody_opname').append(
-						'<tr>'+
-							'<td colspan="10" style="text-align:center;">Data Tidak Ditemukan</td>'+
-						'</tr>'
-					);
+
+					if (data[i]['stok_fisik'] == null) {
+						data[i]['stok_fisik'] = data[i]['total_stok'];
+					}
+					var tglopname = format_date(data[i]["tgl_opname"]);
+					var tglKadaluarsa = format_date(data[i]["tgl_kadaluarsa"]);
+					var last = '<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+							'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
+							'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
+							'<input type="hidden" class="obat_dept_id" value="'+data[i]['obat_process']+'">'+
+							'<input type="hidden" class="obat_opname_id" value="'+data[i]['obat_opname_id']+'">';
+					var a = '<span class="stokfisikopname">'+data[i]['stok_fisik']+'</span>'
+					t.row.add([
+						(Number(i)+1),
+						tglopname,
+						data[i]['nama'],
+						data[i]['nama_merk'],
+						tglKadaluarsa,
+						data[i]['total_stok'],
+						a,
+						data[i]['harga_jual'],
+						(data[i]['stok_fisik'] - data[i]['total_stok']),
+						((data[i]['stok_fisik'] - data[i]['total_stok']) * data[i]['harga_jual']),
+						last
+					]).draw();
 				}
+				$("a.editInvenBut").hide();
+				$('a.edIvenBatal').hide();
+					
 			}
 		});
 	}
@@ -3115,7 +3091,7 @@
 					'<tr>'+
 						'<td>'+data[0]['nama']+'</td>'+
 						'<td>'+data[0]['nama_penyedia']+'</td>'+
-						'<td><input type="text" class="qtypengadaan form-control numberrequired"></td>'+
+						'<td><input type="number" class="qtypengadaan form-control numberrequired"></td>'+
 						'<td>'+data[0]['satuan']+'</td>'+
 						'<td class="hpspengadaan">'+data[0]['hps']+'</td>'+
 						'<td class="totalpengadaan">0</td>'+
@@ -3133,23 +3109,6 @@
 			var a = $(this).closest('tr').find('td.hpspengadaan').text();
 			$(this).closest('tr').find('td.totalpengadaan').html((Number(val) * Number(a)));
 		})
-
-		/*$('#tbody_addpengadaan').on('keypress', 'tr td .qtypengadaan', function (e) {
-			var val = $(this).val();
-			if(e.keyCode == 13)
-				$(this).replaceWith('<span>'+val+'</span>');
-		})
-
-		$('#tbody_addpengadaan').on('focus', 'tr td .qtypengadaan', function (e) {
-			var val = $(this).val();
-			$(this).replaceWith('<span>'+val+'</span>');
-		})*/
-
-		/*$('#tbody_addpengadaan').on('focus', 'tr td .aek', function (e) {
-			e.preventDefault();
-			$(this).attr('contenteditable', 'true');
-			return false;
-		})*/
 	}
 
 	function getPetugas(id, nama){

@@ -1,0 +1,13 @@
+/*
+*	Author		: Albertus S Yudha
+*	Description	: create generel stylesheet of datatable
+*
+*/
+
+/*----------------------------------------------------------------------------*/
+/* Button Top
+/*----------------------------------------------------------------------------*/
+.btn-group.tabletools-btn-group.pull-right
+{
+	display: none;
+}

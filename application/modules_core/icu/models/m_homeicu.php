@@ -1,25 +1,14 @@
 <?php
 class m_homeicu extends CI_Model{
-	public function get_search_pasien($query){
-		$sql = "SELECT * FROM pasien p, visit v, visit_ri vr, master_dept d 
-					WHERE p.rm_id = v.rm_id AND v.visit_id = vr.visit_id 
-					AND v.dept_id = d.dept_id AND v.dept_id = 18 
-					AND vr.waktu_keluar IS NULL 
-					AND p.nama LIKE '%$query%' 
-					OR p.rm_id LIKE '%$query%'"; //18 adalah dept_id icu
+	public function search_pasien($search){
+		$sql = "SELECT * FROM pasien p, visit v, visit_ri r, (SELECT dept_id FROM master_dept WHERE nama_dept = 'ICU') m WHERE p.rm_id = v.rm_id AND m.dept_id = r.unit_tujuan AND v.visit_id = r.visit_id AND v.status_visit = 'REGISTRASI INAP' AND (p.nama LIKE '%$search%' OR p.rm_id LIKE '%$search%')";
 		$query = $this->db->query($sql);
 		$result = $query->result_array();
 		return $result;
 	}
 
-	public function get_filter_pasien($query, $start, $end){
-		$sql = "SELECT * FROM pasien p, visit v, visit_ri vr, master_dept d 
-					WHERE p.rm_id = v.rm_id AND v.visit_id = vr.visit_id 
-					AND v.dept_id = d.dept_id AND v.dept_id = 18 
-					AND vr.waktu_keluar IS NULL 
-					AND vr.waktu_masuk BETWEEN '$start' AND '$end'
-					AND p.nama LIKE '%$query%' 
-					OR p.rm_id LIKE '%$query%'";
+	public function get_antrian_pasien(){
+		$sql = "SELECT * FROM pasien p, visit v, visit_ri r, (SELECT dept_id FROM master_dept WHERE nama_dept = 'ICU') m WHERE p.rm_id = v.rm_id AND m.dept_id = r.unit_tujuan AND v.visit_id = r.visit_id AND v.status_visit = 'REGISTRASI INAP' ORDER BY r.waktu_masuk DESC";
 		$query = $this->db->query($sql);
 		$result = $query->result_array();
 		return $result;

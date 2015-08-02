@@ -202,11 +202,13 @@
 		/*detail obat*/
 		$('#formsearchobat').submit(function (e) {
 			e.preventDefault();
-			var katakunci = $('#katakunciobat').val();
+			var item ={};
+			item['katakunci'] = $('#katakunciobat').val();
 
 			$.ajax({
 				type: 'POST',
-				url: "<?php echo base_url()?>farmasi/homegudangobat/search_obat/" + katakunci,
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/search_obat",
 				success: function (data) {
 					console.log(data);
 						$('#t_body_cari_obat').empty();
@@ -313,30 +315,26 @@
 				success: function (data) {
 					console.log(data);
 					$('#t_body_detail_obat').empty();
-					if (data.length > 0) {
+					var t = $('#tabeldetailobat').DataTable();
+
+					t.clear().draw();
+					
+					
 						for (var i = data.length - 1; i >= 0; i--) {
 							var a = format_date(data[i]['tgl_kadaluarsa']);
-							$('#t_body_detail_obat').append(
-								'<tr>'+
-									'<td class="new_tgl_kadaluarsa">'+a+'</td>'+
-									'<td class="new_nobatch">'+data[i]['no_batch']+'</td>'+
-									'<td class="new_thn">'+data[i]['tahun_pengadaan']+'</td>'+									
-									'<td class="new_sumber">'+data[i]['sumber_dana']+'</td>'+
-									'<td class="new_detail_id" style="display:none">'+data[i]['obat_detail_id']+'</td>'+
-									'<td class="new_dept_id" style="display:none">'+data[i]['obat_dept_id']+'</td>'+
-									'<td class="new_stok">'+data[i]['total_stok']+'</td>'+					
-									'<td><a href="#" class="edObatDetail" id="edDetObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'</td>'+							
-								'</tr>'
-							)
+							var b = '<a href="#" class="edObatDetail" id="edDetObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+									'<input type="hidden" class="new_detail_id" value="'+data[i]['obat_detail_id']+'">'+
+									'<input type="hidden" class="new_dept_id" value="'+data[i]['obat_dept_id']+'">'
+							t.row.add([
+								a,
+								data[i]['no_batch'],
+								data[i]['tahun_pengadaan'],									
+								data[i]['sumber_dana'],									
+								data[i]['total_stok'],					
+								b
+							]).draw();
 						};
-					}else{
-						$('#t_body_detail_obat').append(
-							'<tr>'+
-								'<td style="text-align:center" colspan="7">Belum ada detail</td>'+
-							'<tr>'
-						)
-					}
+					
 				},
 				error: function (data) {
 					alert('gagal');
@@ -352,22 +350,18 @@
 			$("#btnBatalDetObat").show();
 			$('#editDetObat').show();
 			$('#simpanDetObat').hide();
+			$('#resetDetObat').hide();
 			$("#noBatchDetObat").prop('disabled', true);
 			$("#jmlDetObat").prop('disabled', true);
 			$("#pedObatDet").prop('disabled', true);
 			$("#selectSumDanaObat").prop('disabled', true);
-			var detail_id = $(this).closest('tr').find('td.new_detail_id').text();
-			var obat_dept_id = $(this).closest('tr').find('td.new_dept_id').text();
-			var jumlah = $(this).closest('tr').find('td.new_stok').text();
-			var nobatch = $(this).closest('tr').find('td.new_nobatch').text();
-			var sumber = $(this).closest('tr').find('td.new_sumber').text();
-			var thn = $(this).closest('tr').find('td.new_thn').text();
-			var tgl = $(this).closest('tr').find('td.new_tgl_kadaluarsa').text();
-			// var res = tgl.split("-");
-		 //    var bln = res[1];
-			// var tgl = res[2];
-		 //    var thn = res[0];
-
+			var detail_id = $(this).closest('tr').find('td .new_detail_id').val();
+			var obat_dept_id = $(this).closest('tr').find('td .new_dept_id').val();
+			var jumlah = $(this).closest('tr').find('td').eq(4).text();
+			var nobatch = $(this).closest('tr').find('td').eq(1).text();
+			var sumber = $(this).closest('tr').find('td').eq(3).text();
+			var thn = $(this).closest('tr').find('td').eq(2).text();
+			var tgl = $(this).closest('tr').find('td').eq(0).text();
 		    var tanggal = format_date2(tgl);
 
 			$('#noBatchDetObat').val(nobatch);
@@ -385,6 +379,7 @@
 			$("#btnBatalDetObat").hide();
 			$('#editDetObat').hide();
 			$('#simpanDetObat').show();
+			$('#resetDetObat').show();
 			reset_detail();					  						  			
 		})
 
@@ -482,10 +477,12 @@
 						$("#btnBatalDetObat").hide();
 						$('#editDetObat').hide();
 						$('#simpanDetObat').show();
+						$('#resetDetObat').show();
 					} 
 				},
 				error:  function (data) {
 					alert('paitttt, gagal');
+					console.log(data);
 				}
 			})
 		})
@@ -495,24 +492,24 @@
 		$("#tabelobat").on('click', 'tr td a.edObat', function (e) {
 			e.preventDefault();
 			$('#nmObat').focus();
-			var hidden_id = $(this).closest('tr').find('td.hidden_id').attr('data-edit');
-			var nama_obat = $(this).closest('tr').find('td.nama_obat').attr('data-edit');
-			var obat_id = $(this).closest('tr').find('td.obat_id').attr('data-edit');
-			var jenis_obat = $(this).closest('tr').find('td.jenis_obat').attr('data-edit');
-			var nama_merk = $(this).closest('tr').find('td.nama_merk').attr('data-edit');
-			var is_generik = $(this).closest('tr').find('td.is_generik').attr('data-edit');
-			var harga_dasar = $(this).closest('tr').find('td.harga_dasar').attr('data-edit');
-			var new_hps = $(this).closest('tr').find('td.new_hps').attr('data-edit');
-			var new_margin = $(this).closest('tr').find('td.new_margin').attr('data-edit');
-			var new_h_jual = $(this).closest('tr').find('td.new_h_jual').attr('data-edit');
-			var new_stok_min = $(this).closest('tr').find('td.new_stok_min').attr('data-edit');
-			var new_jlh = $(this).closest('tr').find('td.new_jlh').attr('data-edit');
-			var new_satuan = $(this).closest('tr').find('td.new_satuan').attr('data-edit');
-			var new_merk_id = $(this).closest('tr').find('td.new_merk_id').attr('data-edit');
-			var new_satuan_id = $(this).closest('tr').find('td.new_satuan_id').attr('data-edit');
-			var new_jenis_id = $(this).closest('tr').find('td.new_jenis_id').attr('data-edit');
-			var penyedia_id = $(this).closest('tr').find('td.penyedia_id').attr('data-edit');
-			var penyedia = $(this).closest('tr').find('td.nama_penyedia').attr('data-edit');
+			var hidden_id = $(this).closest('tr').find('td .newhidden_id').val();
+			var nama_obat = $(this).closest('tr').find('td').eq(1).text();
+			var obat_id = $(this).closest('tr').find('td .newobat_id').val();
+			var jenis_obat = $(this).closest('tr').find('td').eq(2).text();
+			var nama_merk = $(this).closest('tr').find('td').eq(3).text();
+			var is_generik = $(this).closest('tr').find('td').eq(5).text();
+			var harga_dasar = $(this).closest('tr').find('td').eq(6).text();
+			var new_hps = $(this).closest('tr').find('td').eq(7).text();
+			var new_margin = $(this).closest('tr').find('td').eq(8).text();
+			var new_h_jual = $(this).closest('tr').find('td').eq(9).text();
+			var new_stok_min = $(this).closest('tr').find('td').eq(10).text();
+			var new_jlh = $(this).closest('tr').find('td').eq(11).text();
+			var new_satuan = $(this).closest('tr').find('td').eq(12).text();
+			var new_merk_id = $(this).closest('tr').find('td .new_merk_id').val();
+			var new_satuan_id = $(this).closest('tr').find('td .new_satuan_id').val();
+			var new_jenis_id = $(this).closest('tr').find('td .new_jenis_id').val();
+			var penyedia_id = $(this).closest('tr').find('td .newpenyedia_id').val();
+			var penyedia = $(this).closest('tr').find('td').eq(4).text();
 			$('#nmObat').val(nama_obat);
 			$('#edit_obat_id').val(obat_id);
 			$('#hgDasarObat').val(harga_dasar);
@@ -533,7 +530,7 @@
 			$("#btnBatalObat").show();
 			$('#btnSimpanEdit').show();
 			$('#smpanObat').hide();
-
+			$('#resetObat').hide();
 		})
 		//edit obat
 
@@ -572,6 +569,7 @@
 						$("#btnBatalObat").hide();
 						$('#btnSimpanEdit').hide();
 						$('#smpanObat').show();
+						$('#resetObat').show();
 					} 
 				},
 				error: function (data) {
@@ -587,51 +585,46 @@
 				url: "<?php echo base_url()?>farmasi/homegudangobat/filter_stok",
 				success: function (data) {
 					$('#t_body_obat').empty();
-					if (data.length > 0) {
+					
+						var t = $('#tabelobat').DataTable();
+
+						t.clear().draw();
 						var st;
 						for (var i = 0; i < data.length; i++) {
 							var st;
 							if (Number(data[i]['stok_minimal']) >= Number(data[i]['jlh'])) {
 								st =  'style="background-color:red;"';
-								//alert(st);
+								
 							}else{
 								st = "";
 							}
-							$('#t_body_obat').append(
-								'<tr>'+
-									'<td style="display:none" class="hidden_id" data-edit="'+data[i]['is_hidden']+'">'+data[i]['is_hidden']+'</td>'+
-									'<td style="display:none" class="obat_id"  data-edit="'+data[i]['obat_id']+'">'+data[i]['obat_id']+'</td>'+
-									'<td>'+(i+1)+'</td>'+
-									'<td class="nama_obat" data-edit="'+data[i]['nama']+'">'+data[i]['nama']+'</td>'+								
-									'<td class="jenis_obat" data-edit="'+data[i]['jenis_obat']+'">'+data[i]['jenis_obat']+'</td>'+
-									'<td class="nama_merk" data-edit="'+data[i]['nama_merk']+'">'+data[i]['nama_merk']+'</td>'+
-									'<td class="nama_penyedia" data-edit="'+data[i]['nama_penyedia']+'">'+data[i]['nama_penyedia']+'</td>'+
-									'<td style="display:none" class="penyedia_id" data-edit="'+data[i]['penyedia_id']+'">'+data[i]['penyedia_id']+'</td>'+
-									'<td class="is_generik" data-edit="'+data[i]['is_generik']+'">'+data[i]['is_generik']+'</td>'+
-									'<td class="harga_dasar" data-edit="'+data[i]['harga_dasar']+'">'+data[i]['harga_dasar']+'</td>'+									
-									'<td class="new_hps" data-edit="'+data[i]['hps']+'">'+data[i]['hps']+'</td>'+
-									'<td class="new_margin" data-edit="'+data[i]['margin']+'">'+data[i]['margin']+'</td>'+
-									'<td class="new_h_jual" data-edit="'+data[i]['harga_jual']+'">'+data[i]['harga_jual']+'</td>'+
-									'<td class="new_stok_min" data-edit="'+data[i]['stok_minimal']+'">'+data[i]['stok_minimal']+'</td>'+									
-									'<td '+
-										st	 
-									+'class="new_jlh" data-edit="'+data[i]['jlh']+'">'+data[i]['jlh']+'</td>'+									
-									'<td class="new_satuan" data-edit="'+data[i]['satuan']+'">'+data[i]['satuan']+'</td>'+								
-									'<td><a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a></td>'+
-									'<td style="display:none" class="new_merk_id" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+
-									'<td style="display:none" class="new_jenis_id" data-edit="'+data[i]['jenis_obat_id']+'">'+data[i]['jenis_obat_id']+'</td>'+
-									'<td style="display:none" class="new_satuan_id" data-edit="'+data[i]['satuan_id']+'">'+data[i]['satuan_id']+'</td>'+	
-								'</tr>'
-							);
+							var akhir = '<a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'/21" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a>'+
+									'<input type="hidden" class="new_merk_id" value="'+data[i]['merk_id']+'">'+
+									'<input type="hidden" class="new_jenis_id" value="'+data[i]['jenis_obat_id']+'">'+
+									'<input type="hidden" class="new_satuan_id" value="'+data[i]['satuan_id']+'">'+
+									'<input type="hidden" class="newhidden_id" value="'+data[i]['is_hidden']+'">'+
+									'<input type="hidden" class="newobat_id"  value="'+data[i]['obat_id']+'">'+
+									'<input type="hidden" class="newpenyedia_id"  value="'+data[i]['penyedia_id']+'">'	
+							
+							t.row.add([
+									(i+1),
+									data[i]['nama'],								
+									data[i]['jenis_obat'],
+									data[i]['nama_merk'],
+									data[i]['nama_penyedia'],
+									data[i]['is_generik'],
+									data[i]['harga_dasar'],							
+									data[i]['hps'],
+									data[i]['margin'],
+									data[i]['harga_jual'],
+									data[i]['stok_minimal'],									
+									data[i]['jlh'],								
+									data[i]['satuan'],							
+									akhir
+							]).draw();
 						};
-					}else{
-						$('#t_body_obat').append(
-							'<tr>'+
-								'<td colspan="14" style="text-align:center">tidak ada data ditemukan</td>'+
-							'</tr>'
-							);
-					}
+					
 				},
 				error: function (data) {
 					alert('gagal');
@@ -653,71 +646,46 @@
 				url: "<?php echo base_url()?>farmasi/homegudangobat/filter_obat",
 				success: function (data) {
 					console.log(data);
-					/*$('#tabelobat').dataTable({
-						"processing": true,
-						"ajax": data,
-						"columns": [
-							{"data": "obat_id"},
-							{"data": "nama"},
-							{"data": "jenis"},
-							{"data": "nama_merk"},
-							{"data": "nama_penyedia"},
-							{"data": "is_generik"},
-							{"data": "harga_dasar"},
-							{"data": "hps"},
-							{"data": "margin"},
-							{"data": "harga_jual"},
-							{"data": "stok_minimal"},
-							{"data": "jlh"},
-							{"data": "satuan"},
-							{"data": "jlh"}
-						]
-					});*/
 					$('#t_body_obat').empty();
-					if (data.length > 0) {
+					
+						var t = $('#tabelobat').DataTable();
+
+						t.clear().draw();
+						var st;
 						for (var i = 0; i < data.length; i++) {
 							var st;
 							if (Number(data[i]['stok_minimal']) >= Number(data[i]['jlh'])) {
 								st =  'style="background-color:red;"';
-								//alert(st);
+								
 							}else{
 								st = "";
 							}
-							$('#t_body_obat').append(
-								'<tr>'+
-									'<td style="display:none" class="hidden_id" data-edit="'+data[i]['is_hidden']+'">'+data[i]['is_hidden']+'</td>'+
-									'<td style="display:none" class="obat_id"  data-edit="'+data[i]['obat_id']+'">'+data[i]['obat_id']+'</td>'+
-									'<td>'+(i+1)+'</td>'+
-									'<td class="nama_obat" data-edit="'+data[i]['nama']+'">'+data[i]['nama']+'</td>'+								
-									'<td class="jenis_obat" data-edit="'+data[i]['jenis_obat']+'">'+data[i]['jenis_obat']+'</td>'+
-									'<td class="nama_merk" data-edit="'+data[i]['nama_merk']+'">'+data[i]['nama_merk']+'</td>'+
-									'<td class="nama_penyedia" data-edit="'+data[i]['nama_penyedia']+'">'+data[i]['nama_penyedia']+'</td>'+
-									'<td style="display:none" class="penyedia_id" data-edit="'+data[i]['penyedia_id']+'">'+data[i]['penyedia_id']+'</td>'+
-									'<td class="is_generik" data-edit="'+data[i]['is_generik']+'">'+data[i]['is_generik']+'</td>'+
-									'<td class="harga_dasar" data-edit="'+data[i]['harga_dasar']+'">'+data[i]['harga_dasar']+'</td>'+									
-									'<td class="new_hps" data-edit="'+data[i]['hps']+'">'+data[i]['hps']+'</td>'+
-									'<td class="new_margin" data-edit="'+data[i]['margin']+'">'+data[i]['margin']+'</td>'+
-									'<td class="new_h_jual" data-edit="'+data[i]['harga_jual']+'">'+data[i]['harga_jual']+'</td>'+
-									'<td class="new_stok_min" data-edit="'+data[i]['stok_minimal']+'">'+data[i]['stok_minimal']+'</td>'+									
-									'<td '+
-										st	 
-									+'class="new_jlh" data-edit="'+data[i]['jlh']+'">'+data[i]['jlh']+'</td>'+									
-									'<td class="new_satuan" data-edit="'+data[i]['satuan']+'">'+data[i]['satuan']+'</td>'+								
-									'<td><a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak Kartu Stok"></i></a></td>'+
-									'<td style="display:none" class="new_merk_id" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+
-									'<td style="display:none" class="new_jenis_id" data-edit="'+data[i]['jenis_obat_id']+'">'+data[i]['jenis_obat_id']+'</td>'+
-									'<td style="display:none" class="new_satuan_id" data-edit="'+data[i]['satuan_id']+'">'+data[i]['satuan_id']+'</td>'+	
-								'</tr>'
-							);
+							var akhir = '<a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'/21" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a>'+
+									'<input type="hidden" class="new_merk_id" value="'+data[i]['merk_id']+'">'+
+									'<input type="hidden" class="new_jenis_id" value="'+data[i]['jenis_obat_id']+'">'+
+									'<input type="hidden" class="new_satuan_id" value="'+data[i]['satuan_id']+'">'+
+									'<input type="hidden" class="newhidden_id" value="'+data[i]['is_hidden']+'">'+
+									'<input type="hidden" class="newobat_id"  value="'+data[i]['obat_id']+'">'+	
+									'<input type="hidden" class="newpenyedia_id"  value="'+data[i]['penyedia_id']+'">'
+							
+							t.row.add([
+									(i+1),
+									data[i]['nama'],								
+									data[i]['jenis_obat'],
+									data[i]['nama_merk'],
+									data[i]['nama_penyedia'],
+									data[i]['is_generik'],
+									data[i]['harga_dasar'],							
+									data[i]['hps'],
+									data[i]['margin'],
+									data[i]['harga_jual'],
+									data[i]['stok_minimal'],									
+									data[i]['jlh'],								
+									data[i]['satuan'],							
+									akhir
+							]).draw();
 						};
-					}else{
-						$('#t_body_obat').append(
-							'<tr>'+
-								'<td colspan="14" style="text-align:center">tidak ada data ditemukan</td>'+
-							'</tr>'
-							);
-					}
 				},
 				error: function (data) {
 					alert('gagal');
@@ -771,9 +739,9 @@
 			submit_filter(item);
 		})
 
-		$("#tblInven").on('click', 'tr td a.inoutobat', function (e) {
-			var obat_dept_id = $(this).closest('tr').find('td.obat_dept_id_inventori').attr('data-edit');
-			var jlh = $(this).closest('tr').find('td.total_stok_inventori').attr('data-edit');
+		$("#tabelinventoriutama").on('click', 'tr td a.inoutobat', function (e) {
+			var obat_dept_id = $(this).closest('tr').find('td .obat_dept_id_inventori').val();
+			var jlh = $(this).closest('tr').find('td').eq(8).text();
 
 			$('#inout_obat_dept_id').val(obat_dept_id);
 			$('#sisaInOut').val(jlh);
@@ -810,8 +778,8 @@
 			})
 		})
 
-		$("#tblInven").on('click', 'tr td a.printobat', function (e) {
-			var obat_dept_id = $(this).closest('tr').find('td.obat_dept_id_inventori').attr('data-edit');
+		$("#tabelinventoriutama").on('click', 'tr td a.printobat', function (e) {
+			var obat_dept_id = $(this).closest('tr').find('td  .obat_dept_id_inventori').val();
 
 			 $.ajax({
 		    	type: "POST",
@@ -898,6 +866,7 @@
 			$("#btnBatalObat").hide();
 			$('#btnSimpanEdit').hide();
 			$('#smpanObat').show();
+			$('#resetObat').show();
 
 			$(':input','#forminputobat')
 			  .not(':button, :submit, :reset, :hidden')
@@ -934,13 +903,8 @@
 		var asli = '';
 		$("#tblInven1").on('click','tr td a.edIven',function(e){
 			e.preventDefault();
-			/*var inven = $(this).closest('td').prevAll('td:has(a.editInven)').children('td a.editInven');
-			inven.addClass("editableform editable-click");
-			inven.editable();
-			inven.css("color","blue");
-			inven.css("cursor","pointer");*/
 			var a = $(this).closest('tr').find('td .stokfisikopname').text();
-			var b = $(this).closest('tr').find('td.stoksistemopname').text();
+			var b = $(this).closest('tr').find('td').eq(5).text();
 			asli = a;			
 			$(this).closest('tr').find('td .stokfisikopname').replaceWith(
 					'<input type="text" style="width:80px;" class="form-control editstokfisikopname" value="'+a+'">'
@@ -952,24 +916,24 @@
 
 			$("#tblInven1").on('change','tr td .editstokfisikopname',function(e){
 				var ubah = $(this).val();
-				var harga = $(this).closest('tr').find('td').eq(8).text();
+				var harga = $(this).closest('tr').find('td').eq(7).text();
 				var selisih = Number(ubah) - Number(b);
-				$(this).closest('tr').find('td').eq(9).html(selisih);
-				$(this).closest('tr').find('td').eq(10).html(Number(harga) * selisih);
+				$(this).closest('tr').find('td').eq(8).html(selisih);
+				$(this).closest('tr').find('td').eq(9).html(Number(harga) * selisih);
 			})
 		});
 
 		$("#tblInven1").on('click','tr td a.edIvenBatal', function(e){
 			e.preventDefault();
-			var b = $(this).closest('tr').find('td.stoksistemopname').text();
-			$(this).closest('tr').find('td.stoksistemopname').html(b);
+			var b = $(this).closest('tr').find('td').eq(5).text();
+			$(this).closest('tr').find('td').eq(5).html(b);
 			$(this).closest('tr').find('td .editstokfisikopname').replaceWith(
 				'<span class="stokfisikopname">'+asli+'</span>'
 			);
-			var harga = $(this).closest('tr').find('td').eq(8).text();
+			var harga = $(this).closest('tr').find('td').eq(7).text();
 			var selisih = Number(asli) - Number(b);
-			$(this).closest('tr').find('td').eq(9).html(selisih);
-			$(this).closest('tr').find('td').eq(10).html(Number(harga) * selisih);
+			$(this).closest('tr').find('td').eq(8).html(selisih);
+			$(this).closest('tr').find('td').eq(9).html(Number(harga) * selisih);
 			$(this).closest('tr').find('td a.edIven').show();		
 			$(this).closest('tr').find('td a.editInvenBut').hide();
 			$(this).closest('tr').find('td a.edIvenBatal').hide();
@@ -979,10 +943,6 @@
 						
 		$("#tblInven1").on('click','tr td a.editInvenBut', function(e){
 			e.preventDefault();
-			/*$(".editInven").removeClass("editableform editable-click");
-			$(".editInven").removeClass("editable");
-			$(".editInven").css("color","black");
-			$(".editInven").css("cursor","default");*/
 
 			var a = $(this).closest('tr').find('td .editstokfisikopname').val();
 			$(this).closest('tr').find('td .editstokfisikopname').replaceWith(
@@ -994,6 +954,12 @@
 			//document.getElementById("status").innerHTML = "Edit";
 
 			var stok = $(this).closest('tr').find('td .stokfisikopname').text();
+			var str = $('#tanggalacuan').val();
+			if(str == ''){
+				alert('pilih tanggal acuan');
+				 $('#tanggalacuan').focus();
+				return false;
+			}
 			var d = confirm('proses disimpan ?');
 			if (d == true) {
 				var item = {};
@@ -1006,9 +972,9 @@
 			    var tanggal = thn + '-' + bln + '-' + tgl;
 				item['tanggal_acuan'] = tanggal;
 				item['stok'] = stok;
-				item['obat_dept_id'] = $(this).closest('tr').find('td.obat_dept_id').text();
-				item['obat_opname_id'] = $(this).closest('tr').find('td.obat_opname_id').text();
-				item['harga_jual'] = $(this).closest('tr').find('td.h_jual').text();
+				item['obat_dept_id'] = $(this).closest('tr').find('td .obat_dept_id').val();
+				item['obat_opname_id'] = $(this).closest('tr').find('td .obat_opname_id').val();
+				item['harga_jual'] = $(this).closest('tr').find('td').eq(7).text();
 				console.log(item);
 				$.ajax({
 					type: "POST",
@@ -1087,7 +1053,7 @@
 					type:"POST",
 					url:"<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/"+p_item,
 					success:function(data){
-						$('#tbody_petugaspenerimaan').empty();
+						$('#tbody_penyediapenerimaan').empty();
 
 	 					if(data.length>0){
 							for(var i = 0; i<data.length; i++){
@@ -1274,7 +1240,6 @@
 			item['nomor_penerimaan'] = $('#nmrTerima').val();
 			item['penyedia_id'] = $('#id_penyediaObatTerima').val();
 			item['sumber_dana'] = $('#sumdanapenerimaan').val();
-			//item['petugas_input'] = $('#id_petugasInputTerima').val();
 			item['keterangan'] = $('#ketObatTerima').val();
 			item['tanggal'] = format_date3($('#tglTerimaObat').val());
 			item['tanggal_faktur'] = format_date3($('#tglFakturObat').val());
@@ -1358,6 +1323,8 @@
 									'<td style="text-align:right">'+data[i]['harga_jual']+'</td>'+
 									'<td style="display:none">'+data[i]['obat_detail_id']+'</td>'+
 									'<td style="display:none">'+data[i]['tgl_kadaluarsa']+'</td>'+
+									'<td style="display:none">'+data[i]['obat_id']+'</td>'+
+									'<td style="display:none">'+data[i]['stok_minimal']+'</td>'+
 								'</tr>'
 	        				)
 	        			};
@@ -1381,7 +1348,7 @@
 		})
 
 		$('#formdetailpermintaan').submit(function (e) {
-			//e.preventDefault();
+			e.preventDefault();
 			var data = [];
 		    $('#t_body_detail_permintaan').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
@@ -1727,7 +1694,7 @@
 			var str = '<tr>'+
 							'<td style="display:none;">'+cols[0]+'</td>'+
 							'<td>'+cols[1]+'</td>'+
-							'<td><input type="text" class="form-control qtyreturdistributor"></td>'+
+							'<td><input type="number" class="form-control qtyreturdistributor"></td>'+
 							'<td>'+cols[2]+'</td>'+
 							'<td>'+cols[3]+'</td>'+
 							'<td class="stoksisareturdist">'+cols[4]+'</td>'+
@@ -1758,7 +1725,7 @@
 		        $(this).find('td').each(function (colIndex, c) {
 		            cols.push(c.textContent);
 		        });
-		        $(this).find('td input[type=text]').each(function (colIndex, c) {
+		        $(this).find('td input[type=number]').each(function (colIndex, c) {
 		            cols.push(c.textContent);
 		        });
 		        data.push(cols);
@@ -1902,27 +1869,6 @@
 
 	});
 
-	/*function hitung_grandtotal () {
-		var data = hitung_penerimaan();
-		var jumlah = 0;
-		for (var i = data.length - 1; i >= 0; i--) {
-			jumlah += Number(data[i][7]);
-		};
-
-		var jenispotongan = $('#selectpotongan').find('option:selected').val();
-		var potongan =  Number($('#potongan').val());
-		var ppn =  Number($('#ppn').val());
-		var grandtotal = 0;
-		if (jenispotongan === 'persen') {
-			grandtotal = (jumlah - ((jumlah * (potongan / 100))))
-		} else{
-			grandtotal = (jumlah - potongan)
-		};
-
-		grandtotal += (grandtotal * ppn / 100);
-
-		$('#grandtotal').text(grandtotal);
-	}*/
 
 	function hitung_penerimaan () {
 		var data = [];
@@ -2087,35 +2033,36 @@
 			success: function (data) {
 				console.log(data);
 				$('#t_body_inventory').empty();
-					if (data.length > 0) {
-						for (var i = data.length - 1; i >= 0; i--) {
-							$('#t_body_inventory').append(
-								'<tr>'+
-									'<td style="display:none" class="obat_dept_id_inventori" data-edit="'+data[i]['obat_dept_id']+'">'+data[i]['obat_dept_id']+'</td>'+
-									'<td class="nama_inventori" data-edit="'+data[i]['nama']+'">'+data[i]['nama']+'</td>'+
-									'<td class="no_batch_inventori"  data-edit="'+data[i]['no_batch']+'">'+data[i]['no_batch']+'</td>'+
-									'<td class="harga_dasar_inventori" data-edit="'+data[i]['harga_dasar']+'">'+data[i]['harga_dasar']+'</td>'+
-									'<td class="hps_inventori" data-edit="'+data[i]['hps']+'">'+data[i]['hps']+'</td>'+
-									'<td class="margin_inventori" data-edit="'+data[i]['margin']+'">'+data[i]['margin']+'</td>'+
-									'<td class="h_jual_inventori" data-edit="'+data[i]['harga_jual']+'">'+data[i]['harga_jual']+'</td>'+
-									'<td class="nama_merk_inventori" data-edit="'+data[i]['nama_merk']+'">'+data[i]['nama_merk']+'</td>'+
-									'<td class="total_stok_inventori"  data-edit="'+data[i]['total_stok']+'">'+data[i]['total_stok']+'</td>'+
-									'<td class="satuan_inventori" data-edit="'+data[i]['satuan']+'">'+data[i]['satuan']+'</td>'+								
-									'<td class="tahun_pengadaan_inventori" data-edit="'+data[i]['tahun_pengadaan']+'">'+data[i]['tahun_pengadaan']+'</td>'+								
-									'<td class="tgl_kadaluarsa_inventori" data-edit="'+data[i]['tgl_kadaluarsa']+'">'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
-									'<td><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></td>'+
-									'<td style="display:none" class="merk_id_inventori" data-edit="'+data[i]['merk_id']+'">'+data[i]['merk_id']+'</td>'+
-									'<td style="display:none" class="jenis_id_inventori" data-edit="'+data[i]['jenis_obat_id']+'">'+data[i]['jenis_obat_id']+'</td>'+
-									'<td style="display:none" class="satuan_id_inventori" data-edit="'+data[i]['satuan_id']+'">'+data[i]['satuan_id']+'</td>'+	
-								'</tr>'
-							);
-						}
-					}else{
-						$('#t_body_inventory').append(
-								'<tr><td colspan="12" style="text-align:center">data tidak ditemukan</td></tr>'
-							);
-					}
+
+				var t = $('#tabelinventoriutama').DataTable();
+
+				t.clear().draw();
+				for (var i = 0; i < data.length; i++) {
+					
+					var tgl = format_date(data[i]['tgl_kadaluarsa']);
+					var tambah = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+							'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
+							'<input type="hidden" class="merk_id_inventori" value="'+data[i]['merk_id']+'">'+
+							'<input type="hidden" class="jenis_id_inventori" value="'+data[i]['jenis_obat_id']+'">'+
+							'<input type="hidden" class="satuan_id_inventori" value="'+data[i]['satuan_id']+'">'+
+							'<input type="hidden" class="obat_dept_id_inventori" value="'+data[i]['obat_dept_id']+'">'
+					t.row.add([
+						(i+1),
+						data[i]['nama'],
+						data[i]['no_batch'],
+						data[i]['harga_dasar'],
+						data[i]['hps'],
+						data[i]['margin'],
+						data[i]['harga_jual'],
+						data[i]['nama_merk'],
+						data[i]['total_stok'],
+						data[i]['satuan'],							
+						data[i]['tahun_pengadaan'],							
+						tgl,
+						tambah
+					]).draw();
+				}
+			
 
 			},
 			error: function (data) {

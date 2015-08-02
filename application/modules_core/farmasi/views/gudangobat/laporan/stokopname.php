@@ -67,7 +67,7 @@ header("Expires: 0");
 <body>
 	<table>
 		<tr>
-			<td colspan="13" style="text-align:center;border-bottom:none;"><strong>LAPORAN RETUR OBAT KE</strong></td>
+			<td colspan="13" style="text-align:center;border-bottom:none;"><strong>LAPORAN STOK OPNAME</strong></td>
 		</tr>
 		<tr>
 			<td colspan="13" style="text-align:center;border-bottom:none;"><strong> <?php echo $nama_dept ?> RS BAHAYANGKARA PALANGKARAYA</strong></td>
