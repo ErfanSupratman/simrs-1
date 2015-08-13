@@ -87,7 +87,15 @@ IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bo
 <script src="<?php echo base_url();?>metronic/assets/admin/pages/scripts/index.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>metronic/assets/admin/pages/scripts/tasks.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>metronic/assets/admin/pages/scripts/table-advanced.js"></script>
+
 <script src="<?php echo base_url();?>metronic/assets/js/modernizr.js"></script>
+<script src="<?php echo base_url();?>metronic/assets/js/icon/modernizr.custom.js"></script>
+<script src="<?php echo base_url();?>metronic/assets/js/icon/modernizr.custom.72111.js"></script>
+<script src="<?php echo base_url();?>metronic/assets/notif/js/modernizr.custom.js"></script>
+
+<script src="<?php echo base_url();?>metronic/assets/notif/js/classie.js"></script>
+
+<script src="<?php echo base_url();?>metronic/assets/notif/js/notificationFx.js"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script>
@@ -449,9 +457,6 @@ jQuery(document).ready(function() {
 					});
 
 
-					
-
-
 					$("#penunjangEKG").show();
 					$("#penunjangusg").hide();
 					$("#penunjangFis").hide();
@@ -748,18 +753,19 @@ jQuery(document).ready(function() {
 						}
 					});
 
-
+					$("#tabelKonsultasi").hide();
+					$("#tabelKamar").hide();
 					$("#asuransi").hide();
 					$("#kontrak").hide();
 					$("#kelas").hide();
-					$("#noAsuransi").hide();
+					$("#noasuransi").hide();
 					$("#ivbpjs").hide();
 					$("#carabayar").change(function(){
 						if (document.getElementById('carabayar').value=="BPJS") {
 							$("#asuransi").hide();
 							$("#kontrak").hide();
 							$("#kelas").show();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 							$("#ivbpjs").show();
 							$("#ivnonbpjs").hide();
 						}
@@ -767,7 +773,7 @@ jQuery(document).ready(function() {
 							$("#kontrak").hide();
 							$("#kelas").hide();
 							$("#asuransi").show();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 							$("#ivbpjs").hide();
 							$("#ivnonbpjs").show();
 						}
@@ -775,7 +781,7 @@ jQuery(document).ready(function() {
 							$("#asuransi").hide();
 							$("#kelas").hide();
 							$("#kontrak").show();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 							$("#ivbpjs").hide();
 							$("#ivnonbpjs").show();
 						}
@@ -783,7 +789,7 @@ jQuery(document).ready(function() {
 							$("#asuransi").hide();
 							$("#kelas").hide();
 							$("#kontrak").hide();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 							$("#ivbpjs").hide();
 							$("#ivnonbpjs").show();
 						}
@@ -791,12 +797,12 @@ jQuery(document).ready(function() {
 							$("#asuransi").hide();
 							$("#kelas").hide();
 							$("#kontrak").hide();
-							$("#noAsuransi").show();
+							$("#noasuransi").show();
 							$("#ivbpjs").hide();
 							$("#ivnonbpjs").show();
 						}
 						else{
-							$("#noAsuransi").hide();	
+							$("#noasuransi").hide();	
 							$("#asuransi").hide();
 							$("#kontrak").hide();
 							$("#kelas").hide();
@@ -806,6 +812,8 @@ jQuery(document).ready(function() {
 						}
 					});
 
+					$("#tblRiwayat").hide();
+					$("#tblResep").hide();
 					$("#asuransiruj").hide();
 					$("#kontrakruj").hide();
 					$("#kelasruj").hide();
@@ -1321,7 +1329,7 @@ jQuery(document).ready(function() {
 					var addDivKos = $('.addKosong');
 					var countKos = $(".addKosong tr").length;
 					if (countKos==0) {
-					$('<tr><td colspan="7" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>').appendTo(addDivKos);						
+					$('<tr><td colspan="8" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>').appendTo(addDivKos);						
 					};
 
 					//data-kosong apo retur
@@ -1378,8 +1386,19 @@ jQuery(document).ready(function() {
 
 					//for scrolling fixed
 					$(window).scroll(function(){
-					    $("#rowfix").css("top",Math.max(125,230-$(this).scrollTop()));
+						$("#rowfix").css("top",Math.max(120,177-$(this).scrollTop()));
+					    var x = $("#rowfix").css("top");
+						if( x == "120px"){
+							$("#rowfix").animate({ width: "100%", backgroundColor : "#50BFF9", color:"white", marginLeft: "0px" }, 50);
+							$("#rowfix a").animate({ color:"white" }, 50);
+						}else if(x > "120px"){
+							$("#rowfix").animate({ width: "98.55%", backgroundColor : "#C0C0C0", color:"black", marginLeft: "10px"}, 100);
+							$("#rowfix a").animate({ color:"#428BCA" }, 100);
+						}
+					    
 					});
+
+
 					// var addDiv = $('#addinput');
 					// var i = $('#addinput p').size() + 1;
  
@@ -1474,12 +1493,15 @@ jQuery(document).ready(function() {
 					});
 
 					$('.tableDT').dataTable({
-						"bLengthChange":false
+						"bLengthChange":false,
+						"bInfo":false
+
 					});
 					$('.tableDTUtama').dataTable({
 					    "bFilter": false,
 				        "bLengthChange": false,
-						"bSortable":true
+						"bSortable":true,
+						"bInfo":false
 					});
 
 					//** Function : create new input box for assistant name
@@ -1504,15 +1526,17 @@ jQuery(document).ready(function() {
 					    "bFilter": false,
 				        "bLengthChange": false,
 						"bSortable":true,
-						"scrollX": true,
+						// "scrollX": true,
 						"orderCellsTop": true
 					});
+
+					jQuery('.dataTable').wrap('<div class="dataTables_scroll" />');
 
 					$('.tableDTScroll').dataTable({
 					    "bFilter": true,
 				        "bLengthChange": false,
 						"bSortable":true,
-						"scrollX": true,
+						// "scrollX": true,
 						"orderCellsTop": true
 					});
 
@@ -1582,7 +1606,110 @@ jQuery(document).ready(function() {
 							$("#password").prop('disabled', true);
 							$("#akses").prop('disabled', true);
 						}
+
 					});
+
+					$('.removeTR').on('click', function(e) {
+						e.preventDefault();
+						//var $foo = $( foo );
+						var a = $(this);
+						Confirm.render('Delete Post?','delete_post',a);
+						
+					});
+
+
+					$("#show1").hide();
+					$("#show2").hide();
+					$("#show3").hide();
+					$("#show4").hide();
+					$("#show5").hide();
+					$("#show6").hide();
+					$("#show7").hide();
+					$("#show8").hide();
+					$("#show9").hide();
+					$("#show10").hide();
+
+					$("#list1").on('mouseover', function() {
+				    	$("#show1").fadeIn(300);
+					 }); 
+					$("#kotak1").on('mouseleave', function() {  	
+						$("#show1").fadeOut(300);
+					 }); 
+
+					$("#list2").on('mouseover', function() {
+						$("#show2").fadeIn(300);
+					 }); 
+					$("#kotak2").on('mouseleave', function() {
+						$("#show2").fadeOut(300);
+					 }); 
+
+					$("#list3").on('mouseover', function() {
+				    	$("#show3").fadeIn(300);
+					 }); 
+					$("#kotak3").on('mouseleave', function() {  	
+						$("#show3").fadeOut(300);
+					 }); 
+
+					$("#list4").on('mouseover', function() {
+						$("#show4").fadeIn(300);
+					 }); 
+					$("#kotak4").on('mouseleave', function() {
+						$("#show4").fadeOut(300);
+					 }); 
+
+					$("#list5").on('mouseover', function() {
+				    	$("#show5").fadeIn(300);
+					 }); 
+					$("#kotak5").on('mouseleave', function() {  	
+						$("#show5").fadeOut(300);
+					 }); 
+
+					$("#list5").on('mouseover', function() {
+						$("#show5").fadeIn(300);
+					 }); 
+					$("#kotak5").on('mouseleave', function() {
+						$("#show5").fadeOut(300);
+					 }); 
+
+					$("#list6").on('mouseover', function() {
+				    	$("#show6").fadeIn(300);
+					 }); 
+					$("#kotak6").on('mouseleave', function() {  	
+						$("#show6").fadeOut(300);
+					 }); 
+
+					$("#list7").on('mouseover', function() {
+						$("#show7").fadeIn(300);
+					 }); 
+					$("#kotak7").on('mouseleave', function() {
+						$("#show7").fadeOut(300);
+					 }); 
+
+					$("#list8").on('mouseover', function() {
+				    	$("#show8").fadeIn(300);
+					 }); 
+					$("#kotak8").on('mouseleave', function() {  	
+						$("#show8").fadeOut(300);
+					 }); 
+
+					$("#list9").on('mouseover', function() {
+						$("#show9").fadeIn(300);
+					 }); 
+					$("#kotak9").on('mouseleave', function() {
+						$("#show9").fadeOut(300);
+					 }); 
+
+					$("#list10").on('mouseover', function() {
+						$("#show10").fadeIn(300);
+					 }); 
+					$("#kotak10").on('mouseleave', function() {
+						$("#show10").fadeOut(300);
+					 }); 
+					
+
+					setElementsLabel($(".customSearch"));
+					setElementsClass($(".dataTables_filter label"));		
+					
 	});
 
 		
@@ -1605,30 +1732,46 @@ jQuery(document).ready(function() {
 					  return matchingElements;
 					}
 
-					function setElements(vektor){
-						for (var i = 0, n = vektor.length; i < n; i++)
-					  	{
-							vektor[i].setAttribute('data-date-autoclose','true');
-						}
-					}
+	function setElements(vektor){
+		for (var i = 0, n = vektor.length; i < n; i++)
+	  	{
+			vektor[i].setAttribute('data-date-autoclose','true');
+		}
+	}
+
+	function setElementsLabel(vektor){
+		for (var i = 0, n = vektor.length; i < n; i++)
+	  	{
+			vektor[i].setAttribute('placeholder','Cari');
+		}
+	}
+
+	function setElementsClass(vektor){
+		for (var i = 0, n = vektor.length; i < n; i++)
+	  	{
+			vektor[i].setAttribute('class','duhdek');
+		}
+	}
+
+
+
 </script>
 
 
 
 <script type="text/javascript">
 
-
-	function tambahTagihanKamar(a, b){
+	function tambahPengadaanRBA(a, b){
 			var x = a;
 
 			$('<tr>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
+				'<td>1</td>'+
+				'<td>No Rek</td>'+
+				'<td>Test</td>'+
+				'<td style="text-align:right;">0</td>'+
+				'<td>Sat</td>'+
+				'<td style="text-align:right;">0</td>'+
+				'<td style="text-align:right;">0</td>'+
 				'<td style="text-align:center">'+
 					'<a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a>'+
 				'</td>'+
@@ -1636,17 +1779,16 @@ jQuery(document).ready(function() {
 			return false;
 	};
 
-	function tambahTagihanAkomodasi(a, b){
+	function tambahPermintaanFarmasi(a, b){
 			var x = a;
 
 			$('<tr>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
+				'<td style="text-align:center">1</td>'+
+				'<td>nama obat</td>'+
+				'<td>satuan</td>'+
+				'<td>merek</td>'+
+				'<td style="text-align:right;">0</td>'+
+				'<td><input type="text" class="input-sm form-control" name="data1" placeholder="0" style="text-align:right;width:190px"></td>'+
 				'<td style="text-align:center">'+
 					'<a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a>'+
 				'</td>'+
@@ -1654,17 +1796,16 @@ jQuery(document).ready(function() {
 			return false;
 	};
 
-	function tambahTagihanTidakanPerawatan(a, b){
+	function tambahReturFarmasi(a, b){
 			var x = a;
 
 			$('<tr>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td style="text-align:center;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
+				'<td style="text-align:center">1</td>'+
+				'<td>Nama Obat</td>'+
+				'<td>satuan</td>'+
+				'<td>merek</td>'+
+				'<td style="text-align:right;">0</td>'+
+				'<td><input type="text" class="input-sm form-control" name="data1" placeholder="0" style="text-align:right;width:190px"></td>'+
 				'<td style="text-align:center">'+
 					'<a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a>'+
 				'</td>'+
@@ -1672,17 +1813,16 @@ jQuery(document).ready(function() {
 			return false;
 	};
 
-	function tambahTagihanTindakanPenunjang(a, b){
+	function tambahPermintaanLogistik(a, b){
 			var x = a;
 
 			$('<tr>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td>a</td>'+
-				'<td style="text-align:center;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
-				'<td style="text-align:right;">a</td>'+
+				'<td style="text-align:center">1</td>'+
+				'<td>Nama Barang</td>'+
+				'<td>satuan</td>'+
+				'<td>merek</td>'+
+				'<td style="text-align:right;">0</td>'+
+				'<td><input type="text" class="input-sm form-control" name="data1" placeholder="0" style="text-align:right;width:190px"></td>'+
 				'<td style="text-align:center">'+
 					'<a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a>'+
 				'</td>'+
@@ -1858,7 +1998,55 @@ jQuery(document).ready(function() {
 			$('<tr><td></td><td></td><td></td><td></td><td></td><td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a><a href="#detailTransaksi" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" data-placement="top" title="Detail Transaksi"></i></a></td></tr>').appendTo(x);
 			return false;	
 	}
+
+	function tambahBed(a,b,d){
+			var x = a;	
+			$('<tr><td><input type="text" class="form-control" id="bed'+d+'" name="bed'+d+'" placeholder="Bed '+d+'"></td><td><input type="text" class="form-control" id="desk'+d+'" name="desk'+d+'" placeholder="Deskripsi"></td><td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>').appendTo(x);
+			return false;	
+	}
+
 </script>
+
+<script>
+			(function() {
+				var bttn = document.getElementById('trigger');
+				
+
+
+				// make sure..
+				bttn.disabled = false;
+
+				bttn.addEventListener( 'click', function() {
+					// simulate loading (for demo purposes only)
+					classie.add( bttn, 'active' );
+					// setTimeout( function() {
+
+						classie.remove( bttn, 'active' );
+						
+						// create the notification
+						var notification = new NotificationFx({
+							message : '<p>DATA BERHASIL DITAMBAHKAN</p>',
+							layout : 'growl',
+							effect : 'genie',
+							type : 'notice', // notice, warning or error
+							onClose : function() {
+								bttn.disabled = false;
+							}
+						});
+
+						// show the notification
+						notification.show();
+
+					// }, 1200 );
+					
+					// disable the button (for demo purposes only)
+					this.disabled = true;
+				} );
+			})();
+</script>
+
+<script src="<?php echo base_url();?>metronic/assets/notif/js/classie.js"></script>
+<script src="<?php echo base_url();?>metronic/assets/notif/js/notificationFx.js"></script>
 
 
 <script type="text/javascript">
@@ -1927,7 +2115,121 @@ jQuery(document).ready(function() {
 	});
 </script>
 
+<script type="text/javascript">
+	function CustomAlert(){
+		this.render = function(dialog){
+			var winW = window.innerWidth;
+		    var winH = window.innerHeight;
+			var dialogoverlay = document.getElementById('dialogoverlay');
+		    var dialogbox = document.getElementById('dialogbox');
+			dialogoverlay.style.display = "block";
+		    dialogoverlay.style.height = winH+"px";
+			dialogbox.style.left = (winW/2) - (550 * .5)+"px";
+		    dialogbox.style.top = "100px";
+		    dialogbox.style.display = "block";
+			document.getElementById('dialogboxhead').innerHTML = "Acknowledge This Message";
+		    document.getElementById('dialogboxbody').innerHTML = dialog;
+			document.getElementById('dialogboxfoot').innerHTML = '<button onclick="Alert.ok()">OK</button>';
+		}
+		this.ok = function(){
+			document.getElementById('dialogbox').style.display = "none";
+			document.getElementById('dialogoverlay').style.display = "none";
+		}
+	}
+	var Alert = new CustomAlert();
+	function deletePost(ddd){
+		//var db_id = id.replace("post_", "");
+		//var x = document.getElementById(id);
+		// Run Ajax request here to delete post from database
+		//document.body.removeChild(document.getElementById(id));
+
+		//$('.post_1').closest('tr').remove();
+		//var $x = $ddd;
+		//$x.remove();						
+							
+	}
+	function CustomConfirm(){
+		this.render = function(dialog,op,a){
+
+			var winW = window.innerWidth;
+		    var winH = window.innerHeight;
+			var dialogoverlay = document.getElementById('dialogoverlay');
+		    var dialogbox = document.getElementById('dialogbox');
+			dialogoverlay.style.display = "block";
+		    dialogoverlay.style.height = winH+"px";
+			dialogbox.style.left = (winW/2) - (550 * .5)+"px";
+		    dialogbox.style.top = "100px";
+		    dialogbox.style.display = "block";
+			//a.closest('tr').remove();
+			//var ab = $(a);
+			document.getElementById('dialogboxhead').innerHTML = "Confirm that action";
+		    document.getElementById('dialogboxbody').innerHTML = dialog;
+			document.getElementById('dialogboxfoot').innerHTML = '<a href="#" class="yes" style="color:white"><button class="btn btn-success">Yes</button></a> <button class="btn btn-danger" onclick="Confirm.no()">No</button>';
+			$('.yes').on('click', function(e) {
+				e.preventDefault();
+				//var $foo = $( foo );
+				var u = a;
+				Confirm.yes('delete_post',u);		
+			});
+
+		}
+		this.no = function(){
+			document.getElementById('dialogbox').style.display = "none";
+			document.getElementById('dialogoverlay').style.display = "none";
+		}
+		this.yes = function(op,a){
+			if(op == "delete_post"){
+				a.closest('tr').remove();
+			}
+			document.getElementById('dialogbox').style.display = "none";
+			document.getElementById('dialogoverlay').style.display = "none";
+		}
+	}
+	var Confirm = new CustomConfirm();
+	</script>
+
 
 <script src="<?php echo base_url();?>metronic/assets/js/main.js"></script>
+<script type="text/javascript">
+	(function () {
 
+    var scrollHandle = 0,
+        scrollStep = 5,
+        //parent = $(window);
+        parent = $('#pannerku');
+
+    //Start the scrolling process
+    $(".panner").on("mouseenter", function () {
+        var data = $(this).data('scrollModifier'),
+            direction = parseInt(data, 10);        
+
+        //$(this).addClass('active');
+
+        startScrolling(direction, scrollStep);
+    });
+
+    //Kill the scrolling
+    $(".panner").on("mouseleave", function () {
+        stopScrolling();
+        //$(this).removeClass('active');
+    });
+
+    //Actual handling of the scrolling
+    function startScrolling(modifier, step) {
+        if (scrollHandle === 0) {
+            scrollHandle = setInterval(function () {
+                var newOffset = parent.scrollLeft() + (scrollStep * modifier);
+
+                parent.scrollLeft(newOffset);
+            }, 10);
+        }
+    }
+
+    function stopScrolling() {
+        clearInterval(scrollHandle);
+        scrollHandle = 0;
+    }
+
+}());
+</script>
 <!-- END JAVASCRIPTS -->

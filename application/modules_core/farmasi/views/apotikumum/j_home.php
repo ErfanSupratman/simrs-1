@@ -7,7 +7,7 @@
 			item['satuan_id'] = $('#selectSatObatApoUmumfilter').find('option:selected').val();
 			item['is_generik'] = $('#selectGenObatApoUmum').find('option:selected').val();
 			//console.log(item);return false;
-			$
+			
 			jQuery.ajax({
 				type: "POST",
 				data: item,
@@ -477,16 +477,7 @@
 			item['sisa'] = $('#sisaInOut').val();
 			item['is_out'] = $('#io').find('option:selected').val();
 			var str = $('#tglInOut').val();
-			if (str == '') {
-				str = "<?php echo date('d/m/Y') ?>";
-			}
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item['tanggal'] = tanggal;
+		    item['tanggal'] = str;
 		    item['keterangan'] = $('#keteranganIO').text();
 
 		    if (item['jumlah'] != "") {
@@ -536,9 +527,10 @@
 									'<td>'+data[i]['nama']+'</td>'+
 									'<td>'+data[i]['satuan']+'</td>'+
 									'<td>'+data[i]['nama_merk']+'</td>'+
-									'<td>'+data[i]['total_stok']+'</td>'+
+									'<td>'+data[i]['stok_gudang']+'</td>'+
 									'<td>'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
 									'<td style="text-align:center"><a href="#" class="addNewMintaFar"><i class="glyphicon glyphicon-check"></i></a></td>'+
+									'<td style="display:none">'+data[i]['stok_unit']+'</td>'+
 								'</tr>'
 							)
 						};
@@ -564,10 +556,12 @@
 			$('#addinputMintaApoUm').append(
 				'<tr><td style="display:none">'+cols[0]+'</td>'+
 				'<td style="display:none">'+cols[2]+'</td>'+
-				'<td>'+format_date(cols[1])+'</td>'+
 				'<td>'+cols[3]+'</td>'+
+				'<td>'+format_date(cols[1])+'</td>'+
 				'<td>'+cols[4]+'</td>'+
-				'<td>0</td>'+
+				'<td>'+cols[5]+'</td>'+
+				'<td>'+cols[9]+'</td>'+
+				'<td>'+cols[6]+'</td>'+
 				'<td><input type="number" class="form-control" style="width:90px" placeholder="0"></td>'+
 				'<td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>'
 			)
@@ -581,7 +575,7 @@
 			item['tanggal_request'] = $('#tanggal_permintaan').val();
 			item['keterangan_request'] = $('#ketObatApoUm').val();
 
-			//jlh = 8, obat_id = 1, obat_detail_id = 0
+			//jlh = 9, obat_id = 1, obat_detail_id = 0
 			var data = [];
 		    $('#addinputMintaApoUm').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
@@ -594,14 +588,14 @@
 		        data.push(cols);
 		    });
 			if(data.length == 0){
-				$('#addinputMintaApoUm').append('<tr><td colspan="6" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
+				$('#addinputMintaApoUm').append('<tr><td colspan="8" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
 				alert('isi detail cuk');
 				return false;
 			}
 
 		    item['data'] = data;
 		    //console.log(data);return false;
-		    var d = confirm('yakin disimpan ?');
+		    var d = confirm('yakin diproses ?');
 		    if (d == true) {
 			    $.ajax({
 					type: "POST",
@@ -873,7 +867,138 @@
 		/*akhir opname*/
 
 		/*jasa resep*/
+		/*$('#filterInvright').hide();
+		$('#filterbyright').hide();
+		$('#indicator').on('change',function (e) {
+			var dethis = $(this).val();
+			if (dethis == '') {$('#filterInvright').hide();$('#filterbyright').hide();}
+			else if(dethis == 'and'){
+				$('#')
+			}
 
+		})*/
+		$('#submitfilterhitungresep').submit(function (e) {
+			e.preventDefault();
+			var item = {};
+			item['start'] = $('#jasa_start').val();
+			item['end'] = $('#jasa_end').val();
+			item['cara_bayar'] =  $('#carabayar').find('option:selected').val();
+			item['unit'] = $('#unit_id').val();
+			item['paramedis'] = $('#paramedis_id').val();
+
+			$.ajax({
+				type: "POST",
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homeapotikumum/filter_jasa_resep",
+				success: function (data) {
+					console.log(data);
+					var t = $('#tblPerhitunganResep').DataTable();
+					t.clear().draw();
+					for (var i = 0; i < data.length; i++) {
+						t.row.add([
+							(Number(i) + 1),
+							format_date(data[i]['waktu_penjualan']),
+							data[i]['dept_resep'],
+							data[i]['cara_bayar'],
+							data[i]['resep_id'],
+							data[i]['nama'],
+							data[i]['nama_petugas'],
+							data[i]['management'],
+							data[i]['jasadokter'],
+							data[i]['remunisasi'],
+							data[i]['apotek'],
+							''
+							]).draw();
+					};
+				}
+			})
+		})
+
+		$('#paramedis').focus(function(){
+			var $input = $('#paramedis');
+			
+			$.ajax({
+				type:'POST',
+				url:'<?php echo base_url();?>farmasi/homeapotikumum/get_dokter',
+				success:function(data){
+					var autodata = [];
+					var iddata = [];
+
+					for(var i = 0; i<data.length; i++){
+						autodata.push(data[i]['nama_petugas']);
+						iddata.push(data[i]['petugas_id']);
+					}
+					console.log(autodata);
+
+					$input.typeahead({source:autodata, 
+			            autoSelect: true}); 
+
+					$input.change(function() {
+					    var current = $input.typeahead("getActive");
+					    var index = autodata.indexOf(current);
+
+					    $('#paramedis_id').val(iddata[index]);
+					    
+					    if (current) {
+					        // Some item from your model is active!
+					        if (current.name == $input.val()) {
+					            // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+					        } else {
+					            // This means it is only a partial match, you can either add a new item 
+					            // or take the active if you don't want new items
+					        }
+					    } else {
+					        // Nothing is active so it is a new value (or maybe empty value)
+					    }
+					});
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			});
+		});
+
+		$('#unit').focus(function(){
+			var $input = $('#unit');
+			
+			$.ajax({
+				type:'POST',
+				url:'<?php echo base_url();?>farmasi/homeapotikumum/get_unit',
+				success:function(data){
+					var autodata = [];
+					var iddata = [];
+
+					for(var i = 0; i<data.length; i++){
+						autodata.push(data[i]['nama_dept']);
+						iddata.push(data[i]['dept_id']);
+					}
+					console.log(autodata);
+
+					$input.typeahead({source:autodata, 
+			            autoSelect: true}); 
+
+					$input.change(function() {
+					    var current = $input.typeahead("getActive");
+					    var index = autodata.indexOf(current);
+
+					    $('#unit_id').val(iddata[index]);
+					    
+					    if (current) {
+					        // Some item from your model is active!
+					        if (current.name == $input.val()) {
+					            // This means the exact match is found. Use toLowerCase() if you want case insensitive match.
+					        } else {
+					            // This means it is only a partial match, you can either add a new item 
+					            // or take the active if you don't want new items
+					        }
+					    } else {
+					        // Nothing is active so it is a new value (or maybe empty value)
+					    }
+					});
+				}
+			});
+		});
+		
 		/*akhir jasa resep*/
 	})
 

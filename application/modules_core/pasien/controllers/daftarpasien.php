@@ -8,7 +8,7 @@ class Daftarpasien extends Operator_base {
 
 		parent:: __construct();
 		$this->load->model("m_daftarpasien");
-		$data['page_title'] = "Admisi";
+		$data['page_title'] = "Ad. Rawat Jalan";
 		$this->session->set_userdata($data);
 	}
 
@@ -17,15 +17,16 @@ class Daftarpasien extends Operator_base {
 		$this->check_auth('R');
 		$data['menu_view'] = $this->menu();
 		$data['user'] = $this->user;
-
 		// load template
 		$data['content'] = 'daftar/list';
 		// $data['javascript'] = 'master/diagnosis/javascript/j_list';
 		
-		$this->load->model("m_daftarpasien");
+		$this->load->model("m_daftarpasien");	
 		$data['provinsi'] = $this->m_daftarpasien->get_provinsi();
 		$data['poliklinik']=$this->m_daftarpasien->get_dept_rj();
-
+		$data['pasien_rujuk']=$this->m_daftarpasien->get_pasien_rujuk();
+		$data['pasien_kunjungan']=$this->m_daftarpasien->get_pasien_kunjungan();
+		$data['javascript'] = "daftar/j_list";
 		$this->load->view('base/operator/template', $data);
 	}
 
@@ -39,7 +40,7 @@ class Daftarpasien extends Operator_base {
 	}
 
 	public function selectKabupaten($kab){
-		
+			
 		$kecamatan = $this->m_daftarpasien->get_kecamatan_kab($kab);
 		echo"<option value=''>Pilih Kecamatan</option>";
 		foreach ($kecamatan as $kec) {
@@ -56,56 +57,6 @@ class Daftarpasien extends Operator_base {
 		}
 	}
 
-	public function add_pasien(){
-		$insert['nama']=$_POST['nama'];
-		$insert['alias']=$_POST['alias'];		
-		$insert['tempat_lahir']=$_POST['tempat_lahir'];
-		$insert['tanggal_lahir']=$this->date_db($_POST['tanggal_lahir']);
-		$insert['jenis_kelamin']=$_POST['jenis_kelamin'];
-		$insert['gol_darah']=$_POST['gol_darah'];
-		$insert['pekerjaan']=$_POST['pekerjaan'];
-		$insert['jenis_id']=$_POST['jenis_id'];
-		$insert['no_id']=$_POST['no_id'];
-		$insert['pendidikan']=$_POST['pendidikan'];
-		$insert['agama']=$_POST['agama'];
-		$insert['status_perkawinan']=$_POST['status_kawin'];
-		$insert['alamat_skr']=$_POST['alamat_skr'];
-		$insert['prov_id_skr']=$_POST['prov_id_skr'];
-		$insert['kab_id_skr']=$_POST['kab_id_skr'];
-		$insert['kec_id_skr']=$_POST['kec_id_skr'];
-		$insert['kel_id_skr']=$_POST['kel_id_skr'];
-	 	$insert['alamat_ktp']=$_POST['alamat_ktp'];
-	 	$insert['prov_id']=$_POST['prov_id'];
-		$insert['kab_id']=$_POST['kab_id'];
-		$insert['kec_id']=$_POST['kec_id'];
-		$insert['kel_id']=$_POST['kel_id'];
-		$insert['no_telp']=$_POST['no_telp'];
-		$insert['nama_wali']=$_POST['nama_wali'];
-		$insert['hubungan_wali']=$_POST['hubungan_wali'];
-		$insert['alamat_wali']=$_POST['alamat_wali'];
-		$insert['no_telp_wali']=$_POST['no_telp_wali'];
-		$insert['pekerjaan_wali']=$_POST['pekerjaan_wali'];
-		$insert['alergi']=$_POST['alergi'];
-	
-		$year_now = date('y');
-		$month_now = date('m');
-
-		if($_POST['rm_lama'] == ""){
-		 	$insert['rm_id'] = $this->m_daftarpasien->create_rm_id($year_now, $month_now);
-		}else{
-			$insert['rm_id'] = $_POST['rm_lama'];
-		}
-
-		$insert['tgl_pendaftaran']= $this->get_now();
-		$year_now = date('y');
-		$month_now = date('m');
-
-		$input = $this->m_daftarpasien->add_pasien_baru($insert);
-
-		header('Content-Type: application/json');
-		echo json_encode($insert);
-	}
-
 	public function add_visit_rj(){
 		$year_now = date('y');
 		$month_now = date('m');
@@ -115,25 +66,33 @@ class Daftarpasien extends Operator_base {
 		$insert['rm_id'] = $_POST['rm_id'];
 		$insert['dept_id'] = $_POST['dept_id'];
 		$insert['tanggal_visit'] = $this->get_now();
-		$insert['cara_bayar'] = $_POST['cara_bayar'];
-		$insert['nama_asuransi'] = $_POST['nama_asuransi'];
-		$insert['no_asuransi'] = $_POST['no_asuransi'];
-		$insert['nama_perusahaan'] = $_POST['nama_perusahaan'];
-		$insert['kelas_pelayanan'] = $_POST['kelas_pelayanan'];
 		$insert['cara_masuk'] = $_POST['cara_masuk'];
 		$insert['detail_masuk'] = $_POST['detail_masuk'];
 		$insert['is_pasien_lama'] = $_POST['is_pasien_lama'];
 		$insert['tipe_kunjungan'] = $_POST['tipe_kunjungan'];
 		$insert['petugas_registrasi'] = $_POST['petugas_registrasi'];
+		$insert['status_visit'] = "REGISTRASI";
 
-		$in_rj['rj_id'] = $this->m_daftarpasien->create_visit_rj_id($insert['dept_id'],$year_now,$month_now,$date_now);
 		$in_rj['visit_id'] = $insert['visit_id'];
 		$in_rj['waktu_masuk'] = $this->get_now();
-		$in_rj['is_kasus_baru'] = $_POST['is_kasus_baru'];
-		$in_rj['is_kunjungan_baru'] = $_POST['is_kunjungan_baru'];
+		$in_rj['cara_bayar'] = $_POST['cara_bayar'];
+		$in_rj['nama_asuransi'] = $_POST['nama_asuransi'];
+		$in_rj['no_asuransi'] = $_POST['no_asuransi'];
+		$in_rj['nama_perusahaan'] = $_POST['nama_perusahaan'];
+		$in_rj['kelas_pelayanan'] = $_POST['kelas_pelayanan'];
 
 		$input_visit = $this->m_daftarpasien->add_visit($insert);
-		$input_visit_rj = $this->m_daftarpasien->add_visit_rj($in_rj);
+
+		if($_POST['dept_id'] != 9){
+			$in_rj['unit_tujuan'] = $_POST['dept_id'];
+			$in_rj['rj_id'] = $this->m_daftarpasien->create_visit_rj_id($insert['dept_id'],$year_now,$month_now,$date_now);
+			$input_visit_rj = $this->m_daftarpasien->add_visit_rj($in_rj);
+		}
+		else{
+			$in_rj['igd_id'] = $this->m_daftarpasien->create_visit_rj_id($insert['dept_id'],$year_now,$month_now,$date_now);
+			$input_visit_rj = $this->m_daftarpasien->add_visit_igd($in_rj);
+		}
+
 	}
 	
 
@@ -157,9 +116,69 @@ class Daftarpasien extends Operator_base {
 		return $tgl;
 	}
 
-	public function search_pasien($query){
-		
+	public function search_pasien(){
+		$query = $_POST['search'];
 		$result = $this->m_daftarpasien->get_search_pasien($query);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function get_pasien_rujukan($rj_id){
+		$result = $this->m_daftarpasien->get_pasien_rujukan($rj_id);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function get_pasien_rujuk(){
+		$result = $this->m_daftarpasien->get_pasien_rujuk();
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function get_search_rujukan(){
+		$value = $_POST['search'];
+		$result = $this->m_daftarpasien->get_search_rujukan($value);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function submit_tindakrujuk(){
+		foreach ($_POST as $value) {
+			$insert = $value;
+		}
+		//buat rj_id
+		$year_now = date('y');
+		$month_now = date('m');
+		$date_now = date('d');
+		$insert['waktu_masuk'] = $this->get_now();
+		$insert['rj_id'] = $this->m_daftarpasien->create_visit_rj_id($insert['unit_tujuan'],$year_now,$month_now,$date_now);
+
+		//tambah data kedalam visit_rj
+		$input = $this->m_daftarpasien->add_visit_rj($insert);
+
+		//update visit_status di table visit
+		$update['status_visit'] = 'REGISTRASI';
+		$update_v = $this->m_daftarpasien->update_visit($insert['visit_id'], $update);
+
+		if($input & $update_v)
+		
+		$result = $this->m_daftarpasien->get_pasien_rujuk();
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function batal_rujuk($v_id){
+		//update visit_status
+		$update['status_visit'] = 'CHECKOUT';
+		$update_v = $this->m_daftarpasien->update_visit($v_id, $update);
+
+		//get data rujuk
+		$result = $this->m_daftarpasien->get_pasien_rujuk();
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result);

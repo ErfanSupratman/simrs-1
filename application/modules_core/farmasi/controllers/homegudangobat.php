@@ -3,10 +3,13 @@
 require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
 class Homegudangobat extends Operator_base {
+	protected $dept_id;
 	function __construct(){
 		parent:: __construct();
 		$this->load->model("m_obat");
 		$data['page_title'] = "Gudang Obat";
+		$this->load->model('logistik/m_gudangbarang');
+		$this->dept_id = $this->m_gudangbarang->get_dept_id('GUDANG OBAT')['dept_id'];
 		$this->session->set_userdata($data);
 	}
 
@@ -19,7 +22,6 @@ class Homegudangobat extends Operator_base {
 		
 		// load template
 		$this->load->model('m_obat');
-		$dept_id = '21';
 		$data['content'] = 'gudangobat/home';
 		
 		$data['javascript'] = 'gudangobat/j_list';
@@ -27,17 +29,18 @@ class Homegudangobat extends Operator_base {
 		$data['jenis_obat'] = $this->m_obat->get_jenis_obat();
 		$data['satuan_obat'] = $this->m_obat->get_satuan_obat();
 		// $data['obat'] = $this->m_obat->get_all_obat($dept_id);
-		$data['inventori'] =  $this->m_obat->get_inventori($dept_id);
+		$data['inventori'] =  $this->m_obat->get_inventori($this->dept_id);
 		$item = "a";
-		$data['opname'] = $this->m_obat->get_alpha_obat_opname($item, $dept_id);
+		$data['opname'] = $this->m_obat->get_alpha_obat_opname($item, $this->dept_id);
 		$data['riwayat_pengadaan'] = $this->m_obat->get_riwayat_pengadaan();
-		$data['riwayat_penerimaan'] = $this->m_obat->get_riwayat_penerimaan($dept_id);
+		$data['riwayat_penerimaan'] = $this->m_obat->get_riwayat_penerimaan($this->dept_id);
 		$data['persetujuan'] = $this->m_obat->get_persetujuan();
 		$data['riwayat_persetujuan'] = $this->m_obat->get_riwayat_permintaan();
 		$data['returdept'] = $this->m_obat->get_returdepartment();
 		$data['riwayat_retur'] = $this->m_obat->get_riwayat_returdepartemen();
 		$data['riwayat_returdistributor'] = $this->m_obat->get_riwayat_returdistributor();
 		$data['all_dept'] = $this->m_obat->get_all_dept();
+
 		$this->load->view('base/operator/template', $data);
 	}
 
@@ -94,8 +97,9 @@ class Homegudangobat extends Operator_base {
 	 	echo json_encode($result);
 	}
 
-	public function search_merk($search='')
+	public function search_merk()
 	{
+		$search = $_POST['p_item'];
 		$result = $this->m_obat->search_merk($search);
 
 		header('Content-Type: application/json');
@@ -107,6 +111,8 @@ class Homegudangobat extends Operator_base {
 		$this->form_validation->set_rules('nama', 'nama obat', 'required|trim|xss_clean|is_unique[obat.nama]');
 		$this->form_validation->set_rules('harga_dasar', 'Harga Dasar', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('hps', 'HPS', 'required|trim|xss_clean');
+		$this->form_validation->set_rules('jenis_obat_id', 'HPS', 'required|trim|xss_clean');
+		$this->form_validation->set_rules('satuan_id', 'HPS', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('margin', 'margin', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('stok_min', 'Stok Minimal', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('merk', 'Merek', 'required|trim|xss_clean');
@@ -159,7 +165,7 @@ class Homegudangobat extends Operator_base {
 	//edit obat
 	public function edit_obat()
 	{
-		$this->form_validation->set_rules('nama', 'nama obat', 'required|trim|xss_clean|is_unique[obat.nama]');
+		$this->form_validation->set_rules('nama', 'nama obat', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('harga_dasar', 'Harga Dasar', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('hps', 'HPS', 'required|trim|xss_clean');
 		$this->form_validation->set_rules('margin', 'margin', 'required|trim|xss_clean');
@@ -258,8 +264,9 @@ class Homegudangobat extends Operator_base {
 	 	echo json_encode($result);
 	}
 
-	public function search_penyedia($search)
+	public function search_penyedia()
 	{
+		$search = $_POST['p_item'];
 		$result = $this->m_obat->search_penyedia($search);
 
 		header('Content-Type: application/json');
@@ -300,7 +307,7 @@ class Homegudangobat extends Operator_base {
 						$insert['total_stok'] = $_POST['total_stok'];
 						$ins2 = array(
 							'obat_dept_id' => $obat_dept_id,
-							'tanggal' => date('Y-m-d'),
+							'tanggal' => date('Y-m-d H:i:s'),
 							'masuk' => $insert['total_stok'],
 							'total_stok' => $insert['total_stok'],
 							'keterangan' => 'IN'
@@ -431,7 +438,8 @@ class Homegudangobat extends Operator_base {
 	{
 
 		$insert['obat_dept_id'] = $_POST['obat_dept_id'];
-		$insert['tanggal'] = $_POST['tanggal'];
+		$tgl = DateTime::createFromFormat('d/m/Y H:i:s', $_POST['tanggal']);
+		$insert['tanggal'] = $tgl->format('Y-m-d H:i:s');
 		$insert['is_out'] = $_POST['is_out'];
 		$insert['jumlah'] = $_POST['jumlah'];
 		$insert['keterangan'] = $_POST['keterangan'];
@@ -439,7 +447,7 @@ class Homegudangobat extends Operator_base {
 		$res = $this->m_obat->input_in_out($insert);
 		if ($res) {
 			$ins['obat_dept_id'] = $_POST['obat_dept_id'];
-			$ins['tanggal'] = $_POST['tanggal'];
+			$ins['tanggal'] = $insert['tanggal'];
 			$is_out = $_POST['is_out'];
 			if ($is_out == 'IN') {
 				$ins['masuk'] = $_POST['jumlah'];
@@ -484,7 +492,7 @@ class Homegudangobat extends Operator_base {
 	}
 	public function get_opname_by_name(){
 		$value = $_POST['kunci'];
-		$result = $this->m_obat->get_opname_by_name($value);
+		$result = $this->m_obat->get_opname_by_name($value, '21');
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result);			
@@ -640,14 +648,16 @@ class Homegudangobat extends Operator_base {
 		return $newDateString;
 	}
 
-	public function get_petugas($value){
+	public function get_petugas(){
+		$value = $_POST['p_item'];
 		$result = $this->m_obat->get_petugas($value);
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result);	
 	}
 
-	public function get_obat($value){
+	public function get_obat(){
+		$value = $_POST['p_item'];
 		$result = $this->m_obat->get_obat($value);
 
 		header('Content-Type: application/json');
@@ -733,7 +743,7 @@ class Homegudangobat extends Operator_base {
 								//$insert['total_stok'] = $_POST['total_stok'];
 								$ins2 = array(
 									'obat_dept_id' => $obat_dept_id,
-									'tanggal' => date('Y-m-d'),
+									'tanggal' => date('Y-m-d H:i:s'),
 									'masuk' => $value['jumlah'],
 									'total_stok' => $value['jumlah'],
 									'keterangan' => 'PENERIMAAN'
@@ -770,6 +780,8 @@ class Homegudangobat extends Operator_base {
 				'error' => 'y'
 			);
 		}
+
+		$result = $this->m_obat->get_riwayat_penerimaan($this->dept_id);
 
 		$this->print_penerimaan();
 
@@ -811,7 +823,7 @@ class Homegudangobat extends Operator_base {
 
 				$stokmin = $this->m_obat->get_stok_min($dept_id, $value[10]);
 				if ($stokmin == false) {
-					$stk = array('obat_id'=>$value[10],'dept_id'=>$dept_id,'stok_minimal'=>$value['11']);
+					$stk = array('obat_id'=>$value[10],'dept_id'=>$dept_id,'stok_minimal'=> '0'); //stok min 0
 					$this->m_obat->insert_stock_dept($stk);
 				}
 				//update stok obat, kurangi stok 
@@ -838,7 +850,7 @@ class Homegudangobat extends Operator_base {
 						//$insert['total_stok'] = $_POST['total_stok'];
 						$ins2 = array(
 							'obat_dept_id' => $obat_dept_id,
-							'tanggal' => date('Y-m-d'),
+							'tanggal' => date('Y-m-d H:i:s'),
 							'masuk' => $value['6'],
 							'total_stok' => $value['6'],
 							'keterangan' => 'PERMINTAAN KE GDG'
@@ -868,10 +880,17 @@ class Homegudangobat extends Operator_base {
 				);
 				$up = $this->m_obat->update_stok_returdepartemen($par);
 			}
+
+			$ret = array(
+				'waktu' => date('d F Y H:i:s'), 
+				'departement' => $this->m_obat->get_dept_nama($dept_id)['nama_dept'],
+				'petugas' => $this->m_obat->get_nama_petugas($insert['petugas_respond'])['nama_petugas'],
+				'permintaan_id' => $permintaan_id
+				);
 		}
 
 		header('Content-Type: application/json');
-		echo json_encode($result);
+		echo json_encode($ret);
 	}
 
 	public function get_detail_riwayat_persetujuan($obat_permintaan_id)
@@ -915,7 +934,7 @@ class Homegudangobat extends Operator_base {
 					'tanggal' => date('Y-m-d H:i:s'),
 					'masuk' => $value[3],
 					'total_stok' => ($value[3] + $obat['total_stok']),
-					'keterangan' => 'RETUR DEPT'
+					'keterangan' => 'RETUR DEPARTEMEN'
 					);
 				//tambah detail baru, update stok
 				$update = $this->m_obat->update_stok_returdepartemen($params);
@@ -926,11 +945,13 @@ class Homegudangobat extends Operator_base {
 					'tanggal' => date('Y-m-d H:i:s'),
 					'keluar' => $value[3],
 					'total_stok' => ($det['total_stok'] - $value[3]),
-					'keterangan' => 'RETUR KE GDG'
+					'keterangan' => 'RETUR KE GUDANG'
 					);
 				$update = $this->m_obat->update_stok_returdepartemen($upd);
 			}			
 		}
+
+		$params = $this->m_obat->get_riwayat_returdepartemen();
 		header('Content-Type: application/json');
 		echo(json_encode($params));
 	}
@@ -978,6 +999,7 @@ class Homegudangobat extends Operator_base {
 					$param['retur_distributor_id'] = $retur;
 					$param['obat_detail_id'] = $value[0];
 					$param['jumlah'] = $value[8];
+					$param['sisa'] = $value[5];
 					$ins = $this->m_obat->insert_returdist_detail($param);
 					$det = $this->m_obat->get_last_stok_by_detail($value[0], '21');
 					$upd = array(
@@ -1002,6 +1024,8 @@ class Homegudangobat extends Operator_base {
 			);
 		}
 
+		$result = $this->m_obat->get_riwayat_returdistributor();
+
 		header('Content-Type: application/json');
 		echo json_encode($result);
 	}
@@ -1025,7 +1049,7 @@ class Homegudangobat extends Operator_base {
 	{
 		$filter['now'] = date('Y-m-d');
 		$filter['end'] = $_POST['hd'];
-		$
+		
 		$data['result'] = $this->m_obat->get_filter_tgl($filter);
 		$data['nama_dept'] = 'GUDANG OBAT';
 	
@@ -1156,6 +1180,232 @@ class Homegudangobat extends Operator_base {
 		$data['satuan'] = $obat[0]['satuan'];
 		$data['nama'] = $obat[0]['nama'];
 		$this->load->view('farmasi/gudangobat/laporan/kartustok',$data);
+	}
+
+	public function download_template()
+	{
+		$this->load->view('farmasi/gudangobat/template_masal');
+	}
+
+	public function download_template_detail()
+	{
+		$data['allobat'] = $this->m_obat->get_obat_template($this->dept_id);
+		$this->load->view('farmasi/gudangobat/template_masal_detail', $data);
+	}
+
+	public function import_masal()
+	{
+		$this->load->library('excel_reader');		
+		$config['upload_path'] = './temp_upload/';
+        $config['allowed_types'] = 'xls|xlsx';
+ 		ini_set('memory_limit', '-1');
+        $this->load->library('upload', $config);
+ 
+        if ( ! $this->upload->do_upload())
+        {
+	        $data = array(
+			    'message' => $this->upload->display_errors()
+		     );
+        }
+        else
+        {
+            $data = array('error' => false);
+            $upload_data = $this->upload->data();
+ 
+            $this->load->library('excel_reader');
+            $this->excel_reader->setOutputEncoding('CP1251');
+ 
+            $file =  $upload_data['full_path'];
+            $this->excel_reader->read($file);
+
+            error_reporting(E_ALL ^ E_NOTICE);
+ 
+            // Sheet 1
+            $data = $this->excel_reader->sheets[0] ;
+            $dataexcel = Array();
+
+
+
+            for ($i = 2; $i <= $data['numRows']; $i++) {
+                if($data['cells'][$i][1] != '') {
+		            $dataexcel[$i-1]['nama'] = str_replace("\'", "", $data['cells'][$i][1]);
+		            $sat_id = $this->m_obat->get_satuan_obat_import(str_replace("\'", "", $data['cells'][$i][2]));
+		            $dataexcel[$i-1]['satuan_id'] = $sat_id['satuan_id'];
+		            $jns_id = $this->m_obat->get_jenis_obat_import(str_replace("\'", "", $data['cells'][$i][3]));
+		            $dataexcel[$i-1]['jenis_obat'] = $jns_id['jenis_obat_id'];
+		            $merk = str_replace("\'", "", $data['cells'][$i][4]);
+		            if ($merk != '') {
+		            	$mymerk = $this->m_obat->get_merk_obat_import($merk);
+		            	if ($mymerk) {
+		            		$dataexcel[$i-1]['merk_id'] = $mymerk['merk_id'];
+		            	}else{
+		            		$da['nama_merk'] = $merk;
+		            		$id = $this->m_obat->addnewmerk($da);
+		            		$dataexcel[$i-1]['merk_id'] = $id;
+		            	}
+		            }else{
+		            	$dataexcel[$i-1]['merk_id'] = '1';
+		            }
+
+		            $dataexcel[$i-1]['stok_min'] = str_replace("\'", "", $data['cells'][$i][5]);
+		            //$dataexcel[$i-1]['penyedia_id'] = str_replace("\'", "", $data['cells'][$i][6]);
+		            $p = str_replace("\'", "", $data['cells'][$i][6]);
+		            if ($p != '') {
+		            	$myp = $this->m_obat->get_penyedia_obat_import($p);
+		            	if ($myp) {
+		            		$dataexcel[$i-1]['penyedia_id'] = $myp['penyedia_id'];
+		            	}else{
+		            		$d['nama_penyedia'] = $p;
+		            		$id = $this->m_obat->addnewpenyedia($d);
+		            		$dataexcel[$i-1]['penyedia_id'] = $id;
+		            	}
+		            }else{
+		            	$dataexcel[$i-1]['penyedia_id'] = '1';
+		            }
+		            
+		            $dataexcel[$i-1]['harga_dasar'] = str_replace("\'", "", $data['cells'][$i][7]);
+		            $dataexcel[$i-1]['hps'] = str_replace("\'", "", $data['cells'][$i][8]);
+		            $dataexcel[$i-1]['margin'] = str_replace("\'", "", $data['cells'][$i][9]);
+		            $gen = str_replace("\'", "", $data['cells'][$i][10]);
+		            if($gen == '' or $gen != 'generik' or $gen != 'non-generik') $gen = 'generik';
+		            $dataexcel[$i-1]['generik'] = $gen;
+		        	$hide = str_replace("\'", "", $data['cells'][$i][11]);
+		        	if ($hide == '') {
+		        		$hide = 0;
+		        	}
+		            $dataexcel[$i-1]['hide'] = $hide;
+
+                }     
+            }
+
+            foreach ($dataexcel as $data) {
+            	$obat['nama'] = $data['nama'];
+            	$obat['satuan_id'] = $data['satuan_id'];
+            	$obat['jenis_obat_id'] = $data['jenis_obat'];
+            	$obat['merk_id'] = $data['merk_id'];
+            	$obat['is_generik'] = $data['generik'];
+            	$obat['harga_dasar'] = $data['harga_dasar'];
+            	$obat['hps'] = $data['hps'];
+            	$obat['margin'] = $data['margin'];
+            	$obat['is_hidden'] = $data['hide'];
+            	$obat['penyedia_id'] = $data['penyedia_id'];
+            	$obat['harga_jual'] = intval($data['hps']) + ($data['hps'] * $data['margin'] / 100);
+
+            	$id = $this->m_obat->insert_obat($obat);
+            	$stokmin['obat_id'] = $id;
+            	$stokmin['dept_id'] = '21'; //ubah lagi  ntar 
+            	$stokmin['stok_minimal'] = $data['stok_min'];
+            	$this->m_obat->insert_stock_dept($stokmin);	
+            }
+
+            delete_files($upload_data['file_path']);
+        }
+        //updated last imported data
+
+        $data = array(
+		     'message' => 'Data berhasil di import'
+	     );
+		// echo $data['message']; die;
+		/*$this->session->set_flashdata($data);*/
+		redirect('farmasi/Homegudangobat');
+	}
+
+	public function import_masal_detail()
+	{
+		/*$date = strtotime("+1 day", strtotime("2007-02-28"));
+		echo date("Y-m-d", $date); die;*/
+
+		$this->load->library('excel_reader');		
+		$config['upload_path'] = './temp_upload_detail/';
+        $config['allowed_types'] = 'xls|xlsx';
+ 		ini_set('memory_limit', '-1');
+        $this->load->library('upload', $config);
+ 
+        if ( ! $this->upload->do_upload())
+        {
+	        $data = array(
+			    'message' => $this->upload->display_errors()
+		     );
+        }
+        else
+        {
+            $data = array('error' => false);
+            $upload_data = $this->upload->data();
+ 
+            $this->load->library('excel_reader');
+            $this->excel_reader->setOutputEncoding('CP1251');
+ 
+            $file =  $upload_data['full_path'];
+            $this->excel_reader->read($file);
+
+            error_reporting(E_ALL ^ E_NOTICE);
+ 
+            // Sheet 1
+            $data = $this->excel_reader->sheets[0] ;
+            $dataexcel = Array();
+
+
+
+            for ($i = 2; $i <= $data['numRows']; $i++) {
+                if($data['cells'][$i][1] != '') {
+		            $nama = str_replace("\'", "", $data['cells'][$i][1]);
+		            $id = $this->m_obat->get_obat_id($nama);
+		            $dataexcel[$i-1]['obat_id'] = $id['obat_id'];
+		            $tgl = DateTime::createFromFormat('d/m/Y', str_replace("\'", "", $data['cells'][$i][2]));
+		            $dataexcel[$i-1]['tgl_kadaluarsa'] = $tgl->format('Y-m-d');
+		            $dataexcel[$i-1]['no_batch'] = str_replace("\'", "", $data['cells'][$i][3]);
+		            $thn = str_replace("\'", "", $data['cells'][$i][4]);
+		            if ($thn == '') {
+		            	$thn = date('Y');
+		            }
+		            $dataexcel[$i-1]['tahun_pengadaan'] = $thn;
+		            $sumber = str_replace("\'", "", $data['cells'][$i][5]);
+		            if ($sumber != 'Mandiri' and $sumber != 'BPJS' and $sumber != 'Hibah' and $sumber != 'APBN') {
+		            	$sumber = 'Mandiri';
+		            }
+		            $dataexcel[$i-1]['sumber_dana'] = $sumber;
+		            $dataexcel[$i-1]['stok'] = intval(str_replace("\'", "", $data['cells'][$i][6]));
+                }     
+            }
+
+            foreach ($dataexcel as $data) {
+            	$obat['obat_id'] = $data['obat_id'];
+            	$obat['tgl_kadaluarsa'] = $data['tgl_kadaluarsa'];
+            	$obat['no_batch'] = $data['no_batch'];
+            	$obat['tahun_pengadaan'] = $data['tahun_pengadaan'];
+            	$obat['sumber_dana'] = $data['sumber_dana'];
+
+            	$check = $this->m_obat->get_tgl_kadaluarsa($obat['obat_id'],$obat['tgl_kadaluarsa'], $this->dept_id);
+            	if ($check) {
+            		$newstok = $check['total_stok'] + $data['stok'];
+            		$this->m_obat->update_stok($check['obat_dept_stok_id'], $newstok);
+            	}else{
+            		$detailid = $this->m_obat->insert_detail_obat($obat);
+
+            		$params = array('obat_detail_id' => $detailid, 'dept_id' => $this->dept_id);
+	            	$obat_dept_id = $this->m_obat->insert_obat_dept($params);
+
+					$ins2 = array(
+						'obat_dept_id' => $obat_dept_id,
+						'tanggal' => date('Y-m-d H:i:s'),
+						'masuk' => $data['stok'],
+						'total_stok' => $data['stok'],
+						'keterangan' => 'IN'
+						);
+					$obat_dept_stok = $this->m_obat->insert_dept_stok($ins2);
+            	}
+            }
+
+            delete_files($upload_data['file_path']);
+        }
+        //updated last imported data
+
+        $data = array(
+		     'message' => 'Data berhasil di import'
+	     );
+		// echo $data['message']; die;
+		/*$this->session->set_flashdata($data);*/
+		redirect('farmasi/Homegudangobat');
 	}
 
 }

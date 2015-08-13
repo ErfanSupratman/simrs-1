@@ -18,7 +18,7 @@
 					<i class="fa fa-search">&nbsp;&nbsp;</i>Cari Transaksi Pembelian <span class="required" style="color : red">* </span>
 				</label>
 				<div class="col-md-4">		
-					<input type="text" class="form-control" placeholder="Masukkan Nomor Nota/Nomor RM/Nama Pasien" autofocus>
+					<input type="text" id="kuncisubmit" class="form-control" placeholder="Masukkan Nomor Nota/Nomor RM/Nama Pasien" autofocus>
 				</div>
 				<button type="submit" class="btn btn-danger">Cari</button>&nbsp;&nbsp;&nbsp;
 			</div>	
@@ -29,7 +29,7 @@
 			
 			<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 				<div class="teble-responsive">
-					<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
+					<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelreturpasienutama">
 						<thead>
 							<tr class="info">
 								<th width="20">No.</th>
@@ -43,18 +43,32 @@
 							</tr>
 						</thead>
 						<tbody id="t_body">
-							<tr>
-								<td>1</td>
-								<td>UNit bersalin</td>
-								<td>12301</td>
-								<td>1212</td>
-								<td>Putu</td>
-								<td>Lakik</td>										
-								<td>40</td>
-								<td style="text-align:center">
-									<a href="<?php echo base_url() ?>farmasi/tambahretur"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Tambah Retur"></i></a>
-								</td>										
-							</tr>
+							<?php  
+								if (isset($get_obat_retur) && !empty($get_obat_retur)) {
+									$i = 0;
+									foreach ($get_obat_retur as $value) {
+										$datetime1 = new DateTime();
+										$datetime2 = new DateTime($value['tanggal_lahir']);
+										$interval = $datetime1->diff($datetime2);
+										$umur = ''						;
+										if($interval->y > 0)
+											$umur .= $interval->y ." tahun ";
+
+										echo '<tr>
+												<td>'.(++$i).'</td>
+												<td>'.$value['dept_asal'].'</td>
+												<td>'.$value['no_nota'].'</td>
+												<td>'.$value['rm_id'].'</td>
+												<td>'.$value['nama'].'</td>
+												<td>'.$value['jenis_kelamin'].'</td>										
+												<td>'.$umur.'</td>
+												<td style="text-align:center">
+													<a href="tambahretur/tambah/'.$value['no_nota'].'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Tambah Retur"></i></a>
+												</td>										
+											</tr>';
+									}
+								}
+							?>
 						</tbody>
 					</table>
 				</div>

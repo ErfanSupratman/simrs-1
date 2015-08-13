@@ -83,7 +83,7 @@ header("Expires: 0");
 	<br/>
 
 	<div class="hasil_kelas">
-		<table class="table" id="hasil-evaluasi-dosen">
+		<table class="table" id="hasil-evaluasi-dosen" border="1">
 			<thead>
 				<tr class="header">
 					<th style="text-align:center;width:300px">Nama Distributor</th>

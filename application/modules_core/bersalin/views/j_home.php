@@ -1,86 +1,5 @@
 <script type="text/javascript">
 	$(document).ready(function () {
-/*		$("#search_bersalin").submit(function(event){
-			event.preventDefault();
-			var search = $("input:first").val();
-			if(search!=""){
-				$.ajax({
-					type:'POST',
-					url :'<?php echo base_url()?>bersalin/homebersalin/search_pasien/'+search,
-					success:function(data){
-						// $("#t_body").html(hasil);
-						console.log(data);
-						
-						if(data.length>0){
-							$('#t_body').empty();
-							for(var i = 0; i<data.length;i++){
-								var rm_id = data[i]['rm_id'],
-									name = data[i]['nama'],									
-									jk = data[i]['jenis_kelamin'],
-									tgl_lahir = data[i]['tanggal_lahir'],
-									alamat = data[i]['alamat_skr'],
-									id = data[i]['jenis_id'],
-									visit_id = data[i]['visit_id'];;
-
-								var remove = tgl_lahir.split("-");
-								var bulan;
-								switch(remove[1]){
-									case "01": bulan="Januari";break;
-									case "02": bulan="Februari";break;
-									case "03": bulan="Maret";break;
-									case "04": bulan="April";break;
-									case "05": bulan="Mei";break;
-									case "06": bulan="Juni";break;
-									case "07": bulan="Juli";break;
-									case "08": bulan="Agustus";break;
-									case "09": bulan="September";break;
-									case "10": bulan="Oktober";break;
-									case "11": bulan="November";break;
-									case "12": bulan="Desember";break;
-								}
-								var tgl = remove[2]+" "+bulan+" "+remove[0];
-
-								$('#t_body').append(
-									'<tr>'+
-							 			'<td>'+rm_id+'</td>'+
-							 			'<td>'+name+'</td>'+
-							 			'<td>'+jk+'</td>'+
-							 			'<td>'+tgl+'</td>'+
-							 			'<td>'+alamat+'</td>'+
-							 			'<td>'+id+'</td>'+
-
-							 			'<td style="text-align:center">'+
-							 				'<a href="<?php echo base_url() ?>bersalin/bersalindetail/daftar/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
-										'</td>'+
-							 		'</tr>'
-									);
-							}
-						}else{
-							$('#t_body').empty();
-
-							$('#t_body').append(
-									'<tr>'+
-							 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
-							 		'</tr>'
-								);
-						}
-
-					},
-					error:function (data){
-						$('#t_body').empty();
-
-						$('#t_body').append(
-							'<tr>'+
-					 			'<td colspan="7"><center>Error</center></td>'+
-					 		'</tr>'
-						);
-					}
-
-				});
-			}
-
-			//event.preventDefault();
-		});*/
 
 		/*farmasi bersalin*/
 		$('#submitfilterfarmasiunit').submit(function (e) {
@@ -133,9 +52,10 @@
 									'<td>'+data[i]['nama']+'</td>'+
 									'<td>'+data[i]['satuan']+'</td>'+
 									'<td>'+data[i]['nama_merk']+'</td>'+
-									'<td>'+data[i]['total_stok']+'</td>'+
+									'<td>'+data[i]['stok_gudang']+'</td>'+
 									'<td>'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
 									'<td style="text-align:center"><a href="#" class="addNewMintaFar"><i class="glyphicon glyphicon-check"></i></a></td>'+
+									'<td style="display:none">'+data[i]['stok_unit']+'</td>'+
 								'</tr>'
 							)
 						};
@@ -161,10 +81,12 @@
 			$('#addinputMintaFar').append(
 				'<tr><td style="display:none">'+cols[0]+'</td>'+
 				'<td style="display:none">'+cols[2]+'</td>'+
-				'<td>'+format_date(cols[1])+'</td>'+
 				'<td>'+cols[3]+'</td>'+
+				'<td>'+format_date(cols[1])+'</td>'+
 				'<td>'+cols[4]+'</td>'+
-				'<td>-</td>'+
+				'<td>'+cols[5]+'</td>'+
+				'<td>'+cols[9]+'</td>'+
+				'<td>'+cols[6]+'</td>'+
 				'<td><input type="number" class="form-control" style="width:90px" placeholder="0"></td>'+
 				'<td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>'
 			)
@@ -178,7 +100,7 @@
 			item['tanggal_request'] = $('#tglpermintaanfarmasi').val();
 			item['keterangan_request'] = $('#ketObatFarBers').val();
 
-			//jlh = 8, obat_id = 1, obat_detail_id = 0
+			//jlh = 10, obat_id = 1, obat_detail_id = 0
 			var data = [];
 		    $('#addinputMintaFar').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
@@ -191,7 +113,7 @@
 		        data.push(cols);
 		    });
 			if(data.length == 0){
-				$('#addinputMintaFar').append('<tr><td colspan="6" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
+				$('#addinputMintaFar').append('<tr><td colspan="8" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
 				alert('isi detail cuk');
 				return false;
 			}
@@ -565,10 +487,11 @@
 									'<td>'+data[i]['satuan']+'</td>'+
 									'<td>'+data[i]['nama_merk']+'</td>'+
 									'<td>'+data[i]['tahun_pengadaan']+'</td>'+
-									'<td>'+data[i]['stok']+'</td>'+
+									'<td>'+data[i]['stok_gudang']+'</td>'+
 									'<td style="text-align:center"><a href="#" class="addnewpermintaanbarang"><i class="glyphicon glyphicon-check"></i></a></td>'+
 									'<td style="display:none">'+data[i]['barang_stok_id']+'</td>'+
 									'<td style="display:none">'+data[i]['barang_id']+'</td>'+
+									'<td style="display:none">'+data[i]['stok_unit']+'</td>'+
 								'</tr>'
 							)
 						};
@@ -595,9 +518,9 @@
 				'<td>'+cols[1]+'</td>'+  //satuan
 				'<td>'+cols[2]+'</td>'+ //merk
 				'<td>'+cols[3]+'</td>'+ //tahun pengadaan
-				'<td>-</td>'+ //stok unit
+				'<td>'+cols[8]+'</td>'+ //stok unit
 				'<td>'+cols[4]+'</td>'+ //stok gudang
-				'<td><input type="text" class="form-control" style="width:90px" placeholder="0"></td>'+ //jumlah minta
+				'<td><input type="number" class="form-control" style="width:90px" placeholder="0"></td>'+ //jumlah minta
 				'<td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td>'+
 				'<td style="display:none">'+cols[6]+'</td>'+ //barang_stok_id
 				'<td style="display:none">'+cols[7]+'</td></tr>' //barang_id
@@ -618,7 +541,7 @@
 		        $(this).find('td').each(function (colIndex, c) {
 		            cols.push(c.textContent);
 		        });
-		        $(this).find('td input[type=text]').each(function (colIndex, c) {
+		        $(this).find('td input[type=number]').each(function (colIndex, c) {
 		            cols.push(c.value);
 		        });
 		        data.push(cols);
@@ -652,6 +575,109 @@
 		})
 		/*logistik bersalin*/
 
+		/*pindah pasien*/
+		$('#submitpindahkan').submit(function (e) {
+			e.preventDefault();
+			pindah_pasien('bersalin/homebersalin');
+		})
+		/*akhir pindah pasien*/
+
+		/*data kamar*/
+		$('#tabelkamarunit tbody').on('click', 'tr td a.viewdetailkamar',function (e) {
+			e.preventDefault();
+			var id = $(this).closest('tr').find('td .kamar_id_detail').val();
+			var nama = $(this).closest('tr').find('td').eq(1).text();
+			$('.titlekamar').text(nama);
+			$.ajax({
+				type: "POST",
+				url: "<?php echo base_url()?>bersalin/homebersalin/get_detail_kamar/" +id,
+				success: function (data) {
+					console.log(data);
+					if (data.length > 0) {
+						$('#tabeldetailkamar tbody').empty();
+						for (var i = 0; i < data.length; i++) {
+							$('#tabeldetailkamar tbody').append(
+								'<tr>'+
+									'<td>'+(Number(i+1))+'</td>'+
+									'<td>'+data[i]['nama_bed']+'</td>'+
+									'<td>'+data[i]['status']+'</td>'+
+									'<td>'+data[i]['nama_pasien']+'</td>'+
+								'</tr>'
+							);
+						};
+					};
+				},
+				error: function (data) {
+					console.log(data);
+				}
+			})
+		})
+		/*akhir data kamar*/
+
+		/*master*/
+		var tbl = $('#tabelJpPoliinap').DataTable( {
+			"bFilter": false,
+	        "bLengthChange": false,
+			"bSortable":true,
+			"bInfo":false,
+	        "footerCallback": function ( row, data, start, end, display ) {
+	            var api = this.api(), data;
+	 
+	            // Remove the formatting to get integer data for summation
+	            var intVal = function ( i ) {
+	                return typeof i === 'string' ?
+	                    i.replace(/[\$,]/g, '')*1 :
+	                    typeof i === 'number' ?
+	                        i : 0;
+	            };
+	 
+	            // Total over all pages
+	            total = api
+	                .column( 8 )
+	                .data()
+	                .reduce( function (a, b) {
+	                    return intVal(a) + intVal(b);
+	                } );
+	 
+	            // Update footer
+	            $('#totaljaspel').html(
+	                total
+	            );
+	        }
+	    } );
+		$('.btnsavejp').hide();
+		var jp_asli;
+	    $('#tabelJpPoliinap tbody').on('click', 'tr td a.btneditjp', function (e) {
+	    	e.preventDefault();
+	    	$(this).closest('tr').find('td a.btnsavejp').show();
+	    	$(this).hide();
+	    	jp_asli = Number($(this).closest('tr').find('td').eq(6).text());
+	    	var a = $(this).closest('tr').find('td .feepelayanan').text();
+	    	$(this).closest('tr').find('td .feepelayanan').replaceWith(
+				'<input type="number" style="width:80px;" class="form-control editfeepelayanan" value="'+a+'">'
+			);
+
+			$("#tabelJpPoliinap tbody").on('change','tr td .editfeepelayanan',function(e){
+				var ubah = $(this).val();
+				var harga = $(this).closest('tr').find('td').eq(6).text();
+				var hasil = Number(ubah) + Number(jp_asli);
+				$(this).closest('tr').find('td').eq(8).html(hasil);
+				/*$.fn.;*/
+				var baru = new $.fn.dataTable.Api('#tabelJpPoliinap');
+				
+			})
+	    })
+
+	    $('#tabelJpPoliinap tbody').on('click', 'tr td a.btnsavejp', function (e) {
+	    	e.preventDefault();
+	    	var a = $(this).closest('tr').find('td .editfeepelayanan').val();
+	    	$(this).closest('tr').find('td .editfeepelayanan').replaceWith(
+				'<span class="feepelayanan">'+a+'</span>'
+			);
+			$(this).closest('tr').find('td a.btneditjp').show();
+	    	$(this).hide();
+	    })
+		/*master akhir*/
 	})
 
 	function submit_filter (filter) {
@@ -665,27 +691,34 @@
 				var t = $('#tabelinventoriunit').DataTable();
 
 				t.clear().draw();
-					
-						for (var i =  0; i < data.length; i++) {
-							var last = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-										'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
-										'<input type="hidden" class="barangmerk_id" value="'+data[i]['merk_id']+'">'+
-										'<input type="hidden" class="barangjenis_obat_id" value="'+data[i]['jenis_obat_id']+'">'+
-										'<input type="hidden" class="barangsatuan_id" value="'+data[i]['satuan_id']+'">'+
-										'<input type="hidden" class="barangobat_dept_id" value="'+data[i]['obat_dept_id']+'">';
-							var tgl_kadaluarsa = format_date(data[i]['tgl_kadaluarsa']);
-							t.row.add([
-								(Number(++i)),
-								data[i]['nama'],
-								data[i]['no_batch'],
-								data[i]['harga_jual'],
-								data[i]['nama_merk'],
-								data[i]['total_stok'],
-								data[i]['satuan'],								
-								tgl_kadaluarsa,
-								last
-							]).draw();
-						}
+				for (var i =  0; i < data.length; i++) {
+					var last = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+								'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
+								'<input type="hidden" class="barangmerk_id" value="'+data[i]['merk_id']+'">'+
+								'<input type="hidden" class="barangjenis_obat_id" value="'+data[i]['jenis_obat_id']+'">'+
+								'<input type="hidden" class="barangsatuan_id" value="'+data[i]['satuan_id']+'">'+
+								'<input type="hidden" class="barangobat_dept_id" value="'+data[i]['obat_dept_id']+'">';
+					var tgl_kadaluarsa = format_date(data[i]['tgl_kadaluarsa']);
+					t.row.add([
+						(Number(i+1)),
+						data[i]['nama'],
+						data[i]['no_batch'],
+						data[i]['harga_jual'],
+						data[i]['nama_merk'],
+						data[i]['total_stok'],
+						data[i]['satuan'],								
+						tgl_kadaluarsa,
+						last
+					]).draw();
+				}
+
+				t.on( 'order.dt search.dt', function () {
+			        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+			            cell.innerHTML = i+1;
+			        } );
+			    } ).draw();
+
+				$('[data-toggle="tooltip"]').tooltip();
 					
 			},
 			error:function (data) {

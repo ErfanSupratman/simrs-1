@@ -35,6 +35,15 @@ class m_daftarpasien extends CI_Model {
 		}
 	}	
 
+	public function add_visit_igd($input){
+		$insert = $this->db->insert('visit_igd',$input);
+		if ($insert) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public function add_visit_ri($input){
 		$insert = $this->db->insert('visit_ri',$input);
 		if ($insert) {
@@ -57,6 +66,20 @@ class m_daftarpasien extends CI_Model {
 		$sql = "SELECT * FROM master_dept WHERE jenis = 'POLIKLINIK'";
 		$query = $this->db->query($sql);
 		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_dept(){
+		$sql = "SELECT * FROM master_dept WHERE nama_dept='BERSALIN' OR nama_dept = 'NICU'";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_dept_id($v_id){
+		$sql = "SELECT dept_id FROM visit WHERE visit_id = '$v_id'";
+		$query = $this->db->query($sql);
+		$result = $query->row_array();
 		return $result;
 	}
 
@@ -201,9 +224,15 @@ class m_daftarpasien extends CI_Model {
             } else {
                 $rj_id = strlen($rj_id);
             }
-            return $id . $year . $month . $date . $rj_id;
+            if($id == 9)
+            	return '0' . $id . $year . $month . $date . $rj_id;
+            else
+            	return $id . $year . $month . $date . $rj_id;
         } else {
-            return $id . $year . $month . $date .'0001';
+        	if($id == 9)
+            	return '0' . $id . $year . $month . $date .'0001';
+            else
+            	return $id . $year . $month . $date .'0001';
         }
 	}
 
@@ -265,10 +294,98 @@ class m_daftarpasien extends CI_Model {
 	}
 
 	public function get_search_pasien($search){
-		$sql = "SELECT * FROM pasien WHERE nama LIKE '%".$search."%' OR rm_id LIKE '%".$search."%'";
+		$sql = "SELECT * FROM pasien WHERE nama LIKE '%$search%' OR rm_id LIKE '%$search%'";
 		$query = $this->db->query($sql);
-
 		$result = $query->result_array();
 		return $result;
 	}
+
+	public function get_kamar($dept_id){
+		$sql = "SELECT * FROM master_kamar mk, master_bed mb, (SELECT kamar_id ,count(kamar_id) as jumlah FROM master_bed GROUP BY kamar_id) v, (SELECT kamar_id ,sum(is_dipakai) as terpakai FROM master_bed GROUP BY kamar_id) x WHERE mk.kamar_id = v.kamar_id AND mk.kamar_id = x.kamar_id AND mb.kamar_id = mk.kamar_id AND mk.dept_id = $dept_id";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_bed($query){
+		$sql = "SELECT * FROM master_bed WHERE kamar_id = $query";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function update_bed($id_bed, $data){
+		$this->db->where('bed_id', $id_bed);
+		$update = $this->db->update('master_bed', $data);
+
+		if($update)
+			return true;
+		else
+			return false;
+		
+	}
+
+	public function get_pasien_rujuk(){
+		$sql = "SELECT *, md1.nama_dept as nama_asal, md2.nama_dept as nama_rujuk 
+				FROM pasien p, visit v, petugas pt, master_dept md1, master_dept md2, (SELECT r1.* FROM visit_rj r1 LEFT JOIN visit_rj r2
+					ON (r1.visit_id = r2.visit_id AND r1.rj_id < r2.rj_id)
+					WHERE r2.visit_id IS NULL AND r1.waktu_keluar IS NOT NULL) r 
+				WHERE p.rm_id = v.rm_id AND v.visit_id = r.visit_id AND pt.petugas_id = r.dokter_rujuk AND md1.dept_id = r.unit_tujuan AND md2.dept_id = r.unit_rujukan AND status_visit='RUJUK RJ'
+				ORDER BY waktu_keluar ASC";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_pasien_rujukan($rj_id){
+		$sql = "SELECT *, md1.nama_dept as nama_asal, md2.nama_dept as nama_rujuk 
+				FROM pasien p, visit v, petugas pt, master_dept md1, master_dept md2, (SELECT * FROM visit_rj WHERE rj_id = '$rj_id') r 
+				WHERE p.rm_id = v.rm_id AND v.visit_id = r.visit_id AND pt.petugas_id = r.dokter_rujuk AND md1.dept_id = r.unit_tujuan AND md2.dept_id = r.unit_rujukan AND status_visit='RUJUK RJ'
+				ORDER BY waktu_keluar ASC";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_search_rujukan($value){
+		$sql = "SELECT *, md1.nama_dept as nama_asal, md2.nama_dept as nama_rujuk 
+				FROM pasien p, visit v, petugas pt, master_dept md1, master_dept md2, (SELECT r1.* FROM visit_rj r1 LEFT JOIN visit_rj r2
+					ON (r1.visit_id = r2.visit_id AND r1.rj_id < r2.rj_id)
+					WHERE r2.visit_id IS NULL AND r1.waktu_keluar IS NOT NULL) r 
+				WHERE p.rm_id = v.rm_id AND v.visit_id = r.visit_id AND pt.petugas_id = r.dokter_rujuk AND md1.dept_id = r.unit_tujuan AND md2.dept_id = r.unit_rujukan AND status_visit='RUJUK RJ' AND (p.nama LIKE '%$value%' OR p.rm_id LIKE '%$value%')
+				ORDER BY waktu_keluar ASC";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	public function get_pasien_kunjungan(){
+		$sql = "SELECT p.rm_id, p.nama, asal.nama_dept as dasal, pt.nama_petugas, p.tanggal_lahir, p.alamat_skr, p.jenis_kelamin, v.tanggal_visit FROM pasien p, visit v, visit_rj vr, master_dept d, visit_overview vo, petugas pt, master_dept asal
+				WHERE p.rm_id = v.rm_id	AND v.dept_id = d.dept_id AND v.visit_id = vo.visit_id AND vo.id_pemeriksa = pt.petugas_id
+                AND v.dept_id = asal.dept_id AND v.visit_id = vr.visit_id AND v.status_visit = 'REGISTRASI'
+				ORDER BY vr.waktu_keluar";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	//Rawat Inap
+	public function get_pasien_rujuk_ri(){
+		$sql = "SELECT * FROM pasien p, visit v, master_dept d
+		WHERE p.rm_id = v.rm_id AND v.dept_id = d.dept_id AND v.status_visit = 'RUJUK INAP'";
+		$query = $this->db->query($sql);
+		$result = $query->result_array();
+		return $result;
+	}
+
+	 public function update_visit($id, $data){
+        $this->db->where('visit_id', $id);
+        $update = $this->db->update('visit', $data);
+
+        if($update)
+            return true;
+        else
+            return false;   
+    }
+
 }

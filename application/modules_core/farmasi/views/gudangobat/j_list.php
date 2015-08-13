@@ -37,15 +37,17 @@
 		})
 		/*akhir harga jual*/
 
-		$("#katakunci").keyup(function(event){
-			var p_item = $('#katakunci').val();
+		$("#lookmerk").submit(function(event){
+			var item = {};
+			item['p_item'] = $('#katakunci').val();
 
 			event.preventDefault();
 
-			if(p_item!=""){
+			if($('#katakunci').val()!=""){
 				$.ajax({
 					type:"POST",
-					url:"<?php echo base_url()?>farmasi/homegudangobat/search_merk/"+p_item,
+					data: item,
+					url:"<?php echo base_url()?>farmasi/homegudangobat/search_merk",
 					success:function(data){
 						console.log(data);
 						$('#t_body_merk').empty();
@@ -85,6 +87,7 @@
 			e.preventDefault();
 			var item = {}
 			item['newmerk'] = $('#newmerk').val();
+			if ($('#newmerk').val() == '') {alert('isi nama merek');return false;};
 			$.ajax({
 				type: "POST",
 				data: item,
@@ -112,6 +115,7 @@
 			e.preventDefault();
 			var item = {}
 			item['newpenyedia'] = $('#newpenyedia').val();
+			if ($('#newpenyedia').val() == '') {alert('isi nama penyedia');return false;};
 			$.ajax({
 				type: "POST",
 				data: item,
@@ -248,11 +252,13 @@
 
 		$('#formsearchpenyedia').submit(function (e) {
 			e.preventDefault();
-			var katakunci = $('#katakuncipenyedia').val();
+			var item = {};
+			item['p_item'] = $('#katakuncipenyedia').val();
 
 			$.ajax({
 				type: 'POST',
-				url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/" + katakunci,
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia",
 				success: function (data) {
 					console.log(data);
 						$('#t_body_penyedia').empty();
@@ -322,9 +328,9 @@
 					
 						for (var i = data.length - 1; i >= 0; i--) {
 							var a = format_date(data[i]['tgl_kadaluarsa']);
-							var b = '<a href="#" class="edObatDetail" id="edDetObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+							var b = '<center><a href="#" class="edObatDetail" id="edDetObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
 									'<input type="hidden" class="new_detail_id" value="'+data[i]['obat_detail_id']+'">'+
-									'<input type="hidden" class="new_dept_id" value="'+data[i]['obat_dept_id']+'">'
+									'<input type="hidden" class="new_dept_id" value="'+data[i]['obat_dept_id']+'"></center>'
 							t.row.add([
 								a,
 								data[i]['no_batch'],
@@ -584,6 +590,7 @@
 				type: "POST",
 				url: "<?php echo base_url()?>farmasi/homegudangobat/filter_stok",
 				success: function (data) {
+					console.log(data);
 					$('#t_body_obat').empty();
 					
 						var t = $('#tabelobat').DataTable();
@@ -598,8 +605,8 @@
 							}else{
 								st = "";
 							}
-							var akhir = '<a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'/21" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a>'+
+							var akhir = '<center><a href="#" class="edObat" id="edMasObat"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+									'<a href="<?php echo base_url()?>farmasi/homegudangobat/print_kartustok/'+data[i]['obat_id']+'/21" class="printObat"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Cetak"></i></a></center>'+
 									'<input type="hidden" class="new_merk_id" value="'+data[i]['merk_id']+'">'+
 									'<input type="hidden" class="new_jenis_id" value="'+data[i]['jenis_obat_id']+'">'+
 									'<input type="hidden" class="new_satuan_id" value="'+data[i]['satuan_id']+'">'+
@@ -624,10 +631,17 @@
 									akhir
 							]).draw();
 						};
+
+						t.on( 'order.dt search.dt', function () {
+					        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+					            cell.innerHTML = i+1;
+					        } );
+					    } ).draw();
 					
 				},
 				error: function (data) {
 					alert('gagal');
+					console.log(data);
 				}
 			})
 		})
@@ -686,6 +700,12 @@
 									akhir
 							]).draw();
 						};
+
+						t.on( 'order.dt search.dt', function () {
+					        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+					            cell.innerHTML = i+1;
+					        } );
+					    } ).draw();
 				},
 				error: function (data) {
 					alert('gagal');
@@ -739,10 +759,11 @@
 			submit_filter(item);
 		})
 
+		var io_row;
 		$("#tabelinventoriutama").on('click', 'tr td a.inoutobat', function (e) {
 			var obat_dept_id = $(this).closest('tr').find('td .obat_dept_id_inventori').val();
 			var jlh = $(this).closest('tr').find('td').eq(8).text();
-
+			io_row = $(this);
 			$('#inout_obat_dept_id').val(obat_dept_id);
 			$('#sisaInOut').val(jlh);
 
@@ -819,15 +840,9 @@
 			item['is_out'] = $('#io').find('option:selected').val();
 			var str = $('#tglInOut').val();
 			if (str == '') {
-				str = "<?php echo date('d/m/Y') ?>";
+				str = "<?php echo date('d/m/Y H:i:s') ?>";
 			}
-			var res = str.split("/");
-		    var bln = res[1];
-			var tgl = res[0];
-		    var thn = res[2];
-
-		    var tanggal = thn + '-' + bln + '-' + tgl;
-		    item['tanggal'] = tanggal;
+		    item['tanggal'] = str;
 		    item['keterangan'] = $('#keteranganIO').text();
 
 		    if (item['jumlah'] != "") {
@@ -838,7 +853,9 @@
 			    	success: function (data) {
 			    		if (data == "true") {
 			    			alert('data berhasil disimpan');
-			    			$('#inout').modal('hide');	
+			    			$('#inout').modal('hide');
+			    			$('#keteranganIO').val(''); $('#jmlInOut').val('');
+			    			io_row.closest('tr').find('td').eq(8).text(item['sisa']);
 			    		} else{
 			    			alert('gagal, terdapat kesalahan');
 			    		};
@@ -895,25 +912,25 @@
 
 
 		/*opname*/
-		$("a.editInvenBut").hide();
-		$('a.edIvenBatal').hide();
-		$('.editInven').click(function (e) {
+		$("a.editInventoriBut").hide();
+		$('a.edIventoriBatal').hide();
+		$('.editInventori').click(function (e) {
 			e.preventDefault();
 		})
 		var asli = '';
-		$("#tblInven1").on('click','tr td a.edIven',function(e){
+		$("#tblInven1").on('click','tr td a.edIventori',function(e){
 			e.preventDefault();
 			var a = $(this).closest('tr').find('td .stokfisikopname').text();
 			var b = $(this).closest('tr').find('td').eq(5).text();
 			asli = a;			
 			$(this).closest('tr').find('td .stokfisikopname').replaceWith(
-					'<input type="text" style="width:80px;" class="form-control editstokfisikopname" value="'+a+'">'
+					'<input type="number" style="width:80px;" class="form-control editstokfisikopname" value="'+a+'">'
 				);
 
-			$(this).closest('tr').find('td a.edIven').hide();
-			$(this).closest('tr').find('td a.editInvenBut').show();
-			$(this).closest('tr').find('td a.edIvenBatal').show();
-
+			$(this).hide();
+			$(this).closest('tr').find('td a.editInventoriBut').show();
+			$(this).closest('tr').find('td a.edIventoriBatal').show();
+			
 			$("#tblInven1").on('change','tr td .editstokfisikopname',function(e){
 				var ubah = $(this).val();
 				var harga = $(this).closest('tr').find('td').eq(7).text();
@@ -923,7 +940,7 @@
 			})
 		});
 
-		$("#tblInven1").on('click','tr td a.edIvenBatal', function(e){
+		$("#tblInven1").on('click','tr td a.edIventoriBatal', function(e){
 			e.preventDefault();
 			var b = $(this).closest('tr').find('td').eq(5).text();
 			$(this).closest('tr').find('td').eq(5).html(b);
@@ -934,23 +951,21 @@
 			var selisih = Number(asli) - Number(b);
 			$(this).closest('tr').find('td').eq(8).html(selisih);
 			$(this).closest('tr').find('td').eq(9).html(Number(harga) * selisih);
-			$(this).closest('tr').find('td a.edIven').show();		
-			$(this).closest('tr').find('td a.editInvenBut').hide();
-			$(this).closest('tr').find('td a.edIvenBatal').hide();
+			$(this).closest('tr').find('td a.edIventori').show();		
+			$(this).closest('tr').find('td a.editInventoriBut').hide();
+			$(this).closest('tr').find('td a.edIventoriBatal').hide();
 		})
-
-		
-						
-		$("#tblInven1").on('click','tr td a.editInvenBut', function(e){
+	
+		$("#tblInven1").on('click','tr td a.editInventoriBut', function(e){
 			e.preventDefault();
 
 			var a = $(this).closest('tr').find('td .editstokfisikopname').val();
 			$(this).closest('tr').find('td .editstokfisikopname').replaceWith(
 					'<span class="stokfisikopname">'+a+'</span>'
 				);
-			$(this).closest('tr').find('td a.edIven').show();
-			$(this).closest('tr').find('td a.editInvenBut').hide();
-			$(this).closest('tr').find('td a.edIvenBatal').hide();
+			$(this).closest('tr').find('td a.edIventori').show();
+			$(this).closest('tr').find('td a.editInventoriBut').hide();
+			$(this).closest('tr').find('td a.edIventoriBatal').hide();
 			//document.getElementById("status").innerHTML = "Edit";
 
 			var stok = $(this).closest('tr').find('td .stokfisikopname').text();
@@ -960,7 +975,8 @@
 				 $('#tanggalacuan').focus();
 				return false;
 			}
-			var d = confirm('proses disimpan ?');
+			var mess = 'anda akan mengopname dengan tanggal acuan '+str+', yakin proses ini disimpan ?';
+			var d = confirm(mess);
 			if (d == true) {
 				var item = {};
 				var str = $('#tanggalacuan').val();
@@ -975,6 +991,9 @@
 				item['obat_dept_id'] = $(this).closest('tr').find('td .obat_dept_id').val();
 				item['obat_opname_id'] = $(this).closest('tr').find('td .obat_opname_id').val();
 				item['harga_jual'] = $(this).closest('tr').find('td').eq(7).text();
+				var dethis = $(this).closest('tr').find('td').eq(8);
+				var jlh = $(this).closest('tr').find('td').eq(9);
+				var sistem = $(this).closest('tr').find('td').eq(5);
 				console.log(item);
 				$.ajax({
 					type: "POST",
@@ -983,6 +1002,7 @@
 					success: function (data) {
 						console.log(data);
 						alert(data['message']);
+						dethis.text('0');sistem.text(stok);jlh.text('0');
 					}
 				})
 			} else{
@@ -997,14 +1017,16 @@
 			e.preventDefault();
 		})
 		$('#katakuncipetugaspenerimaan').keyup(function(event){
-			var p_item = $('#katakuncipetugaspenerimaan').val();
+			var item = {};
+			item['p_item'] = $('#katakuncipetugaspenerimaan').val();
 			
 			event.preventDefault();
 
 			if(p_item!=""){
 				$.ajax({
 					type:"POST",
-					url:"<?php echo base_url()?>farmasi/homegudangobat/get_petugas/"+p_item,
+					data: item,
+					url:"<?php echo base_url()?>farmasi/homegudangobat/get_petugas",
 					success:function(data){
 						$('#tbody_petugaspenerimaan').empty();
 
@@ -1043,15 +1065,17 @@
 			}
 		});
 
-		$('#penyediapenerimaan').keyup(function(event){
-			var p_item = $('#penyediapenerimaan').val();
+		$('#formsearchpenyediapenerimaan').submit(function(event){
+			var item = {};
+			item['p_item'] = $('#penyediapenerimaan').val();
 			
 			event.preventDefault();
 
-			if(p_item!=""){
+			if($('#penyediapenerimaan').val()!=""){
 				$.ajax({
 					type:"POST",
-					url:"<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/"+p_item,
+					data: item,
+					url:"<?php echo base_url()?>farmasi/homegudangobat/search_penyedia",
 					success:function(data){
 						$('#tbody_penyediapenerimaan').empty();
 
@@ -1173,10 +1197,10 @@
 
 			var newtabel = '<tr><td>'+nama_obat+'</td>'+
 							'<td>'+satuan+'</td>'+
-							'<td><input type="text" class="numberrequired form-control"></td>'+
-							'<td><input type="text" style="cursor:pointer;" class="form-control calder" data-provide="datepicker" data-date-format="dd/mm/yyyy" value="<?php echo date('d/m/Y'); ?>" required readonly=""></td>'+
-							'<td style="width:100px;"><input type="text" class="form-control numberrequired qtypenerimaaninput"></td>'+
-							'<td style="width:50px;"><input type="text" maxlength="3" class="numberrequired form-control diskpenerimaaninput"></td>'+
+							'<td><input type="text" style="width:150px;" class="numberrequired form-control"></td>'+
+							'<td><input type="text" style="cursor:pointer;" class="form-control calder" data-date-autoclose="true" data-provide="datepicker" data-date-format="dd/mm/yyyy" value="<?php echo date('d/m/Y'); ?>" required readonly=""></td>'+
+							'<td style="width:100px;"><input type="number" class="form-control numberrequired qtypenerimaaninput"></td>'+
+							'<td style="width:90px;"><input type="number" maxlength="3" class="numberrequired form-control diskpenerimaaninput"></td>'+
 							'<td class="hargadasarterima">'+harga_dasar+'</td>'+
 							'<td class="totalrowterima">0</td>'+
 							'<td style="text-align:center;width:5%;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
@@ -1185,7 +1209,7 @@
 			$(newtabel).appendTo(addDivTerima);
 			$(".adaanQtyTer").editable(); 
 			var data = hitung_penerimaan();
-			
+			console.log(data);
 			return false;
 		});
 
@@ -1197,6 +1221,7 @@
 			var hasilakhir =  total - (total * Number(a) / 100);
 			$(this).closest('tr').find('td.totalrowterima').html(hasilakhir);
 			var data = hitung_penerimaan();
+			console.log(data);
 		})
 
 		$('#t_body_inputterima').on('change', 'tr td .diskpenerimaaninput', function (e) {
@@ -1278,10 +1303,29 @@
 		    	url: "<?php echo base_url()?>farmasi/homegudangobat/add_penerimaan",
 		    	success: function (data) {
 		    		//console.log(data['message']); return false;
-		    		alert(data['message']);
+		    		/*alert(data['message']);
 		    		if (data['error'] === 'n') {
 		    			reset_penerimaan();
-		    		} 
+		    		} */
+					var t = $('#tblriwayatterima').DataTable();
+					t.clear().draw();
+					for (var i = 0; i < data.length; i++) {
+						t.row.add([
+							Number(i+1),
+							data[i]['nama'],
+							data[i]['satuan'],
+							data[i]['no_batch'],
+							format_date(data[i]['tgl_kadaluarsa']),
+							data[i]['jumlah'],
+							data[i]['diskon'],
+							data[i]['diskon'],
+							data[i]['harga_beli'],
+							data[i]['total']
+						]).draw();
+					};
+					
+					alert('berhasil disimpan');
+					reset_penerimaan();
 		    	},
 		    	error: function (data) {
 		    		
@@ -1296,8 +1340,10 @@
 		/*akhir penerimaan obat*/
 
 		/*permintaan obat*/
+		var this_minta;
 		$('#t_body_permintaan').on('click','tr td a.lihatdetailminta', function (e) {
 			e.preventDefault();
+			this_minta = $(this);
 
 	        var id = $(this).closest('tr').find('td .idpermintaanobat').val();
 	        var dept_id = $(this).closest('tr').find('td .iddeptpermintaanobat').val();
@@ -1371,12 +1417,37 @@
 			    item['dept_id'] = $('#deptobat_permintaan_id_confirm').val();
 			    item['approve'] = data;
 
+			    //console.log(data);return false;
 			    $.ajax({
 			    	type: "POST",
 			    	data: item,
 			    	url: "<?php echo base_url()?>farmasi/homegudangobat/submit_persetujuan_permintaan",
 			    	success:  function (data) {
 			    		alert('sukses');
+			    		var table = $('#tabelpermintaangudang').DataTable();
+						table.row(this_minta.parents('tr') ).remove().draw();
+						table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+				            cell.innerHTML = i+1;
+				        } );
+
+				        var jml = $('#jlhpersetujuan').val();
+						var no = parseInt(jml)+1;
+						var t = $('#tabelutamariwayatpersetujuan').DataTable();
+						var last = '<center><input type="hidden" class="idriwayatpermintaan" value="'+data['permintaan_id']+'">'+
+								'<a href="#" class="detailriwayatpermintaan" data-toggle="modal" data-target="#riwpersetujuanper">'+
+									'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="detail"></i>'+
+								'</a></center>';
+						t.row.add([
+							no,
+							data['waktu'],
+							data['departement'],
+							data['petugas'],
+							"",
+							last,
+							no
+						]).draw();
+
+						$('#jlhpersetujuan').val(no);
 			    		console.log(data);
 			    	},
 			    	error: function (data) {
@@ -1404,17 +1475,16 @@
 	        	type: "POST",
 	        	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_persetujuan/"+ id,
 	        	success: function (data) {
-	        		//console.log(data);
-	        		$('#t_body_detailriwayatpermintaan').empty();
+	        		console.log(data);
+	        		$('#t_body_detailriwayatminta').empty();
 	        		if (data.length > 0) {
 	        			//$('#obat_permintaan_id_confirm').val(id);
 	        			for (var i = data.length - 1; i >= 0; i--) {
-	        				$('#t_body_detailriwayatpermintaan').append(
+	        				$('#t_body_detailriwayatminta').append(
 	        					'<tr>'+
 									'<td>'+data[i]['nama']+'</td>'+
 									'<td style="text-align:left">'+data[i]['satuan']+'</td>'+
 									'<td style="text-align:left">'+data[i]['nama_merk']+'</td>'+
-									'<td style="text-align:right">-</td>'+
 									'<td style="text-align:right">'+data[i]['total']+'</td>'+
 									'<td style="text-align:right">'+data[i]['jumlah_request']+'</td>'+
 									'<td style="text-align:right">'+data[i]['jumlah_approved']+'</td>'+
@@ -1424,7 +1494,7 @@
 	        				)
 	        			};
 	        		} else{
-	        			$('#t_body_detailriwayatpermintaan').append(
+	        			$('#t_body_detailriwayatminta').append(
 	    					'<tr><td style="text-align:center" colspan="8">Tidak ada detail</td></tr>'
 	    				)	
 	        		};
@@ -1438,8 +1508,10 @@
 		/*akhir permintaan obat*/
 
 		/*retur obat departemen*/
+		var this_returdept;
 		$('#tbody_obat_dept').on('click','tr td a.cekdetailreturdept', function (e) {
 			e.preventDefault();
+			this_returdept = $(this);
 			var id = $(this).closest('tr').find('td .idreturdept').val();
 			var id_deptasal = $(this).closest('tr').find('td .iddeptreturobat').val();
 
@@ -1513,7 +1585,29 @@
 					url: "<?php echo base_url()?>farmasi/homegudangobat/confirmreturdept",
 					success: function (data) {
 						console.log(data);
-						alert('data berhasil disimpan');	
+						alert('data berhasil disimpan');
+						var table = $('#tabelreturdepartemen').DataTable();
+						table.row(this_returdept.parents('tr') ).remove().draw();
+						table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+				            cell.innerHTML = i+1;
+				        } );
+
+						var t = $('#tabelriwayatreturdept').DataTable();
+						t.clear().draw();
+			    		for (var i = 0; i < data.length; i++) {
+			    			var last = '<center><input type="hidden" class="idriwayatreturdept" value="'+data[i]['retur_dept_id']+'">'+
+										'<a href="#" class="detailriwayatdept" data-toggle="modal" data-target="#riwretdept"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>'+
+										'<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a></center>'
+			    			t.row.add([
+			    				'<center>'+(Number(i+1))+'</center>',
+			    				format_date(data[i]['waktu']),
+			    				data[i]['nama_dept'],
+			    				data[i]['nama_petugas'],
+			    				data[i]['keterangan'],
+			    				last,
+			    				''
+			    			]).draw();
+			    		};
 					},
 					error: function (data) {
 						console.log(data);
@@ -1572,11 +1666,13 @@
 		/*retur obat distributor*/
 		$('#searchpenyediareturdist').submit(function (e) {
 			e.preventDefault();
-			var katakunci = $('#katakuncipenyediaretdis').val();
+			var item = {};
+			item['p_item'] = $('#katakuncipenyediaretdis').val();
 
 			$.ajax({
 				type: 'POST',
-				url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/" + katakunci,
+				data: item,
+				url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia",
 				success: function (data) {
 					//console.log(data);
 						$('#t_body_penyediareturdist').empty();
@@ -1694,23 +1790,28 @@
 			var str = '<tr>'+
 							'<td style="display:none;">'+cols[0]+'</td>'+
 							'<td>'+cols[1]+'</td>'+
-							'<td><input type="number" class="form-control qtyreturdistributor"></td>'+
+							'<td><input type="number" style="width:100px;" class="form-control qtyreturdistributor"></td>'+
 							'<td>'+cols[2]+'</td>'+
 							'<td>'+cols[3]+'</td>'+
 							'<td class="stoksisareturdist">'+cols[4]+'</td>'+
 							'<td>'+cols[5]+'</td>'+
-							'<td style="text-align:center;"><a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a></td>'+
+							'<td style="text-align:center;">'+
+								'<a href="#" class="removeRow" ><i class="glyphicon glyphicon-remove"></i></a>'+
+								'<input type="hidden" class="stokasli" value="'+cols[4]+'"'+
+							'</td>'+
 						'</tr>'
 			$(str).appendTo(addDiv1);
 			$(".returQty").editable(); 
 		})
 
+		var num;
 		$('#tbodyinputreturdistributor').on('change', 'tr td .qtyreturdistributor', function (e) {
 			var qty = $(this).val();
 			var sisa = $(this).closest('tr').find('td.stoksisareturdist').text();
-			var jlh = Number(sisa) - Number(qty);
+			num = $(this).closest('tr').find('td .stokasli').val();
+			var jlh = Number(num) - Number(qty);
 			$(this).closest('tr').find('td.stoksisareturdist').html(jlh);
-
+			if (qty == '') {$(this).closest('tr').find('td.stoksisareturdist').html(num)};
 		})
 
 		$('#formsubmitreturdistributor').submit(function (e) {
@@ -1726,7 +1827,7 @@
 		            cols.push(c.textContent);
 		        });
 		        $(this).find('td input[type=number]').each(function (colIndex, c) {
-		            cols.push(c.textContent);
+		            cols.push(c.value);
 		        });
 		        data.push(cols);
 		    });
@@ -1735,15 +1836,33 @@
 		    item['penyedia_id'] = $('.id_penyediaRetDis').val();
 		    item['keterangan'] = $('#ketReturDis').val();
 		    item['data'] = data;
-
+		    //.log(item);return false;
 		    $.ajax({
 		    	type: "POST",
 		    	data: item,
 		    	url: "<?php echo base_url()?>farmasi/homegudangobat/submitreturdistributor",
 		    	success: function (data) {
-		    		if(data['error'] == 'n')
-		    			$('#tbodyinputreturdistributor').empty();
-		    		alert(data['message']);
+		    		/*if(data['error'] == 'n')*/
+		    		var t = $('#tabelriwayatreturdistributor').DataTable();
+		    		t.clear().draw();
+		    		for (var i = 0; i < data.length; i++) {
+		    			var last = '<center><input type="hidden" class="idriwayatreturdist" value="'+data[i]['retur_distributor_id']+'">'+
+									'<a href="#" class="detailriwayatdist" data-toggle="modal" data-target="#riwretdist"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>'+
+									'<a href="#" class="cetak" id="cetak"><i class="glyphicon glyphicon-print" data-toggle="tooltip" data-placement="top" title="Print"></i></a></center>'
+		    			t.row.add([
+		    				'<center>'+(Number(i+1))+'</center>',
+		    				data[i]['no_retur'],
+		    				data[i]['nama_penyedia'],
+		    				data[i]['nama_petugas'],
+		    				format_date(data[i]['waktu']),
+		    				data[i]['keterangan'],
+		    				last,
+		    				''
+		    			]).draw();
+		    		};
+		    		
+		    		$('#tbodyinputreturdistributor').empty();
+		    		alert('berhasil diretur');
 		    	},
 		    	error: function (data) {
 		    		
@@ -1787,7 +1906,7 @@
 								'<td>'+data[i]['jumlah']+'</td>'+
 								'<td>'+data[i]['satuan']+'</td>'+
 								'<td>'+data[i]['nama_merk']+'</td>'+
-								'<td>'+data[i]['total_stok']+'</td>'+
+								'<td>'+data[i]['sisa']+'</td>'+
 								'<td>'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
 								'<tr>'
 							)
@@ -1805,12 +1924,13 @@
 		/*laporan*/
 		$('#caridistributorlaporanobat').submit(function (e) {
 			e.preventDefault();
-			var elny = $('#katakuncidistlaporan').val();
+			var item = {};
+			item['p_item'] = $('#katakuncidistlaporan').val();
 
-			if (elny !='') {
+			if ($('#katakuncidistlaporan').val() !='') {
 				$.ajax({
 					type: 'POST',
-					url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia/" + elny,
+					url: "<?php echo base_url()?>farmasi/homegudangobat/search_penyedia",
 					success: function (data) {
 						//console.log(data);
 							$('#tbodypenyediareturlaporan').empty();
@@ -1880,6 +2000,9 @@
 	        $(this).find('td input[type=text]').each(function (colIndex, c) {
 	            cols.push(c.value);
 	        });
+	        $(this).find('td input[type=number]').each(function (colIndex, c) {
+	            cols.push(c.value);
+	        });
 	        data.push(cols);
 	    });
 
@@ -1897,10 +2020,11 @@
 		} else{
 			grandtotal = (jumlah - potongan)
 		};
+		var hasilppn = (grandtotal * ppn / 100);
+		grandtotal += Math.ceil(hasilppn);
 
-		grandtotal += (grandtotal * ppn / 100);
-
-		$('#grandtotal').text(grandtotal);
+		$('#hasilppn').text(Math.ceil(hasilppn));
+		$('#grandtotal').text(Math.ceil(grandtotal));
 		$('#subtotalterima').text(jumlah);
 
 	    return data;
@@ -1943,6 +2067,7 @@
 		$("#sumdanapenerimaan option[value='Mandiri']").attr("selected", "selected");
 		$("#selectpotongan option[value='persen']").attr("selected", "selected");
 		$('#grandtotal').text('0');
+		$('#hasilppn').text('0');
 		$('#subtotalterima').text('0');
 	}
 
@@ -1957,72 +2082,6 @@
 		item[1]['satuan'] = $('#filterSat').find('option:selected').val(); 
 		item[1]['is_generik'] = $('#filterGen').find('option:selected').val(); 
 		return item;
-	}
-
-	function format_date (date) {
-		var sp = date.split('-');
-		var tgl = sp[2];
-		var thn = sp[0];
-		var temp = sp[1];
-		var bln = "";
-		switch(temp){
-			case '01' : bln = "Januari" ;break;
-			case '02' : bln = "Februari" ;break;
-			case '03' : bln = "Maret" ;break;
-			case '04' : bln = "April" ;break;
-			case '05' : bln = "Mei" ;break;
-			case '06' : bln = "Juni" ;break;
-			case '07' : bln = "Juli" ;break;
-			case '08' : bln = "Agustus" ;break;
-			case '09' : bln = "September" ;break;
-			case '10' : bln = "Oktober" ;break;
-			case '11' : bln = "November" ;break;
-			case '12' : bln = "Desember" ;break;
-		}
-
-		var waktu = "";
-		if(tgl.length > 2){
-			var a = tgl.split(' ');
-			waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
-		}else{
-			waktu = tgl + " " + bln + " "+ thn;
-		}
-		return waktu;
-	}
-
-	function format_date2 (date) {
-		var sp = date.split(' ');
-		var tgl = sp[0];
-		var thn = sp[2];
-		var temp = sp[1];
-		var bln = "";
-		switch(temp){
-			case 'Januari' : bln = "01" ;break;
-			case 'Februari' : bln = "02" ;break;
-			case 'Maret' : bln = "03" ;break;
-			case 'April' : bln = "04" ;break;
-			case 'Mei' : bln = "05" ;break;
-			case 'Juni' : bln = "06" ;break;
-			case 'Juli' : bln = "07" ;break;
-			case 'Agustus' : bln = "08" ;break;
-			case 'September' : bln = "09" ;break;
-			case 'Oktober' : bln = "10" ;break;
-			case 'November' : bln = "11" ;break;
-			case 'Desember' : bln = "12" ;break;
-		}
-
-		var waktu = tgl + "/" + bln + "/"+ thn;
-		return waktu;
-	}
-
-	function format_date3(date){
-		var res = date.split("/");
-	    var bln = res[1];
-		var tgl = res[0];
-	    var thn = res[2];
-
-	    var tanggal = thn + '-' + bln + '-' + tgl;
-	    return tanggal;
 	}
 
 	function submit_filter (filter) {
@@ -2040,8 +2099,8 @@
 				for (var i = 0; i < data.length; i++) {
 					
 					var tgl = format_date(data[i]['tgl_kadaluarsa']);
-					var tambah = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-							'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
+					var tambah = '<center><a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+							'<a href="#edInvenGdg" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a></center>'+
 							'<input type="hidden" class="merk_id_inventori" value="'+data[i]['merk_id']+'">'+
 							'<input type="hidden" class="jenis_id_inventori" value="'+data[i]['jenis_obat_id']+'">'+
 							'<input type="hidden" class="satuan_id_inventori" value="'+data[i]['satuan_id']+'">'+
@@ -2062,6 +2121,12 @@
 						tambah
 					]).draw();
 				}
+
+				t.on( 'order.dt search.dt', function () {
+			        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+			            cell.innerHTML = i+1;
+			        } );
+			    } ).draw();
 			
 
 			},

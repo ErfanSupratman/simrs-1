@@ -40,18 +40,20 @@
 				   			</div>
 				   			<div class="modal-body" >
 			       				<div class="form-group">
-									<div class="form-group">	
-										<div class="col-md-6">
-											<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Cari Merk"/>
-										</div>
-										<div class="col-md-2">
-											<button type="button" class="btn btn-info">Cari</button>
-										</div>
-										<br><br>	
-									</div>		
+			       						<form method="post" id="lookmerk">
+											<div class="form-group">	
+												<div class="col-md-6">
+													<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Cari Merk"/>
+												</div>
+												<div class="col-md-2">
+													<button type="submit" class="btn btn-info">Cari</button>
+												</div>
+												<br><br>	
+											</div>		
+										</form>
 										<div style="margin-left:20px; margin-right:20px;"><hr></div>
 										<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchMerk" style="width:90%;">
+											<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchMerk" style="width:98%;">
 												<thead>
 													<tr class="warning">
 														<td>Nama Merk</td>
@@ -97,7 +99,7 @@
 						</div>
 						<label class="control-label col-md-2" >Harga Dasar </label>
 						<div class="col-md-2">
-							<input type="text" class="form-control numberrequired" id="hgDasarObat" name="hgDasarObat" placeholder="Harga Dasar" required/>
+							<input type="number" class="form-control numberrequired" id="hgDasarObat" name="hgDasarObat" placeholder="Harga Dasar" required/>
 						</div>
 					</div>
 
@@ -116,7 +118,7 @@
 						<div class="col-md-2"></div>
 						<label class="control-label col-md-2" >HPS </label>
 						<div class="col-md-2">
-							<input type="text" class="form-control numberrequired" id="hps" name="hps" placeholder="HPS" required />
+							<input type="number" class="form-control numberrequired" id="hps" name="hps" placeholder="HPS" required />
 						</div>
 					</div>
 
@@ -137,7 +139,7 @@
 						<label class="control-label col-md-2" >Margin </label>
 						<div class="col-md-2">
 							<div class="input-group" style="float:left;">
-								<input type="text" class="form-control numberrequired" maxlength="3" id="marginobat" name="marginobat" placeholder="margin" required/>
+								<input type="number" class="form-control numberrequired" maxlength="3" id="marginobat" name="marginobat" placeholder="margin" required/>
 								<span class="input-group-addon" id="basic-addon1">%</span>
 							</div>
 						</div>
@@ -146,7 +148,7 @@
 					<div class="form-group">
 	            		<label class="control-label col-md-2" >Merek </label>
 						<div class="col-md-2">	         		
-							<input type="text" class="form-control" id="selected_nama_merk" name="selected_nama_merk" placeholder="Merek" data-toggle="modal" data-target="#nmMerk" readonly="" />
+							<input type="text" class="form-control" id="selected_nama_merk" name="selected_nama_merk" placeholder="Merek" data-toggle="modal" data-target="#nmMerk" readonly="" style="cursor:pointer" />
 							<input type="hidden" id="selected_merk_id">
 						</div>
 						<div class="col-md-2">
@@ -160,7 +162,7 @@
 					<div class="form-group">
 	            		<label class="control-label col-md-2" >Stok Min </label>
 						<div class="col-md-2">	         		
-							<input type="text" class="form-control numberrequired" id="stokMin" name="stokMin" placeholder="Stok Minimal" required/>
+							<input type="number" class="form-control numberrequired" id="stokMin" name="stokMin" placeholder="Stok Minimal" required/>
 						</div>
 						<div class="col-md-2">
 						</div>
@@ -195,7 +197,7 @@
 					</div>
 
 					<div class="form-group" style="margin-top:50px;">
-						<div class="col-md-8"></div>
+						<div class="col-md-8"><a class="btn btn-danger" id="btnimport" style="margin-left:35px;" data-toggle="modal" data-target="#importmasal">import</a></div>
 						<div class="col-md-1">
 							<button class="btn btn-danger" id="btnBatalObat" style="margin-left:35px;">BATAL</button>
 						</div>
@@ -215,9 +217,9 @@
 						<div class="col-md-2" style="margin-left:-130px">	         		
 							<input type="text" class="form-control" id="nmObatBwh" name="nmObatBwh" placeholder="Nama Obat"/>
 						</div>
-						<div class="col-md-2" style="margin-left:-15px">
-							<select class="form-control select" name="selectSatObatBwh" id="selectSatObatBwh" style="width:100px">
-									<option value="">Pilih Satuan</option>';
+						<div class="col-md-2" style="margin-left:-15px;margin-right:10px;" >
+							<select class="form-control select" name="selectSatObatBwh" id="selectSatObatBwh">
+									<option value="" selected="">Semua Satuan</option>';
 									<?php if (!empty($satuan_obat)) {
 			         					foreach ($satuan_obat as $value) {
 			         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
@@ -225,9 +227,9 @@
 			         				} ?>
 							</select>
 						</div>
-						<div class="col-md-2" style="margin-left:-100px">
+						<div class="col-md-2" style="margin-left:-10px">
 							<select class="form-control select" name="selectGenObatBwh" id="selectGenObatBwh">
-								<option value="" selected>Pilih</option>
+								<option value="" selected>generik/non-generik</option>
 								<option value="generik">Generik</option>
 								<option value="non-generik">Non Generik</option>
 							</select>
@@ -267,11 +269,7 @@
 									</tr>
 								</thead>
 								<tbody id="t_body_obat">
-									<?php  
-										/*echo '<tr>'.
-												'<td style="text-align:center" colspan="14">Filter Obat</td>'.
-											'</tr>';*/
-									?>
+									
 								</tbody>
 							</table>
 						</div>
@@ -308,7 +306,7 @@
 											</tr>
 										</thead>
 										<tbody id="t_body_cari_obat">
-											
+											<tr><td colspan="2" style="text-align:center">Cari obat</td></tr>
 										</tbody>
 									</table>												
 								</div>
@@ -340,10 +338,11 @@
 										</div>
 										<br>	
 									</div>
-								</form>		
+								</form>	
+								<br>	
 								<div style="margin-left:20px; margin-right:20px;"><hr></div>
 								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPenyedia" style="width:90%;">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPenyedia" style="width:98%;">
 										<thead>
 											<tr class="warning">
 												<td>Nama Penyedia</td>
@@ -446,7 +445,7 @@
 						<label class="control-label col-md-2" >Jumlah
 						</label>
 						<div class="col-md-2" >
-		         		<input type="text" class="form-control" id="jmlDetObat" placeholder="Jumlah"  />	
+		         		<input type="number" class="form-control" id="jmlDetObat" placeholder="Jumlah"  />	
 						</div>
 					</div>
 
@@ -468,7 +467,7 @@
 					</div>
 
 					<div class="form-group" style="margin-top:30px;">
-						<div class="col-md-8"></div>
+						<div class="col-md-8"><button class="btn btn-danger" data-toggle="modal" data-target="#importmasaldetail" type="button" style="margin-left:35px;">IMPORT</button></div>
 						<div class="col-md-1">
 							<button class="btn btn-danger" id="btnBatalDetObat" style="margin-left:35px;">BATAL</button>
 						</div>
@@ -540,7 +539,7 @@
 						
 							<div class="col-md-1">
 								<select class="form-control select" name="filterSat" id="filterSat" style="margin-left:-15px;width:120px">
-									<option value="" selected="selected">Pilih</option>;
+									<option value="" selected="selected">Satuan</option>;
 									<?php if (!empty($satuan_obat)) {
 			         					foreach ($satuan_obat as $value) {
 			         						echo '<option value="'.$value['satuan_id'].'">'.$value['satuan'].'</option>';	
@@ -550,7 +549,7 @@
 							</div>
 							<div class="col-md-1" >
 								<select class="form-control select" name="filterGen" id="filterGen" style="margin-left:13px; width:150px">
-									<option value="" selected="selected">Pilih</option>;
+									<option value="" selected="selected">Generik/non</option>;
 									<option value="1">Generik</option>
 									<option value="0">Non Generik</option>					
 								</select>
@@ -617,7 +616,7 @@
 						        			<div class="form-group">
 						        					<label class="control-label col-md-3" >Tanggal </label>
 													<div class="col-md-6" >
-									         			<input type="text" id="tglInOut" style="cursor:pointer;" class="form-control calder" data-provide="datepicker" data-date-format="dd/mm/yyyy" readonly="" value="<?php echo date('d/m/Y'); ?>">
+									         			<input type="text" id="tglInOut" style="cursor:pointer;" class="form-control calder" data-provide="datetimepicker" data-date-format="dd/mm/yyyy H:i:s" readonly="" value="<?php echo date('d/m/Y H:i:s'); ?>">
 													</div>
 													
 											</div>
@@ -680,12 +679,6 @@
 												</tr>
 											</thead>
 											<tbody id="tbodydetailobatinventori">
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr>
 													
 											</tbody>
 										</table>
@@ -795,8 +788,7 @@
 
             <div class="informasi" id="infoRiwaAda">
 				<form class="form-horizontal" role="form">
-        			
-					<div class="form-group">			
+					<!-- <div class="form-group">			
 						<label class="control-label col-md-2"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by</label>
 	       				<div class="col-md-3" style="margin-left:-110px">
 							<input type="text" class="form-control" id="nmrAdaanRiwa" name="nmrAdaanRiwa" placeholder="Nomor Adaan Riwayat"/>
@@ -812,13 +804,12 @@
 						<div class="col-md-2" style="margin-left:-10px">
 							<button type="submit" class="btn btn-warning">Filter</button>
 						</div>
-
 					</div>
-					<hr class="garis" style="margin-left:-50px;">
+					<hr class="garis" style="margin-left:-50px;"> -->
 					<br>
 					<div class="portlet-body" style="margin: 0px 10px 0px -50px">
 						<?php echo "<input type='hidden' id='jml_pengadaan' value='".count($riwayat_pengadaan)."'>"; ?>
-						<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatpengadaan">
+						<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tabelriwayatpengadaan">
 							<thead>
 								<tr class="info" >
 									<th  style="text-align:left" width="5%"> Nomor </th>
@@ -855,9 +846,9 @@
 								?>
 							</tbody>
 						</table>
-						<div class="modal fade" id="detailpengadaan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-600px">
-							<div class="modal-dialog">
-								<div class="modal-content" style="width:1200px">
+						<div class="modal fade" id="detailpengadaan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog" style="width:1200px">
+								<div class="modal-content">
 									<div class="modal-header">
 					    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 					    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Perencanaan Pengadaan </h3>
@@ -934,8 +925,8 @@
 
 <!-- modals here -->
 		<div class="modal fade" id="modalAdaan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
+			<div class="modal-dialog" style="width: 800px">
+				<div class="modal-content" >
 					<div class="modal-header">
         				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
         				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
@@ -943,18 +934,20 @@
         			<div class="modal-body">
 
 	        			<div class="form-group">
-							<div class="form-group">	
-								<div class="col-md-3" style="margin-left:35px;">
-									<input type="text" class="form-control" name="katakunci" id="katakuncipengadaan" placeholder="Nama Obat"/>
+	        				<form method="post" id="caripengadaanobat">
+								<div class="form-group">	
+									<div class="col-md-5" style="margin-left:15x;">
+										<input type="text" class="form-control" name="katakunci" id="katakuncipengadaan" placeholder="Nama Obat"/>
+									</div>
+									<div class="col-md-2">
+										<button type="submit" class="btn btn-info">Cari</button>
+									</div>
+									<br><br>	
 								</div>
-								<div class="col-md-2">
-									<button type="button" class="btn btn-info">Cari</button>
-								</div>
-								<br><br>	
-							</div>		
+							</form>		
 							<div style="margin-left:20px; margin-right:20px;"><hr></div>
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;font-size: 98.5%;">
+								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:98%;font-size: 98.5%;">
 									<thead>
 										<tr class="warning">
 											<td>Nama Obat</td>
@@ -1132,14 +1125,14 @@
 							</form>		
 							<div style="margin-left:20px; margin-right:20px;"><hr></div>
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPenyedia" style="width:90%;">
+								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchPenyedia" style="width:98%;">
 									<thead>
 										<tr class="warning">
 											<td>Nama Penyedia</td>
 											<td width="10%">Pilih</td>
 										</tr>
 									</thead>
-									<tbody id="tbody_penyediapenerimaan">
+									<tbody id="tbody_penyediapenerimaan" class="addKosong">
 										
 									</tbody>
 								</table>												
@@ -1239,8 +1232,15 @@
 										
 								</tbody>
 							</table>
-
 							<div class="form-group">
+								<div class="col-md-2 pull-right">
+									<label class="control-label pull-right" style="font-size:1.8em;margin-top:-10px;"><span id="subtotalterima">0</span></label>
+								</div>
+								<div class="col-md-4 pull-right" style="width:150px; margin-top:5px;margin-right:90px; text-align:right;">
+									Sub Total(Rp.) : 
+								</div>
+							</div>
+							<!-- <div class="form-group">
 								<div class="col-md-2 pull-right">
 									<label class="control-label pull-right" style="font-size:1.8em;margin-top:-10px;"><span id="subtotalterima">0</span></label>
 								</div>
@@ -1248,9 +1248,32 @@
 								<div class="col-md-3 pull-right" style="width:170px; margin-top:5px;">
 									Sub Total(Rp.) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
 								</div>
-							</div>
+							</div> -->
 
 							<div class="form-group">
+								<div class="col-md-2 pull-right" style="width:140px;">
+									<input type="number" class="form-control" id="potongan" name="potongan" value="0" />
+								</div>
+								<div class="col-md-2 pull-right" style="width:100px;">
+						 			<select class="form-control select" name="jenispotongan" id="selectpotongan" >
+										<option value="persen" selected>%</option>
+										<option value="nomilal">Rp. </option>
+									</select>
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
+									Potongan : 
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-md-1 pull-right" style="font-size:18pt; width:140px;"><span id="hasilppn">0</span></label>
+								<div class="col-md-2 pull-right" style="width:100px;">
+									<input type="number" class="form-control" id="ppn" maxlength="3" name="ppn" value="0" />
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
+									PPN (%) : 
+								</div>
+							</div>
+							<!-- <div class="form-group">
 								<div class="col-md-3 pull-right" style="width:120px;margin-left:-20px;">
 									<div class="input-group" style="float:left;">	
 										<input type="text" class="form-control numberrequired" maxlength="3" id="ppn" name="ppn" placeholder="0"/>
@@ -1270,9 +1293,16 @@
 								<div class="col-md-3 pull-right" style="width:180px; margin-top:5px;">
 									Potongan / PPN &nbsp;&nbsp; : 
 								</div>
-							</div>
-
+							</div> -->
 							<div class="form-group">
+								<div class="col-md-2 pull-right" style="width:240px;">
+									<label class="control-label pull-right" style="font-size:2em;color:red;"><span id="grandtotal">0</span></label>
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:15px; text-align:right;">
+									Grand Total : 
+								</div>
+							</div>
+							<!-- <div class="form-group">
 								<div class="col-md-2 pull-right">
 									<label class="control-label pull-right" style="font-size:1.8em;color:red;margin-top:-10px;"><span id="grandtotal">0</span></label>
 								</div>
@@ -1280,7 +1310,7 @@
 								<div class="col-md-3 pull-right" style="width:170px; margin-top:5px;">
 									Grand Total (Rp.) &nbsp;: 
 								</div>
-							</div>
+							</div> -->
 
 
 							<div class="form-group">
@@ -1303,7 +1333,7 @@
             <div id="infoRiwTerimaObat">
 
 	            <form class="form-horizontal" role="form">
-	            	<div class="form-group informasi">
+	            	<!-- <div class="form-group informasi">
 						<label class="control-label col-md-2" style="margin-left:70px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter By :</label>
 						<div class="col-md-2" >
 							<div class="input-icon">
@@ -1322,9 +1352,9 @@
 						<div class="col-md-2" style="margin-left:-10px">
 							<button type="submit" class="btn btn-warning">Filter</button>
 						</div>
-					</div>
+					</div> 
 
-					<hr class="garis" style="margin-left:10px;">
+					<hr class="garis" style="margin-left:10px;">-->
 
 					<!-- <div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
@@ -1340,7 +1370,7 @@
 					<br>
 
 					<div class="portlet-body" style="margin: 20px 10px 0px 15px">
-							<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tblriwayatterima">
+							<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tblriwayatterima">
 								<thead>
 									<tr class="info" >
 										<th style="text-align:center; width:30px;">No.</th>
@@ -1384,7 +1414,7 @@
         </div>
 
         <div class="modal fade" id="modalTerima" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
+			<div class="modal-dialog" style="width: 900px;">
 				<div class="modal-content">
 					<div class="modal-header">
         				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
@@ -1404,7 +1434,7 @@
 							</div>		
 							<div style="margin-left:20px; margin-right:20px;"><hr></div>
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
+								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:98%;">
 									<thead>
 										<tr class="warning">
 											<td>Nama Obat</td>
@@ -1489,13 +1519,13 @@
 						</table>
 					</div>
 
-					<div class="modal fade" id="cek" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-400px">
+					<div class="modal fade" id="cek" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<form role="form" class="form-horizontal" method="post" id="formdetailpermintaan">
-							<div class="modal-dialog" >
-								<div class="modal-content" style="width:1000px;">
+							<div class="modal-dialog"  style="width:1000px;">
+								<div class="modal-content">
 									<div class="modal-header">
 				        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-				        				<h3 class="modal-title" id="myModalLabel">SHABU-SHABU</h3>
+				        				<h3 class="modal-title" id="myModalLabel">Detail Permintaan</h3>
 				        			</div>
 				        			<div class="modal-body">
 					        			<div class="form-group">
@@ -1579,7 +1609,8 @@
 						<br>
 						<div class="tabelinformasi">	
 							<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
+							<input type="hidden" id="jlhpersetujuan" value="<?php echo count($riwayat_persetujuan) ?>">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelutamariwayatpersetujuan">
 									<thead>
 										<tr class="info" >
 											<th  style="text-align:center; width:30px;"> No.</th>
@@ -1621,9 +1652,9 @@
 						</div>
 					</div>
 
-					<div class="modal fade" id="riwpersetujuanper" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-200px">
-						<div class="modal-dialog">
-							<div class="modal-content" style="width:800px">
+					<div class="modal fade" id="riwpersetujuanper" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog" style="width:900px">
+							<div class="modal-content">
 								<div class="modal-header">
 				    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 				    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Persetujuan Permintaan </h3>
@@ -1667,24 +1698,14 @@
 												<th>Nama Obat</th>
 												<th >Satuan</th>
 												<th>Merek</th>
-												<th>Stok Unit</th>
 												<th>Stok Gudang</th>
 												<th>Diminta</th>
 												<th>Diberikan</th>
 												<th>Harga Jual</th>
 											</tr>
 										</thead>
-										<tbody id="t_body_detailriwayatpermintaan">
-											<tr>
-												<td>Obat 1</td>
-												<td style="text-align:left">Kilogram</td>
-												<td style="text-align:left">Yamaha</td>
-												<td style="text-align:right">20</td>
-												<td style="text-align:right">10</td>
-												<td style="text-align:right">30</td>
-												<td style="text-align:right">6</td>
-												<td style="text-align:right">30000</td>
-											</tr>
+										<tbody id="t_body_detailriwayatminta">
+											
 										</tbody>
 									</table>
 								</div>
@@ -1757,8 +1778,8 @@
 					</div>
 					<div class="modal fade" id="returObatDis" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:100%">
 						<form class="form-horizontal" role="form" method="post" id="formterimaretur">
-							<div class="modal-dialog">
-								<div class="modal-content" style="width:120%">
+							<div class="modal-dialog"  style="width:900px">
+								<div class="modal-content">
 									<div class="modal-header">
 				        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 				        				<h3 class="modal-title" id="myModalLabel">Retur Obat dari Departemen <span id="detnamadept"></span></h3>
@@ -1766,7 +1787,7 @@
 				        			<div class="modal-body">
 					        			<div class="form-group">
 											<div style="margin-left:20px; margin-right:20px;"><hr></div>
-											<div class="portlet-body" style="margin: 0px 50px 0px 0px">
+											<div class="portlet-body" style="margin: 0px 30px 0px 15px">
 												<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelaryacopasckckck" style="width:100%;">
 													<thead>
 														<tr class="warning">
@@ -1811,7 +1832,7 @@
             <br>
             <div id="infoRiwRetDepartemen">
 	            <form class="form-horizontal" role="form">
-		        	<div class="form-group informasi">
+		        	<!-- <div class="form-group informasi">
 						<label class="control-label col-md-2" style="margin-left:70px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter By : 
 						</label>
 						<div class="col-md-2">
@@ -1830,7 +1851,7 @@
 						</div>
 					</div>
 
-					<hr class="garis" style="margin-left:15x;">
+					<hr class="garis" style="margin-left:15x;"> -->
 					<!-- 
 					<div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
@@ -1850,7 +1871,7 @@
 						<div class="tabelinformasi">
 		            		<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							
-								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatreturdept">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tabelriwayatreturdept">
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center;width:20px;">No.</th>
@@ -1892,9 +1913,9 @@
 	            </form>
 	            <br>
             </div>
-            <div class="modal fade" id="riwretdept" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-200px">
-				<div class="modal-dialog">
-					<div class="modal-content" style="width:800px">
+            <div class="modal fade" id="riwretdept" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" style="width:800px">
+					<div class="modal-content">
 						<div class="modal-header">
 		    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
 		    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Retur dari Departemen </h3>
@@ -1968,7 +1989,7 @@
 						<div class="col-md-2" >
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" data-date-autoclose="true" class="form-control calder" disabled="" data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" data-date-autoclose="true" class="form-control calder" readonly="" data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" style="cursor:pointer">
 							</div>
 						</div>
 	            		<div class="col-md-2"></div>
@@ -2028,7 +2049,7 @@
             </div>
             <br>
 			<div class="modal fade" id="modalRetDis" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
+				<div class="modal-dialog" style="width:800px;">
 					<div class="modal-content">
 						<div class="modal-header">
 	        				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
@@ -2050,7 +2071,7 @@
 								</form>
 								<div style="margin-left:20px; margin-right:20px;"><hr></div>
 								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%; font-size: 98%;">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:98%; font-size: 98%;">
 										<thead>
 											<tr class="warning">
 												<td>Nama Obat</td>
@@ -2099,7 +2120,7 @@
 								</form>
 								<div style="margin-left:20px; margin-right:20px;"><hr></div>
 								<div class="portlet-body" style="margin: 0px 10px 0px 10px">
-									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%; font-size:98%;">
+									<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:98%; font-size:98%;">
 										<thead>
 											<tr class="info">
 												<td>Nama Penyedia</td>
@@ -2128,7 +2149,7 @@
             <br>
             <div id="infoRiwRetDistributor">
 	            <form class="form-horizontal" role="form">
-		        	<div class="form-group informasi">
+		        	<!-- <div class="form-group informasi">
 						<label class="control-label col-md-2" style="margin-left:70px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter By : 
 						</label>
 						<div class="col-md-2">
@@ -2147,7 +2168,7 @@
 						</div>
 					</div>
 
-					<hr class="garis" style="margin-left:15x;">
+					<hr class="garis" style="margin-left:15x;"> -->
 					
 					<!-- <div class="pull-right" style="margin-right:40px;">
 						<ul class="pagination">
@@ -2167,12 +2188,11 @@
 						<div class="tabelinformasi">
 		            		<div class="portlet-body" style="margin: 0px 10px 0px 10px">
 							
-								<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama" id="tabelriwayatreturdistributor">
+								<table class="table table-striped table-bordered table-hover table-responsive tableDT" id="tabelriwayatreturdistributor">
 									<thead>
 										<tr class="info" >
 											<th style="text-align:center; width:20px;">No. </th>
 											<th  style="text-align:left"> No. Retur </th>
-											<th  style="text-align:left"> Nama Obat </th>
 											<th  style="text-align:left"> Distributor </th>
 											<th  style="text-align:left"> Petugas Input </th>
 											<th  style="text-align:left"> Waktu Retur </th>
@@ -2190,7 +2210,6 @@
 														echo '<tr>'.
 															'<td style="text-align:center">'.($i++).'</td>'.
 															'<td>'.$value['no_retur'].'</td>'.
-															'<td>'.$value['nama'].'</td>'.
 															'<td>'.$value['nama_penyedia'].'</td>'.
 															'<td>'.$value['nama_petugas'].'</td>'.
 															'<td>'.$tgl->format('d F Y H:i:s').'</td>'.
@@ -2213,12 +2232,12 @@
 	            </form>
 	            <br>
             </div>
-            <div class="modal fade" id="riwretdist" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-left:-200px">
-				<div class="modal-dialog">
-					<div class="modal-content" style="width:800px">
+            <div class="modal fade" id="riwretdist" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" style="width:800px">
+					<div class="modal-content" >
 						<div class="modal-header">
 		    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-		    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Retur dari Distributor </h3>
+		    				<h3 class="modal-title" id="myModalLabel">Detail Riwayat Retur ke Distributor </h3>
 		    			</div>
 		    			<div class="modal-body">
 							<div class="row">
@@ -2332,7 +2351,7 @@
             			<div class="col-md-2">
 							<div class="input-icon">
 								<i class="fa fa-calendar"></i>
-								<input type="text" style="cursor:pointer;" id="tanggalacuan" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>">
+								<input type="text" style="cursor:pointer;" id="tanggalacuan" data-date-autoclose="true" class="form-control calder" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" value="<?php echo date("d/m/Y");?>">
 							</div>
 						</div>
             		</div>
@@ -2388,11 +2407,12 @@
 												'<td>'.($value['stok_fisik'] - $value['total_stok']).'</td>'.
 												'<td>'.(($value['stok_fisik'] - $value['total_stok']) * $value['harga_jual']).'</td>'.
 												'<td style="text-align: center">
-													<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>
-													<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>
-													<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>
+													<a href="#" class="edIventoriBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>
+													<a href="#" class="edIventori" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>
+													<a href="#" class="editInventoriBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>
 													<input type="hidden" class="obat_dept_id" value="'.$value['obat_process'].'">
 													<input type="hidden" class="obat_opname_id" value="'.$value['obat_opname_id'].'">
+													<input type="hidden" class="obat_fisik_asli" value="'.$value['obat_opname_id'].'">
 												</td>'.
 											'</tr>';	
 												
@@ -2720,19 +2740,143 @@
 	
 	</div>
 
+	<div class="modal fade" id="importmasal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+    			</div>
+    			<div class="modal-body">
+        			<div class="form-group">
+        				<form method="POST" action="<?php echo base_url(); ?>farmasi/homegudangobat/import_masal" enctype="multipart/form-data">
+							<div class="form-body">
+
+								<div class="alert alert-info">
+									Perhatian : <br>
+									1. Halaman ini berguna untuk melakukan stok opname secara massal <br>
+									2. Gunakan template yang sudah disediakan oleh sistem <br>
+									3. Untuk obat-obat yang tidak dilakukan stok opname --> tidak perlu diisi <br>
+									4. Jangan merubah tata letak dalam template yang diisi <br>					
+									5. Stok otomatis tersesuaikan sejak tanggal stok opname yang dipilih <br>
+									6. Isikan jumlah stok yang sebenarnya pada tanggal tersebut <br>
+									7. Proses tidak dapat dibatalkan <br>
+									8. Download template <a href="<?php echo base_url()?>farmasi/homegudangobat/download_template">Disini</a>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="control-label col-md-3">Nama Aktifitas  <span class="required">* </span></label>
+											<div class="col-md-9">
+												<input type="file" name="userfile" 
+													class="form-control"
+													value="Pilih File" required>
+											</div>
+										</div>
+									</div>
+								</div>					
+							</div>
+								<!--/row-->
+								<div class="form-actions">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-offset-3 col-md-9">
+												<button type="submit" class="btn green">Proses Import</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+    			</div>
+    			<div class="modal-footer">
+			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+		      	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="importmasaldetail" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
+    			</div>
+    			<div class="modal-body">
+        			<div class="form-group">
+        				<form method="POST" action="<?php echo base_url(); ?>farmasi/homegudangobat/import_masal_detail" enctype="multipart/form-data">
+							<div class="form-body">
+
+								<div class="alert alert-info">
+									Perhatian : <br>
+									1. Halaman ini berguna untuk melakukan stok opname secara massal <br>
+									2. Gunakan template yang sudah disediakan oleh sistem <br>
+									3. Untuk obat-obat yang tidak dilakukan stok opname --> tidak perlu diisi <br>
+									4. Jangan merubah tata letak dalam template yang diisi <br>					
+									5. Stok otomatis tersesuaikan sejak tanggal stok opname yang dipilih <br>
+									6. Isikan jumlah stok yang sebenarnya pada tanggal tersebut <br>
+									7. Proses tidak dapat dibatalkan <br>
+									8. Download template <a href="<?php echo base_url()?>farmasi/homegudangobat/download_template_detail">Disini</a>
+								</div>
+
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="control-label col-md-3">Nama Aktifitas  <span class="required">* </span></label>
+											<div class="col-md-9">
+												<input type="file" name="userfile" 
+													class="form-control"
+													value="Pilih File" required>
+											</div>
+										</div>
+									</div>
+								</div>					
+							</div>
+								<!--/row-->
+								<div class="form-actions">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="row">
+											<div class="col-md-offset-3 col-md-9">
+												<button type="submit" class="btn green">Proses Import</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+    			</div>
+    			<div class="modal-footer">
+			       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+		      	</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 
 <script type="text/javascript">
 	//Perencanaan Pengadaan Here
-	$('#katakuncipengadaan').keyup(function(event){
-			var p_item = $('#katakuncipengadaan').val();
+		$('#caripengadaanobat').submit(function(event){
+			var item = {};
+			item['p_item'] = $('#katakuncipengadaan').val();
 			
 			event.preventDefault();
 
-			if(p_item!=""){
+			if($('#katakuncipengadaan').val()!=""){
 				$.ajax({
 					type:"POST",
-					url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat/"+p_item,
+					data: item,
+					url:"<?php echo base_url()?>farmasi/homegudangobat/get_obat",
 					success:function(data){
 						//console.log(data);
 						$('#tbody_pengadaan').empty();
@@ -2764,7 +2908,7 @@
 						}
 					},
 					error:function(data){
-
+						console.log(data);
 					}
 				});
 			}else{
@@ -2892,8 +3036,8 @@
 					var jml = $('#jml_pengadaan').val();
 					var no = parseInt(jml)+1;
 					var t = $('#tabelriwayatpengadaan').DataTable();
-					var last = '<a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'+
-								'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a>'+
+					var last = '<center><a href="#" class="view_detail_adaan" data-toggle="modal" data-target="#detailpengadaan">'+
+								'<i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Detail"></i></a></center>'+
 								'<input type="hidden" class="pengadaan_id" value="'+data['hasil']['pengadaan_id']+'">'
 					t.row.add([
 						no,
@@ -2974,8 +3118,8 @@
 
 	//Stock Opname Here
 	$(document).ready(function(){
-		$("a.editInvenBut").hide();
-		$('a.edIvenBatal').hide();
+		$("a.editInventoriBut").hide();
+		$('a.edIventoriBatal').hide();
 
 		$('#submit_filter_opname').submit(function(event){
 			var item = {};
@@ -3002,9 +3146,9 @@
 							}
 							var tglopname = format_date(data[i]["tgl_opname"]);
 							var tglKadaluarsa = format_date(data[i]["tgl_kadaluarsa"]);
-							var last = '<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
-									'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
-									'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
+							var last = '<center><a href="#" class="edIventoriBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+									'<a href="#" class="edIventori" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
+									'<a href="#" class="editInventoriBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a></center>'+
 									'<input type="hidden" class="obat_dept_id" value="'+data[i]['obat_process']+'">'+
 									'<input type="hidden" class="obat_opname_id" value="'+data[i]['obat_opname_id']+'">';
 							var a = '<span class="stokfisikopname">'+data[i]['stok_fisik']+'</span>'
@@ -3022,8 +3166,13 @@
 								last
 							]).draw();
 						}
-						$("a.editInvenBut").hide();
-						$('a.edIvenBatal').hide();
+						t.on( 'order.dt search.dt', function () {
+					        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+					            cell.innerHTML = i+1;
+					        } );
+					    } ).draw();
+						$("a.editInventoriBut").hide();
+						$('a.edIventoriBatal').hide();
 					
 				}
 			});
@@ -3052,9 +3201,9 @@
 					}
 					var tglopname = format_date(data[i]["tgl_opname"]);
 					var tglKadaluarsa = format_date(data[i]["tgl_kadaluarsa"]);
-					var last = '<a href="#" class="edIvenBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
-							'<a href="#" class="edIven" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
-							'<a href="#" class="editInvenBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a>'+
+					var last = '<center><a href="#" class="edIventoriBatal" id="status"><i class="glyphicon glyphicon-floppy-remove" data-toggle="tooltip" data-placement="top" title="Batal"></i></a>'+
+							'<a href="#" class="edIventori" id="status"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Ubah"></i></a>'+
+							'<a href="#" class="editInventoriBut"><i class="glyphicon glyphicon-floppy-save" data-toggle="tooltip" data-placement="top" title="Simpan"></i></a></center>'+
 							'<input type="hidden" class="obat_dept_id" value="'+data[i]['obat_process']+'">'+
 							'<input type="hidden" class="obat_opname_id" value="'+data[i]['obat_opname_id']+'">';
 					var a = '<span class="stokfisikopname">'+data[i]['stok_fisik']+'</span>'
@@ -3072,8 +3221,8 @@
 						last
 					]).draw();
 				}
-				$("a.editInvenBut").hide();
-				$('a.edIvenBatal').hide();
+				$("a.editInventoriBut").hide();
+				$('a.edIventoriBatal').hide();
 					
 			}
 		});
@@ -3124,71 +3273,6 @@
 		);
 	}
 
-	function format_date (date) {
-		var sp = date.split('-');
-		var tgl = sp[2];
-		var thn = sp[0];
-		var temp = sp[1];
-		var bln = "";
-		switch(temp){
-			case '01' : bln = "Januari" ;break;
-			case '02' : bln = "Februari" ;break;
-			case '03' : bln = "Maret" ;break;
-			case '04' : bln = "April" ;break;
-			case '05' : bln = "Mei" ;break;
-			case '06' : bln = "Juni" ;break;
-			case '07' : bln = "Juli" ;break;
-			case '08' : bln = "Agustus" ;break;
-			case '09' : bln = "September" ;break;
-			case '10' : bln = "Oktober" ;break;
-			case '11' : bln = "November" ;break;
-			case '12' : bln = "Desember" ;break;
-		}
-
-		var waktu = "";
-		if(tgl.length > 2){
-			var a = tgl.split(' ');
-			waktu = a[0] + " " + bln + " "+ thn + " " + a[1];
-		}else{
-			waktu = tgl + " " + bln + " "+ thn;
-		}
-		return waktu;
-	}
-
-	function format_date2 (date) {
-		var sp = date.split(' ');
-		var tgl = sp[0];
-		var thn = sp[2];
-		var temp = sp[1];
-		var bln = "";
-		switch(temp){
-			case 'Januari' : bln = "01" ;break;
-			case 'Februari' : bln = "02" ;break;
-			case 'Maret' : bln = "03" ;break;
-			case 'April' : bln = "04" ;break;
-			case 'Mei' : bln = "05" ;break;
-			case 'Juni' : bln = "06" ;break;
-			case 'Juli' : bln = "07" ;break;
-			case 'Agustus' : bln = "08" ;break;
-			case 'September' : bln = "09" ;break;
-			case 'Oktober' : bln = "10" ;break;
-			case 'November' : bln = "11" ;break;
-			case 'Desember' : bln = "12" ;break;
-		}
-
-		var waktu = tgl + "/" + bln + "/"+ thn;
-		return waktu;
-	}
-
-	function format_date3(date){
-		var res = date.split("/");
-	    var bln = res[1];
-		var tgl = res[0];
-	    var thn = res[2];
-
-	    var tanggal = thn + '-' + bln + '-' + tgl;
-	    return tanggal;
-	}
 </script>
 
 											

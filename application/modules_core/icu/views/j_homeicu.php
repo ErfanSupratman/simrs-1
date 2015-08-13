@@ -1,8 +1,9 @@
 <script type="text/javascript">
-	$(document).ready(function () {
+	$(document).ready(function (argument) {
 		$('#search_submit').submit(function(e){
 			var data = {};
-			data['search'] = $('#search_value').val();
+			data['search'] = $('#search_bersalin').val();
+			var admisi = 'Admisi';
 
 			e.preventDefault();
 			$.ajax({
@@ -11,7 +12,7 @@
 				url:'<?php echo base_url(); ?>icu/homeicu/search_pasien',
 				success:function(data){
 					console.log(data);
-					var t = $('.tableDTUtama').DataTable();
+					var t = $('#tabelutamapasienunit').DataTable();
 
 					t.clear().draw();
 
@@ -21,25 +22,35 @@
 							jk = data[i]['jenis_kelamin'],
 							tgl = data[i]['tanggal_lahir'],
 							alamat = data[i]['alamat_skr'];
-							identitas = data[i]['jenis_id'];
-						var last = '<a href="<?php echo base_url() ?>icu/icudetail/daftar/'+data[i]['ri_id']+'/'+data[i]['visit_id']+'" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>';
+						var last = '<center><a href="#" class="pindahpasien" data-toggle="modal" data-target="#pindahkan"><i class="fa fa-external-link" data-toggle="tooltip" data-placement="top" title="Pindah"></i></a>'+
+									'<a href="<?php echo base_url() ?>icu/icudetail/daftar/'+data[i]['ri_id']+'/'+data[i]['visit_id']+'" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a></center>'+
+									'<input type="hidden" class="ri_id" value="'+data[i]['ri_id']+'"><input type="hidden" class="v_id" value="'+data[i]['visit_id']+'">'+
+									'<input type="hidden" class="b_id" value="'+data[i]['bed_id']+'">';
 						t.row.add([
 							i+1,
 							rm,
 							nama,
 							jk,
-							tgl,
+							format_date(tgl),
 							alamat,
-							identitas,
+							admisi,
 							last,
 							i
 						]).draw();
 					}
+					t.on( 'order.dt search.dt', function () {
+				        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+				            cell.innerHTML = i+1;
+				        } );
+				    } ).draw();
+					$('[data-toggle="tooltip"]').tooltip();
+				},
+				error:function (data) {
+					console.log(data);
 				}
 			});
 		});
 
-		/*farmasi*/
 		$('#submitfilterfarmasiunit').submit(function (e) {
 			e.preventDefault();
 			var filter = {};
@@ -69,114 +80,6 @@
 			submit_filter(filter);
 		})
 
-		$('#tbodyinventoriunit').on('click','tr td a.inoutobat', function (e) {
-			e.preventDefault();
-			var obat_dept_id = $(this).closest('tr').find('td .barangobat_dept_id').val();
-			var jlh = $(this).closest('tr').find('td').eq(5).text();
-
-			$('#inout_obat_dept_id').val(obat_dept_id);
-			$('#sisaInOutBer').val(jlh);
-
-			$('#jmlInOutBer').on('change', function (e) {
-				e.preventDefault();
-
-				var is_in = $('#iober').find('option:selected').val();
-				var jmlInOut = $('#jmlInOutBer').val();
-				var sisa = jlh;//$('#sisaInOut').val();
-				var hasil ="";
-				if (is_in == 'IN') {
-					hasil = Number(jmlInOut) + Number(sisa);
-				}else{			
-					hasil = Number(sisa) - Number(jmlInOut);
-				}
-
-				if (jmlInOut == '') {
-					hasil = Number(sisa);
-				}
-				$('#sisaInOutBer').val(hasil);			
-			})
-
-			$('#iober').on('change', function () {
-				var jumlah = Number($('#jmlInOutBer').val());
-				var sisa = Number(jlh);//Number($('#sisaInOut').val());
-
-				var isout = $('#iober').find('option:selected').val();
-				if (isout === 'IN') {
-					$('#sisaInOutBer').val(jumlah + sisa);
-				} else{
-					$('#sisaInOutBer').val(sisa - jumlah);
-				};
-			})
-		})
-
-		$('#submitinoutunit').submit(function (e) {
-			e.preventDefault();
-
-			var item = {};
-			item['obat_dept_id'] = $('#inout_obat_dept_id').val();
-			item['jumlah'] = $('#jmlInOutBer').val();
-			item['sisa'] = $('#sisaInOutBer').val();
-			item['is_out'] = $('#iober').find('option:selected').val();
-			item['tanggal'] = $('#tglInOut').val();
-		    item['keterangan'] = $('#keteranganIO').text();
-		    //console.log(item);return false;
-		    if (item['jumlah'] != "") {
-			    $.ajax({
-			    	type: "POST",
-			    	data: item,
-			    	url: "<?php echo base_url()?>bersalin/homebersalin/input_in_out",
-			    	success: function (data) {
-			    		console.log(data);
-			    		if (data == "true") {
-			    			alert('data berhasil disimpan');
-			    			$('#inout').modal('hide');	
-			    		} else{
-			    			alert('gagal, terdapat kesalahan');
-			    		};
-			    		
-			    	},
-			    	error: function (data) {
-			    		console.log(data);
-			    		alert('gagal');
-			    	}
-			    })
-			} else{
-				alert('isi data dengan benar');
-				$('#jmlInOutBer').focus();
-			};		
-		})
-
-		$("#tbodyinventoriunit").on('click', 'tr td a.printobat', function (e) {
-			var obat_dept_id = $(this).closest('tr').find('td .barangobat_dept_id').val();
-
-			 $.ajax({
-		    	type: "POST",
-		    	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_obat_bydeptid/" + obat_dept_id, //benar
-		    	success: function (data) {
-		    		console.log(data);
-		    		$('#tbodydetailobatinventori').empty();
-		    		for(var i = 0; i < data.length ; i++){
-		    			var a = "";
-		    			var jlh = "";
-		    			if(data[i]['masuk'] == 0) {a = "OUT"} else a = "IN";
-		    			if(data[i]['masuk'] == 0)  {jlh = data[i]['keluar']} else jlh = data[i]['masuk'];
-		    			$('#tbodydetailobatinventori').append(
-							'<tr>'+
-								'<td style="text-align:center">'+format_date(data[i]['tanggal'])+'</td>'+
-								'<td>'+a+'</td>'+
-								'<td>'+jlh+'</td>'+
-								'<td>'+data[i]['total_stok']+'</td>'+
-							'</tr>'
-		    			)
-		    		}
-		    	},
-		    	error: function (data) {
-		    		alert('gagal');
-		    	}
-		    })
-		})
-
-		//permintaan
 		$('#formobatfarmasibersalin').submit(function (e) {
 			e.preventDefault();
 			var item = {};
@@ -184,7 +87,7 @@
 			$.ajax({
 				type: "POST",
 				data: item,
-				url: '<?php echo base_url()?>bersalin/homebersalin/get_obat_gudang',
+				url: '<?php echo base_url()?>icu/homeicu/get_obat_gudang',
 				success: function (data) {
 					//console.log(data);
 					$('#tbodyobatpermintaanfarmasi').empty();
@@ -198,9 +101,10 @@
 									'<td>'+data[i]['nama']+'</td>'+
 									'<td>'+data[i]['satuan']+'</td>'+
 									'<td>'+data[i]['nama_merk']+'</td>'+
-									'<td>'+data[i]['total_stok']+'</td>'+
+									'<td>'+data[i]['stok_gudang']+'</td>'+
 									'<td>'+format_date(data[i]['tgl_kadaluarsa'])+'</td>'+
 									'<td style="text-align:center"><a href="#" class="addNewMintaFar"><i class="glyphicon glyphicon-check"></i></a></td>'+
+									'<td style="display:none">'+data[i]['stok_unit']+'</td>'+
 								'</tr>'
 							)
 						};
@@ -229,7 +133,8 @@
 				'<td>'+format_date(cols[1])+'</td>'+
 				'<td>'+cols[3]+'</td>'+
 				'<td>'+cols[4]+'</td>'+
-				'<td>-</td>'+
+				'<td>'+cols[9]+'</td>'+
+				'<td>'+cols[6]+'</td>'+
 				'<td><input type="number" class="form-control" style="width:90px" placeholder="0"></td>'+
 				'<td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td></tr>'
 			)
@@ -243,7 +148,7 @@
 			item['tanggal_request'] = $('#tglpermintaanfarmasi').val();
 			item['keterangan_request'] = $('#ketObatFarBers').val();
 
-			//jlh = 8, obat_id = 1, obat_detail_id = 0
+			//jlh = 9, obat_id = 1, obat_detail_id = 0
 			var data = [];
 		    $('#addinputMintaFar').find('tr').each(function (rowIndex, r) {
 		        var cols = [];
@@ -267,7 +172,7 @@
 			    $.ajax({
 					type: "POST",
 					data: item,
-					url: '<?php echo base_url()?>icu/homeicu/submit_permintaan_obat',
+					url: '<?php echo base_url()?>icu/homeicu/submit_permintaan_bersalin',
 					success: function (data) {
 						//console.log(data);
 						if (data['error'] == 'n'){
@@ -290,7 +195,7 @@
 			$('#addinputMintaFar').append('<tr><td colspan="6" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
 		})
 
-		//retur farmasi (ke gudang fak)
+		//retur obat (ya ke gudang lah)
 		$('#formsearchobatretur').submit(function (e) {
 			e.preventDefault();
 			var item ={};
@@ -327,7 +232,7 @@
 				}
 			})
 		})
-
+		
 		$('#tbodyreturbersalin').on('click', 'tr td a.addNewReturFar', function (e) {
 			e.preventDefault();
 			var cols = [];
@@ -380,7 +285,7 @@
 			    $.ajax({
 					type: "POST",
 					data: item,
-					url: '<?php echo base_url()?>icu/homeicu/submit_retur_bersalin',
+					url: '<?php echo base_url()?>icu/homeicu/submit_retur_unit',
 					success: function (data) {
 						console.log(data);
 						if (data['error'] == 'n'){
@@ -403,7 +308,115 @@
 			$('#addinputRetFar').append('<tr><td colspan="6" style="text-align:center" class="dataKosong">DATA KOSONG</td></tr>');
 		})
 
-		//logistik
+		$('#tbodyinventoriunit').on('click','tr td a.inoutobat', function (e) {
+			e.preventDefault();
+			var obat_dept_id = $(this).closest('tr').find('td .barangobat_dept_id').val();
+			var jlh = $(this).closest('tr').find('td').eq(5).text();
+
+			$('#inout_obat_dept_id').val(obat_dept_id);
+			$('#sisaInOutBer').val(jlh);
+
+			$('#jmlInOutBer').on('change', function (e) {
+				e.preventDefault();
+
+				var is_in = $('#iober').find('option:selected').val();
+				var jmlInOut = $('#jmlInOutBer').val();
+				var sisa = jlh;//$('#sisaInOut').val();
+				var hasil ="";
+				if (is_in == 'IN') {
+					hasil = Number(jmlInOut) + Number(sisa);
+				}else{			
+					hasil = Number(sisa) - Number(jmlInOut);
+				}
+
+				if (jmlInOut == '') {
+					hasil = Number(sisa);
+				}
+				$('#sisaInOutBer').val(hasil);			
+			})
+
+			$('#iober').on('change', function () {
+				var jumlah = Number($('#jmlInOutBer').val());
+				var sisa = Number(jlh);//Number($('#sisaInOut').val());
+
+				var isout = $('#iober').find('option:selected').val();
+				if (isout === 'IN') {
+					$('#sisaInOutBer').val(jumlah + sisa);
+				} else{
+					$('#sisaInOutBer').val(sisa - jumlah);
+				};
+			})
+		})
+
+		$('#submitinoutunit').submit(function (e) {
+			e.preventDefault();
+
+			var item = {};
+			item['obat_dept_id'] = $('#inout_obat_dept_id').val();
+			item['jumlah'] = $('#jmlInOutBer').val();
+			item['sisa'] = $('#sisaInOutBer').val();
+			item['is_out'] = $('#iober').find('option:selected').val();
+			item['tanggal'] = $('#tglInOut').val();
+		    item['keterangan'] = $('#keteranganIO').text();
+
+		    if (item['jumlah'] != "") {
+			    $.ajax({
+			    	type: "POST",
+			    	data: item,
+			    	url: "<?php echo base_url()?>icu/homeicu/input_in_out",
+			    	success: function (data) {
+
+			    		if (data == "true") {
+			    			alert('data berhasil disimpan');
+			    			$('#inout').modal('hide');	
+			    		} else{
+			    			alert('gagal, terdapat kesalahan');
+			    		};
+			    		
+			    	},
+			    	error: function (data) {
+			    		alert('gagal');
+			    	}
+			    })
+			} else{
+				alert('isi data dengan benar');
+				$('#jmlInOutBer').focus();
+			};		
+		})
+
+		$("#tbodyinventoriunit").on('click', 'tr td a.printobat', function (e) {
+			var obat_dept_id = $(this).closest('tr').find('td .barangobat_dept_id').val();
+
+			 $.ajax({
+		    	type: "POST",
+		    	url: "<?php echo base_url()?>farmasi/homegudangobat/get_detail_obat_bydeptid/" + obat_dept_id, //benar
+		    	success: function (data) {
+		    		console.log(data);
+		    		$('#tbodydetailobatinventori').empty();
+		    		for(var i = 0; i < data.length ; i++){
+		    			var a = "";
+		    			var jlh = "";
+		    			if(data[i]['masuk'] == 0) {a = "OUT"} else a = "IN";
+		    			if(data[i]['masuk'] == 0)  {jlh = data[i]['keluar']} else jlh = data[i]['masuk'];
+		    			$('#tbodydetailobatinventori').append(
+							'<tr>'+
+								'<td style="text-align:center">'+format_date(data[i]['tanggal'])+'</td>'+
+								'<td>'+a+'</td>'+
+								'<td>'+jlh+'</td>'+
+								'<td>'+data[i]['total_stok']+'</td>'+
+							'</tr>'
+		    			)
+		    		}
+		    	},
+		    	error: function (data) {
+		    		alert('gagal');
+		    	}
+		    })
+		})
+		
+		/*farmasi bersalin*/
+
+		/*logistik beralin*/
 		$('#tbodyinventoribarang').on('click', 'tr td a.edBarang', function (e) {
 			e.preventDefault();
 			$('#id_barang_inoutprocess').val($(this).closest('tr').find('td .barang_detail_inout').val());
@@ -502,6 +515,7 @@
 		    	}
 		    })
 		})
+		
 		$('#formmintabarang').submit(function (e) {
 			e.preventDefault();
 			var item ={};
@@ -509,7 +523,7 @@
 			$.ajax({
 				type: "POST",
 				data: item,
-				url: '<?php echo base_url()?>bersalin/homebersalin/get_barang_gudang',
+				url: '<?php echo base_url()?>icu/homeicu/get_barang_gudang',
 				success: function (data) {
 					console.log(data);//return false;
 					$('#tbodybarangpermintaan').empty();
@@ -521,10 +535,11 @@
 									'<td>'+data[i]['satuan']+'</td>'+
 									'<td>'+data[i]['nama_merk']+'</td>'+
 									'<td>'+data[i]['tahun_pengadaan']+'</td>'+
-									'<td>'+data[i]['stok']+'</td>'+
+									'<td>'+data[i]['stok_gudang']+'</td>'+
 									'<td style="text-align:center"><a href="#" class="addnewpermintaanbarang"><i class="glyphicon glyphicon-check"></i></a></td>'+
 									'<td style="display:none">'+data[i]['barang_stok_id']+'</td>'+
 									'<td style="display:none">'+data[i]['barang_id']+'</td>'+
+									'<td style="display:none">'+data[i]['stok_unit']+'</td>'+
 								'</tr>'
 							)
 						};
@@ -551,9 +566,9 @@
 				'<td>'+cols[1]+'</td>'+  //satuan
 				'<td>'+cols[2]+'</td>'+ //merk
 				'<td>'+cols[3]+'</td>'+ //tahun pengadaan
-				'<td>-</td>'+ //stok unit
+				'<td>'+cols[8]+'</td>'+ //stok unit
 				'<td>'+cols[4]+'</td>'+ //stok gudang
-				'<td><input type="text" class="form-control" style="width:90px" placeholder="0"></td>'+ //jumlah minta
+				'<td><input type="number" class="form-control" style="width:90px" placeholder="0"></td>'+ //jumlah minta
 				'<td style="text-align:center"><a href="#" class="removeRow"><i class="glyphicon glyphicon-remove"></i></a></td>'+
 				'<td style="display:none">'+cols[6]+'</td>'+ //barang_stok_id
 				'<td style="display:none">'+cols[7]+'</td></tr>' //barang_id
@@ -574,7 +589,7 @@
 		        $(this).find('td').each(function (colIndex, c) {
 		            cols.push(c.textContent);
 		        });
-		        $(this).find('td input[type=text]').each(function (colIndex, c) {
+		        $(this).find('td input[type=number]').each(function (colIndex, c) {
 		            cols.push(c.value);
 		        });
 		        data.push(cols);
@@ -606,7 +621,14 @@
 				}
 			})
 		})
-		/*akhir farmasi*/
+		/*logistik bersalin*/
+
+		/*pindah pasien*/
+		$('#submitpindahkan').submit(function (e) {
+			e.preventDefault();
+			pindah_pasien('icu/homeicu');
+		})
+		/*akhir pindah pasien*/
 	})
 
 	function submit_filter (filter) {
@@ -620,27 +642,34 @@
 				var t = $('#tabelinventoriunit').DataTable();
 
 				t.clear().draw();
-					
-						for (var i =  0; i < data.length; i++) {
-							var last = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
-										'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
-										'<input type="hidden" class="barangmerk_id" value="'+data[i]['merk_id']+'">'+
-										'<input type="hidden" class="barangjenis_obat_id" value="'+data[i]['jenis_obat_id']+'">'+
-										'<input type="hidden" class="barangsatuan_id" value="'+data[i]['satuan_id']+'">'+
-										'<input type="hidden" class="barangobat_dept_id" value="'+data[i]['obat_dept_id']+'">';
-							var tgl_kadaluarsa = format_date(data[i]['tgl_kadaluarsa']);
-							t.row.add([
-								(Number(++i)),
-								data[i]['nama'],
-								data[i]['no_batch'],
-								data[i]['harga_jual'],
-								data[i]['nama_merk'],
-								data[i]['total_stok'],
-								data[i]['satuan'],								
-								tgl_kadaluarsa,
-								last
-							]).draw();
-						}
+				for (var i =  0; i < data.length; i++) {
+					var last = '<a href="#" class="inoutobat" data-toggle="modal" data-target="#inout"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="top" title="Edit"></i></a>'+
+								'<a href="#edInvenBer" data-toggle="modal" class="printobat"><i class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Riwayat"></i></a>'+
+								'<input type="hidden" class="barangmerk_id" value="'+data[i]['merk_id']+'">'+
+								'<input type="hidden" class="barangjenis_obat_id" value="'+data[i]['jenis_obat_id']+'">'+
+								'<input type="hidden" class="barangsatuan_id" value="'+data[i]['satuan_id']+'">'+
+								'<input type="hidden" class="barangobat_dept_id" value="'+data[i]['obat_dept_id']+'">';
+					var tgl_kadaluarsa = format_date(data[i]['tgl_kadaluarsa']);
+					t.row.add([
+						(Number(i+1)),
+						data[i]['nama'],
+						data[i]['no_batch'],
+						data[i]['harga_jual'],
+						data[i]['nama_merk'],
+						data[i]['total_stok'],
+						data[i]['satuan'],								
+						tgl_kadaluarsa,
+						last
+					]).draw();
+				}
+
+				t.on( 'order.dt search.dt', function () {
+			        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+			            cell.innerHTML = i+1;
+			        } );
+			    } ).draw();
+
+				$('[data-toggle="tooltip"]').tooltip();
 					
 			},
 			error:function (data) {

@@ -11,9 +11,13 @@
 		</li>
 </div>
 
+<input type="hidden" id="dept_id" value="<?php echo $dept_id; ?>">
+
 <div class="navigation" style="margin-left: 10px" >
 	<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
 		<li class="active"><a href="#list" data-toggle="tab">List Pasien Poliklinik</a></li>
+		<li><a href="#tagihan" data-toggle="tab">Tagihan</a></li>
+	    <li><a href="#inacbg" data-toggle="tab">Input INA-CBG's</a></li>
  		<li><a href="#farmasi" data-toggle="tab">Farmasi</a></li>
 		<li><a href="#logistik" data-toggle="tab">Logistik</a></li>
 	    <li><a href="#laporan" data-toggle="tab">Laporan</a></li>
@@ -24,22 +28,23 @@
 	   	<div class="tab-pane active" id="list">
 		   	<form method="POST" id="search_submit">
 		       	<div class="search">
-					<label class="control-label col-md-3">Nama Pasien / Rekam Medis <span class="required" style="color : red">* </span>
+					<label class="control-label col-md-3">
+						<i class="fa fa-search">&nbsp;&nbsp;</i>Nama Pasien / Rekam Medis <span class="required" style="color : red">* </span>
 					</label>
 					<div class="col-md-4">		
-						<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
+						<input type="text" class="form-control" id="searchkey" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
 			        </div>
 			        <button type="submit" class="btn btn-danger">Cari</button>
 				</div>	
 			</form>
 			<br>
 			<hr class="garis"><br>
-			<label class=" col-md-1" style="margin-right:-60px; padding-top:7px;">Filter :</label>
-			<div class="col-md-3" style="margin-right:-20px; margin-top:2px">
+			<label class=" col-md-1" style="margin-right:-60px; padding-top:7px;"><i class="glyphicon glyphicon-filter"></i>&nbsp;Filter by</label>
+			<div class="col-md-3" style="margin-left:30px;">
 				<div class="input-daterange input-group" id="datepicker">
-				    <input type="text" style="cursor:pointer;" class="input-sm form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly placeholder="<?php echo date("d/m/Y");?>" />
+				    <input type="text" style="cursor:pointer;" class="form-control" name="start"  data-date-format="dd/mm/yyyy" data-provide="datepicker" readonly placeholder="<?php echo date("d/m/Y");?>" />
 				    <span class="input-group-addon">to</span>
-				    <input type="text" style="cursor:pointer;" class="input-sm form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" />
+				    <input type="text" style="cursor:pointer;" class="form-control" name="end" readonly data-date-format="dd/mm/yyyy" data-provide="datepicker" placeholder="<?php echo date("d/m/Y");?>" />
 				</div>
 			</div>
 			<br><br>
@@ -49,6 +54,7 @@
 					<table class="table table-striped table-bordered table-hover table-responsive">
 						<thead>
 							<tr class="info">
+								<th> No.</th>
 								<th> Nomor Rekam Medis </th>
 								<th> Nama Lengkap </th>
 								<th> Jenis Kelamin </th>
@@ -59,13 +65,97 @@
 							</tr>
 						</thead>
 						<tbody id="t_body">
-							<tr>
-								<td colspan='7'><center>Cari Data Pasien</center></td>
-							</tr>
+							<?php
+								$i = 0;
+								foreach ($antrian as $data) {
+									$i++;
+									$tgl = strtotime($data['tanggal_lahir']);
+									$hasil = date('d F Y', $tgl); 
+
+									echo '<tr>';
+										echo '<td>'.$i.'</td>';
+							 			echo'<td>'.$data['rm_id'].'</td>';
+							 			echo'<td>'.$data['nama'].'</td>';
+							 			echo'<td>'.$data['jenis_kelamin'].'</td>';
+							 			echo'<td>'.$hasil.'</td>';
+							 			echo'<td>'.$data['alamat_skr'].'</td>';
+							 			echo'<td>'.$data['jenis_id'].'</td>';
+
+							 			echo'<td style="text-align:center">';
+							 				echo'<a href="'.base_url().'rawatjalan/daftarpasien/periksa/'.$data['rj_id'].'/'.$data['visit_id'].'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>';
+										echo'</td>';
+							 		echo'</tr>';
+								}
+							?>
 						</tbody>
 					</table>
 				</div>
 			</div>  
+	    </div>
+
+	    <div class="tab-pane" id="tagihan">   
+			<form class="form-horizontal" method="POST" id="search_tagihan">
+		       	<div class="search">
+					<label class="control-label col-md-3">
+						<i class="fa fa-search">&nbsp;&nbsp;</i>Nama Pasien / Rekam Medis <span class="required" style="color : red">* </span>
+					</label>
+					<div class="col-md-4">		
+						<input type="text" class="form-control" placeholder="Masukkan Nama atau Nomor RM Pasien" autofocus>
+			        </div>
+			        <button type="submit" class="btn btn-danger">Cari</button>&nbsp;&nbsp;&nbsp;
+			        <a href="<?php echo base_url() ?>invoice/tambahinvoice" onClick="setStatus('poliumum')" data-toggle="modal" class="btn btn-warning"> Tambah Invoice Baru</a>
+				</div>	
+			</form>
+			<br>
+			<hr class="garis">
+			<br>
+			<div class="portlet box red">
+				<div class="portlet-body" style="margin: 0px 10px 0px 10px">
+					<table class="table table-striped table-bordered table-hover table-responsive tableDTUtama">
+						<thead>
+							<tr class="info">
+								<th style="text-align:center;width:20px;">No.</th>
+								<th>Unit</th>
+								<th>Nomor Invoice</th>
+								<th>Nomor Visit</th>
+								<th>Nomor RM</th>
+								<th>Nama Pasien</th>
+								<th>Alamat</th>
+								<th>Cara Bayar</th>
+								<th style="text-align:center;width:25px;">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="text-align:center">1</td>
+								<td>Bersalin</td>
+								<td style="text-align:right">1212121</td>
+								<td style="text-align:right">32323</td>	
+								<td style="text-align:right">123123</td>									
+								<td>Selena</td>
+								<td>Rumahnya</td>
+								<td>Ansuransi</td>
+								<td style="text-align:center">
+									<a href="<?php echo base_url() ?>rawatjalan/invoicenonbpjs" ><i class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Tambah Tagihan"></i></a>
+								</td>										
+							</tr>
+							<tr>
+								<td style="text-align:center">2</td>
+								<td>Bersalin</td>
+								<td style="text-align:right">1212121</td>
+								<td style="text-align:right">32323</td>	
+								<td style="text-align:right">123123</td>									
+								<td>Jems</td>
+								<td>Rumahnya</td>
+								<td>BPJS</td>
+								<td style="text-align:center">
+									<a href="<?php echo base_url() ?>rawatjalan/invoicebpjs" ><i class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Tambah Tagihan"></i></a>
+								</td>										
+							</tr>
+						</tbody>
+					</table>
+				</div>			
+			</div>      
 	    </div>
   
 	    <div class="tab-pane" id="farmasi">
@@ -371,16 +461,13 @@
 			$("#tgl_end").attr('disabled', true);
 		}
 
-		$("#search_submit").submit(function(event){
-			var search = $("input:first").val();
-			lastSearch = search;			
-			$("#tgl_start").attr('disabled', false);
-			$("#tgl_end").attr('disabled', false);	
+		$('#searchkey').keyup(function(){
+			var check = $(this).val();
 
-			if(search!=""){
+			if(check == ""){
 				$.ajax({
 					type:'POST',
-					url :'<?php echo base_url()?>rawatjalan/homerawatjalan/search_pasien/'+search,
+					url :'<?php echo base_url()?>rawatjalan/homerawatjalan/get_antrian',
 					success:function(data){
 						// $("#t_body").html(hasil);
 
@@ -389,7 +476,7 @@
 						if(data.length>0){
 							$('#t_body').empty();
 							for(var i = 0; i<data.length;i++){
-								var rm_id = data[i]['rm_id'],
+								var rm_id = data[i]['rj_id'],
 									name = data[i]['nama'],									
 									jk = data[i]['jenis_kelamin'],
 									tgl_lahir = data[i]['tanggal_lahir'],
@@ -417,6 +504,7 @@
 
 								$('#t_body').append(
 									'<tr>'+
+										'<td>'+(i+1)+'</td>'+
 							 			'<td>'+rm_id+'</td>'+
 							 			'<td>'+name+'</td>'+
 							 			'<td>'+jk+'</td>'+
@@ -425,7 +513,7 @@
 							 			'<td>'+id+'</td>'+
 
 							 			'<td style="text-align:center">'+
-							 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'" onclick="visit(&quot;'+rm_id+'&quot; , &quot;'+visit_id+'&quot;)"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+							 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
 										'</td>'+
 							 		'</tr>'
 									);
@@ -436,6 +524,94 @@
 							$('#t_body').append(
 									'<tr>'+
 							 			'<td colspan="7"><center>Data Pasien Tidak Ditemukan</center></td>'+
+							 		'</tr>'
+								);
+						}
+
+					},
+					error:function (data){
+						$('#t_body').empty();
+
+						$('#t_body').append(
+							'<tr>'+
+					 			'<td colspan="7"><center>Error</center></td>'+
+					 		'</tr>'
+						);
+					}
+
+				});
+			}
+		});
+
+		$("#search_submit").submit(function(event){
+			var search = $("input:first").val();
+			lastSearch = search;
+			var data = {};
+			data['search'] = search;
+			$("#tgl_start").attr('disabled', false);
+			$("#tgl_end").attr('disabled', false);	
+
+			if(search!=""){
+				$.ajax({
+					type:'POST',
+					data:data,
+					url :'<?php echo base_url()?>rawatjalan/homerawatjalan/search_pasien',
+					success:function(data){
+						// $("#t_body").html(hasil);
+
+						console.log(data);
+						
+						if(data.length>0){
+							$('#t_body').empty();
+							for(var i = 0; i<data.length;i++){
+								var rm_id = data[i]['rj_id'],
+									name = data[i]['nama'],									
+									jk = data[i]['jenis_kelamin'],
+									tgl_lahir = data[i]['tanggal_lahir'],
+									alamat = data[i]['alamat_skr'],
+									id = data[i]['jenis_id'],
+									visit_id = data[i]['visit_id'];;
+
+								var remove = tgl_lahir.split("-");
+								var bulan;
+								switch(remove[1]){
+									case "01": bulan="Januari";break;
+									case "02": bulan="Februari";break;
+									case "03": bulan="Maret";break;
+									case "04": bulan="April";break;
+									case "05": bulan="Mei";break;
+									case "06": bulan="Juni";break;
+									case "07": bulan="Juli";break;
+									case "08": bulan="Agustus";break;
+									case "09": bulan="September";break;
+									case "10": bulan="Oktober";break;
+									case "11": bulan="November";break;
+									case "12": bulan="Desember";break;
+								}
+								var tgl = remove[2]+" "+bulan+" "+remove[0];
+
+								$('#t_body').append(
+									'<tr>'+
+										'<td>'+(i+1)+'</td>'+
+							 			'<td>'+rm_id+'</td>'+
+							 			'<td>'+name+'</td>'+
+							 			'<td>'+jk+'</td>'+
+							 			'<td>'+tgl+'</td>'+
+							 			'<td>'+alamat+'</td>'+
+							 			'<td>'+id+'</td>'+
+
+							 			'<td style="text-align:center">'+
+							 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+										'</td>'+
+							 		'</tr>'
+									);
+							}
+						}else{
+							$('#t_body').empty();
+
+							$('#t_body').append(
+									'<tr>'+
+							 			'<td colspan="8"><center>Data Pasien Tidak Ditemukan</center></td>'+
 							 		'</tr>'
 								);
 						}
@@ -476,7 +652,7 @@
 					if(data.length>0){
 						$('#t_body').empty();
 						for(var i = 0; i<data.length;i++){
-							var rm_id = data[i]['rm_id'],
+							var rm_id = data[i]['rj_id'],
 								name = data[i]['nama'],									
 								jk = data[i]['jenis_kelamin'],
 								tgl_lahir = data[i]['tanggal_lahir'],
@@ -512,7 +688,7 @@
 						 			'<td>'+id+'</td>'+
 
 						 			'<td style="text-align:center">'+
-						 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'" onclick="visit(&quot;'+rm_id+'&quot; , &quot;'+visit_id+'&quot;)"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+						 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
 									'</td>'+
 						 		'</tr>'
 								);
@@ -561,7 +737,7 @@
 					if(data.length>0){
 						$('#t_body').empty();
 						for(var i = 0; i<data.length;i++){
-							var rm_id = data[i]['rm_id'],
+							var rm_id = data[i]['rj_id'],
 								name = data[i]['nama'],									
 								jk = data[i]['jenis_kelamin'],
 								tgl_lahir = data[i]['tanggal_lahir'],
@@ -597,7 +773,7 @@
 						 			'<td>'+id+'</td>'+
 
 						 			'<td style="text-align:center">'+
-						 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'" onclick="visit(&quot;'+rm_id+'&quot; , &quot;'+visit_id+'&quot;)"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
+						 				'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien/periksa/'+rm_id+'/'+visit_id+'"><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+
 									'</td>'+
 						 		'</tr>'
 								);
@@ -627,10 +803,8 @@
 		});
 	});
 
-	function visit(rm_id, visit_id){
-		localStorage.setItem('rm_id', rm_id);
-		localStorage.setItem('visit_id', visit_id);
-		alert(localStorage.getItem('visit_id'));
+	function setStatus(departmen){
+		localStorage.setItem('department', department);
 	}
 
 	//'<a href="<?php echo base_url() ?>rawatjalan/daftarpasien" onclick="visit(&quot;'+rm_id+'&quot; , &quot;'+visit_id+'&quot;)" ><i class="fa fa-plus" data-toggle="tooltip" data-placement="top" title="Pemeriksaan"></i></a>'+

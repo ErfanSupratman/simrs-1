@@ -29,6 +29,7 @@ class Homeapotikumum extends Operator_base {
 		$item = "a";
 		$data['opname'] = $this->m_obat->get_alpha_obat_opname($item, $this->dept_id);
 		$data['my_dept_id'] = $this->dept_id;
+		$data['jasa_resep'] = $this->m_apotekumum->get_jasa_resep($this->dept_id);
 
 		$this->load->view('base/operator/template', $data);
 	}
@@ -162,7 +163,7 @@ class Homeapotikumum extends Operator_base {
 				foreach ($val as $key) {
 					$ins['obat_id'] = $key[1];
 					$ins['obat_detail_id'] = $key[0];
-					$ins['jumlah_request'] =  $key[8];
+					$ins['jumlah_request'] =  $key[10];
 					$ins['obat_permintaan_id'] = $result;
 
 					$elny = $this->m_homebersalin->insert_detail_permintaan($ins); //pake
@@ -188,7 +189,7 @@ class Homeapotikumum extends Operator_base {
 	public function get_obat_retur()
 	{
 		$katakunci = $_POST['katakunci'];
-		$result = $this->m_homebersalin->get_obat_farmasi($katakunci, $this->dept_id); //==bersalin
+		$result = $this->m_homebersalin->get_obat_farmasi_unit($katakunci, $this->dept_id); //==bersalin
 
 		header('Content-Type: application/json');
 	 	echo json_encode($result); 
@@ -326,6 +327,39 @@ class Homeapotikumum extends Operator_base {
 	}
 	/*akhir opname*/
 
+	/*jasa resep*/
+	public function filter_jasa_resep()
+	{
+		$insert['start'] = $_POST['start'];
+		$insert['end'] = $_POST['end'];
+		$insert['cara_bayar'] =  $_POST['cara_bayar'];
+		$insert['unit'] = $_POST['unit'];
+		$insert['paramedis'] = $_POST['paramedis'];
+		$insert['now'] = date('Y-m-d');
+
+		$result = $this->m_apotekumum->get_filter_jasa_resep($insert, $this->dept_id);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);	
+	}
+
+	public function get_dokter($key='')
+	{
+		$result = $this->m_apotekumum->get_dokter($key);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);	
+	}
+
+	public function get_unit($key='')
+	{
+		$result = $this->m_apotekumum->get_unit($key);
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);	
+	}
+	/*jasa resep*/
+
 	/*laporan*/
 	public function print_laporan_kadaluarsa($value='')
 	{
@@ -363,6 +397,24 @@ class Homeapotikumum extends Operator_base {
 		$data['hasil'] = $result;
 		$data['waktu'] = date('d F Y H:i:s');
 		$this->load->view('farmasi/gudangobat/laporan/laststok',$data);
+	}
+
+	public function print_laporan_penjualan($value='')
+	{
+		//$dept_id = $_POST['dept_id'];
+		$insert['start'] = '';
+		$insert['end'] = '';
+		$result = $this->m_apotekumum->get_filter_penjualan($insert, $this->$dept_id);
+
+		$data['nama_dept'] = $this->m_obat->get_nama_dept($this->$dept_id)['nama_dept'];
+		$data['hasil'] = $result;
+		$data['waktu'] = date('d F Y H:i:s');
+		$this->load->view('farmasi/gudangobat/laporan/laststok',$data);
+	}
+
+	public function print_laporan_resep_generik($value='')
+	{
+		
 	}
 	/*laporan akhir*/
 }

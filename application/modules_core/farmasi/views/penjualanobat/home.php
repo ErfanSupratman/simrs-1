@@ -7,7 +7,7 @@
 			<i class="fa fa-home"></i>
 			<a href="<?php echo base_url() ?>dashboard/operator">Dashboard</a>
 			<i class="fa fa-angle-right"></i>
-			<a href="<?php echo base_url() ?>farmasi/homepenjualanobat">Penjualan Obat</a>
+			<a href="#">Penjualan Obat</a>
 	
 		</li>
 	
@@ -21,154 +21,101 @@
 			</div>
 			<div class="modal-body">
 				<form class="form-horizontal" role="form">
-			        	<div class="form-group">
-			        		<div class="col-md-5" style="font-weight:bold">Nama Obat</div>
-			        		<div class="col-md-6">
-			        			<select class="form-control select" name="selectObatRacikan" id="selectObatRacikan" >
-													<option value="0" selected>Pilih</option>
-													
-													<option value="1" >Racik 1</option>
-													<option value="2">Racik 2</option>
-													<option value="3" >Racik 3</option>
-													<option value="4" >Racik 4</option>
-								</select>
-			        		</div>
-			        	</div>
-			        	<div class="form-group">
-			        		<div class="col-md-5" style="font-weight:bold">Satuan</div>
-			        		<div class="col-md-6" >
-			        			<select class="form-control select" name="selectSatObatRacikan" id="selectSatObatRacikan" >
-									<option value="0" selected>Pilih</option>
-									<option value="Kapsul" >Kapsul</option>
-									<option value="Bungkus">Bungkus</option>
-									<option value="Pot"  >Pot</option>
-								</select>
-			        		</div>
-			        	</div>
+		        	<div class="form-group">
+		        		<div class="col-md-5" style="font-weight:bold">Nama Obat</div>
+		        		<div class="col-md-6">
+		        			<select class="form-control select" name="selectObatRacikan" id="selectObatRacikan" >
+								<option value="" selected>Pilih</option>
+								<option value="Racik 1" >Racik 1</option>
+								<option value="Racik 2" >Racik 2</option>
+								<option value="Racik 3" >Racik 3</option>
+								<option value="Racik 4" >Racik 4</option>
+							</select>
+		        		</div>
+		        	</div>
+		        	<div class="form-group">
+		        		<div class="col-md-5" style="font-weight:bold">Satuan</div>
+		        		<div class="col-md-6" >
+		        			<select class="form-control select" name="selectSatObatRacikan" id="selectSatObatRacikan" >
+								<option value="" selected>Pilih</option>
+								<option value="Kapsul" >Kapsul</option>
+								<option value="Bungkus">Bungkus</option>
+								<option value="Pot"  >Pot</option>
+							</select>
+		        		</div>
+		        	</div>
 
-			        	<div class="form-group">
-			        		<div class="col-md-5" style="font-weight:bold">Jumlah</div>
-			        		<div class="col-md-6" >
-			        			<input type="text" class="form-control" id="jmRacik" name="jmRacik" placeholder="Jumlah"/>	
-			        		</div>
-			        	</div>
+		        	<div class="form-group">
+		        		<div class="col-md-5" style="font-weight:bold">Jumlah</div>
+		        		<div class="col-md-6" >
+		        			<input type="number" class="form-control" id="jmRacik" name="jmRacik" value="0"/>	
+		        		</div>
+		        	</div>
 
-						<hr class="garis" style="border: solid 2px #50BFF9; border-radius: 5px; margin-left:10px;">
-			        	<br>
-
-			        	<div class="form-group">
-			        		<div class="col-md-5" >
-			        			<input type="text" class="form-control" id="komposisiRacik" name="komposisiRacik" placeholder="Search komposisi" style="margin-left:50px" />	
-			        		</div>
-			        	</div>
-			        	<div class="form-group">
-			        	<div style="overflow:scroll;overflow-x:hidden; height: 250px;">
-			        		<div class="portlet-body" style="margin: 0px 0px 0px 60px">
-								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
-									
-									<tbody>
-										<tr>
-											<td>
-											<p id="nmObatRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label></p><p>
-											<label style="font-size:12pt;">Harga :</label>
-											<label id="hrgaObatRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisi" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-										<tr>
-											<td>
-											<p id="nmObatRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label></p><p>
-											<label style="font-size:12pt">Harga :</label>
-											<label id="hrgaObatRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisi" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-										<tr>
-											<td>
-											<p id="nmObatRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label></p><p>
-											<label style="font-size:12pt;">Harga :</label>
-											<label id="hrgaObatRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisi" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-										<tr>
-											<td>
-											<p id="nmObatRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label></p><p>
-											<label style="font-size:12pt">Harga :</label>
-											<label id="hrgaObatRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisi" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-
-									</tbody>
-								</table>												
-							</div>
-						</div>
-			        	</div>
-
-			       		<div class="form-group">
-
-							<div class="portlet-body" style="margin: 0px 20px 0px 15px">
+					<hr class="garis" style="border: solid 2px #50BFF9; border-radius: 5px; margin-left:10px;">
+		        	<br>
+		        </form>
+		        <form class="form-horizontal" role="form" id="cariobatracik" method="post">
+		        	<div class="form-group">
+		        		<div class="col-md-5" >
+		        			<input type="text" class="form-control" id="komposisiRacik" name="komposisiRacik" placeholder="Search komposisi" style="margin-left:50px" autofocus="" />	
+		        		</div>
+		        	</div>
+		        </form>
+		        <form class="form-horizontal" role="form">
+		        	<div class="form-group">
+		        	<div style="overflow:scroll;overflow-x:hidden; max-height: 250px;">
+		        		<div class="portlet-body" style="margin: 0px 0px 0px 60px">
+							<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
 								
-								<table class="table table-striped table-bordered table-hover table-responsive" id="tblObatRacikan">
-									<thead>
-										<tr class="info" >
-											<th  style="text-align:left"> Nama Obat </th>
-											<th  style="text-align:left" width="20%"> Quantity </th>
-											<th  style="text-align:left" width="20%"> Action </th>
-											
-										</tr>
-									</thead>
-									<tbody id="addInputKom">
-											
-									</tbody>
-								</table>
+								<tbody id="tbodyobatracik">
+									<!-- <tr>
+										<td>
+											Cari Komposisi
+										</td>
+									</tr> -->
+								</tbody>
+							</table>												
+						</div>
+					</div>
+		        	</div>
+
+		       		<div class="form-group">
+
+						<div class="portlet-body" style="margin: 0px 20px 0px 15px">
 							
-							<a href="#" class="tmbahObat"  id="tmbhObatRacikan"><button class="btn btn-success" style="margin-top : 10px;">Tambah Obat</button></a>
-							
-							</div>
-			        	</div>
-						
-			        	<div class="form-group">
-			        		<div class="col-md-12">
-			        			<span style="font-size:12pt;color:red;">Total Obat Berhasil ditambahkan: 1</span>	
-			        		</div>
-			        		
-			        	</div> 
-			        	</form>
+							<table class="table table-striped table-bordered table-hover table-responsive" id="tblObatRacikan">
+								<thead>
+									<tr class="info" >
+										<th  style="text-align:left"> Nama Obat </th>
+										<th  style="text-align:left" width="20%"> Quantity </th>
+										<th  style="text-align:left" width="20%"> Action </th>
+									</tr>
+								</thead>
+								<tbody id="addInputKom">
+										
+								</tbody>
+							</table>
+							<button class="btn btn-success" style="margin-top : 10px;" id="tmbhObatRacik">Tambah Obat</button>
+						</div>
+		        	</div>
+					
+		        	<div class="form-group">
+		        		<div class="col-md-12">
+		        			<span style="font-size:12pt;color:red;" id="ket_total_obat">Total Obat Berhasil ditambahkan: 0</span>	
+		        		</div>
+		        		
+		        	</div> 
+			    </form>
 			</div>
 			<div class="modal-footer">
-		       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+		       	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
 	      	</div>
 		</div>
 	</div>
 </div>
 
- <div class="modal fade" id="modObatNonRacikan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modObatNonRacikan" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -176,96 +123,53 @@
 				<h3 class="modal-title" id="myModalLabel">Pilih Obat</h3>
 			</div>
 			<div class="modal-body">
-
-    			<form class="form-horizontal" role="form">
-			        	
-			        	<div class="form-group">
-			        		<div class="col-md-5" >
-			        			<input type="text" class="form-control" id="komposisiNonRacik" name="komposisiNonRacik" placeholder="Search Nama Obat" style="margin-left:50px;" />	
-			        		</div>
-			        	</div>
-
-			        	<div class="form-group">
-
-			        	<div style="overflow:scroll;overflow-x:hidden; height: 250px;">
+    			<form class="form-horizontal" role="form" id="formnonracik" method="post">
+			        <div class="form-group">
+		        		<div class="col-md-5" >
+		        			<input type="text" class="form-control" id="komposisiNonRacik" name="komposisiNonRacik" placeholder="Search Nama Obat" style="margin-left:50px;" autofocus="" />	
+		        		</div>
+		        	</div>
+		        	<div class="form-group">
+			        	<div style="overflow:scroll;overflow-x:hidden; max-height: 250px;">
 			        		<div class="portlet-body" style="margin: 0px 10px 0px 60px">
 								<table class="table table-striped table-bordered table-hover tabelinformasi" id="tabelSearchDiagnosa" style="width:90%;">
-									
-									<tbody>
-										<tr>
-											<td>
-											<p id="nmObatNonRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label></p><p>
-											<label style="font-size:12pt;">Harga :</label>
-											<label id="hrgaObatNonRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisiNon" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-										<tr>
-											<td>
-											<p id="nmObatNonRacik" style="font-weight:bold;font-size:15pt;margin-bottom:-10px;">Panadol</p>
-											<p style="margin-bottom:-10px;font-size:12pt;">
-											<label id="tglRacikan" >13 Mei 2012 -&nbsp;</label>
-											<label id="satRacikan" style="font-style:italic">Tablet</label></p>
-											<p style="margin-bottom:-10px;"><label style="font-size:12pt;">Stok :</label></p>
-											<label id="stokObatRacik" style="font-size:12pt;">20</label><p>
-											<label style="font-size:12pt;">Harga :</label>
-											<label id="hrgaObatNonRacik" style="font-size:12pt;color:green;margin-bottom:-10px;">200000</label></p>
-											<div class="pull-right" style="margin-top:-40px;margin-bottom:5px;"><a href="#" class="addNewKomposisiNon" style="background:blue;color:white;padding-top:10px;padding-bottom:10px"><i class="fa fa-plus" style="text-align:center;width:40px"></i></a></div>
-											</td><!-- 
-											<td width="10%"><a href="#" class ="addNewKomposisi"><i class="glyphicon glyphicon-check"></i></a></td> -->
-										</tr>
-
+									<tbody id="tbodyobatnonracik">
+										<?php  echo "<td><center>Cari Komposisi</center></td>"; ?>
 									</tbody>
 								</table>												
 							</div>
-							</div>
-			        	</div>
-
-			        	<div class="form-group">
-
-							<div class="portlet-body" style="margin: 0px 20px 0px 15px">
-								
-								<table class="table table-striped table-bordered table-hover table-responsive" id="tblObatRacikan">
-									<thead>
-										<tr class="info" >
-											<th  style="text-align:left"> Nama Obat </th>
-											<th  style="text-align:left" width="20%"> Quantity </th>
-											<th  style="text-align:left" width="20%"> Action </th>
-											
-										</tr>
-									</thead>
-									<tbody id="addInputKom2">
-											
-									</tbody>
-								</table>
-							
-							
-							</div>
-			        	</div>
-
-			        	<div class="form-group">
-			        		<div class="col-md-5">
-			        			<a href="#" class="tmbahObat"  id="tmbhObatNonRacikan"><button class="btn btn-success" style="margin-top : 10px;">Tambah Obat</button></a>
-							  	
-			        		</div>
-
-			        	</div>
-			        	<div class="form-group">
-			        		<div class="col-md-12">
-			        			<span style="font-size:12pt;color:red;">Total Obat Berhasil ditambahkan: 1</span>	
-			        		</div>
-			        		
-			        	</div> 
+						</div>
+		        	</div>
+		        	<div class="form-group">
+						<div class="portlet-body" style="margin: 0px 20px 0px 15px">
+							<table class="table table-striped table-bordered table-hover table-responsive" id="tblObatRacikan">
+								<thead>
+									<tr class="info" >
+										<th  style="text-align:left"> Nama Obat </th>
+										<th  style="text-align:left" width="20%"> Quantity </th>
+										<th  style="text-align:left" width="20%"> Action </th>
+									</tr>
+								</thead>
+								<tbody id="addInputKom2">
+										
+								</tbody>
+							</table>
+						</div>
+		        	</div>
+		        	<div class="form-group">
+		        		<div class="col-md-5">
+		        			<button id="tmbhObatNonRacik" class="btn btn-success" type="button" style="margin-top : 10px;">Tambah Obat</button>
+		        		</div>
+		        	</div>
+		        	<div class="form-group">
+		        		<div class="col-md-12">
+		        			<span style="font-size:12pt;color:red;" id="ket_total_nonracik">Total Obat Berhasil ditambahkan: 0</span>	
+		        		</div>
+		        	</div> 
 				</form>
 			</div>
 			<div class="modal-footer">
-		       		<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+		       	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
 	      	</div>
 		</div>
 	</div>
@@ -327,15 +231,17 @@
 			<div class="modal-body">
 
     			<div class="form-group">
-					<div class="form-group">	
-						<div class="col-md-3" style="margin-left:35px;">
-							<input type="text" class="form-control" name="katakunci" id="katakunci" placeholder="Nama petugas"/>
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-info">Cari</button>
-						</div>
-						<br><br>	
-					</div>		
+    				<form class="form-horizontal" role="form" method="post" id="cariapoteker">
+						<div class="form-group">	
+							<div class="col-md-3" style="margin-left:35px;">
+								<input type="text" class="form-control" name="katakunci" id="katakunciapoteker" placeholder="Nama petugas"/>
+							</div>
+							<div class="col-md-2">
+								<button type="submit" class="btn btn-info">Cari</button>
+							</div>
+							<br><br>	
+						</div>		
+					</form>
 					<div style="margin-left:20px; margin-right:20px;"><hr></div>
 					<div class="portlet-body" style="margin: 0px 0px 0px 40px">
 						<table class="table table-striped table-bordered table-hover tabelinformasi" style="width:90%;">
@@ -345,12 +251,10 @@
 									<td width="10%">Pilih</td>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="tbodyapoteker">
 								<tr>
-									<td>Jems</td>
-									<td style="text-align:center"><a href="#" class ="addNewObatNon"><i class="glyphicon glyphicon-check"></i></a></td>
+									<td style="text-align:center" colspan="2">Cari Apoteker</td>
 								</tr>
-
 							</tbody>
 						</table>												
 					</div>
@@ -473,210 +377,169 @@
 
  
 <div class="navigation" style="margin-left: 10px;" >
-	<div class="row">
-		<div class="col-md-12">
-			<div class="row invoice-tab">
-								
-			 	<div class="col-md-3" style="background: #A7FFAE;margin-left:15px;min-height: 480px; border-radius:5px; width:390px" >
-	 				<div style="padding-top:10px"></div>
-			 			
-		 			<div class="dropdown" style="margin-left:0px;width:100%;">
-			            <div id="titleInformasi">Informasi Resep</div>
-			        </div>
-		            <br>
-            
-		            <div class="informasi" id="infoDataPasienObat" style="margin-left:10px;">
-			        	<form class="form-horizontal" role="form">
+	<form class="form-horizontal" role="form" id="submitpenjualanobat" method="post">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row invoice-tab">
+				 	<div class="col-md-3" style="background: #A7FFAE;margin-left:15px;min-height: 480px; border-radius:5px; width:390px" >
+		 				<div style="padding-top:10px"></div>
+			 			<div class="dropdown" style="margin-left:0px;width:100%;">
+				            <div id="titleInformasi">Informasi Resep</div>
+				        </div>
+			            <br>
+			            <div class="informasi" id="infoDataPasienObat" style="margin-left:10px;">
 			        		<div class="form-group">
+			        			<input type="hidden" id="re_visit_id" value="<?php echo $inforesep['visit_id'] ?>">
+			        			<input type="hidden" id="re_resep_id" value="<?php echo $inforesep['resep_id'] ?>">
+			        			<input type="hidden" id="re_kasir_id" value="<?php echo $kasir['petugas_id'] ?>">
+			        			<input type="hidden" id="re_dokter_id" value="<?php echo $inforesep['petugas_id'] ?>">
 			        			<label class="col-md-5">Nama :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">Lena Soputri</label>
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo $inforesep['nama'] ?></label>
 			    			 </div>
 			    			 <div class="form-group">
 			    			 	<label class="col-md-5">Umur :</label>
-			    			 	
 			        			<label class="col-md-6" style="font-weight:bold;">25</label>
-			    			 	
 			    			 </div>
-
 			    			 <div class="form-group">
 			    			 	<label class="col-md-5">Alamat :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">Jalan Godean</label>
-			    			 	
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo $inforesep['alamat_skr'] ?></label>
 			    			 </div>
 			    			 <div class="form-group">
 			    			 	<label class="col-md-5">Jenis Kelamin :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">Perempuan</label>
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo $inforesep['jenis_kelamin'] ?></label>
 			    			 </div>
 			    			 <div class="form-group">
-			    			 	<label class="col-md-5">No. Nota :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">112001</label>
-			    			 	
+			    			 	<label class="col-md-5">Cara Bayar :</label>
+			        			<label class="col-md-6" id="re_cara_bayar" style="font-weight:bold;"><?php echo (empty($inforesep['bayar_ri']) ? $inforesep['bayar_rj'] : $inforesep['bayar_ri']) ?></label>
 			    			 </div>
 			    			 <div class="form-group">
 			    			 	<label class="col-md-5">ID Resep :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">112001</label>
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo($inforesep['resep_id']) ?></label>
 			    			 </div>
 			    			 <div class="form-group">
-			    			 	<label class="col-md-5">Tgl. Transaksi :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">10 Mei 2012</label>
-			    			 	
+			    			 	<label class="col-md-5">Tgl. Resep :</label>
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo(DateTime::createFromFormat('Y-m-d',$inforesep['tanggal'])->format('d F Y')) ?></label>
 			    			 </div>
 			    			 <div class="form-group">
 			    			 	<label class="col-md-5">Dokter :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">Kalvin Khrisna</label>
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo $inforesep['nama_petugas']; ?></label>
 			    			 </div>
 			    			 <div class="form-group">
-			    			 	
 			    			 	<label class="col-md-5">Apoteker :</label>
 			    			 	<div class="col-md-6">
-										<input type="text" class="form-control" id="apoteker" name="apoteker" placeholder="Apoteker" data-toggle="modal" data-target="#modApoteker">	
+									<input type="text" style="cursor:pointer" class="form-control" id="apoteker" name="apoteker" placeholder="Apoteker" data-toggle="modal" data-target="#modApoteker" readonly="">	
+									<input type="hidden" id="re_id_apoteker">
 				        		</div>
 			    			 </div>
 			    			 <div class="form-group">
-			    			 
 			    			 	<label class="col-md-5">Kasir :</label>
-			    			 	
-			        			<label class="col-md-6" style="font-weight:bold;">Kalvin Khrisna</label>
-			    			 	
+			        			<label class="col-md-6" style="font-weight:bold;"><?php echo($kasir['nama_petugas']) ?></label>
 			    			 </div>
 			    			 <div class="form-group">
-			    			 
 			    			 	<label class="col-md-5">Resep :</label>
-			    			 	
-			        			<label class="col-md-10" style="font-weight:bold;">Paracetamol 10, paramek 12, ctm 3</label>
-			    			 	
+			        			<label class="col-md-10" style="font-weight:bold;"><?php echo $inforesep['resep']; ?></label>
 			    			 </div>
-			        	</form>
-			    	</div>
-				
-			 			
-			 	</div>
-			 	<div class="col-md-8" style=" background: #A7FFAE;min-height: 800px; margin-right: 30px;border-radius:5px;float:right">
-			 			<div style="padding-top:10px"></div>
+				    	</div>
+				 	</div>
+				 	<div class="col-md-8" style=" background: #A7FFAE;min-height: 800px; margin-right: 30px;border-radius:5px;float:right">
+				 		<div style="padding-top:10px"></div>
 
 			 			<div class="dropdown" style="margin-left:0px;">
 				            <div id="titleInformasi">Transaksi Penjualan Obat</div>
 				            <div id="btnBawahDataObat" class="btnBawah"><i class="glyphicon glyphicon-chevron-down" style="margin-right: 5px"></i></div> 				            	
 			            </div>
 			            <br>
-			            
+				            
 			            <div class="informasi" id="infoDataObat" style="margin-left:10px;">
-					        		
-			            		<div class="form-group">
-					    				<div class="col-md-6">
-					    				<button class="btn btn-success" data-toggle="modal" data-target="#modObatRacikan" >Obat Racikan</button>
-					                	<button class="btn btn-success" data-toggle="modal" data-target="#modObatNonRacikan">Obat Non Racikan</button>	
-					    				</div>
-					    		</div>
-					    		<form class="form-horizontal" role="form" >
-					    			<div class="form-group">
-					    				<div class="col-md-6">
-					    				</div>
-					    			</div>
-					        		<hr class="garis" style="border: solid 2px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:5px;">
-							        	
-					        		<div class="form-group">
-					    			 	<div class="portlet-body" style="margin: 0px 20px 0px 15px">
-													<table class="table table-striped table-bordered table-hover tabelinformasi" style="width:100%;">
-														<thead>
-															<tr class="info">
-																<td width="20%">Tipe Obat</td>
-																<td >Obat</td>
-																<td width="10%">Jumlah</td>
-																<td width="10%">Satuan</td>
-																<td width="10%">Harga</td>
-																<td width="10%">Embalase</td>
-																<td width="10%">JF</td>
-																<td width="10%">Biaya Tambahan</td>
-																<td width="10%">Total</td>
-																<td width="10%">Action</td>
-															</tr>
-														</thead>
-														<tbody id="addTabObat"><!-- 
-															<tr>
-																<td>Obat Racik 1</td>
-																<td style="text-align:center">A,B,C</td>
-																<td style="text-align:center">20</td>
-																<td style="text-align:center">KG</td>
-																<td style="text-align:center">10000</td>
-																<td style="text-align:center">3000</td>
-																<td style="text-align:center">12</td>
-																<td style="text-align:center"><a href="#" class="editableform editable-click tmbhnBy" data-type="text" data-pk="1" data-original-title="Jumlah Tambahan" id="byTambah">0</a></td>
-																<td style="text-align:center">30000</td>
-																<td width="10%">Remove</td>
-															</tr> -->
-															
-														</tbody>
-													</table>												
-												</div>
-					    			 </div>
-					    			<div class="form-group">
-										<div class="col-md-2 pull-right">
-											<label class="control-label pull-right" style="font-size:1.8em;margin-top:-10px;">1.000.000</label>
-										</div>
-										<div class="col-md-4 pull-right" style="width:150px; margin-top:5px;margin-right:90px; text-align:right;">
-											Sub Total(Rp.) : 
-										</div>
-									</div>
+		            		<div class="form-group">
+			    				<div class="col-md-6">
+			    				<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modObatRacikan" >Obat Racikan</button>
+			                	<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modObatNonRacikan">Obat Non Racikan</button>	
+			    				</div>
+				    		</div>
+						    		
+			    			<div class="form-group">
+			    				<div class="col-md-6">
+			    				</div>
+			    			</div>
+			        		<hr class="garis" style="border: solid 2px #50BFF9; border-radius: 5px; margin-left:0px; margin-right:5px;">
+			        		<div class="form-group">
+			    			 	<div class="portlet-body" style="margin: 0px 20px 0px 15px">
+									<table id="tablesubmitbeliobat" class="table table-striped table-bordered table-hover tableDTUtamaScroll">
+										<thead>
+											<tr class="info">
+												<td width="20%">Tipe Obat</td>
+												<td >Obat</td>
+												<td width="10%">Jumlah</td>
+												<td width="10%">Satuan</td>
+												<td width="10%">Harga</td>
+												<td width="10%">Embalase</td>
+												<td width="10%">JF</td>
+												<td width="10%">Biaya Tambahan</td>
+												<td width="10%">Total</td>
+												<td width="10%">Action</td>
+											</tr>
+										</thead>
+										<tbody id="addTabObat">														
+											
+										</tbody>
+									</table>												
+								</div>
+			    			 </div>
+			    			<div class="form-group">
+								<div class="col-md-2 pull-right">
+									<label class="control-label pull-right" style="font-size:1.8em;margin-top:-10px;"><span id="subtotalobat">0</span></label>
+								</div>
+								<div class="col-md-4 pull-right" style="width:150px; margin-top:5px;margin-right:90px; text-align:right;">
+									Sub Total(Rp.) : 
+								</div>
+							</div>
 
-									<div class="form-group">
-										<div class="col-md-2 pull-right" style="width:140px;">
-											<input type="text" class="form-control" id="potongan" name="potongan" placeholder="Potongan" />
-										</div>
-										<div class="col-md-2 pull-right" style="width:100px;">
-								 			<select class="form-control select" name="jenispotongan" id="selectpotongan" >
-												<option value="%" selected>%</option>
-												<option value="rp">Rp. </option>
-											</select>
-										</div>
-										<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
-											Potongan : 
-										</div>
-									</div>
+							<div class="form-group">
+								<div class="col-md-2 pull-right" style="width:140px;">
+									<input type="number" class="form-control" id="potongan" maxlength="3" name="potongan" value="0" />
+								</div>
+								<div class="col-md-2 pull-right" style="width:100px;">
+						 			<select class="form-control select" name="jenispotongan" id="selectpotongan" >
+										<option value="persen" selected>%</option>
+										<option value="nomilal">Rp. </option>
+									</select>
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
+									Potongan : 
+								</div>
+							</div>
 
-									<div class="form-group">
-										<label class="control-label col-md-1 pull-right" style="font-size:18pt; width:140px;"> 20000 </label>
-										<div class="col-md-2 pull-right" style="width:100px;">
-											<input type="text" class="form-control" id="ppn" name="ppn" placeholder="PPN" />
-										</div>
-										<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
-											PPN (%) : 
-										</div>
-									</div>
+							<div class="form-group">
+								<label class="control-label col-md-1 pull-right" style="font-size:18pt; width:140px;"><span id="hasilppn">0</span></label>
+								<div class="col-md-2 pull-right" style="width:100px;">
+									<input type="number" class="form-control" id="ppn" maxlength="3" name="ppn" value="0" />
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:5px; text-align:right;">
+									PPN (%) : 
+								</div>
+							</div>
 
-									<div class="form-group">
-										<div class="col-md-2 pull-right" style="width:240px;">
-											<label class="control-label pull-right" style="font-size:2em;color:red;">10.000.000</label>
-										</div>
-										<div class="col-md-2 pull-right" style="width:150px; margin-top:15px; text-align:right;">
-											Grand Total : 
-										</div>
-									</div
+							<div class="form-group">
+								<div class="col-md-2 pull-right" style="width:240px;">
+									<label class="control-label pull-right" style="font-size:2em;color:red;"><span id="hasilgrandtotal">0</span></label>
+								</div>
+								<div class="col-md-2 pull-right" style="width:150px; margin-top:15px; text-align:right;">
+									Grand Total : 
+								</div>
+							</div>
 
-
-									<div class="form-group">
-										<div class="pull-right" style="margin-bottom:10px;margin-right:18px;">
-											<button class="btn btn-success">Cetak</button>
-											<button class="btn btn-warning">Bayar</button>
-										</div>
-									</div>
-					        	</form>
-			 			</div>
+							<div class="form-group">
+								<div class="pull-right" style="margin-bottom:10px;margin-right:18px;">
+									<button class="btn btn-success">Cetak</button>
+									<button class="btn btn-warning">Bayar</button>
+								</div>
+							</div>
+				 		</div>
+				 	</div>
 			 	</div>
-		 	</div>
-		</div>
-	 </div>
+			</div>
+		 </div>
+	</form>
 </div>
 											

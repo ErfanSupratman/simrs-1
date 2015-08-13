@@ -7,6 +7,61 @@
 		
 		function __construct(){}
 
+		/*import*/
+		public function get_obat_template($dept_id)
+		{
+			$sql= "SELECT a.nama from obat a left join obat_stok_minimal b on a.obat_id = b.obat_id
+					where b.dept_id LIKE '$dept_id'";
+			$result = $this->db->query($sql);
+			if ($result) {
+				return $result->result_array();
+			}else{
+				return false;
+			}
+		}
+		public function get_obat_id($nama)
+		{
+			$sql= "SELECT obat_id from obat where nama LIKE '$nama'";
+			$result = $this->db->query($sql);
+			if ($result) {
+				return $result->row_array();
+			}else{
+				return false;
+			}
+		}
+
+		public function get_tgl_kadaluarsa($obat_id,$tgl, $dept_id)
+		{
+			$sql= "SELECT * from obat_detail a left join obat_dept b on a.obat_detail_id = b.obat_detail_id
+					left join obat_dept_stok c on b.obat_dept_id = c.obat_dept_id
+					where a.obat_id = '$obat_id' and a.tgl_kadaluarsa = '$tgl' and b.dept_id = '$dept_id'";
+			$result = $this->db->query($sql);
+			if ($result) {
+				return $result->row_array();
+			}else{
+				return false;
+			}
+		}
+
+		public function get_last_tgl_kadaluarsa($obat_id)
+		{
+			$sql= "SELECT * from obat_detail where obat_id = '$obat_id' order by tgl_kadaluarsa desc";
+			$result = $this->db->query($sql);
+			if ($result) {
+				return $result->row_array();
+			}else{
+				return false;
+			}
+		}
+
+		public function update_stok($obat_dept_stok_id, $newstok)
+		{
+			$this->db->where('obat_dept_stok_id', $obat_dept_stok_id);
+			$this->db->update('obat_dept_stok', array('total_stok' => $newstok));
+		}
+
+		/*akhir import*/
+
 		public function get_jenis_obat()
 		{
 			$sql= "SELECT * from jenis_obat";
@@ -23,7 +78,7 @@
 			$sql = "SELECT z.*,os.satuan
 					FROM obat z 
 					left join obat_satuan os on z.satuan_id = os.satuan_id
-					where z.nama LIKE '%$katakunci%' and z.penyedia_id = '$penyedia_id'";
+					where z.nama LIKE '%$katakunci%' and z.penyedia_id = '$penyedia_id' and z.is_hidden = '0'";
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -94,13 +149,14 @@
 
 		public function get_obat($value){
 			$sql = "SELECT * 
-					FROM obat o left join obat_detail od on od.obat_id = o.obat_id
-					left join obat_dept ot on ot.obat_detail_id = od.obat_detail_id
+					FROM obat o left join obat_stok_minimal osm on osm.obat_id = o.obat_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
 					left join obat_merk om on om.merk_id = o.merk_id					 
-			 		WHERE nama LIKE '%$value%' and ot.dept_id = '21'
-			 		group by o.obat_id";
+			 		WHERE nama LIKE '%$value%' and osm.dept_id = '21' and o.is_hidden = '0'
+			 		group by o.obat_id ";
 			$result = $this->db->query($sql);
+			/*left join obat_detail od on od.obat_id = o.obat_id
+					left join obat_dept ot on ot.obat_detail_id = od.obat_detail_id*/
 			if($result)
 				return $result->result_array();
 			else
@@ -283,7 +339,9 @@
 
 		public function get_detail_obat_bydeptid($obat_dept_id)
 		{
-			$sql = "SELECT * from obat_dept_stok where obat_dept_id = '$obat_dept_id'"; //detail obat berdasarkan obat_id
+			$sql = "SELECT * from obat_dept_stok 
+					where obat_dept_id = '$obat_dept_id' order by 
+					obat_dept_stok_id desc limit 10"; //detail obat berdasarkan obat_id
 			$result = $this->db->query($sql);
 			if ($result) {
 				return $result->result_array();
@@ -327,18 +385,18 @@
 
 		public function filter_stok($value='')
 		{
-			$query = "SELECT * from obat o, obat_stok_minimal os, jenis_obat jo, obat_merk mo, obat_satuan ost, master_penyedia mp,
-				(SELECT oo.obat_id, SUM( ods.total_stok ) AS jlh
-				FROM obat_detail od, obat_dept ot, obat_dept_stok ods, obat oo
-				WHERE od.obat_id = oo.obat_id
-				AND od.obat_detail_id = ot.obat_detail_id
-				AND ot.dept_id =  '21'
-				AND ods.obat_dept_id = ot.obat_dept_id
-				GROUP BY oo.obat_id) AS jumlah 
-				where o.obat_id = jumlah.obat_id AND o.obat_id = os.obat_id AND os.dept_id = '21' AND jo.jenis_obat_id = o.jenis_obat_id 
-				AND mo.merk_id = o.merk_id AND ost.satuan_id =  o.satuan_id AND mp.penyedia_id = o.penyedia_id 
-				AND os.stok_minimal >= jumlah.jlh";
-			$result = $this->db->query($query);
+			$sql = "SELECT o.*,om.*,IFNULL(fak.jumlah, 0) as jlh, jo.*,os.*,mp.*,mo.* 
+					from obat o left join obat_stok_minimal om on om.obat_id = o.obat_id 
+					left join (select z.obat_id,sum(y.total_stok) as jumlah from obat_detail z 
+						left join (select a.obat_detail_id, a.obat_dept_id, b.total_stok from obat_dept a 
+							left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) b on a.obat_dept_id = b.obat_dept_id 
+							where a.dept_id = '21' group by a.obat_dept_id) y on y.obat_detail_id = z.obat_detail_id group by z.obat_id) fak on fak.obat_id = o.obat_id 
+					left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id 
+					left join obat_satuan os on os.satuan_id = o.satuan_id 
+					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id 
+					left join obat_merk mo on mo.merk_id = o.merk_id where om.dept_id = '21' 
+					AND om.stok_minimal >= IFNULL(fak.jumlah, 0)";
+			$result = $this->db->query($sql);
 			if ($result) {
 				return $result->result_array();
 			}else{
@@ -351,37 +409,26 @@
 			$nama = $value['nama'];
 			$satuan_id = $value['satuan_id'];
 			$is_generik = $value['is_generik'];
-			$sql = "SELECT * from obat o 
-						left join (select * from obat_stok_minimal  where dept_id = '21') b on o.obat_id = b.obat_id 
-						left join obat_detail c on c.obat_id = o.obat_id 
-						left join obat_dept d on c.obat_detail_id = d.obat_detail_id 
-						left join
-						(SELECT oo.obat_id, IFNULL(SUM(v.total_stok),'0')AS jlh
-							FROM obat_detail od 
-							left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id 
-							left join obat oo on od.obat_id = oo.obat_id 
-							left join 
-								(select a.obat_dept_id, a.total_stok from 
-									(select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) a, 
-									obat_dept_stok o group by a.obat_dept_id order by obat_dept_stok_id desc) v 
-							on v.obat_dept_id = ot.obat_dept_id
-							WHERE ot.dept_id =  '21'
-							GROUP BY oo.obat_id) jumlah 
-						on jumlah.obat_id = o.obat_id 
-						left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id 
-						left join obat_satuan os on os.satuan_id = o.satuan_id 
-						left join master_penyedia mp on mp.penyedia_id = o.penyedia_id 
-						left join obat_merk mo on mo.merk_id = o.merk_id 
-						where d.dept_id = '21' AND o.nama LIKE '%$nama%'";
+			
+			$sql = "SELECT o.*,om.*,IFNULL(fak.jumlah, 0) as jlh, jo.*,os.*,mp.*,mo.* 
+					from obat o left join obat_stok_minimal om on om.obat_id = o.obat_id 
+					left join (select z.obat_id,sum(y.total_stok) as jumlah from obat_detail z 
+						left join (select a.obat_detail_id, a.obat_dept_id, b.total_stok from obat_dept a 
+							left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) b on a.obat_dept_id = b.obat_dept_id 
+							where a.dept_id = '21' group by a.obat_dept_id) y on y.obat_detail_id = z.obat_detail_id group by z.obat_id) fak on fak.obat_id = o.obat_id 
+					left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id 
+					left join obat_satuan os on os.satuan_id = o.satuan_id 
+					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id 
+					left join obat_merk mo on mo.merk_id = o.merk_id where om.dept_id = '21' and o.nama LIKE '%$nama%'";
+
 			if ($satuan_id == '' && $is_generik == '') {
-				$sql .= "group by o.obat_id";
+				//$sql .= "group by o.obat_id";
 			}else if ($satuan_id != '' && $is_generik == '') {
-				$sql .= "AND os.satuan_id = '$satuan_id' group by o.obat_id";
+				$sql .= "AND os.satuan_id = '$satuan_id'";
 			}else if ($satuan_id == '' && $is_generik != '') {
-				$sql .= "AND o.is_generik = '$is_generik' group by o.obat_id ";
+				$sql .= "AND o.is_generik = '$is_generik'";
 			}else {
-				$sql .= "AND os.satuan_id = '$satuan_id' AND o.is_generik = '$is_generik'
-						group by o.obat_id";
+				$sql .= "AND os.satuan_id = '$satuan_id' AND o.is_generik = '$is_generik'";
 			}
 			
 			$result = $this->db->query($sql);
@@ -442,7 +489,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where ot.dept_id = '21'";
+					where ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {
 					$sql .= "group by ods.obat_dept_id";
 			}else if($satuan == '' && $is_generik != ''){
@@ -478,7 +525,7 @@
 						left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 						left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 						left join obat_satuan os on os.satuan_id = o.satuan_id
-						where o.nama LIKE '%$nama%' AND ot.dept_id = '21'";
+						where o.nama LIKE '%$nama%' AND ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {			
 			 	$sql .= "group by ods.obat_dept_id";
 			}else if($satuan != '' && $is_generik == ''){
@@ -510,7 +557,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where jo.jenis_obat LIKE '%$jenis%' AND ot.dept_id = '21'";
+					where jo.jenis_obat LIKE '%$jenis%' AND ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {			
 			 	$sql .= "group by ods.obat_dept_id";
 			}else if($satuan != '' && $is_generik == ''){
@@ -542,7 +589,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where om.nama_merk LIKE '%$merk%' AND ot.dept_id = '21'";
+					where om.nama_merk LIKE '%$merk%' AND ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {			
 			 	$sql .= "group by ods.obat_dept_id";
 			}else if($satuan != '' && $is_generik == ''){
@@ -574,7 +621,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where mp.nama_penyedia LIKE '%$penyedia%' AND ot.dept_id = '21'";
+					where mp.nama_penyedia LIKE '%$penyedia%' AND ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {			
 			 	$sql .= "group by ods.obat_dept_id";
 			}else if($satuan != '' && $is_generik == ''){
@@ -606,7 +653,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where od.sumber_dana LIKE '%$sumber%' AND ot.dept_id = '21'";
+					where od.sumber_dana LIKE '%$sumber%' AND ot.dept_id = '21' and o.is_hidden = '0' ";
 			if ($satuan == '' && $is_generik == '') {			
 			 	$sql .= "group by ods.obat_dept_id";
 			}else if($satuan != '' && $is_generik == ''){
@@ -637,7 +684,7 @@
 					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
 					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
 					left join obat_satuan os on os.satuan_id = o.satuan_id
-					where ot.dept_id = '21' 
+					where ot.dept_id = '21' and o.is_hidden = '0'
 					AND TIMESTAMPDIFF(MONTH, '$now', od.tgl_kadaluarsa) +
 						  DATEDIFF(
 						    od.tgl_kadaluarsa,
@@ -706,7 +753,7 @@
 					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id 
 					left join obat_dept_stok ods on ot.obat_dept_id = ods.obat_dept_id 
 					left join obat_opname op on op.obat_dept_id = ot.obat_dept_id
-					left join obat_merk om on om.merk_id = o.merk_id";
+					left join obat_merk om on om.merk_id = o.merk_id where o.is_hidden = '0'";
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -719,7 +766,7 @@
 					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id left join 
 					(select * , obat_dept_id as obat_process from obat_dept_stok order by obat_dept_stok_id desc) ods on ot.obat_dept_id = ods.obat_dept_id 
 					left join (select * from obat_opname order by tgl_opname desc) op on op.obat_dept_id = ot.obat_dept_id
-					left join obat_merk om on om.merk_id = o.merk_id where ot.dept_id = '$dept_id' AND o.nama LIKE '$alpha%'
+					left join obat_merk om on om.merk_id = o.merk_id where ot.dept_id = '$dept_id' AND o.nama LIKE '$alpha%' and o.is_hidden = '0'
 					group by ods.obat_dept_id";
 
 			$result = $this->db->query($sql);
@@ -729,12 +776,12 @@
 				return false;
 		}
 
-		public function get_opname_by_name($value){
+		public function get_opname_by_name($value, $dept_id){
 			$sql = "SELECT *  FROM obat o left join obat_detail od on o.obat_id = od.obat_id 
 					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id left join 
 					(select * , obat_dept_id as obat_process from obat_dept_stok order by obat_dept_stok_id desc) ods on ot.obat_dept_id = ods.obat_dept_id 
 					left join (select * from obat_opname order by tgl_opname desc) op on op.obat_dept_id = ot.obat_dept_id
-					left join obat_merk om on om.merk_id = o.merk_id where ot.dept_id = '21' AND o.nama LIKE '%$value%'
+					left join obat_merk om on om.merk_id = o.merk_id where ot.dept_id = '$dept_id' AND o.nama LIKE '%$value%' and o.is_hidden = '0'
 					group by ods.obat_dept_id";
 			$result = $this->db->query($sql);
 			if($result)
@@ -745,7 +792,8 @@
 
 		public function get_obat_deptstok_history($obat_dept_id)
 		{
-			$sql = "SELECT total_stok from obat_dept_stok op where op.obat_dept_id = '$obat_dept_id' order by obat_dept_stok_id desc";	
+			$sql = "SELECT total_stok from obat_dept_stok op where op.obat_dept_id = '$obat_dept_id' 
+					order by obat_dept_stok_id desc";	
 			$query = $this->db->query($sql);
 			if ($query) {
 				return $query->row_array();
@@ -808,13 +856,13 @@
 
 		/*perencanaan pengadaan*/
 		public function get_obat_detail_pengadaan($obat_id){
-			$sql = "SELECT * FROM obat o
-					LEFT JOIN obat_detail od ON o.obat_id = od.obat_id
-					left join obat_dept ot on ot.obat_detail_id = od.obat_detail_id
+			$sql = "SELECT * FROM obat o left join obat_stok_minimal om on om.obat_id = o.obat_id 
 					LEFT JOIN master_penyedia mp ON mp.penyedia_id = o.penyedia_id
 					INNER JOIN obat_satuan os ON o.satuan_id = os.satuan_id
-					WHERE o.obat_id = $obat_id GROUP BY o.nama and ot.dept_id = '21'";
+					WHERE o.obat_id = $obat_id GROUP BY o.nama and om.dept_id = '21'";
 			$result = $this->db->query($sql);
+			/*LEFT JOIN obat_detail od ON o.obat_id = od.obat_id
+					left join obat_dept ot on ot.obat_detail_id = od.obat_detail_id*/
 			if($result)
 				return $result->result_array();
 			else
@@ -912,9 +960,9 @@
 		{
 			$sql = "SELECT * 
 					FROM obat_penerimaan op inner join obat_penerimaan_detail od on op.obat_penerimaan_id = od.obat_penerimaan_id 
-					left join obat o on o.obat_id = od.obat_id left join obat_satuan os on os.satuan_id = o.satuan_id
+					left join obat o on o.obat_id = od.obat_id left join obat_stok_minimal osm on osm.obat_id = o.obat_id
+					left join obat_satuan os on os.satuan_id = o.satuan_id
 					left join master_penyedia mp on mp.penyedia_id  =  op.penyedia_id";
-
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -938,7 +986,19 @@
 		}
 
 		public function get_detail_permintaan($id)
-		{
+		{/*SELECT * 
+					FROM obat_permintaan op left join obat_permintaan_detail opd on op.obat_permintaan_id = opd.obat_permintaan_id 
+					left join obat o on o.obat_id = opd.obat_id left join (select * from obat_stok_minimal where dept_id = 21) os on os.obat_id = o.obat_id
+					left join 
+						(select u.dept_id as departement, u.obat_detail_id, c.total_stok as total, t.tgl_kadaluarsa 
+							from obat_detail t left join obat_dept u on t.obat_detail_id = u.obat_detail_id 
+							left join  
+									(select obat_dept_id , total_stok from obat_dept_stok order by obat_dept_stok_id desc ) c  
+						on c.obat_dept_id = u.obat_dept_id group by u.obat_dept_id) v 
+					on v.obat_detail_id = opd.obat_detail_id
+					left join obat_satuan os on os.satuan_id = o.satuan_id 
+					left join obat_merk om on om.merk_id = o.merk_id 
+					where v.departement = 21 and opd.obat_permintaan_id =  '$id'*/
 			$sql = "SELECT * 
 					FROM obat_permintaan op left join obat_permintaan_detail opd on op.obat_permintaan_id = opd.obat_permintaan_id 
 					left join obat o on o.obat_id = opd.obat_id left join (select * from obat_stok_minimal where dept_id = 21) os on os.obat_id = o.obat_id
@@ -1076,12 +1136,24 @@
 
 		public function get_last_stok_by_detail($obat_detail_id, $dept_id)
 		{
-			$sql = "SELECT e.total_stok, e.obat_dept_id
+			/*SELECT e.total_stok, e.obat_dept_id
 					FROM obat_detail a left join obat_dept b on a.obat_detail_id = b.obat_detail_id 
 					left join (select c.obat_dept_id, d.total_stok from obat_dept_stok c 
 						left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) d 
 						on c.obat_dept_id = d.obat_dept_id group by c.obat_dept_id) e on e.obat_dept_id = b.obat_dept_id 
-					where a.obat_detail_id = '$obat_detail_id' and b.dept_id = '$dept_id'";
+					where a.obat_detail_id = '$obat_detail_id' and b.dept_id = '$dept_id'*/
+					/*SELECT d.total_stok, d.obat_dept_id
+					FROM obat_detail a left join obat_dept b on a.obat_detail_id = b.obat_detail_id 
+					left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) d 
+						on d.obat_dept_id = b.obat_dept_id 
+					where a.obat_detail_id = '$obat_detail_id' and b.dept_id = '$dept_id' group by d.obat_dept_id*/
+			$sql = "SELECT * FROM obat o left join obat_detail od on o.obat_id = od.obat_id 
+					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id left join 
+					(select * from obat_dept_stok order by obat_dept_stok_id desc) ods on ot.obat_dept_id = ods.obat_dept_id 
+					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
+					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
+					left join obat_satuan os on os.satuan_id = o.satuan_id
+					where ot.dept_id = '$dept_id' and od.obat_detail_id = '$obat_detail_id' group by ods.obat_dept_id";
 			$result = $this->db->query($sql);
 			if ($result) {
 				return $result->row_array();	
@@ -1098,6 +1170,16 @@
 			}else{
 				return false;
 			}
+		}
+
+		public function get_dept_nama($id)
+		{
+			$sql = "SELECT nama_dept from master_dept where dept_id = $id";
+			$result = $this->db->query($sql);
+			if($result)
+				return $result->row_array();
+			else
+				return false;
 		}
 
 		public function get_riwayat_returdepartemen()
@@ -1121,15 +1203,20 @@
 
 		/*retur obat distributor*/
 		public function get_obat_bypenyedia($katakunci, $penyedia_id)
-		{
-			$sql = "SELECT z.*,os.satuan, om.nama_merk, a.tgl_kadaluarsa, e.total_stok, e.obat_dept_id, a.obat_detail_id
+		{	/*SELECT z.*,os.satuan, om.nama_merk, a.tgl_kadaluarsa, e.total_stok, e.obat_dept_id, a.obat_detail_id
 					FROM obat z left join obat_detail a on z.obat_id = a.obat_id left join obat_dept b on a.obat_detail_id = b.obat_detail_id 
 					left join (select c.obat_dept_id, d.total_stok from obat_dept_stok c 
 					left join (select obat_dept_id, total_stok from obat_dept_stok order by obat_dept_stok_id desc) d 
 					on c.obat_dept_id = d.obat_dept_id group by c.obat_dept_id) e on e.obat_dept_id = b.obat_dept_id 
 					left join obat_satuan os on z.satuan_id = os.satuan_id
-					left join obat_merk om on om.merk_id = z.merk_id
-					where z.nama LIKE '%$katakunci%' and b.dept_id = '21' and z.penyedia_id = '$penyedia_id'";
+					left join obat_merk om on om.merk_id = z.merk_id*/
+			$sql = "SELECT * FROM obat o left join obat_detail od on o.obat_id = od.obat_id 
+					left join obat_dept ot on od.obat_detail_id = ot.obat_detail_id left join 
+					(select * from obat_dept_stok order by obat_dept_stok_id desc) ods on ot.obat_dept_id = ods.obat_dept_id 
+					left join obat_merk om on om.merk_id = o.merk_id left join jenis_obat jo on jo.jenis_obat_id = o.jenis_obat_id
+					left join master_penyedia mp on mp.penyedia_id = o.penyedia_id
+					left join obat_satuan os on os.satuan_id = o.satuan_id
+					where o.nama LIKE '%$katakunci%' and ot.dept_id = '21' and o.penyedia_id = '$penyedia_id' and o.is_hidden = '0' group by ods.obat_dept_id";
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -1160,17 +1247,8 @@
 		public function get_riwayat_returdistributor()
 		{
 			$sql = "SELECT * FROM obat_retur_distributor a 
-					left join obat_retur_distributor_detail b on b.retur_distributor_id = a.retur_distributor_id
 					left join master_penyedia mp on a.penyedia_id = mp.penyedia_id 
-					left join obat_detail c on c.obat_detail_id = b.obat_detail_id 
-					left join obat d on d.obat_id = c.obat_id 
-					left join obat_dept e on e.obat_detail_id = c.obat_detail_id
-					left join petugas p on p.petugas_id = a.petugas_input 
-					left join 
-						(select f.obat_dept_id, f.total_stok from obat_dept_stok f 
-							left join (select * from obat_dept_stok order by obat_dept_stok_id desc) v 
-								on v.obat_dept_id = f.obat_dept_id group by f.obat_dept_id) g 
-					on g.obat_dept_id = e.obat_dept_id group by a.retur_distributor_id";
+					left join petugas p on p.petugas_id = a.petugas_input";
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -1185,15 +1263,10 @@
 					left join master_penyedia mp on a.penyedia_id = mp.penyedia_id 
 					left join obat_detail c on c.obat_detail_id = b.obat_detail_id 
 					left join obat d on d.obat_id = c.obat_id 
-					left join obat_dept e on e.obat_detail_id = c.obat_detail_id
 					left join petugas p on p.petugas_id = a.petugas_input 
 					left join obat_merk om on d.merk_id = om.merk_id
 					left join obat_satuan os on os.satuan_id = d.satuan_id
-					left join 
-						(select f.obat_dept_id, f.total_stok from obat_dept_stok f 
-							left join (select * from obat_dept_stok order by obat_dept_stok_id desc) v 
-								on v.obat_dept_id = f.obat_dept_id group by f.obat_dept_id) g 
-					on g.obat_dept_id = e.obat_dept_id where a.retur_distributor_id = '$retur_id'";
+					where a.retur_distributor_id = '$retur_id'";
 			$result = $this->db->query($sql);
 			if($result)
 				return $result->result_array();
@@ -1334,6 +1407,56 @@
 		/*persetujuan permintaan*/
 		
 		/*akhir persetujuan permintaan*/
+
+		/*import*/
+		public function get_satuan_obat_import($nama)
+		{
+			$sql = "SELECT * from obat_satuan
+					where satuan LIKE '$nama'";
+
+			$result = $this->db->query($sql);
+			if($result)
+				return $result->row_array();
+			else
+				return false;
+		}
+
+		public function get_jenis_obat_import($nama)
+		{
+			$sql = "SELECT * from jenis_obat a
+					where a.jenis_obat LIKE '$nama'";
+
+			$result = $this->db->query($sql);
+			if($result)
+				return $result->row_array();
+			else
+				return false;
+		}
+
+		public function get_merk_obat_import($nama)
+		{
+			$sql = "SELECT * from obat_merk a
+					where a.nama_merk LIKE '$nama'";
+
+			$result = $this->db->query($sql);
+			if($result->num_rows() > 0)
+				return $result->row_array();
+			else
+				return false;
+		}
+
+		public function get_penyedia_obat_import($nama)
+		{
+			$sql = "SELECT * from master_penyedia a
+					where a.nama_penyedia LIKE '$nama'";
+
+			$result = $this->db->query($sql);
+			if($result->num_rows() > 0)
+				return $result->row_array();
+			else
+				return false;
+		}
+		/*import*/
 
 	}
 ?>	

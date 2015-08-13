@@ -84,7 +84,14 @@ License: You must have a valid license purchased only from themeforest(the above
       <header class="header black-bg" style="background-color:#FFF;">
             <!--logo start-->
 
-            <a href="<?php echo base_url();?>dashboard/operator" class="logo"><b>RSUD</b></a>
+            <a href="<?php echo base_url();?>dashboard/operator" class="logo rw-words rw-words-1" style="font-size:20px;margin-top:25px;">
+                <span>RSUD</span>
+                <span>Rumah Sakit Umum Daerah</span>
+                <span>Bhayangkara</span>
+                <span>RSUD</span>
+                <span>Rumah Sakit Umum Daerah</span>
+                <span>Bhayangkara</span>
+            </a><!--logo end-->
             <!--logo end-->
             <div class="top-menu">
             <!--disini buat naruh menu -->

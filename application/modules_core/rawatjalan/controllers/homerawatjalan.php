@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
+require_once( APPPATH . 'modules_core/base/controllers/application_base.php' );
 
-class Homerawatjalan extends Operator_base {
+class Homerawatjalan extends Application_base {
 	function __construct(){
 
 		parent:: __construct();
@@ -10,15 +10,25 @@ class Homerawatjalan extends Operator_base {
 
 	public function index($page = 0)
 	{
-		$this->check_auth('R');
-		$data['menu_view'] = $this->menu();
-		$data['user'] = $this->user;
 		// load template
 		$data['content'] = 'home';
+		// $data['javascript'] = 'master/diagnosis/javascript/j_list';
+		$data['menu_view'] = $this->menu();	
+		$dept = $this->m_homerawatjalan->get_dept_id("POLI UMUM");
+		$data['dept_id'] = $dept['dept_id'];
+		$data['antrian'] = $this->m_homerawatjalan->daftar_pasien();
 		$this->load->view('base/operator/template', $data);
 	}
 
-	public function search_pasien($query){
+	public function get_antrian(){
+		$result = $this->m_homerawatjalan->daftar_pasien();
+
+		header('Content-Type: application/json');
+	 	echo json_encode($result);
+	}
+
+	public function search_pasien(){
+		$query = $_POST['search'];
 		$result = $this->m_homerawatjalan->get_search_pasien($query);
 
 		header('Content-Type: application/json');

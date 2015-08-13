@@ -4,10 +4,13 @@ require_once( APPPATH . 'modules_core/base/controllers/operator_base.php' );
 
 class Bersalindetail extends Operator_base {
 	protected $ses;
+	protected $dept_id;
 	function __construct() {
 		parent:: __construct();
 
+		$this->load->model('logistik/m_gudangbarang');
 		$this->load->model('m_bersalin');
+		$this->dept_id = $this->m_gudangbarang->get_dept_id('BERSALIN')['dept_id'];
 	}
 	public function index($page = 0)
 	{
@@ -31,34 +34,25 @@ class Bersalindetail extends Operator_base {
 		$pasien = $this->m_bersalin->get_pasien($visit_id, $ri_id);		
 		$data['pasien'] = $pasien;
 
-		$data['overview_history'] = $this->m_bersalin->get_overview_history($visit_id, $ri_id);
-		$data['overviewigd_history'] = $this->m_bersalin->get_overviewigd_history($visit_id, $ri_id);
-		$data['overviewhamil_history'] = $this->m_bersalin->get_overviewhamil_history($visit_id, $ri_id);
-		$data['overview_kunjungandokter'] = $this->m_bersalin->getinfo_kunjungan_dokter($visit_id, $ri_id);
-		$data['overview_asuhan'] = $this->m_bersalin->get_asuhan_dokter($visit_id, $ri_id);
+		$data['overview_history'] = $this->m_bersalin->get_overview_history($visit_id);
+		$data['overviewigd_history'] = $this->m_bersalin->get_overviewigd_history($visit_id);
+		$data['overviewhamil_history'] = $this->m_bersalin->get_overviewhamil_history($visit_id);
+		$data['overview_kunjungandokter'] = $this->m_bersalin->getinfo_kunjungan_dokter($visit_id);
+		$data['overview_asuhan'] = $this->m_bersalin->get_asuhan_dokter($visit_id);
 		$data['dept_rujukan'] = $this->m_bersalin->get_dept_rujukan();
-		$data['riwayat_kegiatanbers'] = $this->m_bersalin->get_kegiatan_bersalin($visit_id, $ri_id);
-		/*$history = $this->get_overview_history($visit_id);
-		$data['overview_history'] = $history;
-		
-		$data['tindakan'] = $this->m_bersalin->get_master_tindakan();
-		$data['kategori'] = $this->m_bersalin->get_tindakan_kategori();
-		$data['visit_id'] = $visit_id;
-
-		$data['visit_care'] = $this->m_bersalin->get_visit_care($visit_id);
-
-		$this->session->set_userdata($data);
+		$data['riwayat_kegiatanbers'] = $this->m_bersalin->get_kegiatan_bersalin($visit_id);
 		$data['visit_resep'] = $this->m_bersalin->get_visit_resep($visit_id);
-		$data['petugas'] = $this->m_bersalin->get_all_petugas();
-		$data['gizi'] = $this->m_bersalin->get_visit_gizi($visit_id);
-		$data['departmentoperasi'] =  $this->m_bersalin->get_department_operasi();
 		$data['order_operasi'] = $this->m_bersalin->get_order_operasi($visit_id);
-		$data['dept_rujukan'] = $this->m_bersalin->get_dept_rujukan();
-		$data['riwayat'] = $this->m_bersalin->get_all_medical_record($rm_id);
-		$data['alldepartment'] = $this->m_bersalin->get_all_department_ri();
-		$data['visit_ri_info'] = $this->m_bersalin->visit_ri_info($visit_id);
-		$data['pasien_on_bed'] = $this->m_bersalin->get_pasien_on_bed($visit_id);*/
-		
+		$data['riwayat_klinik'] = $this->m_bersalin->get_riwayat_klinik($pasien['rm_id']);
+		$data['riwayat_igd'] = $this->m_bersalin->get_riwayat_igd($pasien['rm_id']);
+		$data['riwayat_perawatan'] = $this->m_bersalin->get_riwayat_perawatan($pasien['rm_id']);
+		$data['gizi'] = $this->m_bersalin->get_visit_gizi($visit_id);
+		$data['tipediet'] = $this->m_bersalin->get_tipe_diet();
+		$data['permintaan_makan'] = $this->m_bersalin->get_permintaan_makan($visit_id);
+		$dept= $this->m_gudangbarang->get_dept_id('IGD')['dept_id'];
+		$data['visit_care_igd'] = $this->m_bersalin->get_visit_care_unit($visit_id, $dept);
+		$data['visit_care_klinik'] = $this->m_bersalin->get_visit_care_klinik($visit_id);
+		$data['visit_care_unit'] = $this->m_bersalin->get_visit_care_unit($visit_id, $this->dept_id);
 		$this->load->view('base/operator/template', $data);
 	}
 
@@ -70,8 +64,16 @@ class Bersalindetail extends Operator_base {
 		echo json_encode($result);
     }
 
-    public function search_dokter($query){
+    public function search_dokter(){
+    	$query = $_POST['katakunci'];
 		$result = $this->m_bersalin->search_dokter($query);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	public function get_dokter(){
+		$result = $this->m_bersalin->get_dokter();
 
 		header('Content-Type: application/json');
 		echo json_encode($result);
@@ -267,7 +269,7 @@ class Bersalindetail extends Operator_base {
 			$insert = array(
 				'jenis_kegiatan' => $_POST['jenis_kegiatan'],
 				'visit_id' => $_POST['visit_id'],
-				'ri_id' => $_POST['ri_id'],
+				'sub_visit' => $_POST['sub_visit'],
 				'status' => $_POST['status'] ,
 				'rujukan_dari' => $_POST['rujukan_dari'],
 				'dirujuk_ke' => $_POST['dirujuk_ke'],
@@ -300,64 +302,22 @@ class Bersalindetail extends Operator_base {
 		echo(json_encode($result));
 	}
 
-	public function hapus_kegiatan_bersalin($id, $visit_id, $ri_id)
+	public function hapus_kegiatan_bersalin($id)
 	{
 		$result = $this->m_bersalin->hapus_kegiatan_bersalin($id);
-		if ($result) {
+		/*if ($result) {
 			$res = $this->m_bersalin->get_kegiatan_bersalin($visit_id, $ri_id);
 			$arr = array('ket' => 'y', 'result'=>$res);
 		}else{
 			$arr = array('ket' => 'n', 'result'=>"gagal");
-		}
+		}*/
 		header('Content-Type:application/json');
-		echo(json_encode($arr));
+		echo(json_encode($result));
 	}
 	/*akhir visit kegiatan bersalin*/
 
 
-	/*-------------------------------- lama ----------------------*/
-
-	public function get_tindakan($id)
-	{
-		$this->load->model('m_bersalin');
-		$result = $this->m_bersalin->get_tindakan($id);
-
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-
-	public function save_tindakan()
-	{
-		$this->load->model('m_bersalin');
-		foreach ($_POST as $value) 
-		{
-			$insert = $value;
-		}
-
-		$visit_id = $insert['visit_id'];
-		$id = $this->m_bersalin->get_last_visit_care($visit_id);
-		if($id){
-			$vid = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
-			if (strlen($vid) == "1") {
-				$vid = '000'. $vid;
-			}else if(strlen($vid) == "2"){
-				$vid = '00' . $vid;
-			}else if (strlen($vid) == "3") {
-				$vid = '0' . $vid;
-			}
-			$insert['care_id'] = "CA".$visit_id."".($vid);
-		}else{
-			$insert['care_id'] = "CA".$visit_id."0001";
-		}
-
-		//$insert['waktu_tindakan'] = date('Y-m-d H:i:s');
-		$hasil = $this->m_bersalin->save_tindakan($insert);
-		
-		$ins = $this->m_bersalin->get_inserted_visit_care($insert['care_id']);
-		header('Content-Type:application/json');
-		echo(json_encode($ins));
-	}
-
+	/*visit resep*/
 	public function save_visit_resep()
 	{
 		foreach ($_POST as $value) 
@@ -381,7 +341,10 @@ class Bersalindetail extends Operator_base {
 			$insert['resep_id'] = "RE".$visit_id."0001";
 		}
 
-		//$insert['tanggal'] = date('Y-m-d H:i:s');
+		$tgl = $this->fdate_db($insert['tanggal']);
+		$insert['tanggal'] = $tgl;
+		$insert['status_bayar'] = 'BELUM';
+		$insert['status_ambil'] = 'BELUM';
 		$hasil = $this->m_bersalin->save_visit_resep($insert);
 		
 		$ins = $this->m_bersalin->get_inserted_visit_resep($insert['resep_id']);
@@ -390,243 +353,250 @@ class Bersalindetail extends Operator_base {
 
 	}
 
-	public function delete_resep($value='')
-	{
-		$result = $this->m_bersalin->delete_resep($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
+	public function hapus_resep($id, $igd_id){
+		$input = $this->m_bersalin->hapus_resep($id);
 
-	/*konsultasi gizi*/
-	public function save_gizi()
-	{
-		foreach ($_POST as $value) 
-		{
-			$insert = $value;
-		}
-
-		$visit_id = $insert['visit_id'];
-		$id = $this->m_bersalin->get_last_visit_gizi($visit_id);
-		if($id){
-			$vig = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
-			if (strlen($vig) == "1") {
-				$vig = '000'. $vig;
-			}else if(strlen($vir) == "2"){
-				$vig = '00' . $vig;
-			}else if (strlen($vig) == "3") {
-				$vig = '0' . $vig;
-			}
-			$insert['gizi_id'] = "GI".$visit_id."".($vig);
-		}else{
-			$insert['gizi_id'] = "GI".$visit_id."0001";
-		}
-
-		//$insert['tanggal'] = date('Y-m-d H:i:s');
-		$hasil = $this->m_bersalin->save_visit_gizi($insert);
+		//$result = $this->m_igddetail->get_visit_resep($igd_id);
 		
-		$ins = $this->m_bersalin->get_inserted_visit_gizi($insert['gizi_id']);
-		header('Content-Type:application/json');
-		echo(json_encode($ins));
-
+		header('Content-Type: application/json');
+		echo json_encode($input);
 	}
+	/*akhir visit resep*/
 
-	public function delete_gizi($value='')
-	{
-		$result =  $this->m_bersalin->delete_gizi($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-	/*akhir konsultasi gizi*/
 
 	/*order operasi*/
-	public function order_kamar_operasi()
-	{
-		foreach ($_POST as $value) 
-		{
+	public function save_order_operasi(){
+		foreach ($_POST as $value) {
 			$insert = $value;
 		}
+
+		$insert['dept_id'] = $this->dept_id;
 
 		$visit_id = $insert['visit_id'];
 		$id = $this->m_bersalin->get_last_order_operasi($visit_id);
+
 		if($id){
-			$vig = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
-			if (strlen($vig) == "1") {
-				$vig = '0'. $vig;
+			$vir = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
+			if (strlen($vir) == "1") {
+				$vir = '0'. $vir;
 			}
-			$insert['order_operasi_id'] = "OR".$visit_id."".($vig);
+			$insert['order_operasi_id'] = "OR".$visit_id."".($vir);
 		}else{
 			$insert['order_operasi_id'] = "OR".$visit_id."01";
 		}
 
-		//$insert['waktu_mulai'] = date('Y-m-d H:i:s');
+		$tujuan = $this->m_bersalin->get_dept_id($insert['dept_tujuan']);
+		$insert['dept_tujuan'] = $tujuan['dept_id'];
+
+		$waktu = $this->date_db($insert['waktu_mulai']);
+		$insert['waktu_mulai'] = $waktu;
+
 		$hasil = $this->m_bersalin->save_order_operasi($insert);
-		
+
 		$ins = $this->m_bersalin->get_inserted_order_operasi($insert['order_operasi_id']);
 		header('Content-Type:application/json');
 		echo(json_encode($ins));
 	}
 
+	public function hapus_order($id){//, $igd_id
+        $input = $this->m_bersalin->hapus_order_operasi($id);
 
-	public function delete_order($value='')
-	{
-		$result =  $this->m_bersalin->delete_order($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));	
-	}
+        //$result = $this->m_bersalin->get_order_kamar_operasi($igd_id);
+
+        header('Content-Type:application/json');
+		echo(json_encode($input));
+    }
+
 	/*akhir order operasi*/
 
-	/*permintaan makan*/
-	public function get_ruang($value='')
-	{
-		$result =  $this->m_bersalin->get_ruang($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));	
-	}
-
-	public function get_permintaan_makan($value='')
-	{
-		$result =  $this->m_bersalin->get_permintaan_makan($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));	
-	}
-
-	public function get_paket_makan()
-	{
-		$result =  $this->m_bersalin->get_paket_makan();
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-
-	public function search_paket_makan($value='')
-	{
-		$result =  $this->m_bersalin->search_paket_makan($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-
-	public function add_permintaan_makan()
-	{
-		$insert['visit_id'] = $_POST['visit_id'];
-		//$now = date('Y-m-d H:i:s');
-		$insert['waktu_permintaan'] = date('Y-m-d H:i:s', strtotime($_POST['waktu_permintaan'] . " 00:00:00"));
-		$insert['paket_id'] = $_POST['paket_id'];
-		$insert['keterangan'] = $_POST['keterangan'];
-		$insert['id'] = $this->m_bersalin->create_permintaan_makan($insert['visit_id']);
-
-		$input = $this->m_bersalin->add_permintaan_makan($insert);
-
-		if($input){
-			$result = $this->m_bersalin->get_permintaan_makan($insert['id']);		
-			header('Content-Type: application/json');
-			echo json_encode($result);
+	/*visit gizi*/
+    public function save_gizi(){
+    	foreach ($_POST as $value) 
+		{
+			$insert = $value;
 		}
-	}
 
-	public function get_permintaan_awal($value='')
-	{
-		$result =  $this->m_bersalin->get_permintaan_awal($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
+		$visit_id = $insert['visit_id'];
 
-	public function delete_permintaan_makan($value='')
-	{
-		$result =  $this->m_bersalin->delete_permintaan_makan($value);
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
+		$id = $this->m_bersalin->get_last_visit_gizi($visit_id);
+		if($id){
+			$vid = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
+			if(strlen($vid) == "1"){
+				$vid = '00' . $vid;
+			}else if (strlen($vid) == "2") {
+				$vid = '0' . $vid;
+			}
+			$insert['gizi_id'] = "GI".$visit_id."".($vid);
+		}else{
+			$insert['gizi_id'] = "GI".$visit_id."001";
+		}
 
-	/*akhir permintaan makan*/
+		$tgl = $this->fdate_db($insert['tanggal']);
+		$insert['tanggal'] = $tgl;
 
-	/*visit kegiatan bersalin*/
-	public function get_all_petugas()
-	{
-		$result =  $this->m_bersalin->get_all_petugas();
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-	/*akhir visit kegiatan bersalin*/
-
-	/*riwayat penyakit*/
-	public function get_overview_riwayat($visit_id='')
-	{
-		$result = $this->m_bersalin->get_riwayat($visit_id);
+		$hasil = $this->m_bersalin->save_gizi($insert);
 
 		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
+		echo(json_encode($insert));
+    }
 
-	public function get_therapy_riwayat($visit_id)
+    public function hapus_gizi($id){//, $igd_id
+    	$input = $this->m_bersalin->hapus_gizi($id);
+
+		//$result = $this->m_igddetail->get_visit_gizi($igd_id);
+		
+		header('Content-Type: application/json');
+		echo json_encode($input);
+    }
+
+	/*akhir visit gizi*/
+
+	/*permintaan makan*/
+	public function get_paket_makan($id)
 	{
-		$result = $this->m_bersalin->get_therapy_riwayat($visit_id);
-
-		header('Content-Type:application/json');
-		echo(json_encode($result));
+		$input = $this->m_bersalin->get_paket_makan($id);
+		
+		header('Content-Type: application/json');
+		echo json_encode($input);
 	}
 
-	public function get_resep_riwayat($visit_id)
-	{
-		$result = $this->m_bersalin->get_resep_riwayat($visit_id);
-
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-
-	public function get_penunjang_riwayat($visit_id)
-	{
-		$result = $this->m_bersalin->get_penunjang_riwayat($visit_id);
-
-		header('Content-Type:application/json');
-		echo(json_encode($result));
-	}
-	/*akhir riwayat penyakit*/
-	
-	/*checkout*/
-	public function checkout_process()
+	public function submit_permintaan_makan()
 	{
 		foreach ($_POST as $value) 
 		{
 			$insert = $value;
 		}
 
-		$params = array(
-			'waktu_keluar' => $insert['waktu_keluar'], 
-			'alasan_keluar' => $insert['alasan_keluar'],
-			'detail_alasan_pulang' => $insert['detail_alasan_pulang'],
-			'waktu_kematian' => "",
-			'keterangan_kematian' => "" 
-			);
-		if($insert['alasan_keluar'] == "Pasien Meninggal"){
-			$params['waktu_kematian'] = $insert['waktu_kematian'];
-			$params['keterangan_kematian'] = $insert['keterangan_kematian'];
+		$insert['waktu_permintaan'] = $this->date_db($insert['waktu_permintaan']);
+		$id = $this->m_bersalin->submit_permintaan_makan($insert);
+		$insert['makan_id'] = $id;
+
+		header('Content-Type: application/json');
+		echo json_encode($insert);
+	}
+
+	public function edit_permintaan_makan($id)
+	{
+		foreach ($_POST as $value) 
+		{
+			$insert = $value;
 		}
 
-		$upd['waktu_keluar'] = $insert['waktu_keluar'];
+		$insert['waktu_permintaan'] = $this->date_db($insert['waktu_permintaan']);
+		$result = $this->m_bersalin->edit_permintaan_makan($id,$insert);
 
-		$visit_id = $insert['visit_id'];
-		$bed_id = $insert['old_bed_id'];
-		$inap_id = $insert['inap_id'];
+		header('Content-Type: application/json');
+		echo json_encode($insert);
+	}
 
+	public function hapus_permintaan_makan($id)
+	{
+		$result = $this->m_bersalin->hapus_permintaan_makan($id);
 
-		if ($update = $this->m_bersalin->update_rawat_info($params, $visit_id)) {
-			//update mana nih buat bayar?
-			//pindah pasien ke tempat lain juga perlu 
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+	/*akhir permintaan makan*/
 
-			if ($update = $this->m_bersalin->update_visit_kamar($upd, $inap_id)) {
-				$array = array('is_dipakai' => '0');
-				if ($update = $this->m_bersalin->update_kamar_info($array, $bed_id)) {
-					
-				}
-			}
-		}
+	/*resume pulang*/
+	public function save_resume($bed_id){
+    	foreach ($_POST as $value) {
+    		$insert = $value;
+    	}
+
+    	$tgl = $insert['waktu_keluar'].":00";
+    	$format = $this->date_db($tgl);
+    	$insert['waktu_keluar'] = $format;
+    	if (isset($insert['waktu_kematian']) && !empty($insert['waktu_kematian'])) {
+    		$insert['waktu_kematian'] = $this->date_db($insert['waktu_kematian']);
+    	}
+
+		//update status visit disini
+		$update['status_visit']="CHECKOUT";
+		
+    	$save = $this->m_bersalin->save_resume($insert['ri_id'], $insert);
+
+    	$up = $this->m_bersalin->update_visit($insert['visit_id'], $update);
+    	$up_bed = $this->m_bersalin->update_bed($bed_id);
+    	header('Content-Type: application/json');
+		echo json_encode($insert);
+    }
+	/*resume*/
+
+	/*riwayat*/
+	public function get_detail_over($value){
+    	$result = $this->m_bersalin->get_detail_overview_klinis($value);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+    }
+	/*akhir riwayat*/
+
+	public function date_db($date){
+		$dateTime = DateTime::createFromFormat('d/m/Y H:i:s',$date);
+		$newDateString = $dateTime->format('Y-m-d H:i:s');
+		return $newDateString;
+	}
+
+	public function fdate_db($date){
+		$dateTime = DateTime::createFromFormat('d/m/Y',$date);
+		$newDateString = $dateTime->format('Y-m-d');
+		return $newDateString;
+	}
+
+	/*tindakan*/
+	public function get_tindakan($id)
+	{
+		$result = $this->m_bersalin->get_tindakan($id);
 
 		header('Content-Type:application/json');
-		echo(json_encode($update));
+		echo(json_encode($result));
 	}
-	/**/
 
-	/*pindah pasien*/
+	public function save_tindakan()
+	{
+		$this->load->model('igd/m_igddetail');
+		foreach ($_POST as $value) 
+		{
+			$insert = $value;
+		}
 
-	/*akhir pindah pasien*/
+		$visit_id = $insert['visit_id'];
+		
+		$id = $this->m_igddetail->get_last_visit_care($visit_id);
+		if($id){
+			$vid = intval(substr($id['value'], strlen($visit_id) + 2)) + 1;
+			if (strlen($vid) == "1") {
+				$vid = '000'. $vid;
+			}else if(strlen($vid) == "2"){
+				$vid = '00' . $vid;
+			}else if (strlen($vid) == "3") {
+				$vid = '0' . $vid;
+			}
+			$insert['care_id'] = "CA".$visit_id."".($vid);
+		}else{
+			$insert['care_id'] = "CA".$visit_id."0001";
+		}
+		
+		$tgl = $this->date_db($insert['waktu_tindakan']);
+		$insert['waktu_tindakan'] = $tgl;
+		$insert['dept_id'] = $this->dept_id;
+		$hasil = $this->m_igddetail->save_tindakan($insert);
+		
+		$ins = $this->m_igddetail->get_inserted_visit_care($insert['care_id']);
+		header('Content-Type:application/json');
+		echo(json_encode($ins));
+	}
 
+	public function hapus_tindakan($id, $v_id){//, $dept
+		$this->load->model('igd/m_igddetail');
+		$input = $this->m_igddetail->hapus_tindakan($id);
+
+		//$result = $this->m_igddetail->get_visit_care_igd($v_id, $dept);
+		
+		header('Content-Type: application/json');
+		echo json_encode($input);
+	}
+	/*akhir tindakan*/
 }
+

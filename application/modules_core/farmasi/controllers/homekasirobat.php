@@ -22,4 +22,28 @@ class Homekasirobat extends Operator_base {
 		$this->load->view('base/operator/template', $data);
 	}
 
+	public function search_resep()
+	{
+		foreach ($_POST as $value) {
+			$insert = $value;
+		}
+		
+		$result = $this->m_kasirobat->search_resep($insert);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	public function search_resep_bayar()
+	{
+		foreach ($_POST as $value) {
+			$insert = $value;
+		}
+		
+		$result = $this->m_kasirobat->search_resep_bayar($insert);
+
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
 }
